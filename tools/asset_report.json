@@ -1,0 +1,196 @@
+{
+  "pine_tree_01_1k.blend": [
+    {
+      "name": "pine_tree_01_trunk_a",
+      "tris": 84332,
+      "height": 17.55,
+      "materials": [
+        "pine_tree_01_trunk_a"
+      ]
+    },
+    {
+      "name": "pine_tree_01_trunk_b",
+      "tris": 78776,
+      "height": 12.53,
+      "materials": [
+        "pine_tree_01_trunk_b"
+      ]
+    },
+    {
+      "name": "pine_tree_01_trunk_c",
+      "tris": 46268,
+      "height": 15.18,
+      "materials": [
+        "pine_tree_01_trunk_c"
+      ]
+    },
+    {
+      "name": "pine_tree_01_a_LOD0",
+      "tris": 6951524,
+      "height": 20.37,
+      "materials": [
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_a",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_b_LOD0",
+      "tris": 4234432,
+      "height": 14.88,
+      "materials": [
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_b",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_c_LOD0",
+      "tris": 5996296,
+      "height": 17.54,
+      "materials": [
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_c",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_a_LOD1",
+      "tris": 826954,
+      "height": 20.4,
+      "materials": [
+        "",
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_a",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_b_LOD1",
+      "tris": 514980,
+      "height": 14.88,
+      "materials": [
+        "",
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_b",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_c_LOD1",
+      "tris": 703322,
+      "height": 17.55,
+      "materials": [
+        "",
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_c",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_a_LOD2",
+      "tris": 416451,
+      "height": 20.4,
+      "materials": [
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_a",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_b_LOD2",
+      "tris": 267343,
+      "height": 14.88,
+      "materials": [
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_b",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    },
+    {
+      "name": "pine_tree_01_c_LOD2",
+      "tris": 347991,
+      "height": 17.55,
+      "materials": [
+        "pine_tree_01_bark",
+        "pine_tree_01_trunk_c",
+        "pine_tree_01_twig",
+        "pine_tree_01_dead_branches"
+      ]
+    }
+  ],
+  "fir_sapling_medium_2k.blend": [],
+  "othonna_cerarioides_2k.blend": [
+    {
+      "name": "othonna_cerarioides_e_LOD3",
+      "tris": 1965,
+      "height": 0.96,
+      "materials": [
+        "othonna_cerarioides",
+        "othonna_cerarioides_leaves"
+      ]
+    },
+    {
+      "name": "othonna_cerarioides_g_LOD3",
+      "tris": 1771,
+      "height": 0.46,
+      "materials": [
+        "othonna_cerarioides",
+        "othonna_cerarioides_leaves"
+      ]
+    },
+    {
+      "name": "othonna_cerarioides_b_LOD3",
+      "tris": 13299,
+      "height": 1.77,
+      "materials": [
+        "othonna_cerarioides",
+        "othonna_cerarioides_leaves"
+      ]
+    },
+    {
+      "name": "othonna_cerarioides_a_LOD3",
+      "tris": 25049,
+      "height": 1.97,
+      "materials": [
+        "othonna_cerarioides",
+        "othonna_cerarioides_leaves"
+      ]
+    },
+    {
+      "name": "othonna_cerarioides_c_LOD3",
+      "tris": 5905,
+      "height": 1.44,
+      "materials": [
+        "othonna_cerarioides",
+        "othonna_cerarioides_leaves"
+      ]
+    },
+    {
+      "name": "othonna_cerarioides_d_LOD3",
+      "tris": 4592,
+      "height": 1.15,
+      "materials": [
+        "othonna_cerarioides",
+        "othonna_cerarioides_leaves"
+      ]
+    },
+    {
+      "name": "othonna_cerarioides_f_LOD3",
+      "tris": 1657,
+      "height": 0.68,
+      "materials": [
+        "othonna_cerarioides",
+        "othonna_cerarioides_leaves"
+      ]
+    }
+  ]
+}

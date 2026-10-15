@@ -1,0 +1,58 @@
+[
+  {
+    "asset": "pine_b",
+    "source": "C:\\Users\\jkern\\Downloads\\pine_tree_01_1k.blend",
+    "triangles": 3746,
+    "height": 9.107,
+    "texture_size": 256
+  },
+  {
+    "asset": "pine_c",
+    "source": "C:\\Users\\jkern\\Downloads\\pine_tree_01_1k.blend",
+    "triangles": 5559,
+    "height": 9.213,
+    "texture_size": 256
+  },
+  {
+    "asset": "bush_e",
+    "source": "C:\\Users\\jkern\\Downloads\\othonna_cerarioides_2k.blend",
+    "triangles": 750,
+    "height": 1.001,
+    "texture_size": 256
+  },
+  {
+    "asset": "bush_f",
+    "source": "C:\\Users\\jkern\\Downloads\\othonna_cerarioides_2k.blend",
+    "triangles": 750,
+    "height": 1.0,
+    "texture_size": 256
+  },
+  {
+    "asset": "bush_g",
+    "source": "C:\\Users\\jkern\\Downloads\\othonna_cerarioides_2k.blend",
+    "triangles": 750,
+    "height": 1.0,
+    "texture_size": 256
+  },
+  {
+    "asset": "rock_0",
+    "source": "C:\\Users\\jkern\\Downloads\\rock_surface_1k.blend",
+    "triangles": 80,
+    "height": 1.0,
+    "texture_size": 256
+  },
+  {
+    "asset": "rock_1",
+    "source": "C:\\Users\\jkern\\Downloads\\rock_surface_1k.blend",
+    "triangles": 80,
+    "height": 1.0,
+    "texture_size": 256
+  },
+  {
+    "asset": "rock_2",
+    "source": "C:\\Users\\jkern\\Downloads\\rock_surface_1k.blend",
+    "triangles": 80,
+    "height": 1.0,
+    "texture_size": 256
+  }
+]

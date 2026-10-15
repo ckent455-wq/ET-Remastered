@@ -1,0 +1,14 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Local verification output and recordings
+*.log
+/preview-*.png
+/preview-*.png.import
+/render-check.avi
+
+# Local credentials and environment overrides
+.env
+.env.*
+!.env.example

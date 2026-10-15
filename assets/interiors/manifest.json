@@ -1,0 +1,90 @@
+[
+  {
+    "asset": "shelf",
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\wall-book-shelf_be5ee38a-b1ce-4542-ad08-6e3505e479f0\\wall-book-shelf_2K_4026e98e-54a7-4f54-9ed1-0dfca1939b59.blend",
+    "triangles": 348,
+    "dimensions": [
+      0.9774,
+      0.6035,
+      2.1
+    ],
+    "texture_limit": 256
+  },
+  {
+    "asset": "lamp",
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\floor-lamp_d407e6eb-cde8-44c6-984d-abca45983d50\\floor-lamp_0d5aa494-708b-40a0-ad5f-46cf4e43bac0.blend",
+    "triangles": 998,
+    "dimensions": [
+      0.3815,
+      0.4868,
+      1.65
+    ],
+    "texture_limit": 256
+  },
+  {
+    "asset": "books",
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\books_9495ee3b-6082-4113-82b9-8a3dab3215e1\\books_cf809fee-cf29-403e-979a-8b4515e80bd7.blend",
+    "triangles": 1782,
+    "dimensions": [
+      0.9,
+      0.3494,
+      0.4812
+    ],
+    "texture_limit": 256
+  },
+  {
+    "asset": "curtain",
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\ribbon-curtain-c_a1b30e91-0972-4378-9fb8-e9f7bdc409af\\ribbon-curtain-closed_1K_385bab81-400a-48b8-b120-a07af4d67f35.blend",
+    "triangles": 1007,
+    "dimensions": [
+      0.2451,
+      0.056,
+      1.4
+    ],
+    "texture_limit": 256
+  },
+  {
+    "asset": "door",
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\wooden-door_3bb0973c-1361-4848-a9c9-3e28902bc26a\\wooden-door_9cef6dd1-8b93-43f8-b91e-3384c46231ad.blend",
+    "triangles": 1593,
+    "dimensions": [
+      1.1813,
+      0.264,
+      2.7
+    ],
+    "texture_limit": 256
+  },
+  {
+    "asset": "box",
+    "source": "C:\\Users\\jkern\\Downloads\\cardboard_box_01_2k.blend\\cardboard_box_01_2k.blend",
+    "triangles": 500,
+    "dimensions": [
+      0.5435,
+      0.7245,
+      0.48
+    ],
+    "texture_limit": 256
+  },
+  {
+    "asset": "teapot",
+    "source": "C:\\Users\\jkern\\Downloads\\TeapotSilver001\\TeapotSilver001.blend",
+    "triangles": 599,
+    "dimensions": [
+      0.3592,
+      0.1804,
+      0.26
+    ],
+    "texture_limit": 256
+  },
+  {
+    "asset": "sink",
+    "source": "C:\\Users\\jkern\\Downloads\\Sink003\\Sink003.blend",
+    "triangles": 1160,
+    "dimensions": [
+      0.92,
+      0.5142,
+      0.4668
+    ],
+    "texture_limit": 256
+  }
+]

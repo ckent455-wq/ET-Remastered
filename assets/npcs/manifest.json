@@ -1,0 +1,26 @@
+[
+  {
+    "variant": "ranger",
+    "source": "C:\\Users\\jkern\\Downloads\\Base Humanoid Mesh\\Base Humanoid Mesh\\Humanoid.blend",
+    "mesh": "HumanoidBase_NotOverlapping",
+    "triangles": 402,
+    "texture_size": 256,
+    "pose": "arms lowered from source A-pose"
+  },
+  {
+    "variant": "nurse",
+    "source": "C:\\Users\\jkern\\Downloads\\Base Humanoid Mesh\\Base Humanoid Mesh\\Humanoid.blend",
+    "mesh": "HumanoidBase_NotOverlapping",
+    "triangles": 402,
+    "texture_size": 256,
+    "pose": "arms lowered from source A-pose"
+  },
+  {
+    "variant": "mechanic",
+    "source": "C:\\Users\\jkern\\Downloads\\Base Humanoid Mesh\\Base Humanoid Mesh\\Humanoid.blend",
+    "mesh": "HumanoidBase_NotOverlapping",
+    "triangles": 402,
+    "texture_size": 256,
+    "pose": "arms lowered from source A-pose"
+  }
+]

@@ -1,0 +1,1070 @@
+{
+  "shelf": {
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\wall-book-shelf_be5ee38a-b1ce-4542-ad08-6e3505e479f0\\wall-book-shelf_2K_4026e98e-54a7-4f54-9ed1-0dfca1939b59.blend",
+    "objects": [
+      {
+        "name": "Wall Book Shelf",
+        "verts": 176,
+        "tris": 348,
+        "dimensions": [
+          0.979,
+          0.605,
+          2.104
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Material"
+        ]
+      }
+    ],
+    "images": [
+      {
+        "name": "SmudgesLarge001_OVERLAY_VAR2_3K.jpg",
+        "path": "//textures_2k\\SmudgesLarge001_OVERLAY_VAR2_3K.jpg",
+        "size": [
+          3072,
+          3072
+        ],
+        "packed": true
+      },
+      {
+        "name": "WoodFine22_COL_1K.jpg",
+        "path": "//textures_2k\\WoodFine22_COL_1K.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "WoodFine22_GLOSS_1K.jpg",
+        "path": "//textures_2k\\WoodFine22_GLOSS_1K.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      }
+    ]
+  },
+  "lamp": {
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\floor-lamp_d407e6eb-cde8-44c6-984d-abca45983d50\\floor-lamp_0d5aa494-708b-40a0-ad5f-46cf4e43bac0.blend",
+    "objects": [
+      {
+        "name": "FloroLamp_WirePlug",
+        "verts": 216,
+        "tris": 416,
+        "dimensions": [
+          0.031,
+          0.053,
+          0.013
+        ],
+        "location": [
+          0.042,
+          0.196,
+          0.177
+        ],
+        "materials": [
+          "Plastic Black Insulator",
+          "Metal Chrome"
+        ]
+      },
+      {
+        "name": "FloorLamp_Stem",
+        "verts": 572,
+        "tris": 996,
+        "dimensions": [
+          0.267,
+          0.267,
+          1.403
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Plastic Black Shiny",
+          "Lamp Bulb"
+        ]
+      },
+      {
+        "name": "FloorLamp_Cover",
+        "verts": 384,
+        "tris": 640,
+        "dimensions": [
+          0.326,
+          0.329,
+          0.208
+        ],
+        "location": [
+          0.0,
+          0.0,
+          1.368
+        ],
+        "materials": [
+          "Material"
+        ]
+      },
+      {
+        "name": "FloorLamp_Bulb",
+        "verts": 830,
+        "tris": 1656,
+        "dimensions": [
+          0.082,
+          0.082,
+          0.07
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "Plastic Black Shiny",
+          "Lamp Bulb"
+        ]
+      }
+    ],
+    "images": []
+  },
+  "books": {
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\books_9495ee3b-6082-4113-82b9-8a3dab3215e1\\books_cf809fee-cf29-403e-979a-8b4515e80bd7.blend",
+    "objects": [
+      {
+        "name": "Cube.085",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.153,
+          0.228,
+          0.015
+        ],
+        "location": [
+          -0.898,
+          -0.008,
+          0.114
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.086",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.158,
+          0.237,
+          0.017
+        ],
+        "location": [
+          -0.882,
+          -0.017,
+          0.119
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.087",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.126,
+          0.175,
+          0.017
+        ],
+        "location": [
+          -0.86,
+          -0.039,
+          0.088
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.088",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.143,
+          0.199,
+          0.021
+        ],
+        "location": [
+          -0.792,
+          -0.036,
+          0.099
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.089",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.158,
+          0.237,
+          0.007
+        ],
+        "location": [
+          -0.811,
+          -0.024,
+          0.114
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.090",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.153,
+          0.228,
+          0.026
+        ],
+        "location": [
+          -0.827,
+          -0.02,
+          0.114
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.091",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.152,
+          0.199,
+          0.012
+        ],
+        "location": [
+          -0.774,
+          -0.02,
+          0.097
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.092",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.159,
+          0.208,
+          0.013
+        ],
+        "location": [
+          -0.649,
+          -0.019,
+          0.101
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.093",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.16,
+          0.239,
+          0.027
+        ],
+        "location": [
+          -0.706,
+          -0.02,
+          0.118
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.094",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.165,
+          0.248,
+          0.007
+        ],
+        "location": [
+          -0.689,
+          -0.02,
+          0.119
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.095",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.149,
+          0.208,
+          0.022
+        ],
+        "location": [
+          -0.669,
+          -0.012,
+          0.103
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.096",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.132,
+          0.183,
+          0.018
+        ],
+        "location": [
+          -0.739,
+          -0.021,
+          0.09
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.097",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.165,
+          0.248,
+          0.018
+        ],
+        "location": [
+          -0.73,
+          -0.014,
+          0.121
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.098",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.16,
+          0.239,
+          0.016
+        ],
+        "location": [
+          -0.766,
+          -0.017,
+          0.117
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.099",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.16,
+          0.239,
+          0.016
+        ],
+        "location": [
+          -0.639,
+          -0.018,
+          0.116
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.100",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.165,
+          0.248,
+          0.018
+        ],
+        "location": [
+          -0.623,
+          -0.023,
+          0.121
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.101",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.132,
+          0.183,
+          0.018
+        ],
+        "location": [
+          -0.586,
+          -0.026,
+          0.088
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.102",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.149,
+          0.208,
+          0.022
+        ],
+        "location": [
+          -0.527,
+          -0.027,
+          0.099
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.103",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.165,
+          0.248,
+          0.007
+        ],
+        "location": [
+          -0.55,
+          -0.019,
+          0.113
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.104",
+        "verts": 148,
+        "tris": 248,
+        "dimensions": [
+          0.16,
+          0.239,
+          0.027
+        ],
+        "location": [
+          -0.569,
+          -0.018,
+          0.114
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      },
+      {
+        "name": "Cube.105",
+        "verts": 132,
+        "tris": 220,
+        "dimensions": [
+          0.159,
+          0.208,
+          0.013
+        ],
+        "location": [
+          -0.503,
+          -0.027,
+          0.095
+        ],
+        "materials": [
+          "book cover",
+          "stacked paper"
+        ]
+      }
+    ],
+    "images": []
+  },
+  "curtain": {
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\ribbon-curtain-c_a1b30e91-0972-4378-9fb8-e9f7bdc409af\\ribbon-curtain-closed_1K_385bab81-400a-48b8-b120-a07af4d67f35.blend",
+    "objects": [
+      {
+        "name": "ribbon_start",
+        "verts": 104,
+        "tris": 204,
+        "dimensions": [
+          0.04,
+          0.004,
+          0.02
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "white_plastic"
+        ]
+      },
+      {
+        "name": "ribbon_end",
+        "verts": 959,
+        "tris": 1838,
+        "dimensions": [
+          0.04,
+          0.095,
+          1.0
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "white_plastic",
+          "Fabric_drapp"
+        ]
+      },
+      {
+        "name": "Ribbon curtain closed",
+        "verts": 1753,
+        "tris": 3336,
+        "dimensions": [
+          0.04,
+          1.055,
+          1.0
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "white_plastic",
+          "Fabric_drapp"
+        ]
+      }
+    ],
+    "images": [
+      {
+        "name": "Fabric061_1K_AmbientOcclusion.jpg",
+        "path": "//textures_1k\\\\Fabric061_1K_AmbientOcclusion.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "Fabric061_1K_Color.jpg",
+        "path": "//textures_1k\\\\Fabric061_1K_Color.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "Fabric061_1K_Displacement.jpg",
+        "path": "//textures_1k\\\\Fabric061_1K_Displacement.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "Fabric061_1K_NormalGL.jpg",
+        "path": "//textures_1k\\\\Fabric061_1K_NormalGL.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "Fabric061_1K_Roughness.jpg",
+        "path": "//textures_1k\\\\Fabric061_1K_Roughness.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      }
+    ]
+  },
+  "door": {
+    "source": "C:\\Users\\jkern\\Documents\\assets\\models\\wooden-door_3bb0973c-1361-4848-a9c9-3e28902bc26a\\wooden-door_9cef6dd1-8b93-43f8-b91e-3384c46231ad.blend",
+    "objects": [
+      {
+        "name": "lock.001",
+        "verts": 988,
+        "tris": 1846,
+        "dimensions": [
+          0.017,
+          0.013,
+          0.017
+        ],
+        "location": [
+          4.167,
+          -0.11,
+          0.991
+        ],
+        "materials": [
+          "lock metal.001"
+        ]
+      },
+      {
+        "name": "Hinges.001",
+        "verts": 80,
+        "tris": 136,
+        "dimensions": [
+          0.037,
+          0.01,
+          1.675
+        ],
+        "location": [
+          3.334,
+          -0.023,
+          1.066
+        ],
+        "materials": [
+          "lock metal.001"
+        ]
+      },
+      {
+        "name": "Hinges",
+        "verts": 208,
+        "tris": 360,
+        "dimensions": [
+          0.037,
+          0.01,
+          1.675
+        ],
+        "location": [
+          3.342,
+          -0.056,
+          1.067
+        ],
+        "materials": [
+          "lock metal.001"
+        ]
+      },
+      {
+        "name": "door_inside_handle.003",
+        "verts": 770,
+        "tris": 1496,
+        "dimensions": [
+          0.069,
+          0.199,
+          0.07
+        ],
+        "location": [
+          4.167,
+          -0.022,
+          0.991
+        ],
+        "materials": [
+          "knob-metal.001"
+        ]
+      },
+      {
+        "name": "door_frame_top.003",
+        "verts": 36,
+        "tris": 68,
+        "dimensions": [
+          1.007,
+          0.038,
+          0.057
+        ],
+        "location": [
+          3.794,
+          -0.068,
+          2.086
+        ],
+        "materials": [
+          "Wood.002"
+        ]
+      },
+      {
+        "name": "door_frame_top.001",
+        "verts": 36,
+        "tris": 68,
+        "dimensions": [
+          1.007,
+          0.138,
+          0.057
+        ],
+        "location": [
+          3.794,
+          -0.106,
+          2.086
+        ],
+        "materials": [
+          "Wood.002"
+        ]
+      },
+      {
+        "name": "door_frame_sides",
+        "verts": 220,
+        "tris": 432,
+        "dimensions": [
+          1.005,
+          0.175,
+          2.074
+        ],
+        "location": [
+          3.794,
+          -0.09,
+          1.03
+        ],
+        "materials": [
+          "Wood.002"
+        ]
+      },
+      {
+        "name": "door_decoration",
+        "verts": 2194,
+        "tris": 4298,
+        "dimensions": [
+          0.658,
+          0.027,
+          1.856
+        ],
+        "location": [
+          3.795,
+          -0.006,
+          1.191
+        ],
+        "materials": [
+          "Wood.002"
+        ]
+      },
+      {
+        "name": "door.001",
+        "verts": 1031,
+        "tris": 2018,
+        "dimensions": [
+          0.9,
+          0.035,
+          2.058
+        ],
+        "location": [
+          3.794,
+          -0.017,
+          1.024
+        ],
+        "materials": [
+          "Wood.002"
+        ]
+      },
+      {
+        "name": "Cylinder.009",
+        "verts": 64,
+        "tris": 124,
+        "dimensions": [
+          0.005,
+          0.005,
+          0.005
+        ],
+        "location": [
+          4.247,
+          -0.017,
+          1.25
+        ],
+        "materials": []
+      },
+      {
+        "name": "Cylinder",
+        "verts": 248,
+        "tris": 492,
+        "dimensions": [
+          0.02,
+          0.024,
+          0.02
+        ],
+        "location": [
+          4.167,
+          0.069,
+          0.991
+        ],
+        "materials": [
+          "knob-metal.001"
+        ]
+      }
+    ],
+    "images": [
+      {
+        "name": "Wood 04_diffuse.jpg.001",
+        "path": "//..\\..\\..\\..\\blenderkit_data\\models\\wooden_door_3bb0973c-1361-4848-a9c9-3e28902bc26a\\textures\\Wood 04_diffuse.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "Wood 04_normal.jpg.001",
+        "path": "//..\\..\\..\\..\\blenderkit_data\\models\\wooden_door_3bb0973c-1361-4848-a9c9-3e28902bc26a\\textures\\Wood 04_normal.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      },
+      {
+        "name": "Wood 04_roughness.jpg.001",
+        "path": "//..\\..\\..\\..\\blenderkit_data\\models\\wooden_door_3bb0973c-1361-4848-a9c9-3e28902bc26a\\textures\\Wood 04_roughness.jpg",
+        "size": [
+          1024,
+          1024
+        ],
+        "packed": true
+      }
+    ]
+  },
+  "box": {
+    "source": "C:\\Users\\jkern\\Downloads\\cardboard_box_01_2k.blend\\cardboard_box_01_2k.blend",
+    "objects": [
+      {
+        "name": "cardboard_box_01",
+        "verts": 8478,
+        "tris": 16952,
+        "dimensions": [
+          0.387,
+          0.516,
+          0.342
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.177
+        ],
+        "materials": [
+          "cardboard_box_01"
+        ]
+      }
+    ],
+    "images": [
+      {
+        "name": "cardboard_box_01_diff.png",
+        "path": "//textures\\cardboard_box_01_diff_2k.jpg",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": false
+      },
+      {
+        "name": "cardboard_box_01_nor_gl.png",
+        "path": "//textures\\cardboard_box_01_nor_gl_2k.exr",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": false
+      },
+      {
+        "name": "cardboard_box_01_rough.png",
+        "path": "//textures\\cardboard_box_01_rough_2k.exr",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": false
+      }
+    ]
+  },
+  "teapot": {
+    "source": "C:\\Users\\jkern\\Downloads\\TeapotSilver001\\TeapotSilver001.blend",
+    "objects": [
+      {
+        "name": "TeapotSilver001",
+        "verts": 1485,
+        "tris": 2923,
+        "dimensions": [
+          0.346,
+          0.174,
+          0.215
+        ],
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "materials": [
+          "TeapotSilver001_2K"
+        ]
+      },
+      {
+        "name": "TeapotSilver001_lid",
+        "verts": 1968,
+        "tris": 3886,
+        "dimensions": [
+          0.094,
+          0.094,
+          0.036
+        ],
+        "location": [
+          0.005,
+          -0.0,
+          0.215
+        ],
+        "materials": [
+          "TeapotSilver001_2K"
+        ]
+      }
+    ],
+    "images": [
+      {
+        "name": "TeapotSilver001_COL_2K_METALNESS.jpg",
+        "path": "//TeapotSilver001_COL_2K_METALNESS.jpg",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": false
+      },
+      {
+        "name": "TeapotSilver001_METALNESS_2K_METALNESS.jpg",
+        "path": "//TeapotSilver001_METALNESS_2K_METALNESS.jpg",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": false
+      },
+      {
+        "name": "TeapotSilver001_NRM_2K_METALNESS.jpg",
+        "path": "//TeapotSilver001_NRM_2K_METALNESS.jpg",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": false
+      },
+      {
+        "name": "TeapotSilver001_ROUGHNESS_2K_METALNESS.jpg",
+        "path": "//TeapotSilver001_ROUGHNESS_2K_METALNESS.jpg",
+        "size": [
+          2048,
+          2048
+        ],
+        "packed": false
+      }
+    ]
+  },
+  "sink": {
+    "source": "C:\\Users\\jkern\\Downloads\\Sink003\\Sink003.blend",
+    "objects": [
+      {
+        "name": "Sink003",
+        "verts": 8873,
+        "tris": 16746,
+        "dimensions": [
+          0.742,
+          0.415,
+          0.377
+        ],
+        "location": [
+          0.0,
+          0.165,
+          0.051
+        ],
+        "materials": [
+          "Sink003_3K"
+        ]
+      }
+    ],
+    "images": [
+      {
+        "name": "Sink003_COL_3K_METALNESS.jpg",
+        "path": "//Sink003_COL_3K_METALNESS.jpg",
+        "size": [
+          3072,
+          3072
+        ],
+        "packed": false
+      },
+      {
+        "name": "Sink003_METALNESS_3K_METALNESS.png",
+        "path": "//Sink003_METALNESS_3K_METALNESS.png",
+        "size": [
+          3072,
+          3072
+        ],
+        "packed": false
+      },
+      {
+        "name": "Sink003_NRM_3K_METALNESS.png",
+        "path": "//Sink003_NRM_3K_METALNESS.png",
+        "size": [
+          3072,
+          3072
+        ],
+        "packed": false
+      },
+      {
+        "name": "Sink003_ROUGHNESS_3K_METALNESS.jpg",
+        "path": "//Sink003_ROUGHNESS_3K_METALNESS.jpg",
+        "size": [
+          3072,
+          3072
+        ],
+        "packed": false
+      }
+    ]
+  }
+}
