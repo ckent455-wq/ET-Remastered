@@ -1,7 +1,7 @@
 config_version=5
 [application]
 config/name="Far From Home"
-config/version="0.1.0"
+config/version="0.2.0"
 config/description="Survive a crash on Old Mill Road, reach Blackwood, and find a way to call for rescue."
 run/max_fps=60
 run/main_scene="res://main.tscn"

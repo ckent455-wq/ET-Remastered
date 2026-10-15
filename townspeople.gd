@@ -4,7 +4,7 @@ var town
 var characters = {}
 const DEATH_DURATION = 1.7
 const PEOPLE = [
-	{"id":"ranger","name":"Elias / Ranger","variant":"ranger","building":"","p":Vector3(-26,0,-61),"yaw":0.0,"route":[Vector3(-26,0,-61),Vector3(-22,0,-61),Vector3(-18,0,-61)]},
+	{"id":"ranger","name":"Elias / Ranger","variant":"ranger","building":"","p":Vector3(-5.9,0,-45),"yaw":0.0,"route":[Vector3(-5.9,0,-45),Vector3(-5.9,0,-49),Vector3(-5.9,0,-44.5)]},
 	{"id":"nurse","name":"Mara / Nurse","variant":"nurse","building":"clinic","p":Vector3(-0.95,0,0.6),"yaw":0.0,"route":[Vector3(-0.95,0,0.6),Vector3(-0.95,0,2.5),Vector3(0.65,0,2.5),Vector3(0.65,0,0.6)]},
 	{"id":"mechanic","name":"Owen / Mechanic","variant":"mechanic","building":"workshop","p":Vector3(1.2,0,1.5),"yaw":0.0,"route":[Vector3(1.2,0,1.5),Vector3(3,0,1.5),Vector3(3,0,3.1),Vector3(1.2,0,3.1)]}]
 
@@ -209,7 +209,7 @@ func words(id: String) -> String:
 	match id:
 		"ranger":
 			if town.inventory.station_key==0:
-				return "You crashed on Old Mill Road? I'm Elias. You're lucky you made it here.\n\nThe radio station can reach emergency services. Its brass key is in my desk drawer. There's a pistol on the crate near the front of my cabin. Search with E."
+				return "You crashed on Old Mill Road? I'm Elias. You're lucky you made it here.\n\nThe radio station can reach emergency services. Its brass key is in my desk drawer. There's a pistol on the crate near the front of my office. Search with E."
 			return "Good, you found the key. Now try the general store's counter drawer for a fuse. Fit it at the workshop's outside panel, then get the signal coil from the powered cabinet.\n\nBring that coil to the radio-station receiver."
 		"nurse":
 			return "I'm Mara. Most of Blackwood left in a hurry. Some of us stayed to help anyone still coming through.\n\nSearch the medicine cabinet in the back room for first-aid kits. Press H to use one. Spare flashlight cells are in town's drawers and cabinets; use Q to fit a fresh battery."

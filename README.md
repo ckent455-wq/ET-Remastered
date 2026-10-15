@@ -37,10 +37,13 @@ A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest
 - Escape: pause and release the mouse
 - M: mute / unmute all game audio
 
-Follow Old Mill Road north from the accident scene into Blackwood. The first objective guides you into town; later markers guide radio repairs. Inspect the wreck with E for context. Find the pistol on the ranger cabin's front crate, the rifle on the workshop bench, and the shotgun on the millkeeper's desk. Guns and their ammunition are only awarded once per journey when picked up; a new journey removes ownership and restores the world pickups. The alien pulse, glowing landing pad, rescue beam, and return-to-clearing ending have been removed.
+Follow Old Mill Road north from the accident scene into Blackwood. The first objective guides you into town; later markers guide radio repairs. Inspect the wreck with E for context. Find the pistol on the ranger office's front crate, the rifle on the workshop bench, and the shotgun on the millkeeper's desk. Guns and their ammunition are only awarded once per journey when picked up; a new journey removes ownership and restores the world pickups. The alien pulse, glowing landing pad, rescue beam, and return-to-clearing ending have been removed.
 
 ## Abandoned town
-Six furnished buildings can be entered: ranger cabin, clinic, general store, mill workshop, millkeeper's house, and a locked radio station. Doors swing open and closed with E; a building door stays open whenever the player is inside that building or standing in its entrance. Step outside to close it. Twelve searchable drawers and cabinets contain the quest items, three first-aid kits, and six flashlight batteries; a couple of containers are empty. Five readable notes are retained in the journal; the second journal page is the town map.
+
+Version 0.2.0 rebuilds Blackwood around a Weston, Missouri-inspired Main Street, with close brick storefronts, a taller hotel, upper windows, awnings, sidewalks, angled parking, boarded shops, and abandoned cars. The downloaded low-poly road kit supplies asphalt geometry and lane markings on the approach and Main Street. See [MAIN_STREET.md](MAIN_STREET.md) for the reference and implementation details.
+
+Six furnished buildings can be entered: ranger office, clinic, general store, mill workshop, millkeeper's house, and a locked radio station. Doors swing open and closed with E; a building door stays open whenever the player is inside that building or standing in its entrance. Step outside to close it. Twelve searchable drawers and cabinets contain the quest items, three first-aid kits, and six flashlight batteries; a couple of containers are empty. Five readable notes are retained in the journal; the second journal page is the town map.
 
 Quest progression:
 1. Search the ranger's desk drawer for the radio-station key.
@@ -51,7 +54,7 @@ Quest progression:
 6. Stay near the repaired receiver and hold E to call emergency services.
 
 ## Townspeople
-Three friendly NPCs use the newly downloaded Base Humanoid Mesh: Elias the ranger outside his cabin, Mara the nurse in the clinic, and Owen the mechanic in the workshop. They have muted clothing variants, skinned patrol animations, collision, and turn toward nearby players. E opens a conversation with useful, quest-aware hints. Conversations pause gameplay and ambience; E / Enter / Escape / Tab closes them.
+Three friendly NPCs use the newly downloaded Base Humanoid Mesh: Elias the ranger outside his office, Mara the nurse in the clinic, and Owen the mechanic in the workshop. They have muted clothing variants, skinned patrol animations, collision, and turn toward nearby players. E opens a conversation with useful, quest-aware hints. Conversations pause gameplay and ambience; E / Enter / Escape / Tab closes them.
 
 The source humanoid has 402 triangles. Each variant keeps that count and a 256-pixel version of its supplied UV atlas. Exact source paths are stored in assets/npcs/manifest.json.
 
@@ -102,11 +105,16 @@ The world contains 180 varied pine trees, 210 shrubs, and 85 rocks. Pine trunks 
 The PS2-inspired treatment uses 256 x 256 diffuse textures, cutout foliage, simple vertex lighting, shared materials and foliage meshes, and distance culling at 64 meters. The existing 640 x 400 display and blue-green fog remain.
 
 ## Sound
+
+The downloaded Horror SFX Free pack adds quiet atmospheric sound, contextual building creaks and distant calls, an arrival bell, frogs, and localized radio static. The static recedes after radio repair, and wind quiets indoors. Distinct recorded on/off clicks, door squeaks, and drawer/cabinet opening and closing sounds replace the earlier interaction cues. Accents have long cooldowns and stop outside gameplay; all new audio follows the existing mute control.
+
 The flashlight uses a local switch-click recording. Five leaf-crunch footstep variations follow distance travelled, with louder, quicker steps during sprinting. Wind and rustling leaves loop softly; owl, night-bird, and insect calls play from random nearby locations every 10–24 seconds. Escape pauses the soundscape; M mutes all sound, including effects.
 Town doors use a local creak recording positioned at the doorway. Pickups, restored power, and radio calibration have short synthesized cues.
 Drawers and cabinets use a short positional slide-and-clunk cue, also controlled by M and pause.
 
 ## Local assets
+- assets/audio/horror/*.wav: selected recordings from the user-provided Downloads/Horror SFX Free pack, converted to mono 22050 Hz with controlled peaks and edge fades/crossfades. Original filenames and hashes are retained in assets/audio/horror/sources.json. No author or license document was included in the downloaded archive.
+- assets/roads/road_straight.glb and associated textures: user-provided Downloads/4pc_lowpoly_roads_glb. Original asphalt geometry and UVs are retained with matte PS2-style materials. Raised concrete and generated collision are omitted. See assets/roads/sources.json. No author or license document was included in the downloaded archive.
 - assets/forest.jpg: copied from Downloads/forrest_ground_01_2k.blend/textures/forrest_ground_01_diff_2k.jpg. No license accompanied the source folder; verify it before distributing.
 - assets/font.ttf: Text Me One from Downloads/text_me_one, SIL Open Font License (assets/OFL.txt).
 - assets/audio/flashlight.wav: local recording `830459__shaunhillyard__flashlight-click-on.wav` from Downloads; credited to shaunhillyard by the source filename. No license accompanied the local file.
@@ -134,7 +142,7 @@ New checks: presentation auto-advance/skip, no obsolete collection objective, th
 
 Camera regression: `smoke_test_camera.gd` walks into all 12 containers, opens and closes storage at close range, and checks stationary view stability and eye height while movement is blocked. It also checks that drone entities and drone audio are absent.
 
-Recent town additions: the weathered two-post "Blackwood / Population 3" sign sits fully beside the approach road, with a vegetation clearance around it. Elias patrols outside the ranger cabin; Mara walks the clinic aisle; Owen walks the workshop floor. The 402-triangle humanoids have skinned walk cycles. NPCs stop within conversation range, collide with solid scenery, and pause in menus and dialogue.
+Recent town additions: the weathered two-post "Blackwood / Population 3" sign sits fully beside the approach road, with a vegetation clearance around it. Elias patrols outside the ranger office; Mara walks the clinic aisle; Owen walks the workshop floor. The 402-triangle humanoids have skinned walk cycles. NPCs stop within conversation range, collide with solid scenery, and pause in menus and dialogue.
 
 Weapons use the locally downloaded Polyy Guns Pack 2 (CC0; license included in assets/weapons), reduced to 2,200 triangles each with textures capped at 256 pixels. Firing uses collision rays, ammunition, reloads, muzzle flashes and bounded impact marks; the workshop yard has four metal targets. Shooting an NPC triggers a skinned collapse and death animation; dead NPCs stop moving and talking until a new journey. Gun recoil moves only the weapon model; the camera remains steady. The flashlight hand is hidden with an equipped weapon.
 

@@ -1,27 +1,39 @@
-# Far From Home v0.1.0 — Blackwood Preview
+# Far From Home v0.2.0 — Blackwood Main Street
 
-First playable Windows release of the Blackwood survival-horror prototype.
+A new playable Windows preview with a rebuilt town, downloaded road models, and
+more atmospheric horror audio.
 
 ## Play
 
-Download **FarFromHome-v0.1.0-Windows-x64.zip**, extract the entire folder,
+Download **FarFromHome-v0.2.0-Windows-x64.zip**, extract the entire folder,
 and launch **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
-The ZIP includes controls, credits, and build information. SHA256SUMS.txt verifies the download.
+The ZIP includes controls, credits, and build information. SHA256SUMS.txt verifies
+the download.
 
-## Included
+## New in this release
 
-- A car-crash opening on Old Mill Road using the downloaded hatchback. Start with a flashlight and no weapons, then follow the road into Blackwood.
-- Six explorable, furnished buildings with searchable drawers and cabinets, supplies, notes, and a journal/map.
-- Discoverable pistol, rifle, and shotgun, with aiming, ammunition, reloading, gunshots, and target impacts.
-- Three townspeople with patrol routes, conversations, and collapse/death animations when shot.
-- A complete radio-repair and rescue quest.
-- A refreshed title screen with soft lightning, distant thunder, and the Blackwood Population 3 sign.
-- PS2-style visuals, forest ambience, and a stable first-person camera.
+- A Weston, Missouri-inspired Main Street: close brick storefronts, upper windows,
+  cornices, a taller hotel, torn awnings, boarded shops, sidewalks, angled parking,
+  abandoned cars, weeds, and dim historic-style lamps.
+- Downloaded low-poly road geometry and asphalt, with yellow center markings and
+  white edge markings along the crash approach and Main Street.
+- Quiet horror ambience, positional building creaks and distant calls, an arrival
+  bell, frogs, and localized radio static that recedes after repair.
+- Recorded flashlight clicks, squeaky doors, and distinct drawer/cabinet opening
+  and closing sounds. Indoor wind is quieter. M mutes all game sound.
+- Updated NPC patrol positions, journal map, and ranger-office directions for the
+  new street layout.
+
+The six furnished, explorable interiors, twelve searchable containers, three
+townspeople, discoverable weapons, unarmed car-crash opening, and complete
+radio-repair/rescue quest remain playable. The PS2-style presentation is retained.
 
 ## Preview scope
 
-Windows 10/11 x64. This is an early playable preview; progress resets for each new journey.
-Drones are disabled. The build uses ANGLE/Direct3D11 and a 60 FPS cap.
+Windows 10/11 x64. Progress resets for each new journey. Drones are disabled.
+The build uses ANGLE/Direct3D11 and a 60 FPS cap.
 
-The standalone export was checked from a separate folder for the unarmed crash start,
-walk into town, weapon discovery, rendered gameplay, radio rescue, and restart.
+Validation covers the crash-to-town walk, all six entrances, road/sidewalk
+clearance, weapon discovery, storage, audio pause/mute/reset, the rescue quest,
+and real-renderer gameplay. The packaged standalone build is also tested before
+publication.

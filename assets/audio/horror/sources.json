@@ -1,0 +1,111 @@
+{
+  "pack": "Horror SFX Free",
+  "source": "User-provided local download; no author/license document included in archive",
+  "files": [
+    {
+      "asset": "eerie_bed.wav",
+      "source": "Ambient/Creepy_ambience_5.wav",
+      "source_sha256": "99c5dd8ff925c7473ab0368c27818be245c52f107644a313e449b7434d08d205",
+      "seconds": 11.692,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "house_creak.wav",
+      "source": "Ambient/Old House_creeky metal and wood_ambiance_7.wav",
+      "source_sha256": "45c91c0e079a8939b398ca67c9a7108ca0168483b2137f0daf92821ea0ae70da",
+      "seconds": 7.555,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "distant_call.wav",
+      "source": "Ambient/Distant Yell_Echo and Reverb_2.wav",
+      "source_sha256": "8f00793e41930178b9a525f155b7dcd7fa8413bc217f81fdbe706a92625f23c0",
+      "seconds": 9.557,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "metal_moan.wav",
+      "source": "Ambient/Mechanical Moan and Creaking.wav",
+      "source_sha256": "9d89385386ff1c22b35b1fbc09ad03901cb12458f37d607d5503f5635161a16e",
+      "seconds": 7.972,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "bell.wav",
+      "source": "Ambient/Bell_low.wav",
+      "source_sha256": "4d483f63783945ebea07e52a3789831257bdd26f1ec1bef0226a56a0160b43f4",
+      "seconds": 11.222,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "radio_static.wav",
+      "source": "Ambient/Radio_static.wav",
+      "source_sha256": "5579d403f6be2429d5edccc5f0cf10b37e63e3db7dd5b1a40ed275808d0a850a",
+      "seconds": 23.903,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "frogs.wav",
+      "source": "Ambient/Frogs.wav",
+      "source_sha256": "5dad06ccbb7f51870bfa8efb8a0b2b62a647a7783cd91567a2184f9cff2e6243",
+      "seconds": 17.248,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "glass_tap.wav",
+      "source": "Ambient/Glass_random tapping.wav",
+      "source_sha256": "46ebe75bb16dc4fd3b618898bd2576c75ba3afb5a741124da99b2af2a85c396f",
+      "seconds": 22.681,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "door_creak.wav",
+      "source": "House & Office/Door_squeeky_2.wav",
+      "source_sha256": "3591c4614347e5b8922de749f364eb4361c2c2d1c487219c4fb016c69a24efb8",
+      "seconds": 1.379,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "drawer_open.wav",
+      "source": "House & Office/Drawer_open.wav",
+      "source_sha256": "cd4d6830eca5458674871dbc29e6c80ecc2054a0d67fb5dc8625cf65924994ba",
+      "seconds": 1.044,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "drawer_close.wav",
+      "source": "House & Office/Drawer_close_2.wav",
+      "source_sha256": "f786d0d838b4009f6d78dfeb141c80d162646944f784e5b793e748f5bb8e935b",
+      "seconds": 1.244,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "cabinet_open.wav",
+      "source": "House & Office/Drawer_squeeky_open_2.wav",
+      "source_sha256": "f2af8a4ac775fd4dcfb449609b826019f65059e32b6c4c6316755db1bc03fa7b",
+      "seconds": 1.523,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "cabinet_close.wav",
+      "source": "House & Office/Cabinet_shut.wav",
+      "source_sha256": "0feab4de17fe3278e38e527a54d58582c49311335c792a9cdbd440fe7dfbc45f",
+      "seconds": 1.613,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "flashlight_on.wav",
+      "source": "Character/Flashlight on.wav",
+      "source_sha256": "8ddeade339f3b6cbc1fea8194cdffa0b6f6631bd9b0b4070d9d37d8bed50b086",
+      "seconds": 0.413,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    },
+    {
+      "asset": "flashlight_off.wav",
+      "source": "Character/Flashlight off.wav",
+      "source_sha256": "3e9778ce76a8ee8d0734f2ab8355c3b4a4ca89c79c862eb31c5e72f0ea373116",
+      "seconds": 0.347,
+      "conversion": "mono PCM16, 22050 Hz; peak capped at -2.5 dB; short edge fades or loop crossfade"
+    }
+  ]
+}

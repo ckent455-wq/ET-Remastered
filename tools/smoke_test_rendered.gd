@@ -40,7 +40,7 @@ func run():
 	await observe("forest physics and audio",4)
 	look_from(Vector3(0,0.1,-55),Vector3(7,2,-69))
 	await observe("town physics",4)
-	look_from(Vector3(31.5,0.001,-40),Vector3(31.5,1.3,-44))
+	look_from(Vector3(0,0.001,-44),Vector3(8.5,3,-46))
 	for id in ["weapon_pistol","weapon_rifle","weapon_shotgun"]:
 		game.town.perform(id)
 	for index in range(3):
@@ -53,11 +53,11 @@ func run():
 		await observe("weapon reload %d" % index,0.5)
 	game.weapons.equip(-1)
 	assert(game.arm_visual.visible,"Arm restored when holstered")
-	look_from(Vector3(-26,0.1,-58.5),Vector3(-26,1.35,-61))
+	look_from(Vector3(-5.9,0.001,-42),Vector3(-5.9,1.35,-45))
 	game.town.perform("npc_ranger")
 	await observe("NPC conversation",2)
 	game.state = "play"
-	look_from(Vector3(-23,0.1,-66),Vector3(-26,0.9,-69))
+	look_from(game.town.buildings.ranger.to_global(Vector3(1.5,0.001,1)),game.town.buildings.ranger.to_global(Vector3(-2,1,-2)))
 	game.town.perform("ranger_drawer")
 	game.town.perform("ranger_cabinet")
 	await observe("interior furniture and storage",3)
@@ -72,7 +72,7 @@ func run():
 	game.town.perform("store_drawer")
 	game.town.perform("fuse_panel")
 	game.town.perform("workshop_cabinet")
-	look_from(Vector3(21,0.1,-49),Vector3(25,1.1,-46.6))
+	look_from(game.town.buildings.workshop.to_global(Vector3(1,0.001,1)),game.town.buildings.workshop.to_global(Vector3(-2,1,-2)))
 	await observe("powered workshop and cabinets",3)
 	game.town.perform("receiver")
 	look_from(game.town.buildings.radio.to_global(Vector3(-2.7,0.001,-2.0)),game.town.actions.receiver.area.global_position)

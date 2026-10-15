@@ -25,6 +25,9 @@ var weapon_streams = {}
 var reload_voice: AudioStreamPlayer
 var next_shot = 0
 var storage_voice: AudioStreamPlayer3D
+var atmosphere: Node
+var storage_streams = {}
+var flashlight_streams = {}
 const BUS = "ForestAudio"
 
 func stream(name: String, looped = false) -> AudioStream:
@@ -64,12 +67,15 @@ func _ready():
 		owns_bus = true
 	wind = voice(stream("wind",true),-8)
 	leaves = voice(stream("leaves",true),-17)
-	click = voice(stream("flashlight"),-10)
+	flashlight_streams = {true:stream("horror/flashlight_on"),false:stream("horror/flashlight_off")}
+	click = voice(flashlight_streams[true],-12)
 	thunder = voice(stream("thunder"),-23)
 	for cue in ["pickup","power","radio"]:
 		interaction_voices[cue] = voice(stream(cue),-12)
-	door_voice = spatial_voice(game,stream("door"),-16,20)
-	storage_voice = spatial_voice(game,stream("drawer"),-9,10)
+	door_voice = spatial_voice(game,stream("horror/door_creak"),-20,20)
+	storage_voice = spatial_voice(game,stream("horror/drawer_open"),-17,10)
+	for cue in ["drawer_open","drawer_close","cabinet_open","cabinet_close"]:
+		storage_streams[cue] = stream("horror/"+cue)
 	for weapon in ["pistol","rifle","shotgun","empty"]:
 		weapon_streams[weapon] = stream("gun_"+weapon)
 	for i in range(3):
@@ -83,11 +89,19 @@ func _ready():
 		steps.append(voice(step_streams[0],-8))
 	for name in ["owl","night_bird","insects"]:
 		animal_streams.append(stream(name))
+	animal_streams.append(stream("horror/frogs"))
 	for i in range(2):
 		animals.append(spatial_voice(game,animal_streams[0],-12,45))
+	atmosphere = Node.new()
+	atmosphere.set_script(preload("res://horror_atmosphere.gd"))
+	atmosphere.game = game
+	atmosphere.soundscape = self
+	add_child(atmosphere)
 	reset()
 
 func reset():
+	if atmosphere:
+		atmosphere.reset()
 	thunder.stop()
 	step_distance = 0
 	animal_timer = rng.randf_range(7,13)
@@ -117,9 +131,10 @@ func weapon_sound(cue: String):
 	node.pitch_scale = rng.randf_range(0.96,1.04)
 	node.play()
 
-func storage_move(p: Vector3, sliding: bool):
+func storage_move(p: Vector3, sliding: bool, opening = true):
 	storage_voice.global_position = p+Vector3(0,0.8,0)
-	storage_voice.pitch_scale = 1.0 if sliding else 0.76
+	storage_voice.stream = storage_streams[("drawer" if sliding else "cabinet")+("_open" if opening else "_close")]
+	storage_voice.pitch_scale = rng.randf_range(0.94,1.03)
 	storage_voice.play()
 
 func feedback(cue: String):
@@ -135,7 +150,8 @@ func toggle_mute():
 	AudioServer.set_bus_mute(bus_index,muted)
 
 func flashlight_click(enabled: bool):
-	click.pitch_scale = 1.04 if enabled else 0.92
+	click.stream = flashlight_streams[enabled]
+	click.pitch_scale = rng.randf_range(0.98,1.02)
 	click.play()
 
 func moved(distance: float, sprinting: bool, grounded: bool):
@@ -175,12 +191,14 @@ func _process(delta):
 	update_sound(delta)
 
 func update_sound(delta: float):
+	atmosphere.update_sound(delta)
 	var active = game.state=="play"
 	var paused = game.state in ["paused","journal","dialogue","intro"]
 	wind.stream_paused = paused
 	leaves.stream_paused = paused
-	wind.volume_db = -8 if active else -15
-	leaves.volume_db = -17 if active else -24
+	var indoors = active and not atmosphere.current_interior.is_empty()
+	wind.volume_db = -20 if indoors else (-8 if active else -15)
+	leaves.volume_db = -29 if indoors else (-17 if active else -24)
 	if previous_state!=game.state:
 		step_distance = 0
 		if not active:
@@ -201,7 +219,8 @@ func update_sound(delta: float):
 		return
 	animal_timer -= delta
 	if animal_timer<=0:
-		play_animal()
+		if not indoors:
+			play_animal()
 		animal_timer = rng.randf_range(10,24)
 
 func _exit_tree():

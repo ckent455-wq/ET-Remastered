@@ -1,12 +1,12 @@
 extends Node3D
 ## Abandoned Blackwood: furnished, enterable buildings and a resettable item quest.
 const BUILDINGS = [
-	{"id":"ranger","label":"RANGER CABIN","p":Vector3(-23,0,-69),"w":11.0,"d":10.0,"r":0.0,"wall":"wood"},
-	{"id":"clinic","label":"BLACKWOOD CLINIC","p":Vector3(-8,0,-69),"w":11.0,"d":10.0,"r":0.0,"wall":"plaster"},
-	{"id":"store","label":"GENERAL STORE","p":Vector3(8,0,-69),"w":12.0,"d":10.0,"r":0.0,"wall":"wood"},
-	{"id":"radio","label":"RADIO STATION","p":Vector3(25,0,-69),"w":11.0,"d":10.0,"r":0.0,"wall":"brick"},
-	{"id":"workshop","label":"MILL WORKSHOP","p":Vector3(21,0,-46),"w":12.0,"d":10.0,"r":PI,"wall":"metal"},
-	{"id":"house","label":"MILLKEEPER'S HOUSE","p":Vector3(-21,0,-46),"w":12.0,"d":10.0,"r":PI,"wall":"wood"}]
+	{"id":"ranger","label":"RANGER OFFICE","p":Vector3(-13.5,0,-46),"w":11.0,"d":10.0,"r":PI/2,"wall":"brick"},
+	{"id":"clinic","label":"BLACKWOOD PHARMACY","p":Vector3(-13.5,0,-59),"w":11.0,"d":10.0,"r":PI/2,"wall":"brick"},
+	{"id":"store","label":"GENERAL STORE","p":Vector3(-13.5,0,-72),"w":12.0,"d":10.0,"r":PI/2,"wall":"brick"},
+	{"id":"radio","label":"RADIO STATION","p":Vector3(13.5,0,-72),"w":11.0,"d":10.0,"r":-PI/2,"wall":"brick"},
+	{"id":"workshop","label":"MILL REPAIR SHOP","p":Vector3(13.5,0,-59),"w":12.0,"d":10.0,"r":-PI/2,"wall":"brick"},
+	{"id":"house","label":"MILLKEEPER'S ROOMS","p":Vector3(13.5,0,-46),"w":12.0,"d":10.0,"r":-PI/2,"wall":"plaster"}]
 var game
 var buildings = {}
 var doors = {}
@@ -24,6 +24,7 @@ var receiver_light: OmniLight3D
 var discovered = {}
 var interiors: Node3D
 var townspeople: Node3D
+var streetscape: Node3D
 
 func _ready():
 	name = "AbandonedTown"
@@ -47,6 +48,10 @@ func _ready():
 	mats.fabric.albedo_texture = load("res://assets/interiors/curtain_diffuse.png")
 	mats.fabric.albedo_color = Color("89998d")
 	mats["paper"] = color_material(Color("b8b098"))
+	streetscape = Node3D.new()
+	streetscape.set_script(preload("res://town_streetscape.gd"))
+	streetscape.town = self
+	add_child(streetscape)
 	build_street()
 	for data in BUILDINGS:
 		build_house(data)
@@ -112,14 +117,7 @@ func lamp(parent: Node3D, p: Vector3, color: Color, energy: float, distance: flo
 	return light
 
 func build_street():
-	box(self,Vector3(0,0.008,-56),Vector3(78,0.012,7),mats["dark"],false)
-	box(self,Vector3(0,0.012,-18),Vector3(3.2,0.014,76),mats["dark"],false)
-	for x in range(-34,36,8):
-		box(self,Vector3(x,0.024,-56),Vector3(2.6,0.01,0.13),mats["amber"],false)
-	for x in [-34,0,35]:
-		box(self,Vector3(x,2.2,-60),Vector3(0.13,4.4,0.13),mats["metal"])
-		box(self,Vector3(x,4.3,-59.6),Vector3(0.75,0.1,0.7),mats["dark"],false)
-		lamp(self,Vector3(x,4,-59.6),Color("bda079"),0.55,10)
+	streetscape.build_street()
 	# Small, fixed wooden roadside sign: fully off the lane, with grounded posts.
 	var town_sign = Node3D.new()
 	town_sign.name = "BlackwoodRoadSign"
@@ -164,7 +162,7 @@ func build_house(data: Dictionary):
 	root.set_meta("building_id",data.id)
 	var w: float = data.w
 	var d: float = data.d
-	var wall: Material = mats[data.wall]
+	var wall: Material = streetscape.brick(data.id)
 	# Floors meet the outside ground; no invisible step at the entrance.
 	# Visual flooring sits above the shared ground to avoid z-fighting.
 	box(root,Vector3(0,-0.05,0),Vector3(w,0.13,d),mats["floor"],false)
@@ -174,35 +172,15 @@ func build_house(data: Dictionary):
 		var low = -w/2 if side<0 else 0.95
 		var high = -0.95 if side<0 else w/2
 		var window = side*w*0.31
-		box(root,Vector3((low+window-0.85)/2,1.8,d/2),Vector3(window-0.85-low,3.6,0.22),wall)
-		box(root,Vector3((window+0.85+high)/2,1.8,d/2),Vector3(high-window-0.85,3.6,0.22),wall)
-		box(root,Vector3(window,0.5,d/2),Vector3(1.7,1,0.22),wall)
-		box(root,Vector3(window,3.0,d/2),Vector3(1.7,1.2,0.22),wall)
+		box(root,Vector3((low+window-1.25)/2,1.8,d/2),Vector3(window-1.25-low,3.6,0.22),wall)
+		box(root,Vector3((window+1.25+high)/2,1.8,d/2),Vector3(high-window-1.25,3.6,0.22),wall)
+		box(root,Vector3(window,0.3,d/2),Vector3(2.5,0.6,0.22),wall)
+		box(root,Vector3(window,3.2,d/2),Vector3(2.5,0.8,0.22),wall)
 		# Broken window boards leave gaps to see through.
 		var board = box(root,Vector3(window,1.6,d/2+0.13),Vector3(1.9,0.16,0.07),mats["wood"],false)
 		board.rotation.z = side*0.16
 	box(root,Vector3(0,3.15,d/2),Vector3(1.9,0.9,0.22),wall)
-	box(root,Vector3(0,3.50,d/2+0.16),Vector3(w*0.86,0.55,0.12),mats["dark"],false)
-	var title = sign_text(root,data.label,Vector3(0,3.49,d/2+0.24),38)
-	title.pixel_size = 0.012
-	# Two sloping roof panels and triangular gable ends.
-	var angle = atan2(1.35,w/2+0.4)
-	for side in [-1,1]:
-		var roof = box(root,Vector3(side*(w/4+0.2),4.24,0),Vector3(sqrt(pow(w/2+0.4,2)+1.35*1.35),0.15,d+1),mats["roof"])
-		roof.rotation.z = -side*angle
-	var gable = SurfaceTool.new()
-	gable.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for z in [-d/2,d/2]:
-		for v in [Vector3(-w/2,3.6,z),Vector3(w/2,3.6,z),Vector3(0,4.95,z)]:
-			gable.set_uv(Vector2(v.x,v.y)*0.3)
-			gable.add_vertex(v)
-	gable.generate_normals()
-	var triangle = MeshInstance3D.new()
-	triangle.mesh = gable.commit()
-	var gable_mat = wall.duplicate()
-	gable_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
-	triangle.material_override = gable_mat
-	root.add_child(triangle)
+	streetscape.decorate_building(root,data)
 	make_door(root,data.id,d/2)
 	lamp(root,Vector3(0,2.8,1),Color("b2b29c"),0.45,7)
 	# Interior partition with a generous side passage to a rear storage nook.
@@ -409,7 +387,7 @@ func perform(id: String):
 		"door":
 			var door = doors[data.building]
 			if data.building=="radio" and inventory.station_key==0:
-				game.message = "Locked. Search the ranger cabin for the station key."
+				game.message = "Locked. Search the ranger office for the station key."
 				return
 			var doorway = buildings[data.building].to_global(Vector3(0,0,5))
 			if door.open and (player_inside_building(data.building) or game.player.global_position.distance_to(doorway)<1.4):
@@ -495,7 +473,7 @@ func objective() -> String:
 	if not reached_town:
 		return "Reach Blackwood. Find a way to call for help."
 	if inventory.station_key==0:
-		return "Search the ranger cabin for the radio-station key."
+		return "Search the ranger office for the radio-station key."
 	if not powered:
 		return "Install the fuse at the workshop panel." if inventory.fuse>0 else "Search the general store for a workshop fuse."
 	if inventory.coil==0:
@@ -523,7 +501,7 @@ func location_name() -> String:
 		var p = buildings[data.id].to_local(game.player.global_position)
 		if absf(p.x)<data.w/2 and absf(p.z)<data.d/2:
 			return data.label
-	return "OLD MILL ROAD" if game.player.position.z< -37 else "BLACKWOOD FOREST"
+	return "BLACKWOOD / MAIN STREET" if game.player.position.z< -37 else "BLACKWOOD FOREST"
 
 func update_arrival():
 	if not reached_town and game.player.position.z< -37 and absf(game.player.position.x)<40:

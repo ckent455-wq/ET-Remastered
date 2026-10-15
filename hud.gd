@@ -225,7 +225,7 @@ func draw_journal():
 		var tasks = [
 			[game.town.reached_town,"Follow Old Mill Road into Blackwood"],
 			[game.weapons.owned.has(true),"Find a weapon in town"],
-			[game.town.inventory.station_key>0,"Find the ranger's radio-station key"],
+			[game.town.inventory.station_key>0,"Find the ranger office's radio-station key"],
 			[game.town.powered,"Find store fuse; restore workshop power"],
 			[game.town.inventory.coil>0 or game.town.radio_ready,"Recover workshop signal coil"],
 			[game.town.radio_ready,"Calibrate the radio-station receiver"],
@@ -234,11 +234,11 @@ func draw_journal():
 			text(("[+] " if tasks[i][0] else "[ ] ")+tasks[i][1],Vector2(78,205+i*21),13,DIM if tasks[i][0] else INK)
 	elif game.journal_page==1:
 		text("OLD MILL ROAD / TOWN MAP",Vector2(78,105),14,AMBER)
-		draw_line(Vector2(105,221),Vector2(535,221),Color("667a76"),10)
-		draw_line(Vector2(320,221),Vector2(320,325),Color("667a76"),5)
+		draw_line(Vector2(320,132),Vector2(320,325),Color("667a76"),10)
+		draw_line(Vector2(320,325),Vector2(320,339),Color("667a76"),5)
 		for data in game.town.BUILDINGS:
 			var p = Vector2(320+data.p.x*5,125+(data.p.z+80)*4)
-			draw_rect(Rect2(p-Vector2(data.w*2.5,20),Vector2(data.w*5,40)),Color("385156"))
+			draw_rect(Rect2(p-Vector2(data.d*2.5,data.w*2),Vector2(data.d*5,data.w*4)),Color("385156"))
 			text(data.id.to_upper(),p+Vector2(-22,4),10,INK)
 		var player = game.player.position
 		if player.z< -35 and player.z> -82:

@@ -1,4 +1,4 @@
-# Far From Home — Blackwood Preview v0.1.0
+# Far From Home — Blackwood Main Street Preview v0.2.0
 
 Windows 10/11, 64-bit. Godot is not required to play.
 
@@ -20,8 +20,8 @@ You begin with a flashlight and no gun.
 - H: first-aid kit; Q: flashlight battery; M: mute / unmute.
 - After repairing the receiver, hold E near it inside the radio station to call for help.
 
-The pistol is in the ranger cabin, the rifle in the workshop, and the shotgun in
-the millkeeper's house. Read the journal and speak to the townspeople for radio-repair clues.
+The pistol is in the ranger office, the rifle in the workshop, and the shotgun in
+the millkeeper's rooms in the old hotel. Read the journal and speak to the townspeople for radio-repair clues.
 
 This is an early playable preview. It includes the crash opening, town exploration,
 searchable interiors, weapon pickups, NPC patrols and death animations, and the

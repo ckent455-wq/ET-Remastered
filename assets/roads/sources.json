@@ -1,0 +1,9 @@
+{
+  "pack": "4pc_lowpoly_roads_glb",
+  "source": "User-provided local download; no author/license document included in archive",
+  "files": [
+    "road_straight.glb",
+    "asphalt.png"
+  ],
+  "adaptation": "Original mesh/UVs retained; omit raised concrete and generated collision, scale to street widths, matte vertex-shaded materials."
+}

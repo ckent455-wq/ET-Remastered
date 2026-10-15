@@ -233,7 +233,7 @@ func toggle(id: String):
 			tween.tween_property(part,"rotation:y",float(part.get_meta("side"))*1.65 if data.open else 0.0,0.4)
 		data.tweens.append(tween)
 		tween.finished.connect(_animation_finished.bind(id,tween.get_instance_id()),CONNECT_ONE_SHOT)
-	town.game.soundscape.storage_move(data.root.global_position,data.mode=="drawer")
+	town.game.soundscape.storage_move(data.root.global_position,data.mode=="drawer",data.open)
 	if not data.open:
 		return
 	if data.searched:
