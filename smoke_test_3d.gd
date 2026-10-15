@@ -8,16 +8,15 @@ func check():
 	game.set_physics_process(false)
 	game.state = "play"
 	assert(not "parts" in game and not "found" in game,"Ship-part collection removed")
-	assert(not game.beam.visible,"Rescue beacon waits for town radio calibration")
+	assert(not "beam" in game and not "pulse" in game,"Alien beacon and pulse removed")
 	assert(not "drones" in game,"Drones removed")
-	game.activate_pulse()
-	assert(game.pulse==1 and game.cooldown==6,"Cosmetic alien pulse")
-	game.player.position = Vector3.ZERO
+	assert(game.player.position==game.START_POSITION and game.weapons.selected== -1,"Unarmed crash-site start")
 	game.town.perform("ranger_drawer")
 	game.town.perform("store_drawer")
 	game.town.perform("fuse_panel")
 	game.town.perform("workshop_cabinet")
 	game.town.perform("receiver")
+	game.player.position = game.town.buildings.radio.to_global(Vector3(-2.7,0.001,-2.0))
 	game.update_contact(4.1,true)
 	assert(game.state=="won","Rescue ending")
 	game.reset_game()
@@ -35,7 +34,7 @@ func check():
 	if DisplayServer.get_name()!="headless":
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://preview-first-person.png")
-	print("PASS: 3D scene, no ship parts, pulse, beacon, town-only rescue, defeat, restart")
+	print("PASS: 3D scene, human crash-site start, no alien mechanics, radio rescue, defeat, restart")
 	game.queue_free()
 	await process_frame
 	quit()

@@ -62,8 +62,8 @@ func check():
 	town.perform("fuse_panel")
 	town.perform("workshop_cabinet")
 	town.perform("receiver")
-	assert(town.radio_ready and game.beam.visible,"Town quest works without ship parts")
-	game.player.position = Vector3.ZERO
+	assert(town.radio_ready,"Town quest works without ship parts")
+	game.player.position = town.buildings.radio.to_global(Vector3(-2.7,0.001,-2.0))
 	game.update_contact(4.1,true)
 	assert(game.state=="won","Rescue without forest collection")
 	for data in town.actions.values():

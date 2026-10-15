@@ -15,6 +15,7 @@ var inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
+var reached_town = false
 var focus_action = ""
 var mats = {}
 var powered_lights: Array[OmniLight3D] = []
@@ -112,17 +113,39 @@ func lamp(parent: Node3D, p: Vector3, color: Color, energy: float, distance: flo
 
 func build_street():
 	box(self,Vector3(0,0.008,-56),Vector3(78,0.012,7),mats["dark"],false)
-	box(self,Vector3(0,0.012,-28),Vector3(3.2,0.014,56),mats["floor"],false)
+	box(self,Vector3(0,0.012,-18),Vector3(3.2,0.014,76),mats["dark"],false)
 	for x in range(-34,36,8):
 		box(self,Vector3(x,0.024,-56),Vector3(2.6,0.01,0.13),mats["amber"],false)
 	for x in [-34,0,35]:
 		box(self,Vector3(x,2.2,-60),Vector3(0.13,4.4,0.13),mats["metal"])
 		box(self,Vector3(x,4.3,-59.6),Vector3(0.75,0.1,0.7),mats["dark"],false)
 		lamp(self,Vector3(x,4,-59.6),Color("bda079"),0.55,10)
-	# A roadside landmark makes the town discoverable from the forest.
-	box(self,Vector3(2.3,1.1,-35),Vector3(0.15,2.2,0.15),mats["wood"])
-	box(self,Vector3(2.3,1.9,-35),Vector3(4.8,0.85,0.16),mats["wood"],false)
-	sign_text(self,"BLACKWOOD  /  OLD MILL ROAD",Vector3(2.3,1.93,-34.9),24)
+	# Small, fixed wooden roadside sign: fully off the lane, with grounded posts.
+	var town_sign = Node3D.new()
+	town_sign.name = "BlackwoodRoadSign"
+	town_sign.position = Vector3(4.4,0,-35)
+	town_sign.rotation_degrees = Vector3(0,-12,-2)
+	add_child(town_sign)
+	for x in [-1.08,1.08]:
+		box(town_sign,Vector3(x,0.92,0),Vector3(0.14,1.84,0.16),mats.wood)
+	var weathered = mats.wood.duplicate()
+	weathered.albedo_color = Color("736a4d")
+	box(town_sign,Vector3(0,1.51,0.02),Vector3(2.65,0.88,0.12),weathered,false)
+	for y in [1.12,1.89]:
+		box(town_sign,Vector3(0,y,0.095),Vector3(2.7,0.055,0.055),mats.dark,false)
+	for x in [-1.08,1.08]:
+		for y in [1.20,1.82]:
+			box(town_sign,Vector3(x,y,0.09),Vector3(0.045,0.045,0.025),mats.metal,false)
+	var title = sign_text(town_sign,"Blackwood",Vector3(0,1.64,0.09),48,Color("bdb58f"))
+	title.font = ThemeDB.fallback_font
+	title.pixel_size = 0.006
+	title.shaded = true
+	title.outline_size = 0
+	var road = sign_text(town_sign,"Population 3",Vector3(0,1.32,0.09),26,Color("a69f7d"))
+	road.font = ThemeDB.fallback_font
+	road.pixel_size = 0.005
+	road.shaded = true
+	road.outline_size = 0
 	# Collapsed fence sections and crates give the street an abandoned silhouette.
 	for x in [-34,-30,31,35]:
 		for z in [-42,-78]:
@@ -258,14 +281,14 @@ func furnish():
 	desk(buildings.ranger,Vector3(-2.6,0,0))
 	shelf(buildings.ranger,Vector3(2.5,0,-3.9))
 	item("ranger",Vector3(-2.7,1.04,0),"station_key","station_key","Take radio-station key",Color("e4c479"))
-	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nfuse. Fit it at the workshop's outside panel, then search\nthe powered cabinet for a signal coil. Bring the coil to\nthe station receiver and calibrate it. Signal from the\nclearing once the uplink is ready. E searches storage.")
+	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nfuse. Fit it at the workshop's outside panel, then search\nthe powered cabinet for a signal coil. Bring the coil to\nthe station receiver and repair it. Stay near the radio\nand hold E to call emergency services. E searches storage.")
 	for x in [-3.3,3.3]:
 		box(buildings.clinic,Vector3(x,0.6,0),Vector3(1.3,0.4,2.5),mats["plaster"])
 		box(buildings.clinic,Vector3(x,0.9,-0.8),Vector3(1.1,0.2,0.5),mats["wood"],false)
 	shelf(buildings.clinic,Vector3(-2.7,0,-4))
 	item("clinic",Vector3(-3.3,0.95,0),"medkit_a","medkit","Take first-aid kit",Color("a56a58"))
 	item("clinic",Vector3(3.3,0.95,0),"medkit_b","medkit","Take first-aid kit",Color("a56a58"))
-	note("clinic",Vector3(-2.7,1.08,-3.9),"clinic_note","Evacuation notice","BLACKWOOD EVACUATION ORDER\nLeave supplies for those still coming through the forest.\nThe search machines track movement. Solid walls break\ntheir sight lines. Keep quiet and use the buildings as cover.\nFirst-aid kits: H. Spare flashlight batteries: Q.")
+	note("clinic",Vector3(-2.7,1.08,-3.9),"clinic_note","Evacuation notice","BLACKWOOD EVACUATION ORDER\nLeave supplies for those still coming through the forest.\nOld Mill Road is closed beyond the forest bend.\nThe phone lines are down. Use the town radio for help.\nFirst-aid kits: H. Spare flashlight batteries: Q.")
 	for x in [-4,4]:
 		shelf(buildings.store,Vector3(x,0,0))
 	desk(buildings.store,Vector3(-2.8,0,-3.7),3.5)
@@ -281,13 +304,13 @@ func furnish():
 	box(panel,Vector3(0,0.2,0.13),Vector3(0.24,0.09,0.03),mats["amber"],false)
 	powered_lights.append(lamp(buildings.workshop,Vector3(0,2.7,-0.5),Color("d4be85"),1.8,9))
 	desk(buildings.radio,Vector3(-2.7,0,-3.4),3.2)
-	var receiver = action_area(buildings.radio,Vector3(-2.7,1.20,-3.4),Vector3(1.2,0.7,0.65),"receiver",{"kind":"receiver","label":"Repair and calibrate receiver"})
+	var receiver = action_area(buildings.radio,Vector3(-2.7,1.20,-3.4),Vector3(1.2,0.7,0.65),"receiver",{"kind":"receiver","label":"Repair emergency radio"})
 	box(receiver,Vector3.ZERO,Vector3(1.05,0.65,0.55),mats["metal"],false)
 	box(receiver,Vector3(0,0.09,0.3),Vector3(0.55,0.23,0.03),mats["green"],false)
 	receiver_light = lamp(receiver,Vector3(0,0.15,0.5),Color("8ed6b4"),0.4,3)
 	for x in [-0.36,0.35]:
 		box(receiver,Vector3(x,-0.16,0.31),Vector3(0.12,0.12,0.06),mats["amber"],false)
-	note("radio",Vector3(-1.5,0.91,-3.4),"radio_note","Operator's instructions","EMERGENCY UPLINK\nFit a SIGNAL COIL from the mill workshop to this receiver.\nThe workshop cabinet requires restored power.\nOnce calibration is complete, return to the landing clearing\nand hold E at the beacon for four seconds.\nSomeone out there might still be listening.")
+	note("radio",Vector3(-1.5,0.91,-3.4),"radio_note","Operator's instructions","EMERGENCY RADIO\nFit a SIGNAL COIL from the mill workshop to this receiver.\nThe workshop cabinet requires restored power.\nAfter repairs, stay here and hold E for four seconds\nto call emergency services. Report a car accident\non Old Mill Road, outside Blackwood.")
 	# A low-poly antenna rises over the radio station.
 	box(buildings.radio,Vector3(2.6,7.5,-2),Vector3(0.18,8.3,0.18),mats["metal"],false)
 	for y in [6.5,8.5,10.5]:
@@ -297,7 +320,7 @@ func furnish():
 	desk(buildings.house,Vector3(2.7,0,0))
 	item("house",Vector3(2.7,1.04,0),"battery_c","battery","Take flashlight battery",Color("89b9b1"))
 	item("house",Vector3(-3,1,-2.5),"medkit_c","medkit","Take first-aid kit",Color("a56a58"))
-	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the town is already empty.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear owls beyond the road. Now all I hear\nis that low humming above the trees.")
+	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the town is already empty.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
 	inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0}
@@ -305,10 +328,12 @@ func reset():
 	discovered.clear()
 	powered = false
 	radio_ready = false
+	reached_town = false
 	focus_action = ""
 	for data in actions.values():
 		data.taken = false
 		data.area.visible = true
+		data.area.collision_layer = 2
 		data.area.get_child(0).set_deferred("disabled",false)
 	for door in doors.values():
 		if door.tween!=null and door.tween.is_valid():
@@ -353,7 +378,7 @@ func prompt() -> String:
 	if data.kind=="panel" and powered:
 		return "E / Recharge flashlight at powered panel"
 	if data.kind=="receiver" and radio_ready:
-		return "Uplink calibrated. Return to the clearing."
+		return "Hold E / Call for rescue"
 	return "E / "+data.label
 
 func interact():
@@ -365,7 +390,18 @@ func perform(id: String):
 	var data = actions[id]
 	if data.taken:
 		return
+	if data.kind!="crash":
+		reached_town = true
 	match data.kind:
+		"crash":
+			game.message = "The engine is dead. No phone signal. Follow Old Mill Road into Blackwood."
+		"weapon":
+			if game.weapons.collect(data.weapon_index):
+				data.taken = true
+				data.area.visible = false
+				data.area.collision_layer = 0
+				game.message = "Found "+game.weapons.LOADOUT[data.weapon_index].label.to_lower()+". LMB fires; R reloads."
+				game.soundscape.feedback("pickup")
 		"npc":
 			townspeople.talk(data.npc)
 		"container":
@@ -421,15 +457,14 @@ func perform(id: String):
 				game.message = "A fuse is missing. Search the general store's counter drawer."
 		"receiver":
 			if radio_ready:
-				game.message = "Uplink calibrated. Return to the landing clearing."
+				game.message = "The radio has power. Hold E nearby to call for rescue."
 			elif inventory.coil==0:
 				game.message = "Receiver needs a signal coil from the powered workshop."
 			else:
 				inventory.coil -= 1
 				radio_ready = true
 				receiver_light.light_energy = 2
-				game.beam.visible = true
-				game.message = "Contact established! Return to the clearing and hold E to call home."
+				game.message = "Radio repaired. Stay at the receiver and hold E to call for help."
 				game.soundscape.feedback("radio")
 
 func use_medkit():
@@ -456,7 +491,9 @@ func use_battery():
 
 func objective() -> String:
 	if radio_ready:
-		return "Return to the clearing. Hold E to call home."
+		return "Hold E at the radio receiver to call for rescue."
+	if not reached_town:
+		return "Reach Blackwood. Find a way to call for help."
 	if inventory.station_key==0:
 		return "Search the ranger cabin for the radio-station key."
 	if not powered:
@@ -466,6 +503,10 @@ func objective() -> String:
 	return "Bring the coil to the radio-station receiver."
 
 func navigation_target() -> Vector3:
+	if not reached_town:
+		return Vector3(0,0,-42)
+	if radio_ready:
+		return actions.receiver.area.global_position
 	var building = "radio"
 	if inventory.station_key==0:
 		building = "ranger"
@@ -476,11 +517,18 @@ func navigation_target() -> Vector3:
 	return buildings[building].to_global(Vector3(0,0,7))
 
 func location_name() -> String:
+	if game.player.global_position.distance_to(game.START_POSITION)<9:
+		return "OLD MILL ROAD / CRASH SITE"
 	for data in BUILDINGS:
 		var p = buildings[data.id].to_local(game.player.global_position)
 		if absf(p.x)<data.w/2 and absf(p.z)<data.d/2:
 			return data.label
 	return "OLD MILL ROAD" if game.player.position.z< -37 else "BLACKWOOD FOREST"
+
+func update_arrival():
+	if not reached_town and game.player.position.z< -37 and absf(game.player.position.x)<40:
+		reached_town = true
+		game.message = "Blackwood. Find supplies and a working radio. TAB opens your journal."
 
 func player_inside_building(id: String) -> bool:
 	for data in BUILDINGS:

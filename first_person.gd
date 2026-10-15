@@ -1,13 +1,14 @@
 extends Node3D
-const HOME = Vector3.ZERO
+const START_POSITION = Vector3(-0.7,0.001,16.8)
+const START_YAW = -0.60
 var player: CharacterBody3D
 var camera: Camera3D
+var title_camera: Camera3D
+var title_weather: Node
 var flashlight: SpotLight3D
 var hud: Control
 var health = 100.0
 var stamina = 100.0
-var cooldown = 0.0
-var pulse = 0.0
 var invincible = 0.0
 var contact_progress = 0.0
 var clock = 0.0
@@ -17,8 +18,10 @@ var message = "Explore Blackwood and speak to its remaining townspeople."
 var dialogue_name = ""
 var dialogue_text = ""
 var pitch = 0.0
-var beam: MeshInstance3D
+var crash_site: Node3D
 var soundscape: Node
+var arm_visual: Node3D
+var weapons: Node3D
 var town: Node3D
 var flashlight_charge = 100.0
 var journal_page = 0
@@ -87,18 +90,6 @@ func _ready():
 	var forest = Node3D.new()
 	forest.set_script(preload("res://forest.gd"))
 	add_child(forest)
-	var stone = mat(Color("596a6b"))
-	for i in range(12):
-		var a = i*TAU/12
-		mesh_at(self,cylinder(0.22,0.18,0.5),Vector3(cos(a)*5,0.25,sin(a)*5),mat(Color("63978d"),null,0.5))
-	mesh_at(self,cylinder(1.2,1.2,0.12,12),Vector3(0,0.06,0),mat(Color("344f52")))
-	mesh_at(self,cylinder(0.35,0.20,0.7),Vector3(0,0.45,0),stone)
-	var beam_mat = mat(Color("82e6c5"),null,0.8)
-	beam_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	beam_mat.albedo_color.a = 0.15
-	beam_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	beam = mesh_at(self,cylinder(0.7,2,45),Vector3(0,22.5,0),beam_mat)
-	beam.visible = false
 	player = CharacterBody3D.new()
 	player.floor_snap_length = 0.15
 	add_child(player)
@@ -121,17 +112,22 @@ func _ready():
 	flashlight.spot_angle = 39
 	flashlight.position = Vector3(0.15,-0.15,0)
 	camera.add_child(flashlight)
-	var hand = mesh_at(camera,cylinder(0.055,0.045,0.48),Vector3(0.30,-0.35,-0.45),mat(Color("7eaa8c")))
+	arm_visual = Node3D.new()
+	arm_visual.name = "FlashlightArm"
+	camera.add_child(arm_visual)
+	var hand = mesh_at(arm_visual,cylinder(0.055,0.045,0.48),Vector3(0.30,-0.35,-0.45),mat(Color("3f4845")))
 	hand.rotation_degrees = Vector3(-65,0,0)
 	var palm = SphereMesh.new()
 	palm.radius = 0.07
 	palm.height = 0.12
 	palm.radial_segments = 8
 	palm.rings = 4
-	mesh_at(camera,palm,Vector3(0.30,-0.23,-0.69),mat(Color("8bb99a")))
-	for i in range(3):
-		var finger = mesh_at(camera,cylinder(0.018,0.012,0.14,5),Vector3(0.25+i*0.05,-0.17,-0.73),mat(Color("8bb99a")))
+	mesh_at(arm_visual,palm,Vector3(0.30,-0.23,-0.69),mat(Color("b49275")))
+	for i in range(4):
+		var finger = mesh_at(arm_visual,cylinder(0.015,0.012,0.08,5),Vector3(0.25+i*0.033,-0.20,-0.73),mat(Color("b49275")))
 		finger.rotation_degrees.x = -30
+	var torch = mesh_at(arm_visual,cylinder(0.045,0.055,0.28,8),Vector3(0.3,-0.19,-0.77),mat(Color("343b3b")))
+	torch.rotation.x = PI/2
 	var canvas = CanvasLayer.new()
 	add_child(canvas)
 	hud = Control.new()
@@ -143,7 +139,27 @@ func _ready():
 	town.set_script(preload("res://town.gd"))
 	town.game = self
 	add_child(town)
+	weapons = Node3D.new()
+	weapons.set_script(preload("res://weapons.gd"))
+	weapons.game = self
+	add_child(weapons)
+	crash_site = Node3D.new()
+	crash_site.set_script(preload("res://crash_site.gd"))
+	crash_site.game = self
+	add_child(crash_site)
 	reset_game()
+	title_camera = Camera3D.new()
+	title_camera.name = "BlackwoodTitleCamera"
+	title_camera.fov = 62
+	title_camera.far = 85
+	add_child(title_camera)
+	title_camera.position = Vector3(-1,1.65,-30)
+	title_camera.look_at(Vector3(4.4,1.4,-38))
+	title_weather = Node.new()
+	title_weather.set_script(preload("res://title_weather.gd"))
+	title_weather.game = self
+	add_child(title_weather)
+	update_camera()
 
 func make_audio():
 	soundscape = Node.new()
@@ -152,30 +168,40 @@ func make_audio():
 	add_child(soundscape)
 
 func reset_game():
-	player.position = Vector3(0,0.1,4)
+	player.position = START_POSITION
 	player.velocity = Vector3.ZERO
 	camera.position.y = 1.25
-	player.rotation = Vector3.ZERO
+	player.rotation = Vector3(0,START_YAW,0)
 	camera.rotation = Vector3.ZERO
 	pitch = 0
 	health = 100
 	stamina = 100
-	cooldown = 0
 	contact_progress = 0
 	invincible = 0
 	flashlight_charge = 100
 	flashlight.visible = true
 	journal_page = 0
-	message = "Explore Blackwood. TAB opens your journal and objectives."
-	beam.visible = false
+	message = "Your car is wrecked. Follow the road into Blackwood and find help."
 	soundscape.reset()
 	town.reset()
+	weapons.reset()
 
 func set_state(next: String):
 	state = next
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state=="play" else Input.MOUSE_MODE_VISIBLE
+	update_camera()
+
+func update_camera():
+	if title_camera==null:
+		return
+	var active_camera = title_camera if state in ["intro","title"] else camera
+	if not active_camera.current:
+		active_camera.make_current()
 
 func _unhandled_input(event):
+	if state=="title" and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
+		hud.controls_open = false
+		return
 	if state=="intro":
 		if event is InputEventKey and event.pressed and event.keycode in [KEY_ENTER,KEY_SPACE,KEY_ESCAPE]:
 			set_state("title")
@@ -189,7 +215,10 @@ func _unhandled_input(event):
 		pitch = clampf(pitch-event.relative.y*0.0026,-1.35,1.35)
 		camera.rotation.x = pitch
 	if event is InputEventMouseButton and event.pressed and state=="play":
+		var captured = Input.mouse_mode==Input.MOUSE_MODE_CAPTURED
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if captured and event.button_index==MOUSE_BUTTON_LEFT:
+			weapons.fire()
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode==KEY_ENTER and state!="play":
 			if state not in ["paused","journal"]:
@@ -213,14 +242,10 @@ func _unhandled_input(event):
 			town.use_medkit()
 		if state=="play" and event.keycode==KEY_Q:
 			town.use_battery()
-		if event.keycode==KEY_SPACE and state=="play":
-			activate_pulse()
-
-func activate_pulse():
-	if cooldown>0:
-		return
-	cooldown = 6
-	pulse = 1
+		if state=="play" and event.keycode in [KEY_0,KEY_1,KEY_2,KEY_3]:
+			weapons.equip({KEY_0:-1,KEY_1:0,KEY_2:1,KEY_3:2}[event.keycode])
+		if state=="play" and event.keycode==KEY_R:
+			weapons.reload()
 
 func _physics_process(delta):
 	clock += delta
@@ -247,8 +272,6 @@ func _physics_process(delta):
 	soundscape.moved(travelled,sprint,player.is_on_floor())
 	# Keep the view fixed, including when movement is blocked by furniture.
 	camera.position.y = 1.25
-	cooldown = maxf(0,cooldown-delta)
-	pulse = maxf(0,pulse-delta*1.6)
 	invincible = maxf(0,invincible-delta)
 	if flashlight.visible:
 		flashlight_charge = maxf(0,flashlight_charge-delta*0.22)
@@ -256,21 +279,26 @@ func _physics_process(delta):
 			flashlight.visible = false
 	if health<=0:
 		set_state("lost")
-	update_contact(delta,Input.is_physical_key_pressed(KEY_E))
+	town.update_arrival()
 	town.refresh_focus()
+	update_contact(delta,Input.is_physical_key_pressed(KEY_E))
 	hud.queue_redraw()
 
 func update_contact(delta: float, held: bool):
 	if state!="play":
 		return
-	if town.radio_ready and player.position.distance_to(HOME)<5.5 and held:
+	if rescue_available() and held:
 		contact_progress += delta
 		if contact_progress>=4:
 			set_state("won")
 	else:
 		contact_progress = maxf(0,contact_progress-delta*0.5)
 
+func rescue_available() -> bool:
+	return town.radio_ready and town.player_inside_building("radio") and camera.global_position.distance_to(town.actions.receiver.area.global_position)<3.2
+
 func _process(delta):
+	update_camera()
 	if state=="intro":
 		# Give the presentation its full screen time even after cold shader compilation.
 		intro_elapsed += minf(delta,0.1)

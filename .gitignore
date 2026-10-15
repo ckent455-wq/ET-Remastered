@@ -12,3 +12,9 @@
 .env
 .env.*
 !.env.example
+
+# Exported builds and local packaging output
+/builds/
+/dist/
+__pycache__/
+*.pyc

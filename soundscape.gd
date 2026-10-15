@@ -8,6 +8,7 @@ var rng = RandomNumberGenerator.new()
 var wind: AudioStreamPlayer
 var leaves: AudioStreamPlayer
 var click: AudioStreamPlayer
+var thunder: AudioStreamPlayer
 var steps: Array[AudioStreamPlayer] = []
 var animals: Array[AudioStreamPlayer3D] = []
 var step_streams: Array[AudioStream] = []
@@ -19,6 +20,10 @@ var animal_timer = 8.0
 var previous_state = ""
 var interaction_voices = {}
 var door_voice: AudioStreamPlayer3D
+var weapon_voices: Array[AudioStreamPlayer] = []
+var weapon_streams = {}
+var reload_voice: AudioStreamPlayer
+var next_shot = 0
 var storage_voice: AudioStreamPlayer3D
 const BUS = "ForestAudio"
 
@@ -60,10 +65,16 @@ func _ready():
 	wind = voice(stream("wind",true),-8)
 	leaves = voice(stream("leaves",true),-17)
 	click = voice(stream("flashlight"),-10)
+	thunder = voice(stream("thunder"),-23)
 	for cue in ["pickup","power","radio"]:
 		interaction_voices[cue] = voice(stream(cue),-12)
 	door_voice = spatial_voice(game,stream("door"),-16,20)
 	storage_voice = spatial_voice(game,stream("drawer"),-9,10)
+	for weapon in ["pistol","rifle","shotgun","empty"]:
+		weapon_streams[weapon] = stream("gun_"+weapon)
+	for i in range(3):
+		weapon_voices.append(voice(weapon_streams.pistol,-15))
+	reload_voice = voice(stream("gun_reload"),-13)
 	wind.play()
 	leaves.play(3.0)
 	for i in range(5):
@@ -77,6 +88,7 @@ func _ready():
 	reset()
 
 func reset():
+	thunder.stop()
 	step_distance = 0
 	animal_timer = rng.randf_range(7,13)
 	for node in steps:
@@ -87,6 +99,23 @@ func reset():
 		node.stop()
 	door_voice.stop()
 	storage_voice.stop()
+	weapon_stop_reload()
+	for node in weapon_voices:
+		node.stop()
+
+func weapon_stop_reload():
+	if reload_voice:
+		reload_voice.stop()
+
+func weapon_sound(cue: String):
+	if cue=="reload":
+		reload_voice.play()
+		return
+	var node = weapon_voices[next_shot]
+	next_shot = (next_shot+1)%weapon_voices.size()
+	node.stream = weapon_streams[cue]
+	node.pitch_scale = rng.randf_range(0.96,1.04)
+	node.play()
 
 func storage_move(p: Vector3, sliding: bool):
 	storage_voice.global_position = p+Vector3(0,0.8,0)
@@ -158,6 +187,9 @@ func update_sound(delta: float):
 			click.stop()
 			door_voice.stop()
 			storage_voice.stop()
+			weapon_stop_reload()
+			for node in weapon_voices:
+				node.stop()
 			for node in interaction_voices.values():
 				node.stop()
 			for node in steps:

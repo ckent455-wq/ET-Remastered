@@ -1,0 +1,23 @@
+[
+  {
+    "weapon": "pistol",
+    "source": "suppressed_covert_pistol.glb",
+    "triangles": 2200,
+    "texture_limit": 256,
+    "license": "CC0 / Polyy"
+  },
+  {
+    "weapon": "rifle",
+    "source": "semi_auto_service_rifle.glb",
+    "triangles": 2200,
+    "texture_limit": 256,
+    "license": "CC0 / Polyy"
+  },
+  {
+    "weapon": "shotgun",
+    "source": "over_under_shotgun.glb",
+    "triangles": 2200,
+    "texture_limit": 256,
+    "license": "CC0 / Polyy"
+  }
+]

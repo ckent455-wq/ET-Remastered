@@ -2,30 +2,42 @@
 
 Open project.godot in Godot 4.5 and press F5.
 
+For the playable Windows build, download the ZIP from [GitHub Releases](https://github.com/ckent455-wq/ET-Remastered/releases). Extract it and run FarFromHome.exe. See [PLAYING.md](PLAYING.md) for controls and the opening scenario.
+
+To build Windows, install Godot 4.5.1 and its matching export templates, create builds/windows, and run `godot --headless --path . --export-release Windows builds/windows/FarFromHome.exe`. Then run `python tools/package_windows.py` to create the ZIP and SHA256SUMS.txt in dist. Exported files stay out of Git; playable builds are attached to GitHub releases.
+
 After the engine splash, a short presentation reads "Traingle Studios Presents..." before the game title menu. Enter, Space, or Escape skips the presentation to the menu.
+
+The Far From Home title screen now presents Blackwood as survival horror: a live roadside view, weathered cream lettering, muted rust accents, scanlines, and the Population 3 sign. Enter Blackwood starts a new game; Controls shows the key guide; Quit closes the game. Enter also starts, and M toggles sound. The title camera never changes the player's starting position. The title and pause/end menus no longer use alien or spaceship story text.
+
+Title atmosphere: soft distant lightning appears at irregular 12–21 second intervals after an initial 4–7 second wait. A gentle 7.5-second thunder roll follows each flash by 1.5–2.9 seconds. M mutes the thunder with the other sounds; flashes and pending thunder stop when gameplay starts.
 
 On Windows, this project uses the ANGLE/Direct3D11 compatibility driver and caps rendering at 60 FPS. A native stack sample of a frozen game on this computer showed the main thread spinning inside Intel's `ig11icd64.dll` OpenGL driver. ANGLE avoids that OpenGL driver path while keeping the compatibility renderer and the PS2-style visuals.
 
-A first-person forest adventure with a PS2-inspired 640 x 400 image, nearest-filtered ground texture, low-poly trees, blue-green distance fog, and simple moonlight and flashlight lighting.
+After a car accident on Old Mill Road outside Blackwood, you must reach town, search for supplies and weapons, and repair the emergency radio to call for rescue. You start beside the wreck with a flashlight and no guns or ammunition. The damaged hatchback comes from the downloaded FreeCarPack.blend.
+
+A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest-filtered ground texture, low-poly trees, blue-green distance fog, and simple moonlight and flashlight lighting.
 
 ## Controls
 - Enter: begin / resume / restart
 - Mouse: look
 - WASD or arrow keys: move
 - Shift: sprint (uses stamina)
-- Space: cosmetic alien pulse (six-second cooldown)
+- Left mouse: fire; right mouse: aim
+- 1 / 2 / 3: equip a discovered pistol, rifle, or shotgun; undiscovered weapons stay unavailable
+- R: reload; 0: holster (restores the flashlight hand)
 - F: flashlight
 - E: search/open/close drawers and cabinets, or interact with the note, panel, receiver, or door under the crosshair
 - Tab: open / close inventory, objectives, journal, and town map
 - Left / right (or A / D) in journal: change pages
 - H: use a first-aid kit (+45 vitality, saved if vitality is full)
 - Q: use a spare flashlight battery (saved if already charged)
-- Hold E at the clearing after calibrating the town radio: call home
+- Hold E near the repaired receiver inside the radio station for four seconds: call for rescue
 - E near a townsperson: talk; E / Enter / Escape ends the conversation
 - Escape: pause and release the mouse
 - M: mute / unmute all game audio
 
-Follow the road north from the clearing to Blackwood. Explore the buildings, talk to its remaining townspeople, and repair the town radio. Once the radio is calibrated, return to the landing clearing and hold E for four seconds to call home. The blue compass marker guides the current town objective. Ship-part collection has been removed for now, including its models, markers, HUD counter, and radio requirements.
+Follow Old Mill Road north from the accident scene into Blackwood. The first objective guides you into town; later markers guide radio repairs. Inspect the wreck with E for context. Find the pistol on the ranger cabin's front crate, the rifle on the workshop bench, and the shotgun on the millkeeper's desk. Guns and their ammunition are only awarded once per journey when picked up; a new journey removes ownership and restores the world pickups. The alien pulse, glowing landing pad, rescue beam, and return-to-clearing ending have been removed.
 
 ## Abandoned town
 Six furnished buildings can be entered: ranger cabin, clinic, general store, mill workshop, millkeeper's house, and a locked radio station. Doors swing open and closed with E; a building door stays open whenever the player is inside that building or standing in its entrance. Step outside to close it. Twelve searchable drawers and cabinets contain the quest items, three first-aid kits, and six flashlight batteries; a couple of containers are empty. Five readable notes are retained in the journal; the second journal page is the town map.
@@ -35,11 +47,11 @@ Quest progression:
 2. Search the drawer beneath the general store's back counter for the fuse.
 3. Install it at the workshop panel outside, beside its entrance.
 4. Search the powered workshop's signal-coil cabinet.
-5. Unlock the radio station and use its receiver to calibrate the uplink.
-6. Return to the landing clearing and hold E to call home.
+5. Unlock the radio station and repair its receiver with the signal coil.
+6. Stay near the repaired receiver and hold E to call emergency services.
 
 ## Townspeople
-Three friendly NPCs use the newly downloaded Base Humanoid Mesh: Elias the ranger outside his cabin, Mara the nurse in the clinic, and Owen the mechanic in the workshop. They have muted clothing variants, lowered arms, subtle idle breathing/sway, collision, and turn toward nearby players. E opens a conversation with useful, quest-aware hints. Conversations pause gameplay and ambience; E / Enter / Escape / Tab closes them.
+Three friendly NPCs use the newly downloaded Base Humanoid Mesh: Elias the ranger outside his cabin, Mara the nurse in the clinic, and Owen the mechanic in the workshop. They have muted clothing variants, skinned patrol animations, collision, and turn toward nearby players. E opens a conversation with useful, quest-aware hints. Conversations pause gameplay and ambience; E / Enter / Escape / Tab closes them.
 
 The source humanoid has 402 triangles. Each variant keeps that count and a 256-pixel version of its supplied UV atlas. Exact source paths are stored in assets/npcs/manifest.json.
 
@@ -51,7 +63,12 @@ Eight local model types appear as 74 reused instances: wooden doors, bookshelves
 Aim at a drawer front or cabinet and press E. The drawer slides or the cabinet doors swing outward into the room; the first search adds its contents to the pack. E closes it, and reopening a searched container never awards more loot. Prompts identify searched storage; the journal shows the number searched. The coil cabinet stays locked until workshop power is restored. Storage movement and sound pause with the journal or a conversation. All twelve containers and their concealed contents reset for a new journey.
 
 ## Files
-- first_person.gd: 3D world, first-person controller, and game logic
+- first_person.gd: 3D world, crash spawn, first-person controller, and radio rescue
+- crash_site.gd: downloaded damaged hatchback, skid marks, debris, headlight, and steam
+- weapons.gd: discoverable world weapons, owned inventory, firing, aiming, reloads, and targets
+- tools/prepare_crash_car.py: export the downloaded hatchback with a compressed front end
+- assets/vehicles/manifest.json: exact source model and geometry budget
+- smoke_test_crash_start.gd: real walk from crash to town, unarmed inventory, E pickup, duplication prevention, and reset
 - town.gd: town buildings, furniture, doors, raycast interactions, inventory, readable notes, and quest progression
 - interiors.gd: local furniture/clutter models, architectural detail, and twelve animated searchable containers
 - townspeople.gd: three friendly humanoid NPCs, idle behavior, and quest-aware conversations
@@ -98,6 +115,7 @@ Drawers and cabinets use a short positional slide-and-clunk cue, also controlled
 - assets/audio/drawer.wav: original synthesized slide-and-clunk cue generated by tools/generate_storage_audio.py.
 - assets/interiors/*.glb: reduced copies of local shelf, lamp, books, curtain, and wooden-door models in Documents/assets/models, plus the cardboard box, TeapotSilver001, and Sink003 models in Downloads. Source paths and budgets are recorded in assets/interiors/manifest.json. Packed diffuse textures were extracted into 256-pixel copies; original files were not changed. Searchable cabinetry and architectural trim are built by interiors.gd using local material textures.
 - assets/npcs/*.glb and *_atlas.png: copies of Downloads/Base Humanoid Mesh/Base Humanoid Mesh/Humanoid.blend and NonOverlapping.png, with relaxed arm poses and muted clothing colors. Original source files were not modified.
+- assets/vehicles/crashed_hatchback.glb: a 2,810-triangle damaged copy of Hatchback Car_15 from Downloads/Blend/Blend/FreeCarPack.blend, with textures capped at 256 pixels. The source file was not changed; no license file was included in the local download.
 - Other assets/audio WAVs are original synthesized effects generated by tools/generate_audio.py.
 - assets/forest/pine_b.glb and pine_c.glb: reduced trunk/branch geometry from Downloads/pine_tree_01_1k.blend/pine_tree_01_1k.blend; original bark, trunk, and twig textures reduced to 256 pixels. The crown meshes are generated using the local twig atlas.
 - assets/forest/bush_e.glb, bush_f.glb, bush_g.glb: reduced LOD3 shrub meshes from Downloads/othonna_cerarioides_2k.blend/othonna_cerarioides_2k.blend, with its diffuse and alpha textures.
@@ -106,7 +124,7 @@ Drawers and cabinets use a short positional slide-and-clunk cue, also controlled
 - Original .blend files and source texture files were not changed. No license files accompanied these local forest asset folders.
 - assets/town/*.png: local weathered wood, brick, plaster, flooring, slate roof, and rusty metal diffuse textures reduced to 256 pixels. Exact source paths are recorded in assets/town/sources.json. Building and furniture geometry is generated by town.gd; no original source files were modified.
 
-Validation: headless Godot scene load and checks for no ship-part collection, cosmetic pulse, rescue beacon, radio-only rescue, defeat, and restart.
+Validation: headless Godot scene load and checks for the unarmed crash opening, removed alien mechanics, radio rescue, defeat, and restart.
 Audio checks: flashlight input, walking/running, blocked/airborne silence, animal timing and placement, mute, pause/resume, restart, and audio bus cleanup.
 Forest checks: population counts, original textures retained at 256 pixels, foliage cutouts, trunk collision, and 123 player-capsule route samples. Rendered previews: preview-forest-0.png and preview-forest-1.png.
 Town checks: six buildings, real E targeting, interaction blocked by walls, locked station door, 78 player-capsule entrance samples, reachable/visible indoor items and notes, key/fuse/coil progression, medical kits and batteries, radio-gated rescue, and full quest reset. Rendered town/interior/journal/map previews: preview-town-0.png through preview-town-4.png.
@@ -115,3 +133,11 @@ New checks: presentation auto-advance/skip, no obsolete collection objective, th
 
 
 Camera regression: `smoke_test_camera.gd` walks into all 12 containers, opens and closes storage at close range, and checks stationary view stability and eye height while movement is blocked. It also checks that drone entities and drone audio are absent.
+
+Recent town additions: the weathered two-post "Blackwood / Population 3" sign sits fully beside the approach road, with a vegetation clearance around it. Elias patrols outside the ranger cabin; Mara walks the clinic aisle; Owen walks the workshop floor. The 402-triangle humanoids have skinned walk cycles. NPCs stop within conversation range, collide with solid scenery, and pause in menus and dialogue.
+
+Weapons use the locally downloaded Polyy Guns Pack 2 (CC0; license included in assets/weapons), reduced to 2,200 triangles each with textures capped at 256 pixels. Firing uses collision rays, ammunition, reloads, muzzle flashes and bounded impact marks; the workshop yard has four metal targets. Shooting an NPC triggers a skinned collapse and death animation; dead NPCs stop moving and talking until a new journey. Gun recoil moves only the weapon model; the camera remains steady. The flashlight hand is hidden with an equipped weapon.
+
+New checks: smoke_test_patrols.gd validates walking, collision bodies, proximity stops, dialogue pauses and reset. smoke_test_weapons.gd validates target hits, ammunition, reload conservation, paused reloads, switching, holstering, arm visibility, menu guards and camera stability. tools/preview_latest.gd captures the sign, each weapon and a walking NPC using the real renderer.
+
+NPC death check: smoke_test_npc_death.gd shoots all three characters using real weapon rays, verifies collapse and persistent settled poses, pause behavior, removed conversation/collision blockers, full quest completion after the deaths, and revival on a new journey. The road sign reads Blackwood / Population 3.

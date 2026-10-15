@@ -122,7 +122,10 @@ func check():
 	game.update_contact(4.1,true)
 	assert(game.state=="play","Radio must be calibrated before rescue")
 	town.perform("receiver")
-	assert(town.radio_ready and game.beam.visible and town.inventory.coil==0,"Receiver calibration consumes coil, enables beacon")
+	assert(town.radio_ready and town.inventory.coil==0,"Receiver repair consumes coil")
+	game.update_contact(4.1,true)
+	assert(game.state=="play","Cannot call for rescue back at the old clearing")
+	game.player.position = town.buildings.radio.to_global(Vector3(-2.7,0.001,-2.0))
 	game.update_contact(4.1,true)
 	assert(game.state=="won","Rescue after full quest")
 	game.state = "play"
@@ -134,7 +137,7 @@ func check():
 	game.reset_game()
 	assert(not town.powered and not town.radio_ready and town.journal_entries.is_empty(),"Quest resets")
 	assert(town.inventory.station_key==0 and not town.actions.station_key.taken,"Inventory and pickups reset")
-	assert(not town.doors.radio.open and not game.beam.visible,"Doors and beacon reset")
+	assert(not town.doors.radio.open and not town.radio_ready,"Doors and radio reset")
 	print("PASS: six buildings, real E targeting, wall occlusion, locked door, 78 entrance samples, walkable access to every indoor interaction, key/fuse/coil chain, consumables, notes, rescue gating, restart")
 	event = null
 	game.queue_free()

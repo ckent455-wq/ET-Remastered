@@ -1,0 +1,1082 @@
+[
+  {
+    "name": "Air Plane_1",
+    "parent": "",
+    "location": [
+      70.95046997070312,
+      -207.02159118652344,
+      -0.6893472671508789
+    ],
+    "dimensions": [
+      9.374922752380371,
+      8.349852561950684,
+      3.1890132427215576
+    ],
+    "polygons": 532,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Air Plane_1 B Tire",
+    "parent": "Air Plane_1",
+    "location": [
+      70.95392608642578,
+      -203.77903747558594,
+      -0.42876410484313965
+    ],
+    "dimensions": [
+      0.1945796012878418,
+      0.5211678147315979,
+      0.5211678147315979
+    ],
+    "polygons": 62,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Air Plane_1 Fan",
+    "parent": "Air Plane_1",
+    "location": [
+      70.94601440429688,
+      -209.05999755859375,
+      1.2272183895111084
+    ],
+    "dimensions": [
+      1.9127559661865234,
+      0.5233507752418518,
+      2.6562318801879883
+    ],
+    "polygons": 46,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Air Plane_1 FL Tire",
+    "parent": "Air Plane_1",
+    "location": [
+      72.0063247680664,
+      -208.64288330078125,
+      -0.428763747215271
+    ],
+    "dimensions": [
+      0.1945796012878418,
+      0.5211678147315979,
+      0.5211678147315979
+    ],
+    "polygons": 62,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Air Plane_1 FR Tire",
+    "parent": "Air Plane_1",
+    "location": [
+      69.89117431640625,
+      -208.64288330078125,
+      -0.428763747215271
+    ],
+    "dimensions": [
+      0.1945796012878418,
+      0.5211678147315979,
+      0.5211678147315979
+    ],
+    "polygons": 62,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Classic Car_9",
+    "parent": "",
+    "location": [
+      76.53568267822266,
+      -215.28887939453125,
+      -0.6893472671508789
+    ],
+    "dimensions": [
+      2.021394729614258,
+      4.966763496398926,
+      1.1830112934112549
+    ],
+    "polygons": 748,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Classic Car_9 BL Tire",
+    "parent": "Classic Car_9",
+    "location": [
+      77.316162109375,
+      -213.90826416015625,
+      -0.2975231409072876
+    ],
+    "dimensions": [
+      0.3145480751991272,
+      0.7836484313011169,
+      0.7836482524871826
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Classic Car_9 BR Tire",
+    "parent": "Classic Car_9",
+    "location": [
+      75.75518798828125,
+      -213.90826416015625,
+      -0.2975231409072876
+    ],
+    "dimensions": [
+      0.3145480751991272,
+      0.7836484313011169,
+      0.7836482524871826
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Classic Car_9 FL Tire",
+    "parent": "Classic Car_9",
+    "location": [
+      77.316162109375,
+      -216.66949462890625,
+      -0.2975229024887085
+    ],
+    "dimensions": [
+      0.3145480751991272,
+      0.7836484313011169,
+      0.7836482524871826
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Classic Car_9 FR Tire",
+    "parent": "Classic Car_9",
+    "location": [
+      75.75518798828125,
+      -216.66949462890625,
+      -0.2975229024887085
+    ],
+    "dimensions": [
+      0.3145480751991272,
+      0.7836484313011169,
+      0.7836482524871826
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Hatchback Car_15",
+    "parent": "",
+    "location": [
+      73.25553131103516,
+      -215.10772705078125,
+      -0.6893472671508789
+    ],
+    "dimensions": [
+      2.0153255462646484,
+      4.425987243652344,
+      1.3060801029205322
+    ],
+    "polygons": 750,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Hatchback Car_15 BL Tire",
+    "parent": "Hatchback Car_15",
+    "location": [
+      74.03077697753906,
+      -213.7286834716797,
+      -0.2982708215713501
+    ],
+    "dimensions": [
+      0.31432679295539856,
+      0.7830969095230103,
+      0.7830967903137207
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Hatchback Car_15 BR Tire",
+    "parent": "Hatchback Car_15",
+    "location": [
+      72.48027038574219,
+      -213.7286834716797,
+      -0.2982708215713501
+    ],
+    "dimensions": [
+      0.31432682275772095,
+      0.7830969095230103,
+      0.7830968499183655
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Hatchback Car_15 FL Tire",
+    "parent": "Hatchback Car_15",
+    "location": [
+      74.03077697753906,
+      -216.48709106445312,
+      -0.298270583152771
+    ],
+    "dimensions": [
+      0.31432682275772095,
+      0.7830967903137207,
+      0.7830968499183655
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Hatchback Car_15 FR Tire",
+    "parent": "Hatchback Car_15",
+    "location": [
+      72.48027038574219,
+      -216.48709106445312,
+      -0.298270583152771
+    ],
+    "dimensions": [
+      0.31432682275772095,
+      0.7830967903137207,
+      0.7830968499183655
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Military Vehicle_3",
+    "parent": "",
+    "location": [
+      65.0625991821289,
+      -221.30348205566406,
+      -0.6882343292236328
+    ],
+    "dimensions": [
+      3.283597469329834,
+      6.472168922424316,
+      2.2775588035583496
+    ],
+    "polygons": 1962,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Military Vehicle_3 BL Tire",
+    "parent": "Military Vehicle_3",
+    "location": [
+      66.26356506347656,
+      -219.301513671875,
+      -0.12425106763839722
+    ],
+    "dimensions": [
+      0.44526851177215576,
+      1.1279659271240234,
+      1.1279656887054443
+    ],
+    "polygons": 194,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Military Vehicle_3 BR Tire",
+    "parent": "Military Vehicle_3",
+    "location": [
+      63.86164093017578,
+      -219.301513671875,
+      -0.12425106763839722
+    ],
+    "dimensions": [
+      0.4452683925628662,
+      1.1279659271240234,
+      1.1279656887054443
+    ],
+    "polygons": 194,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Military Vehicle_3 FL Tire",
+    "parent": "Military Vehicle_3",
+    "location": [
+      66.26356506347656,
+      -223.30545043945312,
+      -0.12425071001052856
+    ],
+    "dimensions": [
+      0.44526851177215576,
+      1.1279659271240234,
+      1.1279656887054443
+    ],
+    "polygons": 194,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Military Vehicle_3 FR Tire",
+    "parent": "Military Vehicle_3",
+    "location": [
+      63.86164093017578,
+      -223.30545043945312,
+      -0.12425071001052856
+    ],
+    "dimensions": [
+      0.4452683925628662,
+      1.1279659271240234,
+      1.1279656887054443
+    ],
+    "polygons": 194,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Monster Truck_12",
+    "parent": "",
+    "location": [
+      76.1036376953125,
+      -221.26129150390625,
+      -0.6893472671508789
+    ],
+    "dimensions": [
+      2.486680746078491,
+      6.065912246704102,
+      2.3988943099975586
+    ],
+    "polygons": 1205,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Monster Truck_12 BL Tire",
+    "parent": "Monster Truck_12",
+    "location": [
+      77.26303100585938,
+      -219.44488525390625,
+      -0.04554331302642822
+    ],
+    "dimensions": [
+      0.6669527292251587,
+      1.3207190036773682,
+      1.2876060009002686
+    ],
+    "polygons": 170,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Monster Truck_12 BR Tire",
+    "parent": "Monster Truck_12",
+    "location": [
+      74.94424438476562,
+      -219.44488525390625,
+      -0.04554331302642822
+    ],
+    "dimensions": [
+      0.6669527292251587,
+      1.3207190036773682,
+      1.2876060009002686
+    ],
+    "polygons": 170,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Monster Truck_12 FL Tire",
+    "parent": "Monster Truck_12",
+    "location": [
+      77.26303100585938,
+      -223.07772827148438,
+      -0.04554307460784912
+    ],
+    "dimensions": [
+      0.6669527292251587,
+      1.3207192420959473,
+      1.287606120109558
+    ],
+    "polygons": 170,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Monster Truck_12 FR Tire",
+    "parent": "Monster Truck_12",
+    "location": [
+      74.94424438476562,
+      -223.07772827148438,
+      -0.04554307460784912
+    ],
+    "dimensions": [
+      0.6669527292251587,
+      1.3207192420959473,
+      1.2876060009002686
+    ],
+    "polygons": 170,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N Van_10",
+    "parent": "",
+    "location": [
+      65.57881164550781,
+      -214.8052520751953,
+      -0.6893472671508789
+    ],
+    "dimensions": [
+      2.294729709625244,
+      5.035457611083984,
+      1.6240110397338867
+    ],
+    "polygons": 798,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N Van_10 BL Tire",
+    "parent": "N Van_10",
+    "location": [
+      66.4186019897461,
+      -213.1055908203125,
+      -0.2975231409072876
+    ],
+    "dimensions": [
+      0.3145481050014496,
+      0.7836483716964722,
+      0.7836482524871826
+    ],
+    "polygons": 86,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N Van_10 BR Tire",
+    "parent": "N Van_10",
+    "location": [
+      64.7390365600586,
+      -213.1055908203125,
+      -0.2975231409072876
+    ],
+    "dimensions": [
+      0.3145481050014496,
+      0.7836483716964722,
+      0.7836482524871826
+    ],
+    "polygons": 86,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N Van_10 FL Tire",
+    "parent": "N Van_10",
+    "location": [
+      66.4186019897461,
+      -216.5049285888672,
+      -0.2975229024887085
+    ],
+    "dimensions": [
+      0.3145481050014496,
+      0.7836484313011169,
+      0.7836482524871826
+    ],
+    "polygons": 86,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N Van_10 FR Tire",
+    "parent": "N Van_10",
+    "location": [
+      64.7390365600586,
+      -216.5049285888672,
+      -0.2975233793258667
+    ],
+    "dimensions": [
+      0.3145481050014496,
+      0.7836484313011169,
+      0.7836482524871826
+    ],
+    "polygons": 86,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N_Muscle Car_10",
+    "parent": "",
+    "location": [
+      69.3286361694336,
+      -220.92755126953125,
+      -0.7272771000862122
+    ],
+    "dimensions": [
+      2.5713083744049072,
+      4.704736232757568,
+      1.1689426898956299
+    ],
+    "polygons": 649,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N_Muscle Car_10 BL Tire",
+    "parent": "N_Muscle Car_10",
+    "location": [
+      68.35445404052734,
+      -222.1117706298828,
+      -0.33620017766952515
+    ],
+    "dimensions": [
+      0.44578254222869873,
+      0.8185889720916748,
+      0.7830970287322998
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N_Muscle Car_10 BR Tire",
+    "parent": "N_Muscle Car_10",
+    "location": [
+      69.7976303100586,
+      -222.3874969482422,
+      -0.33620017766952515
+    ],
+    "dimensions": [
+      0.44578254222869873,
+      0.8185889720916748,
+      0.7830970287322998
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N_Muscle Car_10 FL Tire",
+    "parent": "N_Muscle Car_10",
+    "location": [
+      68.85972595214844,
+      -219.46722412109375,
+      -0.33619993925094604
+    ],
+    "dimensions": [
+      0.44578254222869873,
+      0.8185889720916748,
+      0.7830970287322998
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "N_Muscle Car_10 FR Tire",
+    "parent": "N_Muscle Car_10",
+    "location": [
+      70.30290222167969,
+      -219.74295043945312,
+      -0.33619993925094604
+    ],
+    "dimensions": [
+      0.6738610863685608,
+      0.7938324213027954,
+      0.7830970287322998
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Pick Up_11",
+    "parent": "",
+    "location": [
+      69.430908203125,
+      -213.5907440185547,
+      -0.7584947943687439
+    ],
+    "dimensions": [
+      3.1843512058258057,
+      6.249717712402344,
+      1.6470524072647095
+    ],
+    "polygons": 854,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Pick Up_11 BL Tire",
+    "parent": "Pick Up_11",
+    "location": [
+      70.07955169677734,
+      -211.6329803466797,
+      -0.3211250901222229
+    ],
+    "dimensions": [
+      0.48140066862106323,
+      0.9038597345352173,
+      0.8667198419570923
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Pick Up_11 BR Tire",
+    "parent": "Pick Up_11",
+    "location": [
+      68.15860748291016,
+      -211.96751403808594,
+      -0.3211250901222229
+    ],
+    "dimensions": [
+      0.48140057921409607,
+      0.9038597345352173,
+      0.8667198419570923
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Pick Up_11 FL Tire",
+    "parent": "Pick Up_11",
+    "location": [
+      70.70409393310547,
+      -215.2190704345703,
+      -0.3211248517036438
+    ],
+    "dimensions": [
+      0.6929707527160645,
+      0.9002538323402405,
+      0.8667198419570923
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Pick Up_11 FR Tire",
+    "parent": "Pick Up_11",
+    "location": [
+      68.78314971923828,
+      -215.55360412597656,
+      -0.3211248517036438
+    ],
+    "dimensions": [
+      0.48140060901641846,
+      0.9038596153259277,
+      0.8667198419570923
+    ],
+    "polygons": 154,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Plane",
+    "parent": "",
+    "location": [
+      71.502197265625,
+      -214.06201171875,
+      -0.6900822520256042
+    ],
+    "dimensions": [
+      28.77081298828125,
+      28.77081298828125,
+      0.0
+    ],
+    "polygons": 1,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Police Car N_4",
+    "parent": "",
+    "location": [
+      80.3412857055664,
+      -217.4512481689453,
+      -0.6882343292236328
+    ],
+    "dimensions": [
+      2.133246660232544,
+      4.9746904373168945,
+      1.3823912143707275
+    ],
+    "polygons": 1062,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Police Car N_4 BL Tire",
+    "parent": "Police Car N_4",
+    "location": [
+      81.1627426147461,
+      -216.150390625,
+      -0.3122882544994354
+    ],
+    "dimensions": [
+      0.30220329761505127,
+      0.7528929710388184,
+      0.7528928518295288
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Police Car N_4 BR Tire",
+    "parent": "Police Car N_4",
+    "location": [
+      79.51982879638672,
+      -216.150390625,
+      -0.31228819489479065
+    ],
+    "dimensions": [
+      0.30220329761505127,
+      0.7528929710388184,
+      0.7528928518295288
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Police Car N_4 FL Tire",
+    "parent": "Police Car N_4",
+    "location": [
+      81.1627426147461,
+      -218.75241088867188,
+      -0.31228795647621155
+    ],
+    "dimensions": [
+      0.30220329761505127,
+      0.7528928518295288,
+      0.7528928518295288
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Police Car N_4 FR Tire",
+    "parent": "Police Car N_4",
+    "location": [
+      79.51982879638672,
+      -218.75241088867188,
+      -0.3122878968715668
+    ],
+    "dimensions": [
+      0.30220329761505127,
+      0.7528928518295288,
+      0.7528928518295288
+    ],
+    "polygons": 116,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Sport Car_39",
+    "parent": "",
+    "location": [
+      72.4619140625,
+      -221.1926727294922,
+      -0.769209086894989
+    ],
+    "dimensions": [
+      2.4711971282958984,
+      4.739714622497559,
+      1.150676965713501
+    ],
+    "polygons": 632,
+    "materials": [
+      "Color",
+      "Color Bloom"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Sport Car_39 BL Tire",
+    "parent": "Sport Car_39",
+    "location": [
+      73.51822662353516,
+      -219.9822998046875,
+      -0.3801143765449524
+    ],
+    "dimensions": [
+      0.4070741832256317,
+      0.8107883930206299,
+      0.7830970287322998
+    ],
+    "polygons": 186,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Sport Car_39 BR Tire",
+    "parent": "Sport Car_39",
+    "location": [
+      71.75543212890625,
+      -219.74990844726562,
+      -0.3801143765449524
+    ],
+    "dimensions": [
+      0.4070742130279541,
+      0.8107883930206299,
+      0.7830970287322998
+    ],
+    "polygons": 186,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Sport Car_39 FL Tire",
+    "parent": "Sport Car_39",
+    "location": [
+      73.16834259033203,
+      -222.63624572753906,
+      -0.3801141381263733
+    ],
+    "dimensions": [
+      0.5959013104438782,
+      0.8205543756484985,
+      0.7830970287322998
+    ],
+    "polygons": 186,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  },
+  {
+    "name": "Sport Car_39 FR Tire",
+    "parent": "Sport Car_39",
+    "location": [
+      71.40554809570312,
+      -222.4038543701172,
+      -0.3801141381263733
+    ],
+    "dimensions": [
+      0.4070742130279541,
+      0.8107883930206299,
+      0.7830970287322998
+    ],
+    "polygons": 186,
+    "materials": [
+      "Color"
+    ],
+    "collections": [
+      "Collection"
+    ]
+  }
+]

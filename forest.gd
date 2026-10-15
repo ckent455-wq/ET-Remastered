@@ -105,6 +105,12 @@ func random_point() -> Vector3:
 	return Vector3(rng.randf_range(-46,46),0,rng.randf_range(-46,46))
 
 func can_place(p: Vector3, path_clearance: float, clearing: float) -> bool:
+	# Clear the accident scene and the continuous walking lane into town.
+	if Vector2(p.x-3.8,p.z-13).length()<6.0 or (p.z<21 and p.z> -56 and absf(p.x)<2.6):
+		return false
+	# Keep the roadside sign and its sightline free of trunks and branches.
+	if Vector2(p.x-4.4,p.z+35).length()<6.0:
+		return false
 	# Reserve the town footprint and its approach road before scattering vegetation.
 	if (p.z< -36 and absf(p.x)<40) or (p.z<0 and absf(p.x)<2.2):
 		return false
