@@ -1,0 +1,3233 @@
+{
+  "source": "C:\\Users\\jkern\\AppData\\Roaming\\Unity\\Asset Store-5.x\\Brick Project Studio\\3D ModelsEnvironments\\Apartment Kit.unitypackage",
+  "assets": [
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/RR_RestroomPaper_A.png",
+      "entry": "00368d3a4678ecd4cb2b95551bfe744e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Painting_02.prefab",
+      "entry": "00c4356a751fbc5439abb629f6dc361e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_02_03.prefab",
+      "entry": "00d829056aee4bb4e9ce54ff8b45aa45"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Wall_04.prefab",
+      "entry": "00db1187d63c7404591f8f93f3547629"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit Interior Updated_01.fbx",
+      "entry": "013043932069e224e90b516d38cdab48"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Legacy/office chair.fbx",
+      "entry": "0156872a951ba6e44a3a8596040789c9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models",
+      "entry": "0238337b50b4fb840b7948eada9f0c61"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_02_06.prefab",
+      "entry": "0267a6b41f222044f98d57dd7a4835fb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Ext_Apt_WallFloor_01_N.png",
+      "entry": "0291337013d67bd4ca83920be0c11749"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props",
+      "entry": "02e76bb95b2116e42b266711b1f8545c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls/Int_RR_01_pillar_3x3.prefab",
+      "entry": "02f55a24f89f19d4083c38a6fd760a46"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Painting_01.prefab",
+      "entry": "034a790e51efb8c42af98f9b7728dfe6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/Chess_Board_Base.prefab",
+      "entry": "04530b01cfbd5f044a2cc04ba39e91df"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_BR_01.prefab",
+      "entry": "046ec50b8328aa54c96774a0cc973a01"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Wood Floor 01.mat",
+      "entry": "049ac0e838cb3a342887cf48a2b06db4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Concrete_A.png",
+      "entry": "04bdf3eac1ea0c04ebb541a4883a827f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Brick 02 normal.png",
+      "entry": "0542ca3276b27f0458ecca022955e656"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Interior Exterior/Ext_Apt_01.mat",
+      "entry": "05ab6237a2436a34bb31bebcb35225c8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors",
+      "entry": "05b1d27ed0e85df44bee3c68530ab248"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01",
+      "entry": "0621c9b8473e4f041b3999ecf010f0a1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Leather_01.mat",
+      "entry": "0656c89128e147645951f2c0649b10f9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_01_03.prefab",
+      "entry": "06c413b29e11397438e5dd264e7ebe34"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/GameConsole_01_A.png",
+      "entry": "074c28f4b5334064caf66caa002ae822"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/OvenOpen/OpenOven.anim",
+      "entry": "075eb7678139ac54ba0efbab5c4b1255"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/DisfusedVase.mat",
+      "entry": "076286717a5c2d64c91c17c7f0ce84fd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Concrete-texture.png",
+      "entry": "07abea599341a1742aa622a72461e995"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Ceiling_Apt_01.prefab",
+      "entry": "09457ce18601f204cbd5799ff191ff9e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Int_Apt_02_N.png",
+      "entry": "096fc39044246a5419cdd831de80058a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Brick mute 02.mat",
+      "entry": "099e69089d2c47044b06273bff53533d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/openandclose.controller",
+      "entry": "099e6cc38da8ff74bb68d0bf29e24642"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/wine thin glass.fbx",
+      "entry": "09cb81f6ddeeb3046979371d041373b5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Base Scene/BA_Concrete Plane.prefab",
+      "entry": "0a39e6bc93e859145a2f868ff0277c31"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_06.prefab",
+      "entry": "0bb0235386000d5498a4c894bd92c757"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/TowelRack_Apt_01.prefab",
+      "entry": "0c194d566209b524bb98efa3b5f1563e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_leather_A.png",
+      "entry": "0c1ee1d71026ae54bbf4ce91fbd6a87a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Int into Ext/IntExt_apt_DoorFrame_L_01_01.prefab",
+      "entry": "0c61fe183d6f98d42a9b0250ecf21842"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors",
+      "entry": "0c7d15f7f26c038489dc5563a9cb2646"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01",
+      "entry": "0cc4773c292517d4695373e2a182abb1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_01_04.prefab",
+      "entry": "0d13d6d50c15b8147b1bf9fee7d1326d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Wall_04.prefab",
+      "entry": "0d62acd7333a2844eb00217800ed1f99"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Pattern_01.png",
+      "entry": "0d6cfc418fff3894fb0ca518f5d50b98"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/WallArt_Apt_02.prefab",
+      "entry": "0d7e3cbd2cdf2e7428aa62ff7966b1ba"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Marble_Dark_01_M.png",
+      "entry": "0db03cdc963c4aa40ac6eb1f42684935"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/DoorMat_01_A.png",
+      "entry": "0db0ab6731c66044c84b00e0d891778e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Restroom/RR_Panel_01.mat",
+      "entry": "0dc30470004dae846a55ed5379ef2239"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models",
+      "entry": "0e1a7a4954a0e0d47b38ada5fb16bf04"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Signs/RR_Restroom_Men_Sign.prefab",
+      "entry": "0e258bad90e29e5428d9fdcd3fef014f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Fabric_01_Blue.mat",
+      "entry": "0e43f5a20c0c0184da573df09c6c1d40"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Wall_03.prefab",
+      "entry": "0ef87058d11dd764abf30aefa470c526"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Art_01.png",
+      "entry": "0f1b5ed9b2e96bf4d9b64957fd9b3a2a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Fire/Fire_Add_02.mat",
+      "entry": "0fdd751cd86106446afa0dc09e0eeb8e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Canvas_Nat_08.mat",
+      "entry": "100b25bc47f9d454882fe90599a30b8e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/Closing.anim",
+      "entry": "107c03b19248aa740b48b8e3714d20ec"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/Monitor_Apt_01.prefab",
+      "entry": "1091ee0a141f2ba429668a6cc5a0f03e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/BR_Tile_02.mat",
+      "entry": "10c8542d4324afc4bb4d61e51e00800e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Ceiling - Normal.png",
+      "entry": "10caf55c2cc68ff45af37085395b0a84"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bathroom/Toilet_Apt_01.prefab",
+      "entry": "10d4ee2e07ed6c043bcfb109fd37b49a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Interior Exterior/Int_Apt_02.mat",
+      "entry": "1189fd509fb646c4bbef59dd93c02b71"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials",
+      "entry": "120d25fd7aaa0004dbfd6cc11d6405a5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Art_02.png",
+      "entry": "121839de2ecea004995db9f7c5645295"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Canvas_Nat_06-07.png",
+      "entry": "12ba3bed3f75b9a44b3b8f8a6ff90f5d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/DrinkingGlass_02.prefab",
+      "entry": "12df49c36886f4d468acfee364eedc4c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Lamp 02 Ceiling Shade - On.mat",
+      "entry": "136beb9ca8a36994ca60918c49ee2767"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Table_Apt_02.prefab",
+      "entry": "142ac07ac204863418a6f3f9b0ac660c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Bowl_Apt_01_Stacked.prefab",
+      "entry": "143623a82f19a9e49b450142a80c6d52"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Wine Liquor Beer and Glassware - Sample/wine thin glass.prefab",
+      "entry": "14973bbaa08d142449d2405142caff8d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Int_Apt_MarbleWall_01.mat",
+      "entry": "14caf24636c53854ea2f3f8ca2dd0fc1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Int_Apt_03_A.png",
+      "entry": "151c8bea4e39c94459a318ab8efb5fdd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_01_Filled Variant.prefab",
+      "entry": "16309159579d34a4c92f5e68f4824d8b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Wall_03.prefab",
+      "entry": "17aade79dac654f4aa0b24a36cd4b136"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Special/Ext_apt_01_01.prefab",
+      "entry": "1804b0ce951149d4f8c62b573d634580"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Apt_Props_02.fbx",
+      "entry": "18a06f327a98b134b82b2c13d6c3a3c0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/Int_apt_01_Boarder_01.prefab",
+      "entry": "1948577c0f767a2438c3970962e5da19"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Base_Sink_01.prefab",
+      "entry": "1a83256f7767c2c46a1371969648490c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Int_Apt_01_A.png",
+      "entry": "1b1d6a4d760591e49b71fd4d6e2cc5f9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations",
+      "entry": "1b36872c1c34c9d44bd4ca3f7e5ac086"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Wine Liquor Beer and Glassware - Sample/wine thin glass White Wine.prefab",
+      "entry": "1b428e366487244448eec04f14964eef"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures",
+      "entry": "1b4eb77439b06d44980ea8df5d745e27"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Wall_02.prefab",
+      "entry": "1b521e989c39fb544aaf387f9eda3db9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors",
+      "entry": "1c51540e55546be4f99924b85446a045"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Base Scene",
+      "entry": "1ccf763dc0d9fbf4cafdb919842ae4eb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit Exterior.fbx",
+      "entry": "1e4c9d0deb3bcc144ae6e91318e143a7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/opencloseDoor.cs",
+      "entry": "1e8192f35a44301488ec0f072d9a16fe"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs",
+      "entry": "1e9199c64cc88b84683c529b383da19c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Concrete_01.mat",
+      "entry": "1e98ebe0ed4d9894d9610d836de5f478"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles",
+      "entry": "1ee7c6426dd29064ea3cef11cf1a1522"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/Int_BS_02.mat",
+      "entry": "1f972757765558b46aa948a406f8542a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets",
+      "entry": "1fefdc64112392844841a44ee966f389"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/WallArt_Apt_01.mat",
+      "entry": "2078401f2a19e7e4aa88ce0df5064d71"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Pillar_2x2.prefab",
+      "entry": "20e4763b1e1f5c340bd98eb80461ba0d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/Computer_apt_01.prefab",
+      "entry": "20fbfa03139c8c44185545f076543e47"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/ClosingStall.anim",
+      "entry": "20fe8cd024d7f294c950a53922a488d0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Adler Dark Wood.mat",
+      "entry": "2149baccf21e31043a0e66c87a72bfcd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture",
+      "entry": "21a0e291e1f508745aed1c49b27d5434"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Wine Liquor Beer and Glassware - Sample/CorkScrew_01.prefab",
+      "entry": "22294fbb399136745912705cd64924db"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Int_Apt_02_A.png",
+      "entry": "2250416960944be479b4dade787e02d6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom",
+      "entry": "226296606f5d6a7448cfcc5294e66b37"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Base_DD_01.prefab",
+      "entry": "226aa234041d2be48881aab9632ea78e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01",
+      "entry": "226c023f060c1f04991ebb0ef1097cfd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Doors/Int_RR_DoorFrame_01_Man.prefab",
+      "entry": "229639aed4129534fa69a11f5305b94e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/Wall_Mirror_01.prefab",
+      "entry": "22a931750861f724a854421dccfa17e0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_MirrorFrame_01.prefab",
+      "entry": "252461d3f6f63ab4893c8eb882ee2be0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Wall_Double_01.prefab",
+      "entry": "252cc1d947dc9f34fa0d633f87bbcfc0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Plastic_01.mat",
+      "entry": "255352a35d6d72c4e8ee50bc826f7495"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/ControlPanel_apt.png",
+      "entry": "2595a59e4bb200a479cd18949ee5d090"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/CT_Marble_01_M.png",
+      "entry": "25e43ff5427b9ae419d735c303f7afcd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Sofa_Apt_02.prefab",
+      "entry": "266d5a1d00e2ac2479b93bdd1914ad78"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Glass_03.mat",
+      "entry": "266fb6016862b8b4ba1eec482c572c21"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Pillar_2x2.prefab",
+      "entry": "26ae75b7e5c390d4f8755cadf4903875"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Wood 02.mat",
+      "entry": "26f1b36be16f30d409f9ab1a7d20a8a5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Painting.fbx",
+      "entry": "27b4045e9d44110428f91ffc9297b5f1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface",
+      "entry": "27c32aa947d0197449dcda56c82d0bc8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/CastIron_01.mat",
+      "entry": "27f834cdb4589be48903c1e529e09c59"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/WallArt_Apt_04.prefab",
+      "entry": "2804d1473f02dbe46804e506168c85ec"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Rustic Wood - Normal.png",
+      "entry": "280b9617cd8dbde4f8c3a20d529b8051"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Ceiling_Apt_02.prefab",
+      "entry": "283fe20ffc8ff164080c612ba8cb7b86"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/WallArt_Apt_03.prefab",
+      "entry": "28452da629c654043bf2718da2d8add6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/Z Axis/Drawer_Pull_Z.cs",
+      "entry": "286620fa050ddc24d90bd777daaa73c5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Wood_Ebony_01_AO.png",
+      "entry": "288cf7adf0d7df7428fd6de295b12e20"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/wine thin glass W Liquid.fbx",
+      "entry": "28ca9505d52f64b408920ffcf4831bc0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom/Table_End_02.prefab",
+      "entry": "28f3f85a3fb032b4cbee99b8dd59df44"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Metal_Brushed_01_N.png",
+      "entry": "28ff0b5cb9b51034a977bc2116ddfe2e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc",
+      "entry": "290a199829c9a914c83a83e6539ec2b5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding",
+      "entry": "29c8994efe59f524c826b81ad35b574a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_Sink_01.prefab",
+      "entry": "29ca7f8f26bee5640b6fc390d6bc4e74"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/GameConsole_Apt_01.prefab",
+      "entry": "29e76f542ce050b4d8948ddead8c0c46"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Chair_Apt_01.prefab",
+      "entry": "29eb9cdec523f4944b46fcfae81dc9c8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Wall_02.prefab",
+      "entry": "2a316e236f1c5504baf1ef31847a4658"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Rug_A.png",
+      "entry": "2a54dc938e2f4fc469b73b11822fcfa6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Kitchen_01.fbx",
+      "entry": "2a83511a782a6aa4dafed1f5a2bd3803"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/ceiling.png",
+      "entry": "2a909c6b0c3249d4b8fc74ae5d6d52dd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/MarbleWall_02.png",
+      "entry": "2aa84f74598871447bdc9328d0e24d9f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/keyboard_01_A.png",
+      "entry": "2af2cafff89413a43824ed34de8918fc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_UrinalDivider_01.prefab",
+      "entry": "2af99c6a575291740aa769a08c524aa6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Vase.fbx",
+      "entry": "2b4a2d31e35c5ce4cacda7ea46d6d187"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/Shower_Handel_01.prefab",
+      "entry": "2c53d7677acbaf34b81c7da75f0544ff"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/Openingwindow 1.anim",
+      "entry": "2c99a5e23d89e6d4f9019650e3b3776a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Pillar_2x2.prefab",
+      "entry": "2cf7605246c1a3c4a8bff50e0beb194b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Mech_apt_01.prefab",
+      "entry": "2d6f3b929468cea46a733cd9fe79f4c9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_04_Filled.prefab",
+      "entry": "2e2398df6726e164fb29cbffecf878a0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Wall_03.prefab",
+      "entry": "2f0bc8ecefb88eb4481fa90771c8e7c6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Wall_02.prefab",
+      "entry": "30553bc0887e026448946afaa552d655"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bathroom",
+      "entry": "30fe921ee9d943c428556539bba76b97"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings/Int_apt_01_Ceiling_01.prefab",
+      "entry": "3106a6f3c2fc2a547b55f8f47ff2e09c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc",
+      "entry": "3117a122a6c169a41a667dda50162953"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Collum/Int_Collum_Apt_02.prefab",
+      "entry": "316068d5ea092d0438b2f98b4f2df6a7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy",
+      "entry": "32058b23841609940b3a587bd4a92fa6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs",
+      "entry": "3311df2ab1633d845bde5691f2f600f1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Doors Frames",
+      "entry": "33233f0716dd88343a635208cb699de1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Pillar_4x4.prefab",
+      "entry": "336374783a6a6f9438803704ebba706f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/Frame_Apt_02.prefab",
+      "entry": "339af60aba47cba459f763bee7ddb43f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Int into Ext/IntExt_apt_DoorFrame_R_01_01.prefab",
+      "entry": "33a7e848ce42e7b43a917cdab018b9cc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_03.prefab",
+      "entry": "340937d0c3254e04b821007b8536c465"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/Furniture_Props",
+      "entry": "346a982c5dd76c943b339d2bdf78d7e2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/Opening.anim",
+      "entry": "346d4004c3a668e4d8afa4a40d47416d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_Urinal_01.prefab",
+      "entry": "34d4d82c1bf25e642924b521b8a00cd3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Apt_Props_01.fbx",
+      "entry": "34e386a75bb8feb4aa0f48b512cbb268"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows",
+      "entry": "34ee2b8617956354f8a16763d8109b3a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Table_Side_Apt_01.prefab",
+      "entry": "355f0f3f8c2463f4d8bed401784f063f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/FabricShadeGlow_N.png",
+      "entry": "3589673dae3d8704aac5304d2d3dcf2f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Modern",
+      "entry": "3637a37e85dfa9a4089f0e0c7e1e7473"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Wall_SD_01.prefab",
+      "entry": "36510e737e626954986f2c5112be9091"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Ceiling_Apt_05.prefab",
+      "entry": "36dee4e097ce701479331df2321c1de3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Ceiling Shade.png",
+      "entry": "36f3754f68178f149b9d58c226e14abb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/WallShelf_Apt_02.prefab",
+      "entry": "372a0d77e8005d947bd72f3cf2cbde53"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Wine Bottle Label_04.png",
+      "entry": "3780b80c1edb81545a49231ee5eb991a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/BR_Tile_01_A.png",
+      "entry": "3784f8a002796f147be3cecd94715be1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/BPS_RR.fbx",
+      "entry": "37d1da0067b60bd4282c0eaee639654e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/keyboard_01_N.png",
+      "entry": "37f203c6a42b6b54ea38024733ee10e5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Int_Apt_02_A.png",
+      "entry": "3847b488a74a3f444bf0eb5efbffa90e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/AdlerWood_01_A.png",
+      "entry": "3896f4ca02b49124dbe88348af6cd90b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special",
+      "entry": "3910682e2831d3a4194fd044db661cd1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/Z Axis/closepush.anim",
+      "entry": "39cb1cbad0ccff047b57918d45dc6917"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit Exterior_03.fbx",
+      "entry": "39d59b6b89252814494c963f97ed892f"
+    },
+    {
+      "path": "Assets/Brick Project Studio",
+      "entry": "39f8a5732a15f774e8d434c1ce70a764"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/Furniture_Props/BPS_Table_01.prefab",
+      "entry": "3a3c0bbe58beeff4a8d63acd5a770137"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_01_02.prefab",
+      "entry": "3a840935b4015fb44b4d247b6f257006"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/Toothbrush_02.prefab",
+      "entry": "3af3788489468634ca8551e4f49d373f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/Closing 1.anim",
+      "entry": "3ba90786818c61749b6ba3df30d6c117"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/openandclosewindow1.controller",
+      "entry": "3bcdaa1dc4d3d2941bdc687f50714a64"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Glass_02.mat",
+      "entry": "3bded00981e95504a8e47f996835ca9a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/Int_apt_01_Staircase_01.prefab",
+      "entry": "3cdb710f55b8ba342bfc746fcebede5b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Floor_01.prefab",
+      "entry": "3d085e6f9521f33418df246d3b5f694f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Brick 02.mat",
+      "entry": "3d1a06be464c4f34a858b507405a7bb5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_03_Filled.prefab",
+      "entry": "3d51d280e33c5fe4c97ae593c2292997"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Burlap_01_A.png",
+      "entry": "3e34cde6de0ecce4183b7f04b0d704ae"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Table_Apt_01.prefab",
+      "entry": "3e7be61a66e072c44bc2cc6bbee79f45"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Special",
+      "entry": "3ebc6688b55257043963eb9761805ea3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom/Dresser_Apt_01.prefab",
+      "entry": "3f38091ec14910c4c8b8af3bab31b1bf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/WallShelf_Apt_01.prefab",
+      "entry": "3f867dd7956e96f4a90edce652fc7512"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Int_Apt_03_N.png",
+      "entry": "3fe628b28bc9f1840a32714ccf063eb3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_02_05.prefab",
+      "entry": "40399f95a6f26064ebdd3b08052bb9fc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Brushed Chrome.mat",
+      "entry": "403f7691aae4323499829c9fc28c7c6e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/OvenOpen",
+      "entry": "4052a93064f5b2c4ea9b0d7577e6ac73"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Wall_Apt_01.prefab",
+      "entry": "422f7f767554b114a9a1f54038a5710b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings",
+      "entry": "423d5a3b369847047810505a9d407d97"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Legacy/Base Room Scene.prefab",
+      "entry": "42ded4a9b41e76d46bb90a3e35072cf7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Wall_01.prefab",
+      "entry": "42f30c85f9e074e4eb17ea01048327d2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/OvenOpen/ClosingOven.anim",
+      "entry": "438a7d2af973c3348921e30c83ab5205"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Red Wine.mat",
+      "entry": "4395ee91f3c8a8245ac3acea11839b80"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Roof_01.prefab",
+      "entry": "44297ac12129a474d89e1b2eb6151936"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/FlipL.controller",
+      "entry": "44a6083341b144c4f9f33731e8b8d0aa"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Floor_01.prefab",
+      "entry": "44c2c1ab745c05740b134b9f0487d99b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Painting.mat",
+      "entry": "450760a940231c348ab7f9bfdc460276"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Appliances/Stove_01.prefab",
+      "entry": "452921da7fe17904da8c1d34c235dee4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Brushed Metal_Chrome.mat",
+      "entry": "4580dd49916b3c542b97109c8ca425f3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Int_Apt_02_N.png",
+      "entry": "45ca0f5fd1505bf47b6c14bf1ed96ed3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Porcelain_01.mat",
+      "entry": "460d4e0c91ed8c5439e09b9b3b47c398"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Canvas_Nat_08.png",
+      "entry": "461f328863e820f4c8ec8bdeed2aca44"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/DoorFrame_Apt_02.prefab",
+      "entry": "46552e96207732c4789f21297738d416"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Marble_Dark_01_N.png",
+      "entry": "46992959d77f88c4783fc144795e2ba4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Closet/ClosetopencloseDoor.cs",
+      "entry": "469e00e876fb40142af620db2b198643"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/CoffeeMaker_Apt_01.prefab",
+      "entry": "46bf299537dbcae4cbccff6784223305"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Plastic_01_A.png",
+      "entry": "473e76b7fdb58724ab105d9d07528a63"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/First Person Player/MouseLook.cs",
+      "entry": "478f19f2b564b5a459ccd72d2ea6afe1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Fire/Fire_Add_01.mat",
+      "entry": "4791bf36c2e577a4a9e789b580579636"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Windows",
+      "entry": "47b6069078bfa834a916d9bed2d68b24"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures",
+      "entry": "47eaab2bbab952640a96736a3fc1e7b8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/Speaker Sub.prefab",
+      "entry": "484da822e5bb83b4281e1b99f942b4c1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Floor_Apt_01.prefab",
+      "entry": "4850c514825283749bdc56155d7559a9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Shiny Metal_04.mat",
+      "entry": "48852ed51db63954399f7facee033ea4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Wood_01_A.png",
+      "entry": "48aec0e661dd8b34da0b78a05a1b25c5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/DoorMat_01_N.png",
+      "entry": "48c0f9d0cc125f34a86acacfc45992b1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Tall_DD_01.prefab",
+      "entry": "48e9669af95ae5746aa4ad24d893f391"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior",
+      "entry": "496d8c9e31792f74d8b73d659a2e0021"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Structures/Structure 01.prefab",
+      "entry": "49f576a03ece56a4e9c640ed081f6a68"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Wall_Window_01.prefab",
+      "entry": "4a111030cf811f542a01c361f491a2b1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Antique.mat",
+      "entry": "4a3c4e9ae9b122e449659fdb803fb1dc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Fire",
+      "entry": "4a8014ef20b900f46b698a159b6ffb23"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Toothbrush_01_A.png",
+      "entry": "4ab40b3a4ff0b7a48a1090e232aa80b6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art",
+      "entry": "4addefa9a98220647bbb0f022fc137d5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/opencloseDoor1.cs",
+      "entry": "4b5e0617227fa4743be84f23d9e5cb42"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide",
+      "entry": "4bb6243b32339bb4b8f2fc54307831eb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/RedLight_01.mat",
+      "entry": "4bb7c435fb1657c42a9ec5ad46b7100a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Plastic_N.png",
+      "entry": "4bf427319880ec2419bf2d8809d66594"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Burlap_01.mat",
+      "entry": "4c3e122e15d5d984083bffaa2d094ff5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Wall_DD_03.prefab",
+      "entry": "4c6a5e5423a8c2a41ac136b50710c436"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset",
+      "entry": "4c9a7fe8bcebeb944b0d37b34d7abb47"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02_CenterBase.prefab",
+      "entry": "4c9bf42b955bc1a4b83f6740aea218cb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Color_Black_01.mat",
+      "entry": "4cd790ac0d37bdc46970f6688c6b5070"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_02.prefab",
+      "entry": "4d476d9fee396a74db28e7095af9245d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls/Int_RR_01_pillar_1x1.prefab",
+      "entry": "4da894abfa482cf43b36780ecf3abd44"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Corner_01.prefab",
+      "entry": "4ddec33f57bc4c74680f805d105aa0cc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/Toothbrush_01.prefab",
+      "entry": "4df090b3acce5624794706f81bcff9b5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Adler Light Wood.mat",
+      "entry": "4e3472c094b8146469870886e7ccf1a0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Brick 02 Mute Texture.png",
+      "entry": "4ecef430efc993d4f807f6b076c16aca"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_05.prefab",
+      "entry": "4f13e2e193b7411478434edd7b149917"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/Furniture_Props/BA_Ceiling Light_01.prefab",
+      "entry": "4f5fea46d0c567446b768005952642f8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/Scene_01.unity",
+      "entry": "4f80debdb52c166478997e1d2b329e3c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Painting_03.prefab",
+      "entry": "4f9e8d17d08a3d346909d5dc0f404d80"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Fabric_01_AO.png",
+      "entry": "4fa1c9ead8b6eb94da2389d7898b0e61"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bathroom/BR_Cabinet_01.prefab",
+      "entry": "4fd059785718649499a344b0c22ecd22"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Ceiling.png",
+      "entry": "505ba2c4c448cba4a818067958271639"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/Frame_Apt_01.prefab",
+      "entry": "509ac6312e62e5743ae96298947599f7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/Staricases_01_Setup.prefab",
+      "entry": "50ce1d3cebd78214e839f75e8796a39b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/RR_Soap.png",
+      "entry": "50db091480042264c8a7037d6712c054"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Knob and Key.mat",
+      "entry": "50dd338fb2540fa4aa15639a529736ee"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02_Tower.prefab",
+      "entry": "50f7395fbbcbfff47b55a68bd9ca5773"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/CastIron_A.png",
+      "entry": "519900fa9d01e9a43a245c4795c2170e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Legacy/Tiled Floor.prefab",
+      "entry": "51d3051b1d589214e960ae74c8933521"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Painting_N.png",
+      "entry": "52a7d8c0d3423c946a76ebe65fb6dab7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Int_Apt_01_N.png",
+      "entry": "52cab35fc66c35d47b73fd24748c768b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Marble_01_A.png",
+      "entry": "533e69acad2a4a24fb387ac1f4a2548f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding/Int_Molding_Base_Apt_04.prefab",
+      "entry": "53415a18e4cbb7e4cb88b0f113ee915b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room",
+      "entry": "53e140c5a0581424493108af1eb65836"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Bench_Apt_01.prefab",
+      "entry": "544e2a3365ece1e428837232ca8b768d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Canvas_Nat_05.png",
+      "entry": "546c013b9fb8177449c424e4835bbc51"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Table_Media_01.prefab",
+      "entry": "54a1d2aa299948d4386f320102e514a9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Floors Ceilings/Int_RR_01_Ceiling_01.prefab",
+      "entry": "55489656333abb749a864446e5879d06"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/Ext_BA_01.png",
+      "entry": "557d00f8839f23f4d9300672c1aa5d58"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BS_Texture_map_SE.png",
+      "entry": "5582ded7245c6074b9e3c52d0ee70c84"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Standing.png",
+      "entry": "55dfb52b333416b4580cd9cd619b1904"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/TV_Apt_01.prefab",
+      "entry": "56a93cd127ed0184982c13ec0a61cfa5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Z Axis -1/openpullopp.anim",
+      "entry": "56d5b9ef4dbead44d812cf0faa71ed4a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Corner_01.prefab",
+      "entry": "5751082ea532e49478e631f5ff9a1cfa"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings/Int_apt_03_Floor_01.prefab",
+      "entry": "57b8e39375d93984895e498850c28ef7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Wall Wine Rack_Apt_01_Filled Variant.prefab",
+      "entry": "57c88468704ae69488156b563516783f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Filler_02.prefab",
+      "entry": "586efc4ccee24ca4883a7542f1e326bb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/Closingwindow 1.anim",
+      "entry": "58b3370ea2243b7438a41900e6cd12e8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Fabric_01_N.png",
+      "entry": "58bfd504e106d80488fcbb9512c2fa31"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/BRGlassDoorClose.anim",
+      "entry": "59bf63e47d9f08e47a9fd86d44895e45"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Restroom/RR_BathroomPaper.mat",
+      "entry": "59f4361ca0482dc47b43305e31892b29"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Modular Wall Cabinet.fbx",
+      "entry": "5a1710e01a2c88242a4499f68198d1f7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Canvas_Nat_03-04.png",
+      "entry": "5a1c12256f635c1409e89d1bdb570366"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Corner Wall Cabinet.fbx",
+      "entry": "5a3b2c9f5dcc95944b5769d838a747e6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Roof_Mid_01.prefab",
+      "entry": "5a8c5bdb2890760419fa0ba36befc73e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings/Int_apt_02_Floor_01.prefab",
+      "entry": "5aac716a11271124887a33ec1836f27b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Colors_apt_02_N.png",
+      "entry": "5ab1704465c86f547adfee08c8bf0327"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Ebony Wood.mat",
+      "entry": "5af27c19293d0ff4cb00b35cc2189634"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Restroom/RR_Restroom_Sign.mat",
+      "entry": "5b7c74c7b0bc859459d4dd7b7f164fb2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Cabinets_01.mat",
+      "entry": "5bdd1af6958bd9143a8bc920d98238b3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Canvas_Painting_01.mat",
+      "entry": "5c4d526e95a945e46abbe1645a318634"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/BRGlassDoor.controller",
+      "entry": "5c81701154f36c94698562dbaf42d6fc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Glass Wine Bottle Wrapper 02.mat",
+      "entry": "5d5f7ba22899a774081673e045e96cc5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Filler_03.prefab",
+      "entry": "5d67674c5abd5e74eb23b8e2a1e01d7e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls/Int_RR_01_Wall_02.prefab",
+      "entry": "5e1b3720a07b67c49a261a96f4842593"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/BathroomMat_01.mat",
+      "entry": "5eb7a5a1792bf624eb105fb759006553"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Concrete_N.png",
+      "entry": "5ef54bc528dd11344b45f3c8a9aed64b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Texture_Map_SE.mat",
+      "entry": "5f01895f1ecb58445b3aa62be24d6bca"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Brushed Metal_Antique.mat",
+      "entry": "5f469581b50505747a410deecdf8f11d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/Z Axis",
+      "entry": "5f554c25043a14646b5f07a7b2b8e5e6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Metal_Brushed_01_A.png",
+      "entry": "5f5dd08795363b04f8b9c1c6f2ca0ade"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Doors/Int_RR_DoorFrame_01_Unisex.prefab",
+      "entry": "5f635d348fad9f742a95c45e8aceda58"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03",
+      "entry": "5fc645babc362d2469869b278c5797e9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/CastIron_M.png",
+      "entry": "60fe05f4313f9a743a60a9520b20834a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/ceiling_normal.png",
+      "entry": "618a287d815fdfe4396cbe668c8296d2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes",
+      "entry": "61da4cc8a797db742b0b461e2e6dadbc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/LampShadeFabric_On.mat",
+      "entry": "625ca8b0c9507cd4d8685b336560db6d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Doors Frames/Int_BA_Door_01.prefab",
+      "entry": "62bd457adfa663b4b8de2903bb4c8006"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit",
+      "entry": "6315d9097f0ef714cb63b945663ecbb3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Art_03.png",
+      "entry": "6344bcc8e46893f49ab242604a00da23"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/Shower_Faucet_01.prefab",
+      "entry": "642a2cb4532c08a4db221317e2019f62"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/DarkGlass.mat",
+      "entry": "64463c6a7652f604b8996718d7515215"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/Wall_Mirror_02.prefab",
+      "entry": "646857c834326db489fedada3df0bbc5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Signs",
+      "entry": "649241ef9c251474b94590041f0e00d0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen",
+      "entry": "64b32d819dc74784f921de88bc4d6117"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/Scene_03",
+      "entry": "64f5aa4e7797a1a4d88a81b4536ba6ec"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Bathroom_Apt_01.fbx",
+      "entry": "651d77a525480c84e9327ec0894c0da1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/CounterTop_01.mat",
+      "entry": "656eb32607aaaed4590ee8c05d00282f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Shelf_Apt_01.prefab",
+      "entry": "658e64758890bc24ba679c51e2cd2ab3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/ToothbrushCup_Filled.prefab",
+      "entry": "65acb63846e2c9a429906aa8e2ecdd54"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Fire/Torch Flame.prefab",
+      "entry": "65b0d7b3c17d2854f87e4c8416f798fb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting",
+      "entry": "65b3809457a326b41afcda181e51678f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit BA_01.fbx",
+      "entry": "65c4e0d1191656a43a436373673c91f7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen",
+      "entry": "65ca55068485b1a4cafc116c04287f02"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Glass_04.mat",
+      "entry": "65d72af2f614466478d9d8d8d7593b95"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Restroom/RR_SoapLabel.mat",
+      "entry": "66fe060a1655b474b9ce1641bbf19f9d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/X Axis/pull_01.controller",
+      "entry": "670045c46abca0544a34a6d8647b08bb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/openandclosewindow.controller",
+      "entry": "671464f139189844db1fcfdd09b284d7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/BPS_Table.fbx",
+      "entry": "67171e1fd1d009c43b75a962fa5556a5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/DoorFrame_Apt_04.prefab",
+      "entry": "6723febf70d07b7469fbcddd65e8660b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Plate_Apt_02.prefab",
+      "entry": "677e48bdd6cf48e42ac397a1a8a64075"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/RR_Panel_01.png",
+      "entry": "678620c0e8a6d8a46920c7f731115bf3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_Door Frame_01.prefab",
+      "entry": "680503713abcfb149bae4f505b6c449c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Pillar_1x1.prefab",
+      "entry": "68a3631d9068c5246954790f8f2e4708"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/porc_01.mat",
+      "entry": "691850c8ec9fa6d44ae662bfdbe6c53a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/lamp.fbx",
+      "entry": "693cb6a41bc2205409161bed0f51fdca"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/Toothbrush_03.prefab",
+      "entry": "6a38eedbc13730a4e83af50d68894995"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Closet/ClosetDoor_Base.controller",
+      "entry": "6a53b8c24a752874da87800383dbdf1e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Canvas_Nat_01_02.png",
+      "entry": "6a8bc2eb1d26b8148adab82af7aac7f2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/WallArt_Apt_01.prefab",
+      "entry": "6ab6af969cb643e44b67269676f36669"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_02_04.prefab",
+      "entry": "6ad7ae35911007741856dfec75c6ab59"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Stall/RR_Stall_01_L.prefab",
+      "entry": "6ae782b263dc9c548a46ef8ff80f34d8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Roof_Edge_01.prefab",
+      "entry": "6afcc4494dbad0147a4aec93839a9ad0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Leather_02.mat",
+      "entry": "6b037e7c427c8fc478dce6529e818f82"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02_Side.prefab",
+      "entry": "6b094143198273d43b21bd5b1dd0b3c3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Doors Frames/Int_BA_Frame_02.prefab",
+      "entry": "6b0fe008d0f2fd649ba26243e4ef0ee8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Legacy/Base Scene.prefab",
+      "entry": "6b5e9772e973b514993c495d4471494c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Windows/Closingwindow.anim",
+      "entry": "6d03ded07380c2345bc09599eb0099b8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Marble_Dark.mat",
+      "entry": "6d3ba1df7fa074c45b26f73faef7608e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_01_01.prefab",
+      "entry": "6d99fe7157190374995611275c238de8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics",
+      "entry": "6e88a5a6fd85244439a03a3746000887"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_02_02.prefab",
+      "entry": "6ecb0bf6d9576ac4c9db5a24641bdf73"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/Scene_03/OcclusionCullingData.asset",
+      "entry": "6f115c79b71beb349b505585792bca70"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Concrete-bump.png",
+      "entry": "6f12722191c711042a077c553e272e01"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Modern/Int_WallExtrude_01_01.prefab",
+      "entry": "6f3fdbc163e80234c908f27761c7c3a9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Int_Apt_03_A.png",
+      "entry": "6f4826912ff8d074ea7cdfd9951e9046"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom",
+      "entry": "6f83705fdf94dc54991f02f9d858b8bc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_01_06.prefab",
+      "entry": "6fa91d521b4ccab46aeeac4c0eec4749"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Color_Grey_01.mat",
+      "entry": "70139dc62be58be4a91d1831e1f21e95"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Metal_Chrome_01.mat",
+      "entry": "701dd7c589db913439e88caa8d11b7fb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/Shower_Head_01.prefab",
+      "entry": "708f360dca4c28243813704f811ad080"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/SS_Stand_01.prefab",
+      "entry": "70c062c3a7500e7479c9797b6190948e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Canvas_Painting_02.mat",
+      "entry": "70c663d62a3d11442934efad3b175b35"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_02_02.prefab",
+      "entry": "7148452916a07f34a8145e1d3f150b7d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_01.prefab",
+      "entry": "71546b2097e63004893a3528d003a956"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/Openingwindow.anim",
+      "entry": "7169b9ec272e3914984cc69c69486082"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Fire/Fire_Texture_01.tga",
+      "entry": "719670e2fe4d8e74da570025f16a5f07"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Lamp 02 Shade - On.mat",
+      "entry": "71e62a5ab55406f4aada84fe885d47b0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Pillar_1x1.prefab",
+      "entry": "7262bf6e31d2c3047abf1089a09b516d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit Interior Updated_02.fbx",
+      "entry": "7308b87287964d64b9769b7e0d6d7314"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Pillar_1x1.prefab",
+      "entry": "736096cdbd0f7f34cb9e8fdc25987b1c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Wall_01.prefab",
+      "entry": "74787c4efc3c48d48ba66f7b4a32b975"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets",
+      "entry": "748556adda317c6488310b711b275dd8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/Rdown.anim",
+      "entry": "74df948863709e64093cc11589b78b30"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Vase_Apt_01.mat",
+      "entry": "7504f6d8f16670241856bdd867609ccc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Table shade.png",
+      "entry": "75236e1c6236b444d84fbc09afbf1ce8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Pillar_2x2.prefab",
+      "entry": "7536b5cab7fa6894e9909e4f8ec3bd69"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_04.prefab",
+      "entry": "75b51d9bb1b7e4d4b89e8edc75336c34"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_Roof_01.prefab",
+      "entry": "75c16d4794f25e84ea8d82ee45dd1937"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bathroom/Shower_Base_01.prefab",
+      "entry": "75f68a1f4dd36214383ec174a8d8bf67"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/Rup.anim",
+      "entry": "75fd2388603b82a4493377e437db5359"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/TableFlipR.cs",
+      "entry": "7623a6b81839bee4e8ba39905f3df1b0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit",
+      "entry": "7650939902e4fdb4988d94990fbc7bee"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Table_Computer_01_Setup.prefab",
+      "entry": "7699f5af06713974ba61777a8a830f6e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Canvas_Nat_03-04.mat",
+      "entry": "76a081e3e3664a443af0a878387b200e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Fire/Candle Flame.prefab",
+      "entry": "76ba1ca0f3bd5de408854a87c409fe9c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Plastic_01_N.png",
+      "entry": "76bd84ba642ddf0468318d675e90dfe2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Pillar_3x3.prefab",
+      "entry": "77057a053541fb344a2d4dc020cbf68a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/opencloseSlide.cs",
+      "entry": "770aee30421368f4899e57b35481b2f8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/Mouse_apt_01.prefab",
+      "entry": "77693aa9ab898634298b44790e14e5f3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom/Dresser Closet_01.prefab",
+      "entry": "7769b6e68c1a90a458fec4955db6b2fd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/opencloseWindow1.cs",
+      "entry": "79023f3c1c542ca478d98525efcaa0bd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Int into Ext/IntExt_apt_01_02.prefab",
+      "entry": "79276710ec62bc64c8249de57cba02e6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom/Bed_Apt_02_01.prefab",
+      "entry": "79723f7a04c42fa4cb0fefb4f7686381"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls",
+      "entry": "797f2ae9854852c4896799f06cbb86fd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Shelf_01.prefab",
+      "entry": "798cab9a237d184479fa2e6d3e55fb57"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Wall Wine Rack_Apt_01.prefab",
+      "entry": "79b944a6d385a6444a7932d0dd93d9ce"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Plastic_H.png",
+      "entry": "79ef3e688a809c344a2810096ad448bd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Apt_Furniture_01.fbx",
+      "entry": "7a1dd57bd8b6ca44cbf5f922801b2975"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/DisfusedVase_01.png",
+      "entry": "7a1f0a4cdc44c134c918ac7f2aafd911"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Antique.mat",
+      "entry": "7a2c0b18d3d81384a9318118e5c1c9ae"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/FabricShadeGlow_A.png",
+      "entry": "7a64650033ac05447acbadbe68bf5324"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_knob and key_A.png",
+      "entry": "7a68073835939764bbb1c74b48466e00"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/Vase_Apt_03.prefab",
+      "entry": "7a897a6b060173d41a37261351d86569"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/WelcomeMat_01.prefab",
+      "entry": "7ade998a75360c54ca6e55373981e604"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Rug_Apt_01.prefab",
+      "entry": "7b8d9613223ef1f448bbe8fc90d8a85d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/X Axis/closepush_01.anim",
+      "entry": "7b9d5a8930e7cf4478b9e7be6ca056b3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Controller Screen_01_A.png",
+      "entry": "7bce827c508e5884d9ca002075d8459f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Apt_Rail.fbx",
+      "entry": "7c69e40725f2d1a4687ecf3e80b2dfac"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/BrushedMetal_M.png",
+      "entry": "7d8b61015f4f2cc40a1c32a2791bfa3d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip",
+      "entry": "7e045269bf051e64992c213333fb24ab"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Concrete-normal.png",
+      "entry": "7e190a8bc0493c547a469963af75222c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Pillar_3x3.prefab",
+      "entry": "7e9fb32cd7ac0de4c81c480a5478d86a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Closet/ClosetOpening.anim",
+      "entry": "7ec53f8a7d5488646b4529a5308cc732"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Fabric_01_White.mat",
+      "entry": "7f1d2f122bc99854b95672cfb7d080fa"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Rug_N.png",
+      "entry": "7f7b53da64f751048b47d48f41089031"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/Closingwindow.anim",
+      "entry": "7f8076bce6c4fc64dbaab62c05311db1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Table.png",
+      "entry": "7f9782bc8a3dd044ba1c3077976b8b8f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Cabinets_02.mat",
+      "entry": "8065c96d5d4286e4987cd02652878015"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bathroom/Hamper_01.prefab",
+      "entry": "811e6e74b6e3af9468ee8cf92013ce83"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_08.prefab",
+      "entry": "81681dbb7b5c6134ba68a4e523911dc4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/opencloseWindow.cs",
+      "entry": "817d7f89b6e10ed4d804fa09670bf2ea"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/Int_BA_01.png",
+      "entry": "81996dc1d41eda84f9d6b55c50adea82"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Glow_White_01.mat",
+      "entry": "823f8d5383d173a4fb4153a73427684f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_Toilet_01.prefab",
+      "entry": "8241ffa2db322f148a140189e8ca4afd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/White Wood.png",
+      "entry": "82825fa1dbf49564796bb87fafd54ed0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/Ext_SS_01.mat",
+      "entry": "82ab0cdd78fe56340a768888a061f55c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/keyboard_01.mat",
+      "entry": "82dc13826f8c00040b92c94337944a2f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Controller Screen_02.mat",
+      "entry": "83b00c8a16e3e6748806636bd5f3c6e4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Misc/Bench_Apt_02.prefab",
+      "entry": "843e4058e4b291d44bc18a16bdfae4a2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Leather_H.png",
+      "entry": "847bc10dbce23b441840cc99063df098"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Brushed Metal_Gold.mat",
+      "entry": "84a1ffeca40e4c6439b0a1f93b4d287c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/AdlerWood_01_N.png",
+      "entry": "84cd5ef0583ef6449bfe7ad09c001723"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/RR_Restroom_Sign.png",
+      "entry": "8521850fc227afa4fb73de6489100edd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Wood_Ebony_01_A.png",
+      "entry": "852e56973a7526a4b88475a4f8463f4b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit Interior - 01.fbx",
+      "entry": "8537129dc3fbbe44186add4eea186b85"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Table_Computer_01.prefab",
+      "entry": "85e9540880fc7824c8aff31eb2cc6498"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Controller_01_A.png",
+      "entry": "86060e917dc55a7448b8935812c62bb4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Pillar_3x3.prefab",
+      "entry": "867f5b00c17d4de4db8a0cb3f519283b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02.prefab",
+      "entry": "86ae21e881865b04f8548c4edade5fd2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/OvenOpen/OvenFlip.cs",
+      "entry": "86ae241f95cb0464188693a338d04798"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Wall_01.prefab",
+      "entry": "87b837bc5f2c7db4787b6fb7663c16d1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Label.mat",
+      "entry": "887cd0bd2b51873418b96f1bf6f04da4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/BR_Tile_01_N.png",
+      "entry": "888976efb2fe9a643bb905012d649c04"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Glass_01.mat",
+      "entry": "88b88f875cf0af442996954ba27bdf64"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Table_Dining_Apt_01.prefab",
+      "entry": "88eb65b4dea685a4cad7ad664104b001"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02_Center.prefab",
+      "entry": "8915be8858dae144eb1415e1fada3eda"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings/Int_BR_02_Floor.prefab",
+      "entry": "8934f512a6a9f714085a3d0dd88c1661"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Table_Dining_Apt_01_Setup Variant.prefab",
+      "entry": "8949b4a88fb989e4483115e02dfafc96"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Pillar_2x2.prefab",
+      "entry": "898817d0fbc7ec3448ce39efd8267ba2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/Quitgame.cs",
+      "entry": "899a71306a1974c4c887d977bab22ef8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Controller_01_A.mat",
+      "entry": "89d75b733df5ca74d837222e4a8a1b46"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls/Int_RR_01_pillar_4x4.prefab",
+      "entry": "8a493615f312d5b43bc73a74f397fcdb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/IntExt/IntExt_BA_GlassFrame_01.prefab",
+      "entry": "8a4a119fc2ad9fa40817bd6773fe107a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Wine Liquor Beer and Glassware - Sample/CorkScrew_02.prefab",
+      "entry": "8a6b0935376d783439e952c404e2e666"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Floors Ceilings",
+      "entry": "8aabb977e9ba2c642a39cd81456c2e2e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom/Bed_Apt_01_02.prefab",
+      "entry": "8af73887c9cd7fa47a2f642969b20378"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_01_05.prefab",
+      "entry": "8b20f7b1c11009a4fb828bb33ad93690"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Blender_Apt_01.prefab",
+      "entry": "8b726a9375ea2e442aa068972abf0c08"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/CT_Marble_01_A.png",
+      "entry": "8bda7c52bef951a48a04b29d6d730922"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_Roof_03.prefab",
+      "entry": "8c565f534ef70fc4bbe3ede8f7750d96"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Table_Coffee_01.prefab",
+      "entry": "8c62e0f64b2956748ab5f5ece60bc90c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Pillar_3x3.prefab",
+      "entry": "8d0226687ab1ae8408b45c04addd8546"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Interior Exterior/Int_Apt_03.mat",
+      "entry": "8d06d0f3581549d4fb32fda8991db882"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/DrinkingGlass_01.prefab",
+      "entry": "8dfa0d45cd834394f8c62eec3b88c8c4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/IntExt/IntExt_BA_GlassFrame_02.prefab",
+      "entry": "8e3b94d51cc83074abb1a25bf3535c60"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Plastic_01_A.png",
+      "entry": "8ebf406575461064c88f9fbcb05d1c31"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Pillar_3x3.prefab",
+      "entry": "9068914faab841c49adc9e106827f827"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_SoapDispenser_01.prefab",
+      "entry": "912b5bb11c24b3842b28157f23895c1e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets",
+      "entry": "91b83f31308c06d439689f8138186839"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Brick 02 Texture.png",
+      "entry": "91e6f6bf45b72bd478b59dcf22714424"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02_Base.prefab",
+      "entry": "929be27b7388507448e23941feba1828"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_01_Pillar_3x3.prefab",
+      "entry": "933e1ae6be3df0a4495b29a809e3b3ae"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_01_02.prefab",
+      "entry": "93aca5305e2fdde45bd10238f67be364"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Art_04.png",
+      "entry": "93aed1f0d891f3440880dcc4154ccbf5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Stall",
+      "entry": "94b4017f1e3888745a73e36324812a34"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_01_Pillar_4x4.prefab",
+      "entry": "94c14dfc6c607a44486aa4e3dbc3f125"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/GameController_Apt_01_01.prefab",
+      "entry": "94e4c3350f88fe94ba5e156103abcf1c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Filler_03.prefab",
+      "entry": "955b182ab620d7443bf8c4ba6a621940"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Apt_Furniture_02.fbx",
+      "entry": "95cac277c5a04ef43add167566755e63"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/DisfusedVase_01_Normal.png",
+      "entry": "97af9a37fdf040a45a29544592e4e022"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_01_Pillar_1x1.prefab",
+      "entry": "97bf517250a35a647b9b27c826cd3b71"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Mirror.mat",
+      "entry": "97cb562e985012a4f8db1dfe9f95115b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit",
+      "entry": "98ccdafb031a36b4f8c871f3a31f66ac"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_01_05.prefab",
+      "entry": "98d3eb0b3a4e0684ea38b5d3fe1c5fd6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/CastIron_N.png",
+      "entry": "99496fcaeb5bec24ba1bba0387998f15"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/BR_Tile_01_Mod.mat",
+      "entry": "99811246d7017024d85cfa934a83345b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Legacy/office chair.prefab",
+      "entry": "99a0f1488ea2c1d47b7e9f7190961e40"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Fire/Fire_Glow_01.mat",
+      "entry": "9a0e2afa4dfa26744be17b68a3e1b98d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Plastic_01.mat",
+      "entry": "9a0f81c2a61d0294db7e1b3a3eabad0c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Bowl_Apt_01.prefab",
+      "entry": "9aac42a3890e27b479a5c73e54179197"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/IntExt",
+      "entry": "9afd4e361873a3c418be8c5277bede65"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Leather_N.png",
+      "entry": "9b0fc00f6400d5a48b1820e33be50b7b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/Scene_02.unity",
+      "entry": "9b5aa6428ba7a6246bd201ba8d95cebe"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/BrushedMetal_N.png",
+      "entry": "9c068687252a67747a8ff9e098cbf47b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Stall/RR_Stall_01_R.prefab",
+      "entry": "9c3dbc8f461d4914d9c9d995785ff708"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding/Int_Molding_Ceiling_Apt_02.prefab",
+      "entry": "9cfc770309e695442acba3403353b6fe"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Appliances",
+      "entry": "9d1b8e8288d67e24fa563a8d19b1684f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Brick Project Studio  Icon.png",
+      "entry": "9d27820131b0e99458aa15c850393b95"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Restroom",
+      "entry": "9d4ab9777aa50c14fbfac8f939a3ebed"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Base_Corner_01.prefab",
+      "entry": "9e4d4910b774d1f48810a4fa933835c5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_01_01.prefab",
+      "entry": "9e5c2bb5031891140882f5e81a01c0c7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_01_Pillar_2x2.prefab",
+      "entry": "9e5df3ffdacb0044d80a4e70e9f86833"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/Int_RR_01_A.png",
+      "entry": "9ec16e8e97fefce479fe70e0e7115274"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Apartment_Kit.prefab",
+      "entry": "9f5cf41eb9d32ea47906bc22c07fc533"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet",
+      "entry": "9f8746d3c6df0bf4ab035c61cd87276b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls/Int_RR_01_Corner_01.prefab",
+      "entry": "9fab82907283f784f961207d664b2625"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/WallArt_Apt_02.mat",
+      "entry": "9fe643e01fee71e4e8eb0fdd60b24118"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Colors_apt_02.mat",
+      "entry": "9ffdee5782f720247a027f75edcb9c08"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Rustic Wood.png",
+      "entry": "a0e0457c9788feb4f989fdc5b6977fde"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Toaster_Apt_01.prefab",
+      "entry": "a104be747e53b0c4f875ab61494ff9f2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Blender_01_N.png",
+      "entry": "a192ea0e9f5170a4a8b4ec9cd0f592ae"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_HandDryer_01.prefab",
+      "entry": "a1a5c6c9007efa348b1c7dd3e3039972"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings/Int_apt_03_Floor_02.prefab",
+      "entry": "a210596d183602d4f9abc956ba791b9e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bathroom/BR_Vanity_01.prefab",
+      "entry": "a21b031050e1345409177a5cf15ec3b4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Plastic_02.mat",
+      "entry": "a2c29511873a89c4b8ec41360c9dd9cf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/DemoSettings.lighting",
+      "entry": "a2f6163588e6e074996614a2b15b04b7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_LampCeiling_01.prefab",
+      "entry": "a313254324200a241b66577d0c096684"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/Int_apt_01_EdgeRail_01.prefab",
+      "entry": "a32793c2d7a973541a705148244340ef"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Plastic_A.png",
+      "entry": "a3752630695cc834fb7bfc39f50ea9dc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Legacy",
+      "entry": "a3b11110f41049f4f8d46bfc8ee7a0ce"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom",
+      "entry": "a42aa02b6dc21e644b5705822720cbd6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Z Axis -1",
+      "entry": "a507882f2594a614987bec9154c416e2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Rustic Wood.mat",
+      "entry": "a5fe6931b64e0de469d6a1b5b2a23513"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors",
+      "entry": "a62e9a2c4503174458b0184707ddb33a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Wood 03.mat",
+      "entry": "a64c40f22fb83f041b7c584055b61c8f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Standing - Normal.png",
+      "entry": "a71346a04ce3b6848b419c3f9e0cbb3a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Misc",
+      "entry": "a736afff634d1a440b7395f96e6bec4d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/MarbleWall_01.png",
+      "entry": "a74bcca27930dd042ae438a1af891279"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/openandclose1.controller",
+      "entry": "a78403c5152a9024b9029ea9f39b3592"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/WallArt_Apt_03.mat",
+      "entry": "a79b9dfdb7c8f754f8d5fd1924ac5fdf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Colors_apt.png",
+      "entry": "a7a36494f99a45a4ba843833f39659a0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/Int_BA_02.png",
+      "entry": "a7d954ba596ba994bbcc72a405b61589"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Pillar_3x3.prefab",
+      "entry": "a8128beaec68e3a4194a48ac20aafc9a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Canvas_nat_05-08.fbx",
+      "entry": "a8438cccd23b3f34286e66bd2d00626a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Controller Screen_01.mat",
+      "entry": "a89efc085b210d34fb9c6f0b7b0f669a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface",
+      "entry": "a9ab66b4bc09b684d95f1243d2aa9c07"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Base Scene/BA_First Person Player.prefab",
+      "entry": "a9b081014bad86f4a80b60284279d21b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/Prefab Doors.pdf",
+      "entry": "a9b8acaf2552b6c45a090980e69ceae1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/White Wood_normal.png",
+      "entry": "aa20464592754c2418b9144bff0d1ff6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Pillar_1x1.prefab",
+      "entry": "aa2fa323615b3744ca21435299b7e85a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_04.prefab",
+      "entry": "aa765da573f752d409b64961b914353f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/opencloseStallDoor.controller",
+      "entry": "aacf91c6e9f72a049aaef98d6d5f3393"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/BR_Tile_01.mat",
+      "entry": "aae18af11f5af9d43bb55831bba0ae8f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Wood Floor 01.png",
+      "entry": "ab709a2e76552b840b33c13d39165fc6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Plate_Apt_01_Stacked.prefab",
+      "entry": "ab931d06f54192f45ae5f39db40c6e7b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/WhiteDull.mat",
+      "entry": "ac3fc719b726a894c8420c2dfeb24547"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Chessboard.mat",
+      "entry": "acb2ae4532d2c0c4a827a97b50b5c353"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/White Wine.mat",
+      "entry": "aceec14a00995924b88aec0853110efe"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Building Floor Tile - 01.png",
+      "entry": "ad19f5ff4e0a2814ebd9b97d269bcf06"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Closet",
+      "entry": "ad87785502f96074d8c4ba05b3bec98e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Pillar_4x4.prefab",
+      "entry": "ad9c053ed14d8004ea68366cfcbf751a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Appliances/Range_Hood.prefab",
+      "entry": "add8565ea42029f4abfaa37c7dbe2abf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/OvenOpen/OvenFlip.controller",
+      "entry": "ae6447d9d805dbd47a186d4d4b009eb9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/RR_RestroomPaper_N.png",
+      "entry": "ae8a3b602707b8f419a84228822c21c6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_01_Wall_01.prefab",
+      "entry": "aec71fa5d6ab24744bbfb3afb66de766"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Wall_DD_02.prefab",
+      "entry": "af872b04269986143906a126ca9ff444"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/BPS_Chair_01.fbx",
+      "entry": "b06a7002771176e48b2aaba873e28341"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures",
+      "entry": "b0dadda7b2424c34f998779ff5628811"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Burlap_01_N.png",
+      "entry": "b13557c917cf5be438e42271983d16fc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior",
+      "entry": "b14bd0aeb3ce8a64182b37102edaed12"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls/Int_RR_01_pillar_2x2.prefab",
+      "entry": "b17effefd1c1da643888570fb5635416"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Wood_Ebony_01_N.png",
+      "entry": "b5b20f23beab58d45b513b9aa44e2709"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Pillar_1x1.prefab",
+      "entry": "b5b612cc5cb971b459b8c21f79f75715"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Wall_03.prefab",
+      "entry": "b5ea4c1fc5a7a044c8b2c38bf36cffe9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc",
+      "entry": "b6042056c2d96ec4a89226fa5944ff04"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_02_03.prefab",
+      "entry": "b6051831735950e45a12422235f03581"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Restroom/Int_RR_01.mat",
+      "entry": "b61458ebb19004843af57f63626d7f2a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Fire/Small Flame.prefab",
+      "entry": "b62dfcfd3c5f1934aa61c3c462ee104a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Building Floor Tile.mat",
+      "entry": "b65d6f1427086d84f91a3153f6f82ffc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/opencloseStallDoor.cs",
+      "entry": "b697b9be3c8d9534ebd171d2b41d6f4f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/openandcloseSlide.controller",
+      "entry": "b69a299cbf4579446b0990e8d3a17ff9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/Lup.anim",
+      "entry": "b6e07fe1ec87b3e45a099812a5828e1f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Pillar_4x4.prefab",
+      "entry": "b6eb91e203f46fb4c8f3ae98b953a325"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Shiny Metal_02.mat",
+      "entry": "b73dbd0dbafdfa944ac875a3b40515e4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Floor_Apt_02.prefab",
+      "entry": "b762b04c7fe35704cbdbf1806a638bf1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials",
+      "entry": "b80d857f0927f6b48b703072a6c76a31"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Walls/Int_RR_01_Wall_01.prefab",
+      "entry": "b813d19c40ec4bc43890e91f97b087d3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding/Int_Molding_Base_Apt_03.prefab",
+      "entry": "b864c417db32982428d6e52b690ffc78"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/LampShade_On.mat",
+      "entry": "b88360a072428ab458700f373aaa91ee"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Doors Frames/Int_BA_Frame_01.prefab",
+      "entry": "b973231003cf93b4f8dd9837bafc50cb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Brushed Metal_Brass.mat",
+      "entry": "b9c5d6ba92c526a43991da07d41229bc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Appliances/Fridge_01.prefab",
+      "entry": "b9f258a086096d24aa7861fa20deed65"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/ToiletPaperHolder_01.prefab",
+      "entry": "ba074cf4b261d9a4882932e86021742c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/MirrorPlate.prefab",
+      "entry": "ba11bcdb94e8ac2498db51b197091c7a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Pattern_03.png",
+      "entry": "bb0cfd11535504b46901d5b1cb1b403e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset",
+      "entry": "bb59077d2267a2540b1338b65c17c975"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Int into Ext/IntExt_apt_01_01.prefab",
+      "entry": "bb9f07d059873044e83eed13d1495a4c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_leather_N.png",
+      "entry": "bba906a60a6f55441b3ab8088f837cf7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Mirror.mat",
+      "entry": "bbc4e18e895e99a468291c41300b3f55"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Int_Apt_01_A.png",
+      "entry": "bd10fda34a46a5a4794b3bb3ccb0dab1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Rug.mat",
+      "entry": "bd43db1d1dee4bf4fbff367dc5cf6dc6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Corner_01.prefab",
+      "entry": "bd7983b1a49044746ab3ec58a61d0c4a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom/Bed_Apt_01_01.prefab",
+      "entry": "bd82980ec0e466d48a84803eba02265f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/ScreenMonitor_01.mat",
+      "entry": "be58df235057e3040b40406a31bcbf58"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings/Int_apt_01_Floor_01.prefab",
+      "entry": "bee09117d2231334d90a559b1ff7f323"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/ControlPanel.mat",
+      "entry": "bf99784c0118e114c80ad5c8ca2a5b8d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Wine Liquor Beer and Glassware - Sample",
+      "entry": "bfea097eda748e445af72b19baa5540e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Int_Apt_03_N.png",
+      "entry": "c02994762ef6b4f42b74972ac7ff03f8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/MirrorPlate_Filled Variant.prefab",
+      "entry": "c0474be4602986b4f9e6342b6b0817e7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Pillar_4x4.prefab",
+      "entry": "c132e10714a0f9441993cdd403636ac2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Plate_Apt_01.prefab",
+      "entry": "c155150d56fafb64ebab3a94b2cd86bf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bedroom/Table_End_01.prefab",
+      "entry": "c15f037642a1e1b439d19869e86e1ddf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/CT_Marble_01_N.png",
+      "entry": "c17c63007b0781242b9a53c53f5a2102"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Roof_Corner_01.prefab",
+      "entry": "c1dd2221b83bbd54c926f000702e4e1f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/TableFlipL.cs",
+      "entry": "c1f1c4265d2e233469ca3a33b18036d8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/BathroomMat_01_N.png",
+      "entry": "c21778f00b02c4342b7baa62a9e47e02"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Legacy",
+      "entry": "c2af272932c231a45a406dfa49ac027d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Apt_Kit_02.fbx",
+      "entry": "c31198774d98d9f43be2ca79cb0a84dc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Modern/Int_WallExtrude_02_02.prefab",
+      "entry": "c32373f77912b2b4b91d6e8e1ced623f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/BathroomMat_01.prefab",
+      "entry": "c39a7487ae8768f46b4f6344ce704453"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Building Floor Tile - 01 - normal.png",
+      "entry": "c3da4c855c1bfff4f9690290628f7f11"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Lamp 02 Ceiling.mat",
+      "entry": "c4401e5b03b52de47b786ae0f6002794"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Kitchen/Plate_Apt_02_Stacked.prefab",
+      "entry": "c442118e981d163429716195e7cade2f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Porc.mat",
+      "entry": "c4633b4bc8d4dbb41bc32118f1812b6e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Painting.png",
+      "entry": "c48e0ce806de2c94dabba0382fedcea1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_07.prefab",
+      "entry": "c5077b26080c7034cb161dfdaaf22c87"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Roof_03.prefab",
+      "entry": "c544bc53359f3e941aed74ee827feff3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02",
+      "entry": "c5ab3555673620d478f6edc0ab21bd1d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Wall_01.prefab",
+      "entry": "c5be39b879c83f54d9bbfebe68c809be"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/BRGlassDoor.cs",
+      "entry": "c60bbd51801dd3749be2ffa1cd525074"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_ToiletPaperDispenser.prefab",
+      "entry": "c78bc6eecce41e24ea169a70169c6508"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Restroom/RR_Soap.mat",
+      "entry": "c822a288072f2c7478063b318d9f9534"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Pillar_4x4.prefab",
+      "entry": "c83e0dcf64994e249a7357b1eb31da5a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/First Person Player/PlayerMovement.cs",
+      "entry": "c84cdf898723e1a4b9e4954eb5a76a33"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/RR_SoapLabel.png",
+      "entry": "c850f544a8f525843aed911132e9ebb6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_03/Int_Apt_03_Corner_01.prefab",
+      "entry": "c873e765218b357479718f2fe5578f87"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Ceiling_01.prefab",
+      "entry": "c8a35b1154033a342ac94fd67adf1991"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Mesh_Black.mat",
+      "entry": "c8a87a4e32c07864dabf944c9797ff12"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Fire/Fire_Texture_02.tga",
+      "entry": "c8b0b917072902c4f90273607a87d9b0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Rug_Apt_02.prefab",
+      "entry": "c8efa0ebb83f8f9498202481854c76a5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors",
+      "entry": "c93f3d6e1c2f1e54ca29176954baccbb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Interior Exterior",
+      "entry": "c94cd9c1f94dcd04ebf68354fd64c462"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Floor.png",
+      "entry": "ca6c7e19f0ffcd348961b68ecb61461c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Wall_Apt_02.prefab",
+      "entry": "ca794718ea2a2e4438e37724e4f6a6cc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit Doors_01.fbx",
+      "entry": "cb07ca870cf1d5444b85ea4e3ee49a58"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/int_BA_01_Ceiling_01.prefab",
+      "entry": "cb2e86b9dfb7ed64893d3d6345e3180d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Bathroom/BathTub_Base_01.prefab",
+      "entry": "cb533d6f7329a744fb5c0396de1b8b4b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Marble_01.mat",
+      "entry": "cb77271ecd71cbd4599aa533ebf5cc1e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/ClosingSlide.anim",
+      "entry": "cb785e67ca26b2e4689e65053a5108ed"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Mesh_Black_N.png",
+      "entry": "cbbecd88a198cdd4e8fc3f3e900a51ef"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Windows/Openingwindow.anim",
+      "entry": "cc19861857a952d45813ccf780116d9e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Glass_Dark.mat",
+      "entry": "cc90876a24c95974baf293258366d22d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/DoorMat_01.mat",
+      "entry": "cca629179fca3a14ab08d0f1cc0ecce3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Apt_Kit_01.fbx",
+      "entry": "cd0bf29c9c9af6f4098b74076d25f0cd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/GameConsole_01.mat",
+      "entry": "cd2528b4c58decf4fa93cbcfc4c870ee"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Collum",
+      "entry": "cd30d03d108b87346974024eb3f31363"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Leather_01.mat",
+      "entry": "cd43f733a36e7fa459b71f33b2d0bb36"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/Trash_apt_01.prefab",
+      "entry": "cd4ca976dbf626549971e19d7ef53367"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/Furniture_Props/BPS_Chair_01.prefab",
+      "entry": "cd8fcc5431d7f7e46be3c7c12ed32513"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Fire/Fire_Alpha_01.mat",
+      "entry": "cdb5cf50c86c5e1479a217fd032beff8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Controller Screen_02_A.png",
+      "entry": "cde7f6eb91781a7469564a0d4f32910d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Art/Canvas_Nat_01.prefab",
+      "entry": "ce0bc08e90169b64a82b286ba042f677"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Windows/openandclosewindow.controller",
+      "entry": "cee913081722036408a297a363171970"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/KeyBoard_Apt_01.prefab",
+      "entry": "cf41c3b90dc3ff44c8efe4be6ce3494c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Shiny Metal_01.mat",
+      "entry": "cf467f7163d9eb14ca56735e8000eccb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/ScreenMonitor_01_A.png",
+      "entry": "cf5ee09346dbbdd4b90575ec3312b67d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/First Person Player",
+      "entry": "cf90159fb78ce79498a992a9e9b9dac7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation",
+      "entry": "cff0dec274a8a234aa6a99b3b0431cfc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Signs/RR_Restroom_Unisex_Sign.prefab",
+      "entry": "d076477035e41e6438c5f9a92ee50194"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding/Int_Molding_Base_Apt_05.prefab",
+      "entry": "d0dd1661cea607a40945f6bc3f0870fb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02_Filled.prefab",
+      "entry": "d17c15e72c29a9f49879ff3b971bd44c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/Opening 1.anim",
+      "entry": "d1c0db31e512c124cbc6f2a57b8bac2b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Bathroom_Corner_Tiles.fbx",
+      "entry": "d265ac661f1c8d64386d043a4b4b8f9c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/MarbleWall_02.png",
+      "entry": "d2ab29be542324845b06e2b459563a2b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Fire",
+      "entry": "d2ab7c6d9e8393b4c9eeafe624043905"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Wall_DD_01.prefab",
+      "entry": "d2d91ff190ebafa41b8fa852ad4c0f8c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures",
+      "entry": "d36557837af36e74792e22f4042f5744"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Floor_Apt_03.prefab",
+      "entry": "d386d629c043bd849840935643a668b9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/First Person Player/SceneSwitchGen.cs",
+      "entry": "d4189f6b82d537b45b085891d0ec97f4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Living Room/Sofa_Apt_01.prefab",
+      "entry": "d46fa1eeedbcb0e41b8c735b2594b434"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Fixtures/RR_PaperTowelDispenser_01.prefab",
+      "entry": "d493d80813479394da472625132622ed"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Roof_02.prefab",
+      "entry": "d6b5de5048b779b49847795dabf2dd3a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Ceiling_Apt_04.prefab",
+      "entry": "d71bb9c3921c635468d23f6e8bd9c406"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Colors_apt_02_A.png",
+      "entry": "d78d543570cf39449a8e89367decddbe"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Int_Apt_01_H.png",
+      "entry": "d891eeff6af0d2f41acb05df08dcaaa9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Stall/RR_Stall_01_DoorFrame.prefab",
+      "entry": "d94ca8c0c973920499d3cb52238af9b8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer",
+      "entry": "d9c73e9798b69d04da8296ecc1cb4dc8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Base_SD_01.prefab",
+      "entry": "d9d9f374cc51a6b4fb75751346d70b83"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Filler_02.prefab",
+      "entry": "da76ff28749b4d54ab63d4533af0b4c3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Canvas_Nat_01-02.mat",
+      "entry": "da8d66e9aab28f140a44add462e64b02"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Z Axis -1/pullopp.controller",
+      "entry": "dc24fcef3393733459eaad6c68ba9bc6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/wine bottle 04_LP.fbx",
+      "entry": "dc3a1db86c73bb14f8ebd6e2953b7e70"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Plastic_03.mat",
+      "entry": "dd228672e1e19fc479efe2c3556f297f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/TowelRack_Apt_02.prefab",
+      "entry": "dd22d3cb5edddc54fb43d88c8b0da7d5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_Roof_02.prefab",
+      "entry": "dd6658866c1c65a4aa4a6c6e8e34e4f5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/BPS Apartment Kit.txt",
+      "entry": "de9733bf19fc523468c159b6fa49c2b3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits/Build Kit Interior Updated_03.fbx",
+      "entry": "debe1ddd75be8634d866f9de231a0581"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Plastic_01_N.png",
+      "entry": "df5c52a1546418346bff1558b601f6a5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Restroom/Int_RR__01_N.png",
+      "entry": "df7b051b811e35a44b4b1b1ec58ca8cb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Metal_Gold_01.mat",
+      "entry": "e000cf84e00aa6f4aac76474f809a621"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/BRGlassDoorOpen.anim",
+      "entry": "e009d087cbd87214dbd4c7da483617f2"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Closet/ClosetClosing.anim",
+      "entry": "e0b788da15cf52845935b78a74246255"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/X Axis/Drawer_Pull_X.cs",
+      "entry": "e0d5557a01f4e0740bd53d6ed2ab7327"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Wine Liquor Beer and Glassware - Sample/wine bottle 04_Low Poly.prefab",
+      "entry": "e0f8fa703bcf04a419f5263f5020b059"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Floor_normal.png",
+      "entry": "e10c0a17308ba8a459fb883b0de900e0"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Pattern_02.png",
+      "entry": "e19e2ee9e3b643e4fae99ebdf2532365"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Z Axis -1/Drawer_Pull_Zopp.cs",
+      "entry": "e1a01b1ef84add0458f524da98451c86"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Filler_01.prefab",
+      "entry": "e1d90d5681101f948bb7aee7a03944a1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/Build Kits",
+      "entry": "e1df33c3547317b4781f62068dfd6146"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Slide/OpeningSlide.anim",
+      "entry": "e200fc53947c71a429e5e90215956f0d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/Z Axis/pull.controller",
+      "entry": "e20d80aafd5329a4897333eebe043b04"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Leather_A.png",
+      "entry": "e2c05aebeef07c543930c67d2767bfdc"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/CandelSetting_apt_01.prefab",
+      "entry": "e2fa05d22ec876745aec3dd263e3622f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Doors",
+      "entry": "e30097d96c65cdf4caf6ce531be8071a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Floors Ceilings/Int_RR_01_Floor_01.prefab",
+      "entry": "e30496263f7ba54488d5cb051756f667"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Scenes/FPS Day.asset",
+      "entry": "e3182bcc24e537a4cabcb81980a6a669"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/WallArt_Apt_04.mat",
+      "entry": "e32acc80d36988b4ca659c27108c4d69"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Wine Liquor Beer and Glassware - Sample/wine thin glass Red Wine.prefab",
+      "entry": "e32f2e76bad645746b596640d4736354"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Fire/Fire_Texture_02_ADD.tga",
+      "entry": "e3fbc8a570c365347b4caff594f25a12"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/Signs/RR_Restroom_Woman_Sign.prefab",
+      "entry": "e44a81cddb13cac4d8ad43dcfcb329b3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Wall_04.prefab",
+      "entry": "e4a073a915d15da469c414beeb6fef2b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Marble_Dark_01_A.png",
+      "entry": "e4c6f6328598098409462573bb0deae7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Lamp 02.fbx",
+      "entry": "e501afb3ed5c60243ac1515b7ca1e2be"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom/ToothbrushCup.prefab",
+      "entry": "e539e85f8e056d1468b40ad13ac5a551"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Interior Exterior/Int_Apt_01.mat",
+      "entry": "e5edd18648b6fe340941b7f67c9a2996"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Bathroom",
+      "entry": "e6d6b914a5388164984fc1790d9a6af4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Filler_01.prefab",
+      "entry": "e76249d095e28ee4db72dc3385020c2f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy/Gold.mat",
+      "entry": "e767d86cbf3099a478162f1692b1edf3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Chessboard_01_A.png",
+      "entry": "e7725636445a48443a0910445b125cf3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Table - Normal.png",
+      "entry": "e78c362fff317e74095651e83dffc09e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_02_04.prefab",
+      "entry": "e7e7231ccdd4c2745a7aee5414cc2d04"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Wall_02.prefab",
+      "entry": "e865b35190d61134389351f1fb9a589f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Collum/Int_Collum_Apt_01.prefab",
+      "entry": "e9053624939ee2d46b0cde7eff2c0e6e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Flooring & Ceilings/Int_apt_02_Floor_02.prefab",
+      "entry": "e92372dbea850d64697e857ecae9484d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Fabric_01_A.png",
+      "entry": "e9783abdcac23084985c08e4d4dade3b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/DoorFrame_Apt_01.prefab",
+      "entry": "e9a47cdb5968d66499f6b4ee53467cd4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Bathroom_apt_02.fbx",
+      "entry": "e9aeceee86b8ae7408c09bcee860a520"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Blender_01_A.mat",
+      "entry": "ea4d64c9747ed7b479f9198da3e78cd7"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Windows/opencloseWindowApt.cs",
+      "entry": "ea52830e8c3e35741a451b12277dfde1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/IntExt/IntExt_BA_GlassFrameDoor_01.prefab",
+      "entry": "eaaaafd5975a5d544a3d11507b3670ec"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit",
+      "entry": "eaea49c39338b4f498427bf2b99c3a8c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/FlipR.controller",
+      "entry": "eb2c5b09abb74004bb912dbee575aca1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Pillar_1x1.prefab",
+      "entry": "eba9a1ac29008234b8563dce8279a3c1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior/Ext_BA_01_Wall_02.prefab",
+      "entry": "ec38c489fc871fc46b0e0e40ea13a84c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Special/Ext_apt_01_02.prefab",
+      "entry": "ec6a508d43c319f4e9a29995ea6c3489"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Int into Ext/IntExt_apt_DoorFrame_02_01.prefab",
+      "entry": "eca1c14fa4f815e4d96961d241f47cfd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Int into Ext",
+      "entry": "ed6ae6691b439b14ca460438d201a64a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Exteriors/Ext_Apt_01/Ext_Apt_01_Wall_01.prefab",
+      "entry": "edb02028d59ccac4ca6641a183fa7346"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Fire",
+      "entry": "edc916d7e70f29947bf61fc90fa31777"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Interior Exterior/Ext_Apt_WallFloor_01_A.png",
+      "entry": "ee1c712c3dfc8a543ab726de64648deb"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Canvas_Nat_05.mat",
+      "entry": "ee274bac83b432e489e9163a36560bab"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Modern/Int_WallExtrude_02_01.prefab",
+      "entry": "ee40b11b251097744b0b6775756b2dbf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Legacy/Large Floor.prefab",
+      "entry": "ee987da6efab07d49bc9fc59e287f08b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Misc/Vase_Apt_01.prefab",
+      "entry": "eeba5b089ee3b4a4cbe7167afae0e4e1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Colors_apt_01.mat",
+      "entry": "ef29f2ebae532ed4291b1e9ad9cc45a5"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Lamp 02 Table.mat",
+      "entry": "ef49c0bd94883b4498c46a5c772544b3"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding/Int_Molding_Ceiling_Apt_01.prefab",
+      "entry": "ef4b81edf6a2c2c47a4989214665fcb8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Mesh_Black_A.png",
+      "entry": "ef5f21946157b6049bebeadd326783c1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Restroom/RR Build Kit/Doors/Int_RR_DoorFrame_01_Woman.prefab",
+      "entry": "f0043371e2fd88747891ddb3064283ab"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_01_04.prefab",
+      "entry": "f00af83dfea20324d8081f143b53730c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_01/Int_Apt_01_Wall_02.prefab",
+      "entry": "f01b8dde2f2266c4a9c87acaa4ed6003"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/Int_BS_01.mat",
+      "entry": "f03383d98b6709647991c50d409cf0af"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Kitchen/Cabinets/Cabinet_Wall_Corner_01.prefab",
+      "entry": "f072b6d5974d6a14da67d1db1cd20b92"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_02_CenterTower.prefab",
+      "entry": "f0f8347ddc1d5ed4bb8d2379f9008300"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Models/BA_Ceiling Light_01.fbx",
+      "entry": "f10ecbc237630d9469cea29121d074f4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/Fabric_01_H.png",
+      "entry": "f16f03215be3d524997908d61dbdf67b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Furniture/Wine Cabinet/BarCabinet_Apt_03.prefab",
+      "entry": "f193bec3a0b87ca45a9dc2e7af25e968"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/X Axis",
+      "entry": "f1acf12a24073c140ad0a7dc9cfd6b31"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding/Int_Molding_Base_Apt_02.prefab",
+      "entry": "f209b4f30262ac0479f8e1072403c9cd"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common",
+      "entry": "f258763b685e7924685dcc28219c17df"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Base Scene/BA_Simple Cursor.prefab",
+      "entry": "f29f229ca7700404abfeb5f8c1859d62"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/CastIron_H.png",
+      "entry": "f3243849f3d44224597bc618e578d293"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/GameController_Apt_01_02.prefab",
+      "entry": "f3421f20f5f724a4fab68ce9de3753e8"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/DoorFrame_Apt_03.prefab",
+      "entry": "f3e82dc7c471ff447b3ca0e0bfded076"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Doors/OpeningStall.anim",
+      "entry": "f3f604da56740ba469c68a0aebb4c41b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/BathroomMat_01_A.png",
+      "entry": "f4065082f0bb85c438e68d90ffd11ade"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Frosted.mat",
+      "entry": "f4c2705402c106042bb0cfaeab8f8d88"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Molding/Int_Molding_Base_Apt_01.prefab",
+      "entry": "f5711794550f9dc49ba65d9b63963e1c"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Canvas_nat_01-04.fbx",
+      "entry": "f62947abd10e69a4b9bd64bf53b01107"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_02_01.prefab",
+      "entry": "f65183ca19c1b4448a412998605b2216"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02",
+      "entry": "f6c840e295526214a9b053f3b1a5eb6b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Structures",
+      "entry": "f6dc307e06e8ef24c8e1c93ae6b5c18d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Legacy",
+      "entry": "f72c5fb4a441cf0499e2815a06ef852a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_01_03.prefab",
+      "entry": "f76f8084f4cb01349bb82ec41f49d28b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Surface/BrushedMetal_A.png",
+      "entry": "f777047004de95f4ba34895907052505"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Exterior",
+      "entry": "f8a6130561cee7c44aaf2ad83ac57dd4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/TableFlip/Ldown.anim",
+      "entry": "f8ab6559bebdee74d80c33b67ab087d6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Electronics/SS_01.prefab",
+      "entry": "f91743800f2ab3740ac9db4eedb46f2d"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Lighting/Lamp_Ceiling_Apt_03.prefab",
+      "entry": "f920163421f537643a94fbbfe25244f9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Scripts & Animation/Z Axis -1/closepushopp.anim",
+      "entry": "f94f7e35097a14a4ba3f12b7807c707f"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Legacy/Brick 02 bump.png",
+      "entry": "fa098cd5940b5aa4b90a84b905f80d18"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Canvas_Nat_06-07.mat",
+      "entry": "fad41da6b0b4a274ea1daeb98b3d6b9b"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Glass Wine Bottle 05.mat",
+      "entry": "faedf01a9e7977749a7798016f508081"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Fire/Fire_Alpha_02.mat",
+      "entry": "fafce5ad41639d14d9cfadc181485ec9"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Walls Frames & Doors/Apt_02/Int_Apt_02_Wall_01.prefab",
+      "entry": "fb28b01c668360548b1caee1ee42ac7e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common",
+      "entry": "fb45e9e13a1072940b2100c8ce370c4e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/White Wood.mat",
+      "entry": "fb7d7a07b2942ca4cb6a6c38d807c8ea"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Red_01.mat",
+      "entry": "fc572b7f1f43b3a42810a51f8c8ee969"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Legacy/Buliding FloorPlane.prefab",
+      "entry": "fc813e1d3f19bfc449ee6e7a5d8e579a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/Z Axis/openpull.anim",
+      "entry": "fcf0213085e88bd4d80d1d47f3cd2174"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Special/Wall Tiles/BR_Tile_APT_02_05.prefab",
+      "entry": "fd67a8bb0f3907e4589fd38ca697c221"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Int into Ext/IntExt_apt_01_03.prefab",
+      "entry": "fd89e5fd063bbe449bfd219cac1ec948"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Textures/Basic Asset/BA_Wood_01_N.png",
+      "entry": "fde87c062cbc94047927dc231c09fbe4"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Drawer/X Axis/openpull_01.anim",
+      "entry": "fe28aa381f926cb479632188f023be93"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Textures/Misc/Lamp 02 Table shade - Normal.png",
+      "entry": "fe2b946fe11b665428ee3a7b3f07f29e"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/Common/Materials/Basic Assets/BA_Metal_Brushed_01.mat",
+      "entry": "fe522d7b1289c4345b686fc29ee51adf"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Props/Sculptures/Sculpture_apt_02_01.prefab",
+      "entry": "fe722613e8e23b04aba46967537bbce1"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Models/Modern Liquor Cabinet.fbx",
+      "entry": "fe73d14489f153e4485e26243ed30d09"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Lamp 02 Standing.mat",
+      "entry": "fe8413b8ec60cb04f81b8c9b23e233f6"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Wall_02.prefab",
+      "entry": "feb38e40cfc697547a18577613164676"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Misc/Toothbrush_01.mat",
+      "entry": "ff18b0d4ff41ef34faf22d93e7d8b8ed"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/Common/Materials/Surface/Shiny Metal_03.mat",
+      "entry": "ff2bb81a45899464db5313ff275f8a31"
+    },
+    {
+      "path": "Assets/Brick Project Studio/Apartment Kit/_Prefabs/Apt Build Kit/Interiors/Frames Windows Stairs & Doors/Window_Frame_Apt_01.prefab",
+      "entry": "ff74a2d207593764ea3699571e28d00a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_02/Int_BA_02_Pillar_4x4.prefab",
+      "entry": "ffc1f19e9cc243a428196fcf5e1e552a"
+    },
+    {
+      "path": "Assets/Brick Project Studio/_BPS Basic Assets/_Prefabs/Basic Asset/BA Build Kit/Interior/Int_01/Int_BA_01_Pillar_2x2.prefab",
+      "entry": "fff70e8f691f38d41bbe035d6dc641df"
+    }
+  ]
+}

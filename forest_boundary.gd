@@ -10,7 +10,7 @@ var crown_material: StandardMaterial3D
 var trunk_material: StandardMaterial3D
 var shrub_mesh: Mesh
 var shrub_material: Material
-const OUTLINE = [Vector3(-42,0,42),Vector3(42,0,42),Vector3(44,0,10),Vector3(42,0,-27),Vector3(26,0,-40),Vector3(23,0,-84),Vector3(17,0,-96),Vector3(-21,0,-98),Vector3(-27,0,-88),Vector3(-26,0,-40),Vector3(-42,0,-27),Vector3(-44,0,10)]
+const OUTLINE = [Vector3(-42,0,42),Vector3(42,0,42),Vector3(44,0,10),Vector3(42,0,-27),Vector3(26,0,-40),Vector3(23,0,-84),Vector3(13,0,-96),Vector3(27,0,-105),Vector3(39,0,-116),Vector3(42,0,-134),Vector3(43,0,-153),Vector3(17,0,-155),Vector3(16,0,-137),Vector3(15,0,-123),Vector3(2,0,-114),Vector3(-9,0,-101),Vector3(-21,0,-98),Vector3(-27,0,-88),Vector3(-26,0,-40),Vector3(-42,0,-27),Vector3(-44,0,10)]
 const ROW_DEPTHS = [0.0,3.1,6.4,10.5,16.0]
 
 func _ready():
@@ -47,8 +47,6 @@ func find_shrub(node: Node):
 func outward_for(a: Vector3, b: Vector3) -> Vector3:
 	var direction = (b-a).normalized()
 	var outward = Vector3(-direction.z,0,direction.x)
-	if outward.dot(Vector3(0,0,-25)-(a+b)/2)>0:
-		outward = -outward
 	return outward
 
 func rise(depth: float, distance_along: float) -> float:
@@ -65,7 +63,7 @@ func build_section(a: Vector3, b: Vector3, index: int):
 		for i in range(count):
 			var t = clampf((i+0.48*(row%2))/float(count-1),0,1)
 			var p = a.lerp(b,t)+outward*(ROW_DEPTHS[row]+rng.randf_range(-0.45,0.45))
-			p.y = rise(ROW_DEPTHS[row],t*a.distance_to(b)+index*20)
+			p.y = game.town.streetscape.chapel_hill.terrain_height_at(p)+rise(ROW_DEPTHS[row],t*a.distance_to(b)+index*20)
 			var size = rng.randf_range(0.86,1.3)
 			var basis = Basis(Vector3.UP,rng.randf_range(0,TAU)).scaled(Vector3(size,size*rng.randf_range(0.9,1.2),size))
 			transforms.append(Transform3D(basis,p))
@@ -79,7 +77,7 @@ func build_section(a: Vector3, b: Vector3, index: int):
 			var t = clampf((i+0.5*row)/float(count*2-1),0,1)
 			var depth = -0.7+row*1.5
 			var p = a.lerp(b,t)+outward*depth
-			p.y = rise(depth,t*a.distance_to(b)+index*20)+0.35
+			p.y = game.town.streetscape.chapel_hill.terrain_height_at(p)+rise(depth,t*a.distance_to(b)+index*20)+0.35
 			var size = rng.randf_range(0.9,1.25)
 			shrubs.append(Transform3D(Basis(Vector3.UP,rng.randf_range(0,TAU)).scaled(Vector3(size*3.0,size*1.7,size*3.0)),p))
 			shrub_colors.append(Color(1,1,1,1))
@@ -91,11 +89,11 @@ func build_section(a: Vector3, b: Vector3, index: int):
 	var body = StaticBody3D.new()
 	body.name = "DenseThicketCollision%d" % index
 	add_child(body)
-	body.position = (a+b)/2+outward*1.25+Vector3(0,4,0)
-	body.look_at(b+outward*1.25+Vector3(0,4,0))
+	body.position = (a+b)/2+outward*1.25+Vector3(0,10,0)
+	body.look_at(b+outward*1.25+Vector3(0,10,0))
 	var collision = CollisionShape3D.new()
 	var shape = BoxShape3D.new()
-	shape.size = Vector3(3.2,8,a.distance_to(b)+2.0)
+	shape.size = Vector3(3.2,24,a.distance_to(b)+2.0)
 	collision.shape = shape
 	body.add_child(collision)
 	collision_sections += 1
@@ -151,7 +149,7 @@ func build_bank(a: Vector3, b: Vector3, outward: Vector3, index: int):
 				var t = float(pair.x)/steps
 				var d = depths[pair.y]
 				var p = a.lerp(b,t)+outward*d
-				p.y = rise(d,t*a.distance_to(b)+index*20)+ (0.75 if d>=0 else 0.01)
+				p.y = game.town.streetscape.chapel_hill.terrain_height_at(p)+rise(d,t*a.distance_to(b)+index*20)+ (0.75 if d>=0 else 0.01)
 				points.append(p)
 			for vertex in [0,2,1,1,2,3]:
 				tool.set_normal(Vector3.UP)

@@ -4,16 +4,21 @@ extends Node3D
 var town
 var masonry: StandardMaterial3D
 var window: StandardMaterial3D
+var basement: Node3D
+var doors_open = false
+var door_hinges: Array[Node3D] = []
+var entrance_collision: CollisionShape3D
+var door_tween: Tween
 
 func _ready():
 	name = "BlackwoodChurch"
-	position = Vector3(-13.5,0,-85)
-	rotation.y = PI/2
+	position = Vector3(29,9,-141)
+	rotation.y = 0
 	masonry = make_stone()
 	window = town.color_material(Color("263a36"))
 	window.cull_mode = BaseMaterial3D.CULL_DISABLED
-	# The central entrance remains open; its floor is flush with the sidewalk.
-	town.box(self,Vector3(0,0.012,0),Vector3(10,0.018,14),town.mats.floor,false)
+	# The entrance starts closed; its floor is flush with the hilltop forecourt.
+	town.box(self,Vector3(0,-0.12,0),Vector3(10,0.24,14),town.mats.floor)
 	for side in [-1,1]:
 		town.box(self,Vector3(side*5,3.6,0),Vector3(0.40,7.2,14),masonry)
 		town.box(self,Vector3(side*3.2,1.5,7),Vector3(3.6,3.0,0.4),masonry)
@@ -26,9 +31,11 @@ func _ready():
 	for side in [-1,1]:
 		var hinge = Node3D.new()
 		add_child(hinge)
-		hinge.position = Vector3(side*1.34,0,6.15)
-		hinge.rotation.y = side*1.4
-		town.box(hinge,Vector3(-side*0.63,1.35,0),Vector3(1.26,2.7,0.12),town.mats.wood)
+		hinge.position = Vector3(side*1.4,0,7.0)
+		door_hinges.append(hinge)
+		town.box(hinge,Vector3(-side*0.7,1.35,0),Vector3(1.4,2.7,0.16),town.mats.wood,false)
+		for face in [-1,1]:
+			town.box(hinge,Vector3(-side*1.17,1.16,face*0.12),Vector3(0.07,0.32,0.07),town.mats.metal,false)
 		for z in [-4.8,-1.7,1.5,4.5]:
 			pointed_panel(self,Vector3(side*5.22,2.7,z),1.25,2.8,side*PI/2,true)
 		for z in [-5.5,-2.5,0.5,3.5]:
@@ -36,6 +43,16 @@ func _ready():
 		bell_tower(side,12.2 if side<0 else 11.4)
 		for i in range(4):
 			pew(Vector3(side*2.85,0,3.0-i*2.0))
+	var blocker = StaticBody3D.new()
+	blocker.name = "ClosedChapelDoors"
+	add_child(blocker)
+	entrance_collision = CollisionShape3D.new()
+	var door_shape = BoxShape3D.new()
+	door_shape.size = Vector3(2.8,2.7,0.16)
+	entrance_collision.shape = door_shape
+	entrance_collision.position = Vector3(0,1.35,7)
+	blocker.add_child(entrance_collision)
+	town.action_area(self,Vector3(0,1.3,7),Vector3(2.8,2.6,0.7),"chapel_doors",{"kind":"chapel_door","label":"Open chapel doors"})
 	altar()
 	var plaque = town.sign_text(self,"BLACKWOOD CHAPEL\nALL ARE WELCOME",Vector3(2.8,1.25,7.26),22,Color("b6b09a"))
 	plaque.pixel_size = 0.005
@@ -45,9 +62,16 @@ func _ready():
 	for p in [Vector3(-4.7,0.14,7.35),Vector3(4.7,0.14,7.35)]:
 		town.box(self,p,Vector3(0.45,0.28,0.6),masonry)
 
+	decorate_entrance()
+	basement = Node3D.new()
+	basement.set_script(preload("res://church_basement.gd"))
+	basement.town = town
+	basement.church = self
+	add_child(basement)
+
 func contains(p: Vector3) -> bool:
 	var local = to_local(p)
-	return absf(local.x)<4.9 and absf(local.z)<6.9 and local.y>= -0.3 and local.y<9
+	return (absf(local.x)<4.9 and absf(local.z)<6.9 and local.y>= -0.3 and local.y<9) or (basement!=null and basement.contains(p))
 
 func make_stone() -> StandardMaterial3D:
 	var image = Image.create(128,128,false,Image.FORMAT_RGB8)
@@ -163,3 +187,44 @@ func altar():
 	for x in [-1.1,1.1]:
 		town.box(self,Vector3(x,1.15,-5.5),Vector3(0.08,0.5,0.08),town.mats.paper,false)
 		town.lamp(self,Vector3(x,1.5,-5.5),Color("cba777"),0.35,3)
+
+func reset_doors():
+	if door_tween!=null and door_tween.is_valid():
+		door_tween.kill()
+	doors_open = false
+	for hinge in door_hinges:
+		hinge.rotation.y = 0
+	entrance_collision.set_deferred("disabled",false)
+
+func toggle_doors():
+	var local_player = to_local(town.game.player.global_position)
+	if doors_open and (contains(town.game.player.global_position) or Vector2(local_player.x,local_player.z-7).length()<2.4):
+		town.game.message = "Step clear of the entrance before closing the chapel doors."
+		return
+	if door_tween!=null and door_tween.is_valid():
+		door_tween.kill()
+	doors_open = not doors_open
+	entrance_collision.set_deferred("disabled",doors_open)
+	door_tween = create_tween().set_parallel(true)
+	for i in range(door_hinges.size()):
+		var side = -1 if i==0 else 1
+		door_tween.tween_property(door_hinges[i],"rotation:y",side*1.55 if doors_open else 0.0,0.65).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	town.game.soundscape.door_move(to_global(Vector3(0,1,7)),doors_open)
+
+func decorate_entrance():
+	var forest = town.game.get_node("DetailedForest")
+	for side in [-1,1]:
+		# Small paired stone beds frame the porch without crossing the footpath.
+		var p = Vector3(side*4.15,0,8.8)
+		town.box(self,p+Vector3(0,0.18,0),Vector3(1.4,0.36,2.0),masonry)
+		for i in range(2):
+			forest.place(forest.bush_scenes[(i+1)%3],to_global(p+Vector3(0,0.35,-0.48+i*0.95)),Vector3(1.0,0.9,1.0),"ChapelEntranceShrubs")
+		var lantern = Vector3(side*1.95,2.05,7.45)
+		town.box(self,lantern,Vector3(0.24,0.4,0.22),town.mats.dark,false)
+		town.box(self,lantern+Vector3(0,0,0.12),Vector3(0.15,0.27,0.025),town.color_material(Color("bf9f68"),0.65),false)
+		town.lamp(self,lantern+Vector3(0,0,0.2),Color("c5ab78"),0.38,4.2)
+	# One weathered seat beside the left bed adds a quiet, welcoming detail.
+	town.box(self,Vector3(-5.7,0.48,9.6),Vector3(1.8,0.13,0.6),town.mats.wood)
+	town.box(self,Vector3(-5.7,0.91,9.85),Vector3(1.8,0.7,0.1),town.mats.wood)
+	for x in [-6.35,-5.05]:
+		town.box(self,Vector3(x,0.23,9.6),Vector3(0.13,0.46,0.5),masonry)

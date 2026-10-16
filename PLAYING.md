@@ -10,7 +10,7 @@ You survived a car accident on Old Mill Road. Follow the road into Blackwood,
 find supplies and weapons, and repair the town radio to call for rescue.
 You begin with a flashlight and no gun.
 
-The stone chapel at the north end of Main Street is open for exploration and
+The stone chapel uphill along Chapel Road from the north end of Main Street is open for exploration and
 marked on the journal map. The dense forest forms a closed boundary around town.
 
 ## Controls
@@ -32,3 +32,13 @@ radio-rescue quest. There are currently no drones. Progress resets for each new 
 
 The image intentionally uses PS2-style low-poly assets, low-resolution textures,
 fog, and a 640 × 400 viewport. The Windows build uses ANGLE/Direct3D11 and a 60 FPS cap.
+
+The flashlight bar shows remaining charge. Switch it off with F to conserve power.
+Find batteries in town storage and press Q to fit one; an empty flashlight stays
+off until refilled. TAB shows health kits, spare batteries and your objective.
+Chapel Road ends at a grassy court; follow the footpath and press E at the doors.
+
+Search the powered workshop coil cabinet for the chapel cellar key. Follow Chapel
+Road uphill and find the locked cellar door at the back right inside the church.
+E unlocks it; E again descends. Recover the tuning unit from the cellar workbench,
+then use the stairs to return. The radio needs both the tuning unit and signal coil.

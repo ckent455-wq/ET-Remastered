@@ -84,6 +84,8 @@ func update_sound(delta: float):
 	if indoors:
 		var cue = "house_creak" if last_cue!="house_creak" else "glass_tap"
 		var anchor = game.town.streetscape.church if current_interior=="church" else game.town.buildings[current_interior]
+		if current_interior=="church" and game.town.streetscape.church.basement.contains(game.player.global_position):
+			anchor = game.town.streetscape.church.basement
 		play_accent(cue,anchor.to_global(Vector3(3,2,-3)),-24)
 	else:
 		var cue = "metal_moan" if last_cue=="distant_call" or soundscape.rng.randf()<0.7 else "distant_call"

@@ -17,6 +17,7 @@ func check():
 		var outward = boundary.outward_for(a,b)
 		for j in range(21):
 			var p = a.lerp(b,float(j)/20)
+			p.y = game.town.streetscape.chapel_hill.terrain_height_at(p)
 			query.from = p-outward*4+Vector3(0,0.8,0)
 			query.to = p+outward*6+Vector3(0,0.8,0)
 			var hit = game.get_world_3d().direct_space_state.intersect_ray(query)
@@ -28,6 +29,7 @@ func check():
 		var b = boundary.OUTLINE[(i+1)%boundary.OUTLINE.size()]
 		var outward = boundary.outward_for(a,b)
 		game.player.position = (a+b)/2-outward*4+Vector3(0,0.001,0)
+		game.player.position.y += game.town.streetscape.chapel_hill.terrain_height_at(game.player.position)
 		await physics_frame
 		var hit = game.player.move_and_collide(outward*9)
 		assert(hit!=null,"Actual player cannot cross forest boundary")

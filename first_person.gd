@@ -7,6 +7,7 @@ var title_camera: Camera3D
 var title_weather: Node
 var flashlight: SpotLight3D
 var hud: Control
+var achievements: Node
 var health = 100.0
 var stamina = 100.0
 var invincible = 0.0
@@ -31,7 +32,9 @@ var flashlight_raise = 1.0
 const FLASHLIGHT_UP = Vector3(0.30,-0.19,-0.77)
 const FLASHLIGHT_DOWN = Vector3(0.34,-0.72,-0.57)
 const FLASHLIGHT_ANIMATION_SECONDS = 0.30
-var flashlight_charge = 100.0
+const START_FLASHLIGHT_CHARGE = 45.0
+const FLASHLIGHT_DRAIN_PER_SECOND = 0.5
+var flashlight_charge = START_FLASHLIGHT_CHARGE
 var journal_page = 0
 
 func mat(color: Color, texture: Texture2D = null, emission = 0.0) -> StandardMaterial3D:
@@ -81,6 +84,8 @@ func _ready():
 	moon.rotation_degrees = Vector3(-48,-35,0)
 	moon.light_color = Color("b4b9ab")
 	moon.light_energy = 0.5
+	# The sealed cellar uses its own light layer; moonlight cannot reach it.
+	moon.light_cull_mask = 1
 	add_child(moon)
 	var ground_mat = mat(Color("8d9a91"),preload("res://assets/forest/ground_ps2.png"))
 	ground_mat.uv1_scale = Vector3(30,30,30)
@@ -134,6 +139,9 @@ func _ready():
 	hud.set_script(load("res://hud.gd"))
 	hud.game = self
 	canvas.add_child(hud)
+	achievements = Node.new()
+	achievements.set_script(preload("res://achievements.gd"))
+	add_child(achievements)
 	make_audio()
 	town = Node3D.new()
 	town.set_script(preload("res://town.gd"))
@@ -202,6 +210,7 @@ func make_audio():
 	add_child(soundscape)
 
 func reset_game():
+	achievements.clear_toast()
 	player.position = START_POSITION
 	player.velocity = Vector3.ZERO
 	camera.position.y = 1.25
@@ -212,7 +221,7 @@ func reset_game():
 	stamina = 100
 	contact_progress = 0
 	invincible = 0
-	flashlight_charge = 100
+	flashlight_charge = START_FLASHLIGHT_CHARGE
 	flashlight.visible = true
 	flashlight_raise = 1.0
 	flashlight_model.position = FLASHLIGHT_UP
@@ -272,7 +281,7 @@ func _unhandled_input(event):
 		if event.keycode==KEY_M:
 			soundscape.toggle_mute()
 		if event.keycode==KEY_F and state=="play":
-			flashlight.visible = not flashlight.visible and flashlight_charge>0
+			toggle_flashlight()
 			soundscape.flashlight_click(flashlight.visible)
 		if state=="play" and event.keycode==KEY_E:
 			town.interact()
@@ -301,20 +310,17 @@ func _physics_process(delta):
 	player.move_and_slide()
 	# The shared world floor is flat at y=0. Prevent corner recovery from
 	# sinking the capsule into that plane and bouncing it back next frame.
-	if player.position.y<0.001:
+	if player.position.y<0.001 and not town.streetscape.church.basement.contains(player.global_position):
 		player.position.y = 0.001
 		player.velocity.y = 0.0
 	player.position.x = clampf(player.position.x,-60,60)
-	player.position.z = clampf(player.position.z,-100,47)
+	player.position.z = clampf(player.position.z,-160,47)
 	var travelled = Vector2(player.position.x-previous_position.x,player.position.z-previous_position.z).length()
 	soundscape.moved(travelled,sprint,player.is_on_floor())
 	# Keep the view fixed, including when movement is blocked by furniture.
 	camera.position.y = 1.25
 	invincible = maxf(0,invincible-delta)
-	if flashlight.visible:
-		flashlight_charge = maxf(0,flashlight_charge-delta*0.22)
-		if flashlight_charge<=0:
-			flashlight.visible = false
+	update_flashlight_battery(delta)
 	if health<=0:
 		set_state("lost")
 	town.update_arrival()
@@ -353,3 +359,21 @@ func update_flashlight_visual(delta: float):
 	flashlight_model.position = FLASHLIGHT_DOWN.lerp(FLASHLIGHT_UP,eased)
 	flashlight_model.rotation = Vector3(-0.28,0,0.06)*(1.0-eased)
 	flashlight_model.visible = flashlight_raise>0.001
+
+func toggle_flashlight():
+	if flashlight_charge<=0:
+		flashlight.visible = false
+		message = "Flashlight battery is empty. Find batteries in town; Q fits a spare."
+	else:
+		flashlight.visible = not flashlight.visible
+
+func update_flashlight_battery(delta: float):
+	if state!="play" or not flashlight.visible:
+		return
+	var previous_charge = flashlight_charge
+	flashlight_charge = maxf(0,flashlight_charge-delta*FLASHLIGHT_DRAIN_PER_SECOND)
+	if previous_charge>15 and flashlight_charge<=15:
+		message = "Flashlight battery running low. Q fits a spare; check your journal."
+	if flashlight_charge<=0:
+		flashlight.visible = false
+		message = "Flashlight battery exhausted. Find batteries in town; Q fits a spare."

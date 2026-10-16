@@ -12,7 +12,7 @@ func check():
 		assert(emitter is CPUParticles3D and emitter.emitting and emitter.mesh!=null,"Working compatibility particle emitter")
 		assert(emitter.gravity==Vector3.ZERO and emitter.lifetime>=15,"Slow drifting mist")
 		total += emitter.amount
-	assert(total<=128,"Bounded particle/overdraw budget")
+	assert(total<=176,"Bounded particle/overdraw budget")
 	game.state = "play"
 	game.player.position = Vector3(0,0.001,-44)
 	fog.update_fog(3)

@@ -185,6 +185,10 @@ func fire() -> bool:
 
 func impact(hit: Dictionary):
 	var body = hit.collider as Node3D
+	if body.is_in_group("CrowTargets"):
+		if body.get_parent().shoot():
+			hit_feedback = 0.18
+		return
 	if body.is_in_group("TownNPCs"):
 		if game.town.townspeople.shoot(str(body.get_meta("npc_id",""))):
 			hit_feedback = 0.18

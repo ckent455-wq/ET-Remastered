@@ -19,6 +19,7 @@ func _ready():
 	light.rotation_degrees = Vector3(-32,-35,0)
 	light.light_color = Color("a5b9cd")
 	light.light_energy = 0
+	light.light_cull_mask = 1
 	light.shadow_enabled = false
 	game.add_child(light)
 

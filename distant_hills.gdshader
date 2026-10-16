@@ -9,6 +9,7 @@ void vertex() {
 	slope = NORMAL.y;
 }
 void fragment() {
+	if (world_position.x > -14.0 && world_position.x < 56.0 && world_position.z > -157.0 && world_position.z < -90.0) { discard; }
 	// Painted aerial perspective keeps only subtle silhouettes beyond dense mist.
 	float silhouette = smoothstep(0.0, 16.0, world_position.y);
 	vec3 haze = vec3(0.30, 0.34, 0.32);

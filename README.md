@@ -41,7 +41,7 @@ Follow Old Mill Road north from the accident scene into Blackwood. The first obj
 
 ## Abandoned town
 
-An additional enterable chapel stands on the west side at the north end of Main Street. It is an original Holy Trinity, Weston-inspired stone church with twin spires, pointed arches, pews, an altar, and a walkable center aisle. It is marked on the journal map. See MAIN_STREET.md for references.
+An additional enterable chapel stands on a wooded hill reached by Chapel Road from the north end of Main Street. It is an original Holy Trinity, Weston-inspired stone church with twin spires, pointed arches, pews, an altar, and a walkable center aisle. It is marked on the journal map. Its locked cellar holds a required spare radio tuning unit; the key is in the powered workshop coil cabinet. The radio needs both parts. See MAIN_STREET.md for references.
 
 
 Version 0.2.0 rebuilds Blackwood around a Weston, Missouri-inspired Main Street, with close brick storefronts, a taller hotel, upper windows, awnings, sidewalks, angled parking, boarded shops, and abandoned cars. The downloaded low-poly road kit supplies asphalt geometry and lane markings on the approach and Main Street. See [MAIN_STREET.md](MAIN_STREET.md) for the reference and implementation details.
@@ -53,15 +53,16 @@ Quest progression:
 2. Search the drawer beneath the general store's back counter for the fuse.
 3. Install it at the workshop panel outside, beside its entrance.
 4. Search the powered workshop's signal-coil cabinet.
-5. Unlock the radio station and repair its receiver with the signal coil.
-6. Stay near the repaired receiver and hold E to call emergency services.
+5. Use the cellar key from the coil cabinet to unlock the chapel basement and recover the tuning unit.
+6. Unlock the radio station and repair its receiver with the signal coil and tuning unit.
+7. Stay near the repaired receiver and hold E to call emergency services.
 
 ## Townspeople
 Three friendly NPCs use the newly downloaded Base Humanoid Mesh: Elias the ranger outside his office, Mara the nurse in the clinic, and Owen the mechanic in the workshop. They have muted clothing variants, skinned patrol animations, collision, and turn toward nearby players. E opens a conversation with useful, quest-aware hints. Conversations pause gameplay and ambience; E / Enter / Escape / Tab closes them.
 
 The source humanoid has 402 triangles. Each variant keeps that count and a 256-pixel version of its supplied UV atlas. Exact source paths are stored in assets/npcs/manifest.json.
 
-The flashlight slowly drains during play. Spare batteries refill it; the powered workshop panel can also recharge it. Drones and their audio are disabled for now. The first-person camera stays at a fixed eye height without head bob. The journal pauses movement and ambient audio. Starting a new journey resets doors, supplies, notes, inventory, workshop power, radio calibration, and flashlight charge.
+The flashlight starts at 45% charge and drains only while switched on. The HUD bar shows charge; collected disposable batteries refill it with Q. At zero the light stays off until a spare is fitted. Health-kit and battery counts, objectives and radio status are in the TAB journal. Drones and their audio are disabled for now. The first-person camera stays at a fixed eye height without head bob. The journal pauses movement and ambient audio. Starting a new journey resets doors, supplies, notes, inventory, workshop power, radio calibration, and flashlight charge.
 
 ## Detailed interiors and searching
 Eight local model types appear as 74 reused instances: wooden doors, bookshelves, books, floor lamps, curtains, cardboard packing boxes, a teapot, and a sink. Converted meshes contain 348–1,782 triangles and diffuse textures are capped at 256 pixels. Simple vertex lighting, small textures, the original render resolution, and fog preserve the PS2-inspired appearance. Buildings also have painted wall panels, wood trim, rafters, window frames, porch posts, drainpipes, room-specific posters, improved chairs and beds, and paper clutter.
@@ -116,6 +117,9 @@ Town doors use a local creak recording positioned at the doorway. Pickups, resto
 Drawers and cabinets use a short positional slide-and-clunk cue, also controlled by M and pause.
 
 ## Local assets
+
+- assets/apartment/: optimized furniture from the user's cached Brick Project Studio Apartment Kit, with 256px source albedos. Provenance and geometry budgets are recorded in manifest.json.
+- assets/crow/: original crow model, textures, animation clips and calls adapted from the user's Living Birds assets. Source provenance is recorded alongside the converted files.
 - assets/vehicles/abandoned_*.glb: Classic Car_9, N Van_10, Pick Up_11, Police Car N_4, and N_Muscle Car_10 from the local Downloads/Blend/Blend/FreeCarPack.blend, with original geometry, flat shading, and textures capped at 256 pixels. Parked models are intact and use muted materials; source records and budgets are in assets/vehicles/street-vehicles.json. The original source is unchanged.
 - assets/flashlight/flashlight.glb and flashlight_albedo.png: original 530-triangle local Unity flashlight from My project (2)/Assets/Flashlight/Misc/Flashlight.FBX, centered to 34 cm with a 256-pixel copy of the supplied albedo and matte PS2-style materials. Source records are in assets/flashlight/source.json; originals are unchanged.
 - assets/atmosphere/overcast_sky.png: reduced and desaturated copy of Downloads/lonely_road_afternoon_puresky_8k.exr. A procedural cloud ceiling overlays it in cloud_sky.gdshader. Two original low-poly hill rings use the existing ground texture. See MAIN_STREET.md for details.
@@ -155,3 +159,24 @@ Weapons use the locally downloaded Polyy Guns Pack 2 (CC0; license included in a
 New checks: smoke_test_patrols.gd validates walking, collision bodies, proximity stops, dialogue pauses and reset. smoke_test_weapons.gd validates target hits, ammunition, reload conservation, paused reloads, switching, holstering, arm visibility, menu guards and camera stability. tools/preview_latest.gd captures the sign, each weapon and a walking NPC using the real renderer.
 
 NPC death check: smoke_test_npc_death.gd shoots all three characters using real weapon rays, verifies collapse and persistent settled poses, pause behavior, removed conversation/collision blockers, full quest completion after the deaths, and revival on a new journey. The road sign reads Blackwood / Population 3.
+
+Town interiors now use the locally cached Brick Project Studio Apartment Kit:
+85 furniture and household prop placements across all six buildings, including
+beds, sofas, desks, chairs, kitchen appliances and tableware. Optimized copies
+retain source textures at 256px with matte, low-poly rendering. Searchable storage,
+NPC routes and quest access are preserved. Asset provenance is recorded in
+assets/apartment/manifest.json; smoke_test_apartment_interiors.gd verifies the
+new asset budgets and room coverage.
+
+The interior layouts follow photo references for domestic seating groups,
+compact bedrooms, clinic waiting rooms and historic general-store counters.
+Each building now has coordinated plaster/paneling, skirting, ceiling fittings
+and room-specific floor finishes. The house separates sleeping, living, dining
+and kitchen spaces. The clinic has a tiled floor and privacy curtain, while the
+shop has stocked wall shelving and a continuous counter. Layouts are authored in
+interior_layouts.gd. Reference links and design decisions are in MAIN_STREET.md.
+
+The abandoned interiors also have ceiling leaks, water-streaked plaster, mold,
+fallen plaster, broken chairs and room-specific signs of a hurried departure:
+half-packed bags, spilled supplies, discarded paperwork and shattered dishes.
+Small debris has no collision, keeping movement and storage interaction stable.

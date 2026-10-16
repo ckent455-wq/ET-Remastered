@@ -210,13 +210,15 @@ func words(id: String) -> String:
 		"ranger":
 			if town.inventory.station_key==0:
 				return "You crashed on Old Mill Road? I'm Elias. You're lucky you made it here.\n\nThe radio station can reach emergency services. Its brass key is in my desk drawer. There's a pistol on the crate near the front of my office. Search with E."
-			return "Good, you found the key. Now try the general store's counter drawer for a fuse. Fit it at the workshop's outside panel, then get the signal coil from the powered cabinet.\n\nBring that coil to the radio-station receiver."
+			return "Good, you found the key. Now try the general store's counter drawer for a fuse. Fit it at the workshop's outside panel, then get the signal coil from the powered cabinet.\n\nThe cabinet also holds the chapel cellar key. Follow Chapel Road uphill for the spare tuning unit; bring both parts to the station."
 		"nurse":
 			return "I'm Mara. Most of Blackwood left in a hurry. Some of us stayed to help anyone still coming through.\n\nSearch the medicine cabinet in the back room for first-aid kits. Press H to use one. Spare flashlight cells are in town's drawers and cabinets; use Q to fit a fresh battery."
 		"mechanic":
 			if not town.powered:
 				return "Name's Owen. The workshop lost power, and the signal coil is stuck in that locked cabinet.\n\nFind the spare fuse in the store's counter drawer. The panel is outside, next to this building's door. Restore power there, then search the coil cabinet."
 			if town.inventory.coil==0:
-				return "You got the power back! Search the metal signal-coil cabinet here in the workshop.\n\nThat coil will repair the radio receiver. The ranger keeps the station key in his desk drawer."
-			return "You've got the coil. Take it to the receiver in the radio station and press E to repair it.\n\nThen stay near the radio and hold E to call for rescue. Your car isn't going anywhere tonight."
+				return "You got the power back! Search the metal signal-coil cabinet here in the workshop.\n\nTake the cellar key from the same cabinet. The other radio part is in the chapel cellar, uphill along Chapel Road. The ranger keeps the station key in his desk drawer."
+			if town.inventory.tuner==0:
+				return "The coil alone will not transmit. Take the cellar key from my cabinet and follow Chapel Road uphill. Unlock the door at the back right of the church; the spare tuning unit is on the cellar workbench."
+			return "You've got both parts. Take them to the receiver in the radio station and press E to repair it.\n\nThen stay near the radio and hold E to call for rescue. Your car isn't going anywhere tonight."
 	return "Stay safe out there."

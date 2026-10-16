@@ -22,13 +22,14 @@ void fragment() {
 	bool east_room = world_position.x > 0.0 &&
 		((z < -40.0 && z > -52.0) || (z < -53.0 && z > -65.0) || (z < -66.5 && z > -77.5));
 	if ((x > 6.42 && x < 16.6 && (west_room || east_room)) ||
-		(x > 6.42 && x < (world_position.x < 0.0 ? 20.6 : 14.6) && z < -80.0 && z > -90.0)) {
+		(x > 6.42 && x < 14.6 && z < -80.0 && z > -90.0) ||
+		(world_position.x > 23.8 && world_position.x < 34.2 && z > -148.2 && z < -133.8)) {
 		discard;
 	}
 	float edge = 1.0 - smoothstep(0.25, 1.0, length((UV - 0.5) * 2.0));
 	float cloud = smoothstep(0.12, 0.88, texture(noise_texture, UV * 1.5).r);
 	float near_fade = smoothstep(1.5, 4.0, distance(eye_position, world_position));
-	float ground_fade = 1.0 - smoothstep(2.7, 4.2, world_position.y);
+	float ground_fade = 1.0 - smoothstep(2.7, 4.2, world_position.y - max(0.0, eye_position.y - 1.25));
 	ALBEDO = vec3(0.40, 0.445, 0.425);
 	ALPHA = edge * cloud * near_fade * ground_fade * COLOR.a * opacity;
 }

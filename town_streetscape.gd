@@ -8,9 +8,11 @@ var pavement: StandardMaterial3D
 var glass: StandardMaterial3D
 var dark_window: StandardMaterial3D
 var lamps: Array[OmniLight3D] = []
+var emergency_lights: Array[OmniLight3D] = []
 var material_cache = {}
 var road_mesh: ArrayMesh
 var church: Node3D
+var chapel_hill: Node3D
 const HEIGHTS = {"ranger":6.8,"clinic":7.4,"store":8.2,"house":10.1,"workshop":6.6,"radio":8.6}
 const SIGNS = {"ranger":"RANGER OFFICE","clinic":"BLACKWOOD PHARMACY","store":"GENERAL STORE","house":"BLACKWOOD HOTEL","workshop":"MILL REPAIR CO.","radio":"BLACKWOOD RADIO"}
 const TINTS = {"ranger":Color("8c7964"),"clinic":Color("876a56"),"store":Color("9b715b"),"house":Color("bbb8a2"),"workshop":Color("777b69"),"radio":Color("927361")}
@@ -23,7 +25,7 @@ func _ready():
 	asphalt.albedo_texture = load("res://assets/roads/asphalt.png")
 	asphalt.albedo_color = Color("b0b4ae")
 	asphalt.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
-	asphalt.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	asphalt.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL
 	asphalt.roughness = 1
 	asphalt.metallic_specular = 0
 	pavement = town.mats.plaster.duplicate()
@@ -75,13 +77,16 @@ func build_street():
 			street_lamp(Vector3(side*4.35,0,z),side== -1 and z!= -57)
 		for z in [-50,-65,-80]:
 			planter(Vector3(side*6.0,0,z))
-		if side<0:
-			church = Node3D.new()
-			church.set_script(preload("res://blackwood_church.gd"))
-			church.town = town
-			add_child(church)
-		else:
-			sealed_shop(side,-85)
+		sealed_shop(side,-85)
+	church = Node3D.new()
+	church.set_script(preload("res://blackwood_church.gd"))
+	church.town = town
+	add_child(church)
+	chapel_hill = Node3D.new()
+	chapel_hill.set_script(preload("res://chapel_hill.gd"))
+	chapel_hill.town = town
+	chapel_hill.church = church
+	add_child(chapel_hill)
 	# Random scars and patching interrupt the road without changing collision.
 	var rng = RandomNumberGenerator.new()
 	rng.seed = 68410
@@ -98,12 +103,7 @@ func build_street():
 	parked_car(Vector3(2.7,0.015,-48),PI-0.32,3,"res://assets/vehicles/abandoned_classic.glb",Vector3(1.8,1.25,4.2))
 	parked_car(Vector3(-2.7,0.015,-61),0.20,4,"res://assets/vehicles/abandoned_van.glb",Vector3(2.0,1.55,4.5))
 	weeds()
-	# The far junction disappears into fog behind a temporary road closure.
-	for x in [-3.0,0.0,3.0]:
-		var barrier = town.box(self,Vector3(x,0.65,-91),Vector3(2.6,0.16,0.12),town.mats.wood)
-		barrier.rotation.z = 0.04*x
-		for leg in [-1,1]:
-			town.box(self,Vector3(x+leg*0.9,0.32,-91),Vector3(0.12,0.64,0.35),town.mats.dark)
+	# Main Street now opens onto the climb to the chapel.
 
 func build_downloaded_roads():
 	# Reuse the asset's original asphalt geometry, UVs and painted markings.
@@ -129,7 +129,7 @@ func extract_road_mesh(node: Node):
 			material.albedo_color = Color("b0b4ae")
 			material.roughness = 1
 			material.metallic_specular = 0
-			material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+			material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL
 			material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 			road_mesh.surface_set_material(road_mesh.get_surface_count()-1,material)
 	for child in node.get_children():
@@ -173,12 +173,47 @@ func parked_car(p: Vector3, yaw: float, index: int, model_path = "res://assets/v
 	var model = load(model_path).instantiate()
 	body.add_child(model)
 	adapt_car(model,index)
+	if "abandoned_police" in model_path:
+		police_lightbar(body)
 	var collision = CollisionShape3D.new()
 	var shape = BoxShape3D.new()
 	shape.size = body_size
 	collision.shape = shape
 	collision.position.y = body_size.y/2+0.05
 	body.add_child(collision)
+
+func police_lightbar(body: Node3D):
+	# Match the downloaded model's existing roof lightbar, rather than adding a beacon.
+	var image = Image.create(32,32,false,Image.FORMAT_RGBA8)
+	for y in range(32):
+		for x in range(32):
+			var radius = Vector2(x-15.5,y-15.5).length()/15.5
+			image.set_pixel(x,y,Color(1,1,1,pow(maxf(0,1-radius),2)))
+	var halo_texture = ImageTexture.create_from_image(image)
+	for side in [-1,1]:
+		var color = Color("b72b37") if side<0 else Color("335ec2")
+		var lens = town.color_material(color,0.65)
+		lens.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		town.box(body,Vector3(side*0.27,1.422,0.29),Vector3(0.25,0.055,0.17),lens,false)
+		var glow = OmniLight3D.new()
+		glow.name = "EmergencyRedGlow" if side<0 else "EmergencyBlueGlow"
+		glow.position = Vector3(side*0.3,1.54,0.29)
+		glow.light_color = Color(1.0,0.045,0.07) if side<0 else Color(0.055,0.14,1.0)
+		glow.light_energy = 0.8
+		glow.omni_range = 5.5
+		glow.omni_attenuation = 1.2
+		glow.shadow_enabled = false
+		glow.light_cull_mask = 1
+		body.add_child(glow)
+		var halo = Sprite3D.new()
+		halo.name = "SoftLightbarHalo"
+		halo.texture = halo_texture
+		halo.pixel_size = 0.022
+		halo.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		halo.modulate = Color(glow.light_color.r,glow.light_color.g,glow.light_color.b,0.28)
+		halo.position = Vector3(side*0.27,1.48,0.29)
+		body.add_child(halo)
+		emergency_lights.append(glow)
 
 func adapt_car(node: Node, index: int):
 	if node is MeshInstance3D:
@@ -349,6 +384,9 @@ func weeds():
 		multi.set_instance_transform(i,Transform3D(Basis(Vector3.UP,i*1.3),Vector3(side*(3.8 if i%3==0 else 6.23),0.025,-39-i*1.02)))
 
 func _process(_delta):
+	for i in range(emergency_lights.size()):
+		# A slow, shallow pulse suggests a failing battery without sharp flashes.
+		emergency_lights[i].light_energy = 0.8*(0.9+0.1*sin(town.game.clock*0.75+i*PI))
 	for i in range(lamps.size()):
 		var flicker = 0.93+0.07*sin(town.game.clock*1.7+i)
 		lamps[i].light_energy = 0.85*flicker

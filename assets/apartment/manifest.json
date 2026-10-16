@@ -1,0 +1,319 @@
+{
+  "package": "C:\\Users\\jkern\\AppData\\Roaming\\Unity\\Asset Store-5.x\\Brick Project Studio\\3D ModelsEnvironments\\Apartment Kit.unitypackage",
+  "package_sha256": "a984753a958350390ec074c6c56146fa68e3826a0e39463c85b398c9dbb5496a",
+  "assets": [
+    {
+      "asset": "sofa",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Sofa_Apt_01",
+      "prefab": "Sofa_Apt_01.prefab",
+      "dimensions": [
+        2.6000001430511475,
+        0.9470248818397522,
+        0.9056097865104675
+      ],
+      "triangles": 1798,
+      "texture_limit": 256
+    },
+    {
+      "asset": "chair",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Chair_Apt_01",
+      "prefab": "Chair_Apt_01.prefab",
+      "dimensions": [
+        0.5356114506721497,
+        0.9200000166893005,
+        0.476965069770813
+      ],
+      "triangles": 600,
+      "texture_limit": 256
+    },
+    {
+      "asset": "coffee_table",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Coffee_Table_Apt_01",
+      "prefab": "Coffee_Table_Apt_01.prefab",
+      "dimensions": [
+        1.4500000476837158,
+        0.5382499098777771,
+        0.7594278454780579
+      ],
+      "triangles": 698,
+      "texture_limit": 256
+    },
+    {
+      "asset": "side_table",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Table_Side_Apt_01",
+      "prefab": "Table_Side_Apt_01.prefab",
+      "dimensions": [
+        0.6901165843009949,
+        0.6800000071525574,
+        0.5919976830482483
+      ],
+      "triangles": 596,
+      "texture_limit": 256
+    },
+    {
+      "asset": "bookcase",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Shelf_Apt_01",
+      "prefab": "Shelf_Apt_01.prefab",
+      "dimensions": [
+        1.2368909120559692,
+        2.0999999046325684,
+        0.4536281228065491
+      ],
+      "triangles": 872,
+      "texture_limit": 256
+    },
+    {
+      "asset": "floor_lamp",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Lamp_Floor_01",
+      "prefab": "Lamp_Floor_01.prefab",
+      "dimensions": [
+        0.28544482588768005,
+        1.649999976158142,
+        0.2854446768760681
+      ],
+      "triangles": 252,
+      "texture_limit": 256
+    },
+    {
+      "asset": "desk",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "ComputerTable_Apt_01",
+      "prefab": "ComputerTable_Apt_01.prefab",
+      "dimensions": [
+        1.931004285812378,
+        0.8799999952316284,
+        0.7603005766868591
+      ],
+      "triangles": 988,
+      "texture_limit": 256
+    },
+    {
+      "asset": "bed",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_02.fbx",
+      "source_object": "Bed_Apt_01",
+      "prefab": "Bed_Apt_01_01.prefab",
+      "dimensions": [
+        1.102866291999817,
+        0.9660422205924988,
+        2.1999998092651367
+      ],
+      "triangles": 1994,
+      "texture_limit": 256
+    },
+    {
+      "asset": "wardrobe",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_02.fbx",
+      "source_object": "Dresser Closet_01",
+      "prefab": "Dresser Closet_01.prefab",
+      "dimensions": [
+        1.1852489709854126,
+        2.1500000953674316,
+        0.7625816464424133
+      ],
+      "triangles": 696,
+      "texture_limit": 256
+    },
+    {
+      "asset": "dresser",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_02.fbx",
+      "source_object": "Dresser_Apt_01",
+      "prefab": "Dresser_Apt_01.prefab",
+      "dimensions": [
+        1.4027644395828247,
+        0.8999999761581421,
+        0.5929856896400452
+      ],
+      "triangles": 888,
+      "texture_limit": 256
+    },
+    {
+      "asset": "fridge",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Kitchen_01.fbx",
+      "source_object": "Fridge_01",
+      "prefab": "Fridge_01.prefab",
+      "dimensions": [
+        0.8896632194519043,
+        1.8499999046325684,
+        0.8089983463287354
+      ],
+      "triangles": 1813,
+      "texture_limit": 256
+    },
+    {
+      "asset": "stove",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Kitchen_01.fbx",
+      "source_object": "Stove_01",
+      "prefab": "Stove_01.prefab",
+      "dimensions": [
+        0.5861422419548035,
+        0.8999999761581421,
+        0.5462678670883179
+      ],
+      "triangles": 2310,
+      "texture_limit": 256
+    },
+    {
+      "asset": "counter",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Kitchen_01.fbx",
+      "source_object": "Cabinet_Base_DD_01",
+      "prefab": "Cabinet_Base_DD_01.prefab",
+      "dimensions": [
+        0.7665630578994751,
+        0.9000000357627869,
+        0.6538558602333069
+      ],
+      "triangles": 692,
+      "texture_limit": 256
+    },
+    {
+      "asset": "wall_cabinet",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Kitchen_01.fbx",
+      "source_object": "Cabinet_Wall_DD_02",
+      "prefab": "Cabinet_Wall_DD_02.prefab",
+      "dimensions": [
+        1.0,
+        0.6022689342498779,
+        0.5779799818992615
+      ],
+      "triangles": 432,
+      "texture_limit": 256
+    },
+    {
+      "asset": "office_chair",
+      "source_model": "Assets\\Brick Project Studio\\_BPS Basic Assets\\Common\\Models\\Legacy\\office chair.fbx",
+      "source_object": null,
+      "prefab": "office chair.prefab",
+      "dimensions": [
+        0.7260275483131409,
+        0.9999999403953552,
+        0.683849036693573
+      ],
+      "triangles": 1092,
+      "texture_limit": 256
+    },
+    {
+      "asset": "dining_table",
+      "source_model": "Assets\\Brick Project Studio\\_BPS Basic Assets\\Common\\Models\\BPS_Table.fbx",
+      "source_object": null,
+      "prefab": "BPS_Table.prefab",
+      "dimensions": [
+        1.665242314338684,
+        0.7800000309944153,
+        1.0552124977111816
+      ],
+      "triangles": 212,
+      "texture_limit": 256
+    },
+    {
+      "asset": "monitor",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_01.fbx",
+      "source_object": "Monitor_Apt_01",
+      "prefab": "Monitor_Apt_01.prefab",
+      "dimensions": [
+        0.550000011920929,
+        0.39244306087493896,
+        0.1323835700750351
+      ],
+      "triangles": 236,
+      "texture_limit": 256
+    },
+    {
+      "asset": "keyboard",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_01.fbx",
+      "source_object": "KeyBoard_Apt_01",
+      "prefab": "KeyBoard_Apt_01.prefab",
+      "dimensions": [
+        0.4300000071525574,
+        0.01868358813226223,
+        0.14111225306987762
+      ],
+      "triangles": 154,
+      "texture_limit": 256
+    },
+    {
+      "asset": "trash",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_01.fbx",
+      "source_object": "Trash_apt_01",
+      "prefab": "Trash_apt_01.prefab",
+      "dimensions": [
+        0.4280111491680145,
+        0.47999998927116394,
+        0.314297616481781
+      ],
+      "triangles": 108,
+      "texture_limit": 256
+    },
+    {
+      "asset": "plate",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_01.fbx",
+      "source_object": "Plate_Apt_01",
+      "prefab": "Plate_Apt_01.prefab",
+      "dimensions": [
+        0.27000001072883606,
+        0.023355871438980103,
+        0.27000001072883606
+      ],
+      "triangles": 116,
+      "texture_limit": 256
+    },
+    {
+      "asset": "bowl",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_01.fbx",
+      "source_object": "Bowl_Apt_01",
+      "prefab": "Bowl_Apt_01.prefab",
+      "dimensions": [
+        0.23000000417232513,
+        0.0725497305393219,
+        0.23000000417232513
+      ],
+      "triangles": 284,
+      "texture_limit": 256
+    },
+    {
+      "asset": "coffee_maker",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_01.fbx",
+      "source_object": "CoffeeMaker_Apt_01",
+      "prefab": "CoffeeMaker_Apt_01.prefab",
+      "dimensions": [
+        0.44476693868637085,
+        0.3399999737739563,
+        0.19424837827682495
+      ],
+      "triangles": 1094,
+      "texture_limit": 256
+    },
+    {
+      "asset": "rug",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Carpet",
+      "prefab": "Carpet_Apt_01.prefab",
+      "dimensions": [
+        2.4000000953674316,
+        0.002351263538002968,
+        1.7944037914276123
+      ],
+      "triangles": 12,
+      "texture_limit": 256
+    },
+    {
+      "asset": "wall_art",
+      "source_model": "Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+      "source_object": "Canvas_Painting_01",
+      "prefab": "Canvas_Painting_01.prefab",
+      "dimensions": [
+        0.800000011920929,
+        0.800000011920929,
+        0.06172555685043335
+      ],
+      "triangles": 108,
+      "texture_limit": 256
+    }
+  ],
+  "adaptation": "Original furniture and UVs retained; flat shading, matte materials, 256-pixel source albedos, bounded triangle counts. Source package unchanged."
+}

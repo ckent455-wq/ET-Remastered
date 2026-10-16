@@ -24,7 +24,9 @@ func check():
 		var c = faces[triangle*3+2]
 		assert((b-a).cross(c-a).y<0,"Clockwise top faces prevent the vanished street join")
 	var chapel = street.church
-	assert(chapel!=null,"Church on Main Street")
+	assert(chapel!=null,"Hilltop church")
+	game.town.perform("chapel_doors")
+	await physics_frame
 	var query = PhysicsShapeQueryParameters3D.new()
 	query.shape = game.player.get_child(0).shape
 	query.collision_mask = 1

@@ -5,6 +5,9 @@ var menu_buttons: Array[Button] = []
 var controls_open = false
 var last_menu_state = ""
 var last_controls_open = false
+var last_message = ""
+var message_seconds = 0.0
+var passage_fade = 0.0
 const INK = Color("d2dfd0")
 const DIM = Color("87a39f")
 const AMBER = Color("efc58c")
@@ -42,6 +45,13 @@ func begin_game():
 	game.set_state("play")
 
 func _process(_delta):
+	passage_fade = maxf(0,passage_fade-_delta*2.2)
+	if game.message!=last_message:
+		last_message = game.message
+		message_seconds = 6.0
+	if game.state=="play":
+		game.achievements.update_toast(_delta)
+		message_seconds = maxf(0,message_seconds-_delta)
 	if game.state!="title":
 		controls_open = false
 	for i in range(menu_buttons.size()):
@@ -79,38 +89,31 @@ func _draw():
 		draw_rect(Rect2(i,i,640-i*2,400-i*2),Color(0,0,0,0.025),false,1)
 	if game.invincible>1:
 		draw_rect(Rect2(0,0,640,400),Color(0.8,0.15,0.1,0.15))
-	text("FAR FROM HOME",Vector2(20,27),18)
-	text(game.town.location_name()+" / 02:17 AM",Vector2(20,43),10,DIM)
-	text("RADIO / "+("READY" if game.town.radio_ready else "OFFLINE"),Vector2(487,27),13,AMBER)
-	centered(game.town.objective(),64,12,AMBER)
-	# Directional objective markers remain on a compass, including behind you.
-	draw_line(Vector2(220,40),Vector2(420,40),Color("536b70"),1)
-	text("SIGNALS",Vector2(301,28),10,DIM)
-	var diff = game.town.navigation_target()-game.player.position
-	var angle = wrapf(atan2(-diff.x,-diff.z)-game.player.rotation.y,-PI,PI)
-	draw_rect(Rect2(317-angle/PI*96,37,6,6),Color("85c2ca"),false,1)
 	if game.state=="play":
-		text(game.weapons.status(),Vector2(20,307),11,AMBER)
-		var controls = "LMB FIRE   RMB AIM   R RELOAD   1/2/3 GUNS   0 HOLSTER" if game.weapons.owned.has(true) else "E SEARCH / INTERACT    F FLASHLIGHT    TAB JOURNAL"
-		text(controls,Vector2(20,320),9,DIM)
+		# Only immediate survival information remains in the world view.
+		status_bar("HEALTH",Vector2(20,350),game.health,Color("a1c8a1"))
+		if game.stamina<99:
+			status_bar("STAMINA",Vector2(20,372),game.stamina,DIM)
+		var light_color = Color("c48060") if game.flashlight_charge<=15 else Color("d0c59b")
+		status_bar("FLASHLIGHT"+(" / OFF" if not game.flashlight.visible else ""),Vector2(500,350),game.flashlight_charge,light_color)
+		if game.flashlight_charge<=0:
+			text("EMPTY / Q BATTERY",Vector2(500,374),10,light_color)
+		text("TAB / JOURNAL",Vector2(20,24),10,DIM)
+		if game.weapons.selected>=0:
+			text(game.weapons.status(),Vector2(20,329),11,AMBER)
 		if game.weapons.hit_feedback>0:
 			draw_line(Vector2(315,195),Vector2(325,205),AMBER,1)
 			draw_line(Vector2(325,195),Vector2(315,205),AMBER,1)
 		draw_circle(Vector2(320,200),1.2,Color(0.8,0.9,0.8,0.8))
-	text("VITALITY",Vector2(20,330),10,DIM)
-	draw_rect(Rect2(20,337,100,3),Color("2e454b"))
-	draw_rect(Rect2(20,337,maxf(0,game.health),3),Color("a1c8a1"))
-	text("STAMINA",Vector2(20,357),10,DIM)
-	draw_rect(Rect2(20,364,game.stamina,2),DIM)
-	text("LIGHT %d%%   H / KITS %d   Q / CELLS %d   TAB / JOURNAL" % [int(game.flashlight_charge),game.town.inventory.medkit,game.town.inventory.battery],Vector2(153,356),10,DIM)
-	if game.soundscape.muted:
-		text("SOUND OFF / M",Vector2(520,337),10,DIM)
-	centered(game.message,381,12)
-	if game.state=="play" and game.town.prompt()!="":
-		centered(game.town.prompt(),285,15,AMBER)
-	if game.rescue_available():
-		centered("HOLD E / CALL FOR RESCUE",284,19)
-		draw_rect(Rect2(240,296,game.contact_progress*40,3),INK)
+		if message_seconds>0:
+			centered(game.message,395,11)
+		if game.town.prompt()!="":
+			centered(game.town.prompt(),285,15,AMBER)
+		if game.rescue_available():
+			centered("HOLD E / CALL FOR RESCUE",284,19)
+			draw_rect(Rect2(240,296,game.contact_progress*40,3),INK)
+	if game.state=="play" and game.achievements.toast_seconds>0:
+		draw_achievement()
 	if game.state=="journal":
 		draw_journal()
 		return
@@ -141,6 +144,9 @@ func _draw():
 		centered("ENTER / " + ("RESUME" if game.state=="paused" else "BEGIN JOURNEY"),319,16,AMBER)
 		centered("MOUSE  look    WASD  move    SHIFT  sprint    F  flashlight",359,11,DIM)
 		centered("E  interact    TAB  journal / map    H  heal    Q  battery    ESC  pause",377,11,DIM)
+
+	if game.state=="play" and passage_fade>0:
+		draw_rect(Rect2(0,0,640,400),Color(0.005,0.008,0.008,passage_fade))
 
 func draw_title():
 	# The real low-poly town remains visible beneath a dark, weathered CRT treatment.
@@ -216,36 +222,45 @@ func draw_journal():
 	text("BLACKWOOD / FIELD JOURNAL",Vector2(78,70),23)
 	text("%d / %d" % [game.journal_page+1,game.town.journal_entries.size()+2],Vector2(520,70),13,DIM)
 	if game.journal_page==0:
-		text("The crash left you stranded outside Blackwood.",Vector2(78,91),11,DIM)
+		text(game.town.location_name()+" / 02:17 AM",Vector2(78,91),11,DIM)
 		text("CURRENT OBJECTIVE",Vector2(78,105),11,DIM)
 		paragraph(game.town.objective(),78,127,476,16,AMBER)
-		text("PACK / Medkits %d   Batteries %d   Station key %d   Fuse %d   Coil %d" % [game.town.inventory.medkit,game.town.inventory.battery,game.town.inventory.station_key,game.town.inventory.fuse,game.town.inventory.coil],Vector2(78,171),12)
+		text("HEALTH %d   LIGHT %d%%   RADIO %s" % [int(game.health),int(game.flashlight_charge),"READY" if game.town.radio_ready else "OFFLINE"],Vector2(78,151),11,DIM)
+		text("PACK / Health kits %d   Batteries %d   [H] Heal   [Q] Fit battery" % [game.town.inventory.medkit,game.town.inventory.battery],Vector2(78,168),12)
+		text("KEY %d   FUSE %d   COIL %d   CELLAR KEY %d   TUNER %d" % [game.town.inventory.station_key,game.town.inventory.fuse,game.town.inventory.coil,game.town.inventory.chapel_key,game.town.inventory.tuner],Vector2(78,184),10,DIM)
 		var searched = game.town.interiors.containers.values().filter(func(storage): return storage.searched).size()
-		text("STORAGE / %d of 12 searched - E opens drawers and cabinets" % searched,Vector2(78,188),10,DIM)
+		text("STORAGE / %d of 12 searched - E opens drawers and cabinets" % searched,Vector2(78,199),10,DIM)
 		var tasks = [
 			[game.town.reached_town,"Follow Old Mill Road into Blackwood"],
-			[game.weapons.owned.has(true),"Find a weapon in town"],
 			[game.town.inventory.station_key>0,"Find the ranger office's radio-station key"],
 			[game.town.powered,"Find store fuse; restore workshop power"],
 			[game.town.inventory.coil>0 or game.town.radio_ready,"Recover workshop signal coil"],
-			[game.town.radio_ready,"Calibrate the radio-station receiver"],
+			[game.town.streetscape.church.basement.unlocked,"Find workshop key; unlock the chapel cellar"],
+			[game.town.inventory.tuner>0 or game.town.radio_ready,"Recover the chapel cellar tuning unit"],
+			[game.town.radio_ready,"Repair the receiver with both radio parts"],
 			[game.contact_progress>=4,"Hold E at the repaired radio to call for rescue"]]
 		for i in range(tasks.size()):
-			text(("[+] " if tasks[i][0] else "[ ] ")+tasks[i][1],Vector2(78,205+i*21),13,DIM if tasks[i][0] else INK)
+			text(("[+] " if tasks[i][0] else "[ ] ")+tasks[i][1],Vector2(78,218+i*16),12,DIM if tasks[i][0] else INK)
+		var earned = game.achievements.unlocked
+		text("ACHIEVEMENTS / "+(game.achievements.CROW_TITLE if earned.has(game.achievements.CROW_ID) else "0 unlocked"),Vector2(78,346),10,AMBER if not earned.is_empty() else DIM)
 	elif game.journal_page==1:
 		text("OLD MILL ROAD / TOWN MAP",Vector2(78,105),14,AMBER)
-		draw_line(Vector2(320,132),Vector2(320,325),Color("667a76"),10)
-		draw_line(Vector2(320,325),Vector2(320,339),Color("667a76"),5)
+		draw_line(journal_map_point(Vector3(0,0,-93)),journal_map_point(Vector3(0,0,-38)),Color("667a76"),8)
+		var hill_points = PackedVector2Array()
+		for point in game.town.streetscape.chapel_hill.samples:
+			hill_points.append(journal_map_point(point))
+		draw_polyline(hill_points,Color("667a76"),4)
+		draw_line(Vector2(320,333),Vector2(320,340),Color("667a76"),5)
 		for data in game.town.BUILDINGS:
-			var p = Vector2(320+data.p.x*5,150+(data.p.z+80)*3.4)
-			draw_rect(Rect2(p-Vector2(data.d*2.5,data.w*1.7),Vector2(data.d*5,data.w*3.4)),Color("385156"))
+			var p = journal_map_point(data.p)
+			draw_rect(Rect2(p-Vector2(data.d*2.5,data.w*0.9),Vector2(data.d*5,data.w*1.8)),Color("385156"))
 			text(data.id.to_upper(),p+Vector2(-22,4),10,INK)
-		var chapel = Vector2(252.5,133)
-		draw_rect(Rect2(chapel-Vector2(35,17),Vector2(70,34)),Color("385156"))
+		var chapel = journal_map_point(game.town.streetscape.church.position)
+		draw_rect(Rect2(chapel-Vector2(25,13),Vector2(50,26)),Color("385156"))
 		text("CHAPEL",chapel+Vector2(-20,4),10,INK)
 		var player = game.player.position
-		if player.z< -35 and player.z> -91:
-			draw_circle(Vector2(320+player.x*5,150+(player.z+80)*3.4),4,AMBER)
+		if player.z< -35 and player.z> -156:
+			draw_circle(journal_map_point(player),4,AMBER)
 		text("SOUTH / OLD MILL ROAD & CRASH SITE",Vector2(211,336),11,DIM)
 	else:
 		var entry = game.town.journal_entries[clampi(game.journal_page-2,0,game.town.journal_entries.size()-1)]
@@ -268,3 +283,17 @@ func draw_dialogue():
 	text(game.dialogue_name.to_upper(),Vector2(78,148),23,AMBER)
 	paragraph(game.dialogue_text,78,181,478,15)
 	centered("E / ENTER / ESC  finish conversation",359,12,DIM)
+
+func journal_map_point(p: Vector3) -> Vector2:
+	return Vector2(320+p.x*5,140+(p.z+145)*1.8)
+
+func status_bar(label: String, p: Vector2, amount: float, color: Color):
+	text(label,p,10,DIM)
+	draw_rect(Rect2(p+Vector2(0,7),Vector2(120,4)),Color("263532"))
+	draw_rect(Rect2(p+Vector2(0,7),Vector2(120*clampf(amount/100,0,1),4)),color)
+
+func draw_achievement():
+	draw_rect(Rect2(139,25,362,57),Color(0.025,0.032,0.029,0.96))
+	draw_rect(Rect2(139,25,362,57),Color("8d805e"),false,1)
+	centered("ACHIEVEMENT UNLOCKED" if game.achievements.toast_is_new else "ACHIEVEMENT",45,11,DIM)
+	centered(game.achievements.toast_title,68,19,AMBER)

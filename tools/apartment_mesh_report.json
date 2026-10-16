@@ -1,0 +1,4407 @@
+{
+  "Apt_Furniture_01.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_01.fbx",
+    "objects": [
+      {
+        "name": "Table Top",
+        "dimensions": [
+          2.225177764892578,
+          0.07049095630645752,
+          2.225177764892578
+        ],
+        "triangles": 158,
+        "materials": []
+      },
+      {
+        "name": "Table_Apt_01",
+        "dimensions": [
+          2.225177764892578,
+          1.0385915040969849,
+          2.225177764892578
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Legs Chair",
+        "dimensions": [
+          0.678474485874176,
+          0.5943294763565063,
+          0.6031932830810547
+        ],
+        "triangles": 312,
+        "materials": []
+      },
+      {
+        "name": "Chair_Apt_01",
+        "dimensions": [
+          0.8452402353286743,
+          0.8842485547065735,
+          0.752691388130188
+        ],
+        "triangles": 288,
+        "materials": []
+      },
+      {
+        "name": "Glass",
+        "dimensions": [
+          0.012621368281543255,
+          0.5562126636505127,
+          0.722908079624176
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "Knob.004",
+        "dimensions": [
+          0.01680156961083412,
+          0.0313236266374588,
+          0.031323619186878204
+        ],
+        "triangles": 134,
+        "materials": []
+      },
+      {
+        "name": "Door.L.001",
+        "dimensions": [
+          0.03468240052461624,
+          0.7054034471511841,
+          0.8468143343925476
+        ],
+        "triangles": 636,
+        "materials": []
+      },
+      {
+        "name": "Handle.001",
+        "dimensions": [
+          0.015776023268699646,
+          0.01727057807147503,
+          0.12091064453125
+        ],
+        "triangles": 42,
+        "materials": []
+      },
+      {
+        "name": "Drawer_01.001",
+        "dimensions": [
+          0.7948958873748779,
+          0.20848894119262695,
+          0.8511350750923157
+        ],
+        "triangles": 198,
+        "materials": []
+      },
+      {
+        "name": "Handle.002",
+        "dimensions": [
+          0.015776023268699646,
+          0.01727057807147503,
+          0.12091064453125
+        ],
+        "triangles": 42,
+        "materials": []
+      },
+      {
+        "name": "Drawer_02.001",
+        "dimensions": [
+          0.7948958873748779,
+          0.20848894119262695,
+          0.8511350750923157
+        ],
+        "triangles": 198,
+        "materials": []
+      },
+      {
+        "name": "Knob.001",
+        "dimensions": [
+          0.01680156961083412,
+          0.0313236266374588,
+          0.031323619186878204
+        ],
+        "triangles": 134,
+        "materials": []
+      },
+      {
+        "name": "Glass.001",
+        "dimensions": [
+          0.012621368281543255,
+          0.5562126636505127,
+          0.722908079624176
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "Door.R.001",
+        "dimensions": [
+          0.03468232601881027,
+          0.7054034471511841,
+          0.8468143343925476
+        ],
+        "triangles": 636,
+        "materials": []
+      },
+      {
+        "name": "MediaTable_01",
+        "dimensions": [
+          0.8947740793228149,
+          0.8153499960899353,
+          2.7289412021636963
+        ],
+        "triangles": 1154,
+        "materials": []
+      },
+      {
+        "name": "Screen",
+        "dimensions": [
+          2.229724941571476e-06,
+          1.501428484916687,
+          2.56427001953125
+        ],
+        "triangles": 2,
+        "materials": []
+      },
+      {
+        "name": "Mount",
+        "dimensions": [
+          0.046758655458688736,
+          1.0329070091247559,
+          1.1979624032974243
+        ],
+        "triangles": 120,
+        "materials": []
+      },
+      {
+        "name": "TV_Apt_01",
+        "dimensions": [
+          0.05455680564045906,
+          1.5689170360565186,
+          2.643021821975708
+        ],
+        "triangles": 210,
+        "materials": []
+      },
+      {
+        "name": "WallShelf_Apt_01",
+        "dimensions": [
+          0.3743274509906769,
+          0.41827574372291565,
+          0.5143465995788574
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Shelf_Apt_01",
+        "dimensions": [
+          0.7795490026473999,
+          3.6087989807128906,
+          2.1255667209625244
+        ],
+        "triangles": 872,
+        "materials": []
+      },
+      {
+        "name": "Plastic Flower",
+        "dimensions": [
+          0.18682129681110382,
+          0.7843313217163086,
+          0.2845679521560669
+        ],
+        "triangles": 776,
+        "materials": []
+      },
+      {
+        "name": "Vase_Apt_01",
+        "dimensions": [
+          0.2737618386745453,
+          0.508695662021637,
+          0.2737618088722229
+        ],
+        "triangles": 700,
+        "materials": []
+      },
+      {
+        "name": "Feet",
+        "dimensions": [
+          0.1921694427728653,
+          0.009485376998782158,
+          0.44069498777389526
+        ],
+        "triangles": 176,
+        "materials": []
+      },
+      {
+        "name": "Fabric",
+        "dimensions": [
+          0.027652166783809662,
+          0.12773603200912476,
+          0.46179622411727905
+        ],
+        "triangles": 300,
+        "materials": []
+      },
+      {
+        "name": "SS_01",
+        "dimensions": [
+          0.2323819100856781,
+          0.12773598730564117,
+          0.46179619431495667
+        ],
+        "triangles": 276,
+        "materials": []
+      },
+      {
+        "name": "Fabric.001",
+        "dimensions": [
+          0.027652181684970856,
+          0.2637294828891754,
+          0.1365211308002472
+        ],
+        "triangles": 300,
+        "materials": []
+      },
+      {
+        "name": "SS_02",
+        "dimensions": [
+          0.15061548352241516,
+          0.2637295126914978,
+          0.136521115899086
+        ],
+        "triangles": 276,
+        "materials": []
+      },
+      {
+        "name": "SS_Stand_01",
+        "dimensions": [
+          0.1831805408000946,
+          1.2048804759979248,
+          0.1831805408000946
+        ],
+        "triangles": 168,
+        "materials": []
+      },
+      {
+        "name": "Knob.002",
+        "dimensions": [
+          0.02675400674343109,
+          0.04275161772966385,
+          0.043881870806217194
+        ],
+        "triangles": 366,
+        "materials": []
+      },
+      {
+        "name": "BarDrawer",
+        "dimensions": [
+          0.5370209813117981,
+          0.19140513241291046,
+          0.7405178546905518
+        ],
+        "triangles": 114,
+        "materials": []
+      },
+      {
+        "name": "BarCabinet_Apt_01",
+        "dimensions": [
+          0.7493753433227539,
+          1.5538092851638794,
+          0.9724445343017578
+        ],
+        "triangles": 972,
+        "materials": []
+      },
+      {
+        "name": "WineArt",
+        "dimensions": [
+          0.01149002369493246,
+          1.210198998451233,
+          0.9780446290969849
+        ],
+        "triangles": 176,
+        "materials": []
+      },
+      {
+        "name": "Holder",
+        "dimensions": [
+          0.15170064568519592,
+          1.0169026851654053,
+          1.0388596057891846
+        ],
+        "triangles": 672,
+        "materials": []
+      },
+      {
+        "name": "Wall Wine Rack_Apt_01",
+        "dimensions": [
+          0.01907718926668167,
+          1.0857847929000854,
+          0.8054340481758118
+        ],
+        "triangles": 288,
+        "materials": []
+      },
+      {
+        "name": "MirrorPlate",
+        "dimensions": [
+          0.6281314492225647,
+          0.011679956689476967,
+          0.7494040727615356
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "Elbow",
+        "dimensions": [
+          0.6142212748527527,
+          0.05120905861258507,
+          0.7341291904449463
+        ],
+        "triangles": 944,
+        "materials": []
+      },
+      {
+        "name": "MirrorPlate_Glass",
+        "dimensions": [
+          0.6074164509773254,
+          0.08816246688365936,
+          0.727324366569519
+        ],
+        "triangles": 216,
+        "materials": []
+      },
+      {
+        "name": "Bulb",
+        "dimensions": [
+          0.1604839265346527,
+          0.2250041663646698,
+          0.16048391163349152
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "BulbBase",
+        "dimensions": [
+          0.08642841130495071,
+          0.07782723009586334,
+          0.08642840385437012
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Glass.003",
+        "dimensions": [
+          0.3723052740097046,
+          0.466444730758667,
+          0.37230533361434937
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Bulb.001",
+        "dimensions": [
+          0.1604839265346527,
+          0.2250041663646698,
+          0.16048391163349152
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "BulbBase.001",
+        "dimensions": [
+          0.08642841130495071,
+          0.07782723009586334,
+          0.08642840385437012
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Glass.004",
+        "dimensions": [
+          0.3723052740097046,
+          0.466444730758667,
+          0.37230533361434937
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Bulb.002",
+        "dimensions": [
+          0.1604839265346527,
+          0.2250041663646698,
+          0.16048391163349152
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "BulbBase.002",
+        "dimensions": [
+          0.08642841130495071,
+          0.07782720029354095,
+          0.08642840385437012
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Glass.005",
+        "dimensions": [
+          0.3723052740097046,
+          0.466444730758667,
+          0.37230533361434937
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Lamp_Apt_01",
+        "dimensions": [
+          0.7134855389595032,
+          0.5564208626747131,
+          0.7134855389595032
+        ],
+        "triangles": 1510,
+        "materials": []
+      },
+      {
+        "name": "Glow.002",
+        "dimensions": [
+          0.4581619203090668,
+          0.9442794322967529,
+          0.4581620693206787
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "Lamp_Floor_01",
+        "dimensions": [
+          0.4447898268699646,
+          1.7029281854629517,
+          0.4447898864746094
+        ],
+        "triangles": 240,
+        "materials": []
+      },
+      {
+        "name": "Door.L.002",
+        "dimensions": [
+          0.8305367827415466,
+          0.051804542541503906,
+          1.4895973205566406
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Door.R.002",
+        "dimensions": [
+          0.8305367827415466,
+          0.051804542541503906,
+          1.4895973205566406
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Bench_Apt_01",
+        "dimensions": [
+          0.9655159711837769,
+          1.23379385471344,
+          3.2271955013275146
+        ],
+        "triangles": 1916,
+        "materials": []
+      },
+      {
+        "name": "feet",
+        "dimensions": [
+          1.122715950012207,
+          0.27107128500938416,
+          3.3563148975372314
+        ],
+        "triangles": 432,
+        "materials": []
+      },
+      {
+        "name": "Sofa_Apt_01",
+        "dimensions": [
+          1.2318713665008545,
+          1.0171359777450562,
+          3.5366954803466797
+        ],
+        "triangles": 4352,
+        "materials": []
+      },
+      {
+        "name": "Handle.005",
+        "dimensions": [
+          0.015325605869293213,
+          0.02646590769290924,
+          0.16795414686203003
+        ],
+        "triangles": 30,
+        "materials": []
+      },
+      {
+        "name": "Drawer.001",
+        "dimensions": [
+          0.5477858781814575,
+          0.1886785477399826,
+          0.6218719482421875
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Table",
+        "dimensions": [
+          0.6774673461914062,
+          0.6735280156135559,
+          0.673098087310791
+        ],
+        "triangles": 180,
+        "materials": []
+      },
+      {
+        "name": "Table_Side_Apt_01",
+        "dimensions": [
+          0.6774673461914062,
+          0.7781749963760376,
+          0.7897521257400513
+        ],
+        "triangles": 384,
+        "materials": []
+      },
+      {
+        "name": "Hook",
+        "dimensions": [
+          0.0883910059928894,
+          0.12409009039402008,
+          2.095850944519043
+        ],
+        "triangles": 1520,
+        "materials": []
+      },
+      {
+        "name": "WallShelf_Apt_02",
+        "dimensions": [
+          0.74294114112854,
+          0.9345780611038208,
+          2.9454705715179443
+        ],
+        "triangles": 448,
+        "materials": []
+      },
+      {
+        "name": "Handle.003",
+        "dimensions": [
+          0.03077889233827591,
+          0.033076345920562744,
+          0.26291054487228394
+        ],
+        "triangles": 68,
+        "materials": []
+      },
+      {
+        "name": "Drawer_01",
+        "dimensions": [
+          0.7036677598953247,
+          0.5381213426589966,
+          0.747715950012207
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Handle.004",
+        "dimensions": [
+          0.03077889233827591,
+          0.033076345920562744,
+          0.26291054487228394
+        ],
+        "triangles": 68,
+        "materials": []
+      },
+      {
+        "name": "Drawer_02",
+        "dimensions": [
+          0.7036677598953247,
+          0.26632532477378845,
+          0.7477158904075623
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Handle",
+        "dimensions": [
+          0.03077889233827591,
+          0.033076345920562744,
+          0.26291054487228394
+        ],
+        "triangles": 68,
+        "materials": []
+      },
+      {
+        "name": "Drawer_03",
+        "dimensions": [
+          0.7036677598953247,
+          0.26632529497146606,
+          0.7477158904075623
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "MetalBar",
+        "dimensions": [
+          0.8499716520309448,
+          1.1967928409576416,
+          1.9844162464141846
+        ],
+        "triangles": 256,
+        "materials": []
+      },
+      {
+        "name": "ComputerTable_Apt_01",
+        "dimensions": [
+          1.101344108581543,
+          0.8449487090110779,
+          2.797184467315674
+        ],
+        "triangles": 272,
+        "materials": []
+      },
+      {
+        "name": "Glow.001",
+        "dimensions": [
+          1.1330561637878418,
+          0.06862607598304749,
+          1.1330561637878418
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Lamp_Apt_03",
+        "dimensions": [
+          1.1443718671798706,
+          0.04809954762458801,
+          1.1443718671798706
+        ],
+        "triangles": 222,
+        "materials": []
+      },
+      {
+        "name": "Carpet",
+        "dimensions": [
+          4.221791744232178,
+          0.0055315205827355385,
+          5.646611213684082
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "WoodBars",
+        "dimensions": [
+          1.0027061700820923,
+          0.24638664722442627,
+          0.9225685596466064
+        ],
+        "triangles": 528,
+        "materials": []
+      },
+      {
+        "name": "Coffee_Table_Apt_01",
+        "dimensions": [
+          1.0200470685958862,
+          0.7229655981063843,
+          1.9476085901260376
+        ],
+        "triangles": 604,
+        "materials": []
+      },
+      {
+        "name": "Canvas_Painting_01",
+        "dimensions": [
+          0.11619696766138077,
+          1.5059819221496582,
+          1.5059819221496582
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "Plane.003",
+        "dimensions": [
+          0.13023005425930023,
+          1.776059627532959,
+          3.3676788806915283
+        ],
+        "triangles": 220,
+        "materials": []
+      }
+    ]
+  },
+  "Apt_Furniture_02.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Furniture_02.fbx",
+    "objects": [
+      {
+        "name": "Pillow_Apt_01",
+        "dimensions": [
+          0.9002668261528015,
+          0.30814728140830994,
+          1.460785984992981
+        ],
+        "triangles": 916,
+        "materials": []
+      },
+      {
+        "name": "Sheet_Apt_01",
+        "dimensions": [
+          2.89504337310791,
+          0.5172173976898193,
+          1.670513391494751
+        ],
+        "triangles": 892,
+        "materials": []
+      },
+      {
+        "name": "Mattress_Apt_01",
+        "dimensions": [
+          3.0961194038391113,
+          0.43173491954803467,
+          1.4988136291503906
+        ],
+        "triangles": 668,
+        "materials": []
+      },
+      {
+        "name": "Bed_Apt_01",
+        "dimensions": [
+          3.257152557373047,
+          1.4632656574249268,
+          1.5710046291351318
+        ],
+        "triangles": 344,
+        "materials": []
+      },
+      {
+        "name": "Pillow_Apt_01.001",
+        "dimensions": [
+          0.9002668261528015,
+          0.30814725160598755,
+          1.460785984992981
+        ],
+        "triangles": 916,
+        "materials": []
+      },
+      {
+        "name": "Pillow_Apt_01.002",
+        "dimensions": [
+          0.9002668261528015,
+          0.30814725160598755,
+          1.460785984992981
+        ],
+        "triangles": 916,
+        "materials": []
+      },
+      {
+        "name": "Sheet",
+        "dimensions": [
+          2.74654483795166,
+          0.6416678428649902,
+          3.2708663940429688
+        ],
+        "triangles": 1236,
+        "materials": []
+      },
+      {
+        "name": "Mattress",
+        "dimensions": [
+          3.4096803665161133,
+          0.43438127636909485,
+          3.148135185241699
+        ],
+        "triangles": 300,
+        "materials": []
+      },
+      {
+        "name": "Fabric_Back",
+        "dimensions": [
+          0.07780063152313232,
+          0.9055905938148499,
+          3.1046178340911865
+        ],
+        "triangles": 252,
+        "materials": []
+      },
+      {
+        "name": "Handle.008",
+        "dimensions": [
+          0.18697577714920044,
+          0.03581947088241577,
+          0.013815999031066895
+        ],
+        "triangles": 256,
+        "materials": []
+      },
+      {
+        "name": "Drawer.003",
+        "dimensions": [
+          1.5850512981414795,
+          0.2617085576057434,
+          0.8416671752929688
+        ],
+        "triangles": 156,
+        "materials": []
+      },
+      {
+        "name": "Handle.007",
+        "dimensions": [
+          0.18697577714920044,
+          0.03581947088241577,
+          0.013815999031066895
+        ],
+        "triangles": 256,
+        "materials": []
+      },
+      {
+        "name": "Drawer.002",
+        "dimensions": [
+          1.5850512981414795,
+          0.2617085576057434,
+          0.8416671752929688
+        ],
+        "triangles": 156,
+        "materials": []
+      },
+      {
+        "name": "Bed_Apt_02",
+        "dimensions": [
+          3.599730968475342,
+          1.7988954782485962,
+          3.148135185241699
+        ],
+        "triangles": 260,
+        "materials": []
+      },
+      {
+        "name": "Handle.006",
+        "dimensions": [
+          0.013165593147277832,
+          0.02271977625787258,
+          0.19888295233249664
+        ],
+        "triangles": 10,
+        "materials": []
+      },
+      {
+        "name": "Drawer.004",
+        "dimensions": [
+          0.7592095136642456,
+          0.32893192768096924,
+          0.9715026021003723
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "Handle.009",
+        "dimensions": [
+          0.013165593147277832,
+          0.02271977625787258,
+          0.19888295233249664
+        ],
+        "triangles": 10,
+        "materials": []
+      },
+      {
+        "name": "Drawer.005",
+        "dimensions": [
+          0.7592095136642456,
+          0.328931987285614,
+          0.9715026021003723
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "Table_End_01",
+        "dimensions": [
+          0.8180384635925293,
+          0.9676940441131592,
+          1.0748398303985596
+        ],
+        "triangles": 268,
+        "materials": []
+      },
+      {
+        "name": "Knob.010",
+        "dimensions": [
+          0.033753931522369385,
+          0.11183023452758789,
+          0.02708601951599121
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Mirror.001",
+        "dimensions": [
+          0.024121344089508057,
+          3.603109836578369,
+          0.9922817945480347
+        ],
+        "triangles": 30,
+        "materials": []
+      },
+      {
+        "name": "Door.L",
+        "dimensions": [
+          0.06321263313293457,
+          3.613093852996826,
+          0.9950218796730042
+        ],
+        "triangles": 54,
+        "materials": []
+      },
+      {
+        "name": "Pole",
+        "dimensions": [
+          0.09970627725124359,
+          0.10426115989685059,
+          1.8192410469055176
+        ],
+        "triangles": 156,
+        "materials": []
+      },
+      {
+        "name": "Knob.011",
+        "dimensions": [
+          0.033753931522369385,
+          0.11183023452758789,
+          0.027086015790700912
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Mirror.002",
+        "dimensions": [
+          0.024121344089508057,
+          3.6031100749969482,
+          0.9922819137573242
+        ],
+        "triangles": 30,
+        "materials": []
+      },
+      {
+        "name": "Door.R",
+        "dimensions": [
+          0.06321263313293457,
+          3.613093852996826,
+          0.9950218200683594
+        ],
+        "triangles": 54,
+        "materials": []
+      },
+      {
+        "name": "Dresser Closet_01",
+        "dimensions": [
+          1.1604374647140503,
+          3.613093614578247,
+          1.9918193817138672
+        ],
+        "triangles": 196,
+        "materials": []
+      },
+      {
+        "name": "Bulb.003",
+        "dimensions": [
+          0.1604839265346527,
+          0.225004181265831,
+          0.16048391163349152
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "BulbBase.003",
+        "dimensions": [
+          0.08642841130495071,
+          0.07782727479934692,
+          0.0864284485578537
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Shade.001",
+        "dimensions": [
+          0.6994009613990784,
+          0.5482338666915894,
+          0.6994010210037231
+        ],
+        "triangles": 640,
+        "materials": []
+      },
+      {
+        "name": "Shade_Holder",
+        "dimensions": [
+          0.6901338696479797,
+          0.459945946931839,
+          0.6901338696479797
+        ],
+        "triangles": 780,
+        "materials": []
+      },
+      {
+        "name": "Table_Lamp_Apt_01.001",
+        "dimensions": [
+          0.49812448024749756,
+          0.39975452423095703,
+          0.49812453985214233
+        ],
+        "triangles": 636,
+        "materials": []
+      },
+      {
+        "name": "Table_Lamp_Apt_01",
+        "dimensions": [
+          0.4439494013786316,
+          0.10285405814647675,
+          0.4439494013786316
+        ],
+        "triangles": 350,
+        "materials": []
+      },
+      {
+        "name": "Glow",
+        "dimensions": [
+          2.1197822093963623,
+          0.09124770015478134,
+          2.1197822093963623
+        ],
+        "triangles": 320,
+        "materials": []
+      },
+      {
+        "name": "Lamp_Apt_02",
+        "dimensions": [
+          2.1630632877349854,
+          0.2306094616651535,
+          2.1630632877349854
+        ],
+        "triangles": 880,
+        "materials": []
+      },
+      {
+        "name": "Knob.003",
+        "dimensions": [
+          0.01763799600303173,
+          0.0322752520442009,
+          0.041244834661483765
+        ],
+        "triangles": 334,
+        "materials": []
+      },
+      {
+        "name": "Drawer.006",
+        "dimensions": [
+          0.47695255279541016,
+          0.19094307720661163,
+          0.4793723225593567
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Table_End_02",
+        "dimensions": [
+          0.6353570222854614,
+          0.9130440950393677,
+          0.6341961622238159
+        ],
+        "triangles": 660,
+        "materials": []
+      },
+      {
+        "name": "Knob.009",
+        "dimensions": [
+          0.03711043298244476,
+          0.01684010587632656,
+          0.07609068602323532
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Drawer.011",
+        "dimensions": [
+          0.7161511778831482,
+          0.27738428115844727,
+          0.9088344573974609
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Knob.005",
+        "dimensions": [
+          0.03711043298244476,
+          0.01684010587632656,
+          0.07609068602323532
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Drawer.007",
+        "dimensions": [
+          0.7161511778831482,
+          0.2773841917514801,
+          0.9088344573974609
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Knob.007",
+        "dimensions": [
+          0.03711043298244476,
+          0.01684010587632656,
+          0.07609068602323532
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Drawer.009",
+        "dimensions": [
+          0.7161511778831482,
+          0.2773841917514801,
+          0.9088344573974609
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Knob.006",
+        "dimensions": [
+          0.03711043298244476,
+          0.01684010587632656,
+          0.07609068602323532
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Drawer.008",
+        "dimensions": [
+          0.7161511778831482,
+          0.2773842513561249,
+          0.9088344573974609
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Knob.008",
+        "dimensions": [
+          0.03711043298244476,
+          0.01684010587632656,
+          0.07609068602323532
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Drawer.010",
+        "dimensions": [
+          0.7161511778831482,
+          0.27738428115844727,
+          0.9088344573974609
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Knob",
+        "dimensions": [
+          0.03711043298244476,
+          0.01684010587632656,
+          0.07609068602323532
+        ],
+        "triangles": 102,
+        "materials": []
+      },
+      {
+        "name": "Drawer",
+        "dimensions": [
+          0.7161511778831482,
+          0.2773841917514801,
+          0.9088344573974609
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Dresser_Apt_01",
+        "dimensions": [
+          0.795365035533905,
+          1.259293556213379,
+          1.9627692699432373
+        ],
+        "triangles": 552,
+        "materials": []
+      },
+      {
+        "name": "Mirror.003",
+        "dimensions": [
+          1.7881393432617188e-07,
+          1.6090809106826782,
+          0.7542627453804016
+        ],
+        "triangles": 2,
+        "materials": []
+      },
+      {
+        "name": "Wall_Mirror_01",
+        "dimensions": [
+          0.16286270320415497,
+          2.011920213699341,
+          1.1571019887924194
+        ],
+        "triangles": 126,
+        "materials": []
+      },
+      {
+        "name": "Mirror",
+        "dimensions": [
+          2.1606683731079102e-07,
+          2.688091993331909,
+          1.341455101966858
+        ],
+        "triangles": 2,
+        "materials": []
+      },
+      {
+        "name": "Wall_Mirror_02",
+        "dimensions": [
+          0.1878269463777542,
+          3.0746443271636963,
+          1.728007435798645
+        ],
+        "triangles": 298,
+        "materials": []
+      }
+    ]
+  },
+  "Apt_Props_01.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_01.fbx",
+    "objects": [
+      {
+        "name": "GameConsole_Light_Apt_01",
+        "dimensions": [
+          0.009149372577667236,
+          0.0014293976128101349,
+          0.009149312973022461
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "GameConsole_Apt_01",
+        "dimensions": [
+          0.517329216003418,
+          0.12483999878168106,
+          0.6467282772064209
+        ],
+        "triangles": 3364,
+        "materials": []
+      },
+      {
+        "name": "Joystick",
+        "dimensions": [
+          0.036679625511169434,
+          0.038489919155836105,
+          0.036679625511169434
+        ],
+        "triangles": 302,
+        "materials": []
+      },
+      {
+        "name": "Buttons.005",
+        "dimensions": [
+          0.014129804447293282,
+          0.02302994579076767,
+          0.054968852549791336
+        ],
+        "triangles": 116,
+        "materials": []
+      },
+      {
+        "name": "Buttons.001",
+        "dimensions": [
+          0.040399275720119476,
+          0.002379525685682893,
+          0.04039926826953888
+        ],
+        "triangles": 624,
+        "materials": []
+      },
+      {
+        "name": "Buttons.002",
+        "dimensions": [
+          0.00421559065580368,
+          0.002092671813443303,
+          0.016760624945163727
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Controller_L",
+        "dimensions": [
+          0.1762736737728119,
+          0.03340959548950195,
+          0.0667455717921257
+        ],
+        "triangles": 476,
+        "materials": []
+      },
+      {
+        "name": "Buttons.003",
+        "dimensions": [
+          0.040399275720119476,
+          0.0023795233573764563,
+          0.04039926826953888
+        ],
+        "triangles": 624,
+        "materials": []
+      },
+      {
+        "name": "Buttons.004",
+        "dimensions": [
+          0.00421559065580368,
+          0.002092671813443303,
+          0.016760624945163727
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Joystick.001",
+        "dimensions": [
+          0.036679625511169434,
+          0.038489919155836105,
+          0.036679625511169434
+        ],
+        "triangles": 302,
+        "materials": []
+      },
+      {
+        "name": "Buttons",
+        "dimensions": [
+          0.014129804447293282,
+          0.02302994579076767,
+          0.054968852549791336
+        ],
+        "triangles": 116,
+        "materials": []
+      },
+      {
+        "name": "Controller_R",
+        "dimensions": [
+          0.1762736737728119,
+          0.03340959548950195,
+          0.0667455717921257
+        ],
+        "triangles": 476,
+        "materials": []
+      },
+      {
+        "name": "GameController_Screen_Apt_01",
+        "dimensions": [
+          0.16413402557373047,
+          3.6799022495870304e-08,
+          0.2258707731962204
+        ],
+        "triangles": 2,
+        "materials": []
+      },
+      {
+        "name": "GameController_Apt_01",
+        "dimensions": [
+          0.1762736737728119,
+          0.033409591764211655,
+          0.2380104511976242
+        ],
+        "triangles": 156,
+        "materials": []
+      },
+      {
+        "name": "Speaker Sub",
+        "dimensions": [
+          0.238533616065979,
+          0.2548582851886749,
+          0.10697007179260254
+        ],
+        "triangles": 1268,
+        "materials": []
+      },
+      {
+        "name": "Queen",
+        "dimensions": [
+          0.05191922187805176,
+          0.10247201472520828,
+          0.05191922187805176
+        ],
+        "triangles": 2250,
+        "materials": []
+      },
+      {
+        "name": "King",
+        "dimensions": [
+          0.05170004069805145,
+          0.12669332325458527,
+          0.05170004069805145
+        ],
+        "triangles": 2216,
+        "materials": []
+      },
+      {
+        "name": "Bishop",
+        "dimensions": [
+          0.040430303663015366,
+          0.09540674090385437,
+          0.040430303663015366
+        ],
+        "triangles": 1752,
+        "materials": []
+      },
+      {
+        "name": "Knight",
+        "dimensions": [
+          0.05973506718873978,
+          0.08410482108592987,
+          0.05046015977859497
+        ],
+        "triangles": 888,
+        "materials": []
+      },
+      {
+        "name": "Pawn",
+        "dimensions": [
+          0.03624628484249115,
+          0.06150906905531883,
+          0.03624629229307175
+        ],
+        "triangles": 860,
+        "materials": []
+      },
+      {
+        "name": "Rook",
+        "dimensions": [
+          0.05086706206202507,
+          0.07081401348114014,
+          0.05086706578731537
+        ],
+        "triangles": 1052,
+        "materials": []
+      },
+      {
+        "name": "Chess Board",
+        "dimensions": [
+          0.4841831922531128,
+          0.008036324754357338,
+          0.4841831922531128
+        ],
+        "triangles": 30,
+        "materials": []
+      },
+      {
+        "name": "Chess Board Base",
+        "dimensions": [
+          0.504289448261261,
+          0.00820289459079504,
+          0.504289448261261
+        ],
+        "triangles": 52,
+        "materials": []
+      },
+      {
+        "name": "Screen",
+        "dimensions": [
+          1.8920372824027254e-08,
+          0.5740656852722168,
+          0.9396055340766907
+        ],
+        "triangles": 6,
+        "materials": []
+      },
+      {
+        "name": "Monitor_Apt_01",
+        "dimensions": [
+          0.231453076004982,
+          0.6861279606819153,
+          0.9615930318832397
+        ],
+        "triangles": 230,
+        "materials": []
+      },
+      {
+        "name": "KeyBoard_Apt_01",
+        "dimensions": [
+          0.19138777256011963,
+          0.02534010447561741,
+          0.5832009315490723
+        ],
+        "triangles": 154,
+        "materials": []
+      },
+      {
+        "name": "Mouse_apt_01",
+        "dimensions": [
+          0.15655696392059326,
+          0.04008442163467407,
+          0.08256611227989197
+        ],
+        "triangles": 276,
+        "materials": []
+      },
+      {
+        "name": "Plate_Apt_01",
+        "dimensions": [
+          0.43373435735702515,
+          0.03751937299966812,
+          0.43373435735702515
+        ],
+        "triangles": 116,
+        "materials": []
+      },
+      {
+        "name": "Plate_Apt_01_Stacked",
+        "dimensions": [
+          0.43373435735702515,
+          0.0789172574877739,
+          0.43373435735702515
+        ],
+        "triangles": 696,
+        "materials": []
+      },
+      {
+        "name": "Plate_Apt_02.001",
+        "dimensions": [
+          0.22432538866996765,
+          0.03370824083685875,
+          0.22432538866996765
+        ],
+        "triangles": 116,
+        "materials": []
+      },
+      {
+        "name": "Plate_Apt_02_Stacked",
+        "dimensions": [
+          0.22432538866996765,
+          0.07510612905025482,
+          0.22432538866996765
+        ],
+        "triangles": 696,
+        "materials": []
+      },
+      {
+        "name": "Bowl_Apt_01",
+        "dimensions": [
+          0.22922687232494354,
+          0.07230589538812637,
+          0.22922687232494354
+        ],
+        "triangles": 284,
+        "materials": []
+      },
+      {
+        "name": "Bowl_Apt_01_Stacked",
+        "dimensions": [
+          0.22922687232494354,
+          0.1265353262424469,
+          0.22922687232494354
+        ],
+        "triangles": 1136,
+        "materials": []
+      },
+      {
+        "name": "DrinkingGlass_01",
+        "dimensions": [
+          0.16638930141925812,
+          0.26640576124191284,
+          0.16638930141925812
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "DrinkingGlass_02",
+        "dimensions": [
+          0.1989072859287262,
+          0.1549643725156784,
+          0.1989072859287262
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "WelcomeMat_01",
+        "dimensions": [
+          1.0417813062667847,
+          0.015758829191327095,
+          1.8593765497207642
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "BathroomMat_01",
+        "dimensions": [
+          1.446506381034851,
+          0.06215664744377136,
+          2.3039209842681885
+        ],
+        "triangles": 236,
+        "materials": []
+      },
+      {
+        "name": "ToothbrushCup",
+        "dimensions": [
+          0.12384219467639923,
+          0.158665269613266,
+          0.12384219467639923
+        ],
+        "triangles": 540,
+        "materials": []
+      },
+      {
+        "name": "Toothbrush_01",
+        "dimensions": [
+          0.020185068249702454,
+          0.03170345351099968,
+          0.294310063123703
+        ],
+        "triangles": 228,
+        "materials": []
+      },
+      {
+        "name": "Diffuser",
+        "dimensions": [
+          0.08101797848939896,
+          0.4173433780670166,
+          0.08734166622161865
+        ],
+        "triangles": 84,
+        "materials": []
+      },
+      {
+        "name": "DeffuserVase",
+        "dimensions": [
+          0.15541738271713257,
+          0.2547767162322998,
+          0.15541738271713257
+        ],
+        "triangles": 572,
+        "materials": []
+      },
+      {
+        "name": "Wax",
+        "dimensions": [
+          0.08969958126544952,
+          0.05924093350768089,
+          0.08969958871603012
+        ],
+        "triangles": 136,
+        "materials": []
+      },
+      {
+        "name": "Candle_Apt_01",
+        "dimensions": [
+          0.11241542547941208,
+          0.08422967791557312,
+          0.11241544038057327
+        ],
+        "triangles": 252,
+        "materials": []
+      },
+      {
+        "name": "Sculpture_apt_03",
+        "dimensions": [
+          0.2643238306045532,
+          0.03101862594485283,
+          0.7911805510520935
+        ],
+        "triangles": 76,
+        "materials": []
+      },
+      {
+        "name": "Sculpture_apt_Body",
+        "dimensions": [
+          0.14224392175674438,
+          1.258589506149292,
+          0.17775088548660278
+        ],
+        "triangles": 1448,
+        "materials": []
+      },
+      {
+        "name": "Sculpture_apt_01",
+        "dimensions": [
+          0.40617430210113525,
+          0.01534326933324337,
+          0.40617430210113525
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Sculpture_apt_02",
+        "dimensions": [
+          0.17039252817630768,
+          0.4501517415046692,
+          0.48907798528671265
+        ],
+        "triangles": 1196,
+        "materials": []
+      },
+      {
+        "name": "Toaster Lever",
+        "dimensions": [
+          0.04978058114647865,
+          0.03291875123977661,
+          0.11334031075239182
+        ],
+        "triangles": 170,
+        "materials": []
+      },
+      {
+        "name": "toaster Dial",
+        "dimensions": [
+          0.03479404002428055,
+          0.03479404002428055,
+          0.013711990788578987
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "ToasterTop",
+        "dimensions": [
+          0.20706820487976074,
+          0.23998399078845978,
+          0.40483972430229187
+        ],
+        "triangles": 982,
+        "materials": []
+      },
+      {
+        "name": "Toaster_Apt",
+        "dimensions": [
+          0.21456614136695862,
+          0.042063985019922256,
+          0.4146258234977722
+        ],
+        "triangles": 292,
+        "materials": []
+      },
+      {
+        "name": "Computer_apt_01",
+        "dimensions": [
+          0.5606089234352112,
+          0.6870957612991333,
+          0.18641988933086395
+        ],
+        "triangles": 140,
+        "materials": []
+      },
+      {
+        "name": "Trash_apt_01",
+        "dimensions": [
+          0.3222394585609436,
+          0.4921287000179291,
+          0.43882620334625244
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "Blade",
+        "dimensions": [
+          0.12914566695690155,
+          0.04172118008136749,
+          0.056451696902513504
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "BlenderBlade",
+        "dimensions": [
+          0.10707034170627594,
+          0.03664986789226532,
+          0.107070192694664
+        ],
+        "triangles": 60,
+        "materials": []
+      },
+      {
+        "name": "BlenderCap",
+        "dimensions": [
+          0.22181963920593262,
+          0.02928937040269375,
+          0.2218194454908371
+        ],
+        "triangles": 284,
+        "materials": []
+      },
+      {
+        "name": "BlenderContainer",
+        "dimensions": [
+          0.21440920233726501,
+          0.2607167661190033,
+          0.2934398055076599
+        ],
+        "triangles": 496,
+        "materials": []
+      },
+      {
+        "name": "Blender_Buttons",
+        "dimensions": [
+          0.014723600819706917,
+          0.02482612431049347,
+          0.12223643064498901
+        ],
+        "triangles": 220,
+        "materials": []
+      },
+      {
+        "name": "Blender_Apt",
+        "dimensions": [
+          0.27488791942596436,
+          0.21284466981887817,
+          0.22591766715049744
+        ],
+        "triangles": 264,
+        "materials": []
+      },
+      {
+        "name": "Knife",
+        "dimensions": [
+          0.011560644023120403,
+          0.0018305517733097076,
+          0.05237572267651558
+        ],
+        "triangles": 124,
+        "materials": []
+      },
+      {
+        "name": "Screw.001",
+        "dimensions": [
+          0.016778063029050827,
+          0.01455497182905674,
+          0.10960131138563156
+        ],
+        "triangles": 1160,
+        "materials": []
+      },
+      {
+        "name": "Support",
+        "dimensions": [
+          0.0337027907371521,
+          0.018024012446403503,
+          0.12077949196100235
+        ],
+        "triangles": 828,
+        "materials": []
+      },
+      {
+        "name": "CorkScrew_01",
+        "dimensions": [
+          0.031017357483506203,
+          0.012478113174438477,
+          0.19370616972446442
+        ],
+        "triangles": 936,
+        "materials": []
+      },
+      {
+        "name": "Screw",
+        "dimensions": [
+          0.016153857111930847,
+          0.014554976485669613,
+          0.12671014666557312
+        ],
+        "triangles": 1012,
+        "materials": []
+      },
+      {
+        "name": "CorkScrew_02",
+        "dimensions": [
+          0.10427394509315491,
+          0.03093142621219158,
+          0.030931435525417328
+        ],
+        "triangles": 828,
+        "materials": []
+      },
+      {
+        "name": "Gun_R.002",
+        "dimensions": [
+          0.24905945360660553,
+          0.048968881368637085,
+          0.3860052824020386
+        ],
+        "triangles": 1552,
+        "materials": []
+      },
+      {
+        "name": "Arm_R.002",
+        "dimensions": [
+          0.08368434011936188,
+          0.06313405930995941,
+          0.2785114347934723
+        ],
+        "triangles": 512,
+        "materials": []
+      },
+      {
+        "name": "Glass.002",
+        "dimensions": [
+          0.13815419375896454,
+          0.06845658272504807,
+          0.16373217105865479
+        ],
+        "triangles": 298,
+        "materials": []
+      },
+      {
+        "name": "Cockpit.002",
+        "dimensions": [
+          0.21458043158054352,
+          0.12415943294763565,
+          0.16373217105865479
+        ],
+        "triangles": 902,
+        "materials": []
+      },
+      {
+        "name": "Foot_R.002",
+        "dimensions": [
+          0.07442600280046463,
+          0.034341663122177124,
+          0.20763267576694489
+        ],
+        "triangles": 216,
+        "materials": []
+      },
+      {
+        "name": "Shin_R.002",
+        "dimensions": [
+          0.1313910037279129,
+          0.1332271695137024,
+          0.20108644664287567
+        ],
+        "triangles": 2020,
+        "materials": []
+      },
+      {
+        "name": "Leg_R.002",
+        "dimensions": [
+          0.14559483528137207,
+          0.060996562242507935,
+          0.18098506331443787
+        ],
+        "triangles": 1356,
+        "materials": []
+      },
+      {
+        "name": "Mid.002",
+        "dimensions": [
+          0.09251526743173599,
+          0.06782691180706024,
+          0.04959195852279663
+        ],
+        "triangles": 280,
+        "materials": []
+      },
+      {
+        "name": "CoffeeCap",
+        "dimensions": [
+          0.12001082301139832,
+          0.005733107682317495,
+          0.13364338874816895
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "WaterContainer",
+        "dimensions": [
+          0.11993758380413055,
+          0.3291942775249481,
+          0.1335618495941162
+        ],
+        "triangles": 180,
+        "materials": []
+      },
+      {
+        "name": "CoffeeContainerBase",
+        "dimensions": [
+          0.12184871733188629,
+          0.04839974269270897,
+          0.13837501406669617
+        ],
+        "triangles": 84,
+        "materials": []
+      },
+      {
+        "name": "CoffeeGrill",
+        "dimensions": [
+          0.15923288464546204,
+          0.21605566143989563,
+          0.17634212970733643
+        ],
+        "triangles": 168,
+        "materials": []
+      },
+      {
+        "name": "CoffeeSpout",
+        "dimensions": [
+          0.058399099856615067,
+          0.16531860828399658,
+          0.1609763503074646
+        ],
+        "triangles": 256,
+        "materials": []
+      },
+      {
+        "name": "Pivot",
+        "dimensions": [
+          0.16896027326583862,
+          0.027877964079380035,
+          0.20818769931793213
+        ],
+        "triangles": 684,
+        "materials": []
+      },
+      {
+        "name": "CoffeeMaker_Apt_01",
+        "dimensions": [
+          0.2989891469478607,
+          0.44365444779396057,
+          0.25346827507019043
+        ],
+        "triangles": 164,
+        "materials": []
+      },
+      {
+        "name": "Toothbrush_02",
+        "dimensions": [
+          0.020185068249702454,
+          0.03170345351099968,
+          0.294310063123703
+        ],
+        "triangles": 228,
+        "materials": []
+      },
+      {
+        "name": "Toothbrush_03",
+        "dimensions": [
+          0.020185068249702454,
+          0.03170345351099968,
+          0.294310063123703
+        ],
+        "triangles": 228,
+        "materials": []
+      }
+    ]
+  },
+  "Apt_Props_02.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Apt_Props_02.fbx",
+    "objects": [
+      {
+        "name": "Bulb",
+        "dimensions": [
+          0.9677436947822571,
+          0.02037321776151657,
+          0.06770555675029755
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "LampWall_Apt_02",
+        "dimensions": [
+          0.9771714210510254,
+          0.2931615710258484,
+          0.6854968667030334
+        ],
+        "triangles": 336,
+        "materials": []
+      },
+      {
+        "name": "Cover",
+        "dimensions": [
+          1.2928837537765503,
+          1.6928712129592896,
+          0.019653812050819397
+        ],
+        "triangles": 32,
+        "materials": []
+      },
+      {
+        "name": "Art",
+        "dimensions": [
+          0.8845944404602051,
+          1.2845818996429443,
+          1.4901161193847656e-07
+        ],
+        "triangles": 2,
+        "materials": []
+      },
+      {
+        "name": "WallArt_Apt_01",
+        "dimensions": [
+          1.3818259239196777,
+          1.781813383102417,
+          0.07399008423089981
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "Bulb.001",
+        "dimensions": [
+          0.23609201610088348,
+          0.20111864805221558,
+          0.2349054366350174
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "LampWall_Apt_01",
+        "dimensions": [
+          0.15450730919837952,
+          0.8221195936203003,
+          0.29527831077575684
+        ],
+        "triangles": 456,
+        "materials": []
+      },
+      {
+        "name": "Rug",
+        "dimensions": [
+          5.899484157562256,
+          0.012924496084451675,
+          5.899484157562256
+        ],
+        "triangles": 140,
+        "materials": []
+      },
+      {
+        "name": "Seat",
+        "dimensions": [
+          2.364802122116089,
+          0.7252706289291382,
+          1.391780138015747
+        ],
+        "triangles": 740,
+        "materials": []
+      },
+      {
+        "name": "Light",
+        "dimensions": [
+          0.496395468711853,
+          8.087309311122226e-08,
+          0.496395468711853
+        ],
+        "triangles": 6,
+        "materials": []
+      },
+      {
+        "name": "CeilingLamp",
+        "dimensions": [
+          0.5545656681060791,
+          0.01700439304113388,
+          0.5545656681060791
+        ],
+        "triangles": 272,
+        "materials": []
+      }
+    ]
+  },
+  "Kitchen_01.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Kitchen_01.fbx",
+    "objects": [
+      {
+        "name": "Pull.005",
+        "dimensions": [
+          0.03723454847931862,
+          0.01938501000404358,
+          0.21209445595741272
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Drawer.002",
+        "dimensions": [
+          0.8597028255462646,
+          0.292074978351593,
+          0.8668110370635986
+        ],
+        "triangles": 162,
+        "materials": []
+      },
+      {
+        "name": "Pull.020",
+        "dimensions": [
+          0.03723444044589996,
+          0.21209439635276794,
+          0.01938501000404358
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.008",
+        "dimensions": [
+          0.03613397106528282,
+          0.9132022857666016,
+          0.8668111562728882
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Counter_01",
+        "dimensions": [
+          0.9928668737411499,
+          0.07261551171541214,
+          0.8873080015182495
+        ],
+        "triangles": 60,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Base_SD_01",
+        "dimensions": [
+          0.9065700769424438,
+          1.2944035530090332,
+          0.8873081803321838
+        ],
+        "triangles": 224,
+        "materials": []
+      },
+      {
+        "name": "Pull.004",
+        "dimensions": [
+          0.17532044649124146,
+          0.019385015591979027,
+          0.17532026767730713
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Drawer",
+        "dimensions": [
+          1.013440489768982,
+          0.29207491874694824,
+          0.9777936935424805
+        ],
+        "triangles": 162,
+        "materials": []
+      },
+      {
+        "name": "Pull.021",
+        "dimensions": [
+          0.03905418887734413,
+          0.21209445595741272,
+          0.039054278284311295
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.007",
+        "dimensions": [
+          0.4181252419948578,
+          0.913202166557312,
+          0.418124794960022
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Counter_Corner_01",
+        "dimensions": [
+          1.373369812965393,
+          0.07261574268341064,
+          1.3723112344741821
+        ],
+        "triangles": 76,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Base_Corner_01",
+        "dimensions": [
+          1.3615115880966187,
+          1.2954471111297607,
+          1.36151123046875
+        ],
+        "triangles": 336,
+        "materials": []
+      },
+      {
+        "name": "Stove_Feet",
+        "dimensions": [
+          0.8798092603683472,
+          0.01691802218556404,
+          1.0541213750839233
+        ],
+        "triangles": 496,
+        "materials": []
+      },
+      {
+        "name": "Burner_01",
+        "dimensions": [
+          0.15416952967643738,
+          0.018989330157637596,
+          0.15416952967643738
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Burner_02",
+        "dimensions": [
+          0.08625730127096176,
+          0.018989305943250656,
+          0.08625730872154236
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Burner_04",
+        "dimensions": [
+          0.1164882630109787,
+          0.01898931711912155,
+          0.1164882630109787
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Burner_03",
+        "dimensions": [
+          0.1164882630109787,
+          0.01898931711912155,
+          0.1164882630109787
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "Stove_Plate",
+        "dimensions": [
+          0.7421739101409912,
+          0.035554707050323486,
+          0.3528282642364502
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "Stove_Grate_01",
+        "dimensions": [
+          0.7418972849845886,
+          0.05139357969164848,
+          0.3528282344341278
+        ],
+        "triangles": 4172,
+        "materials": []
+      },
+      {
+        "name": "ControlPanel",
+        "dimensions": [
+          0.029820412397384644,
+          0.14404872059822083,
+          0.3684646189212799
+        ],
+        "triangles": 18,
+        "materials": []
+      },
+      {
+        "name": "Stove_Electronic",
+        "dimensions": [
+          0.06751708686351776,
+          0.21607330441474915,
+          1.1053937673568726
+        ],
+        "triangles": 192,
+        "materials": []
+      },
+      {
+        "name": "Stove_Grate_02",
+        "dimensions": [
+          0.7418972849845886,
+          0.05139357969164848,
+          0.3528282344341278
+        ],
+        "triangles": 4172,
+        "materials": []
+      },
+      {
+        "name": "Stove_Top",
+        "dimensions": [
+          0.9293276071548462,
+          0.40429118275642395,
+          1.1117280721664429
+        ],
+        "triangles": 1836,
+        "materials": []
+      },
+      {
+        "name": "Knob.005",
+        "dimensions": [
+          0.08814536035060883,
+          0.10736081004142761,
+          0.10591196268796921
+        ],
+        "triangles": 608,
+        "materials": []
+      },
+      {
+        "name": "Knob.001",
+        "dimensions": [
+          0.08814535290002823,
+          0.10736081004142761,
+          0.10591194033622742
+        ],
+        "triangles": 608,
+        "materials": []
+      },
+      {
+        "name": "Knob.002",
+        "dimensions": [
+          0.08814535290002823,
+          0.10736081004142761,
+          0.105911985039711
+        ],
+        "triangles": 608,
+        "materials": []
+      },
+      {
+        "name": "Knob.003",
+        "dimensions": [
+          0.08814536035060883,
+          0.10736081004142761,
+          0.10591194033622742
+        ],
+        "triangles": 608,
+        "materials": []
+      },
+      {
+        "name": "Knob.004",
+        "dimensions": [
+          0.08814536035060883,
+          0.10736081004142761,
+          0.105911985039711
+        ],
+        "triangles": 608,
+        "materials": []
+      },
+      {
+        "name": "Stove_Knob_Panel",
+        "dimensions": [
+          0.06097711622714996,
+          0.14033003151416779,
+          1.1117277145385742
+        ],
+        "triangles": 108,
+        "materials": []
+      },
+      {
+        "name": "Broiler_Handle",
+        "dimensions": [
+          0.0491652674973011,
+          0.07504487037658691,
+          0.2291083037853241
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Broiler_Door",
+        "dimensions": [
+          0.055396921932697296,
+          0.3182658553123474,
+          1.1117277145385742
+        ],
+        "triangles": 218,
+        "materials": []
+      },
+      {
+        "name": "Stove_Logo",
+        "dimensions": [
+          0.01217637863010168,
+          0.07496624439954758,
+          0.07496625185012817
+        ],
+        "triangles": 222,
+        "materials": []
+      },
+      {
+        "name": "Stove_Handle.001",
+        "dimensions": [
+          0.08196933567523956,
+          0.034245915710926056,
+          1.0792359113693237
+        ],
+        "triangles": 236,
+        "materials": []
+      },
+      {
+        "name": "Stove_Glass_Door",
+        "dimensions": [
+          0.07996924221515656,
+          0.5184328556060791,
+          0.8366705179214478
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "Stove_Door",
+        "dimensions": [
+          0.08918678760528564,
+          0.799071192741394,
+          1.1117279529571533
+        ],
+        "triangles": 464,
+        "materials": []
+      },
+      {
+        "name": "Oven_Grate_01",
+        "dimensions": [
+          0.673934817314148,
+          0.009184055030345917,
+          0.89937424659729
+        ],
+        "triangles": 2556,
+        "materials": []
+      },
+      {
+        "name": "Oven_Grate_02",
+        "dimensions": [
+          0.673934817314148,
+          0.009184055030345917,
+          0.89937424659729
+        ],
+        "triangles": 2556,
+        "materials": []
+      },
+      {
+        "name": "Stove_01",
+        "dimensions": [
+          0.8933323621749878,
+          1.285810947418213,
+          1.1117281913757324
+        ],
+        "triangles": 1148,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Feet",
+        "dimensions": [
+          0.9102670550346375,
+          0.04301990941166878,
+          1.0075403451919556
+        ],
+        "triangles": 496,
+        "materials": []
+      },
+      {
+        "name": "Handle_Fridge",
+        "dimensions": [
+          0.11787213385105133,
+          0.04062256962060928,
+          1.0176138877868652
+        ],
+        "triangles": 464,
+        "materials": []
+      },
+      {
+        "name": "Freezer_Inside_Drawer",
+        "dimensions": [
+          0.7555005550384521,
+          0.6027429699897766,
+          0.8795416355133057
+        ],
+        "triangles": 600,
+        "materials": []
+      },
+      {
+        "name": "Drawer_Fridge",
+        "dimensions": [
+          0.27927714586257935,
+          0.9914863109588623,
+          1.0926326513290405
+        ],
+        "triangles": 308,
+        "materials": []
+      },
+      {
+        "name": "Handle_Fridge.001",
+        "dimensions": [
+          0.08080637454986572,
+          1.055696725845337,
+          0.03915712982416153
+        ],
+        "triangles": 464,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Door_Shelf_01",
+        "dimensions": [
+          0.05346514284610748,
+          0.1535077691078186,
+          0.37083733081817627
+        ],
+        "triangles": 188,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Door_Shelf_01",
+        "dimensions": [
+          0.11141392588615417,
+          0.15936586260795593,
+          0.39603185653686523
+        ],
+        "triangles": 324,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Door_Shelf_03",
+        "dimensions": [
+          0.05346514284610748,
+          0.1535077691078186,
+          0.37083733081817627
+        ],
+        "triangles": 188,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Door_Shelf_03",
+        "dimensions": [
+          0.11141392588615417,
+          0.15936586260795593,
+          0.39603185653686523
+        ],
+        "triangles": 324,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Door_Shelf_05",
+        "dimensions": [
+          0.05346514284610748,
+          0.1535077691078186,
+          0.37083733081817627
+        ],
+        "triangles": 188,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Door_Shelf_05",
+        "dimensions": [
+          0.11141392588615417,
+          0.15936586260795593,
+          0.39603185653686523
+        ],
+        "triangles": 324,
+        "materials": []
+      },
+      {
+        "name": "Door.Fridge.Inside.L",
+        "dimensions": [
+          0.0969071015715599,
+          1.3203084468841553,
+          0.47598975896835327
+        ],
+        "triangles": 246,
+        "materials": []
+      },
+      {
+        "name": "Door.Fridge.L",
+        "dimensions": [
+          0.20158541202545166,
+          1.443528652191162,
+          0.5447372198104858
+        ],
+        "triangles": 270,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Drawer_03",
+        "dimensions": [
+          0.7112343907356262,
+          0.13324588537216187,
+          0.8821544647216797
+        ],
+        "triangles": 128,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Shelf_03",
+        "dimensions": [
+          0.6266191601753235,
+          0.008913200348615646,
+          0.4443944990634918
+        ],
+        "triangles": 4,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Shelf_03",
+        "dimensions": [
+          0.7058312296867371,
+          0.12107802927494049,
+          0.48242059350013733
+        ],
+        "triangles": 280,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Shelf_01",
+        "dimensions": [
+          0.6266192197799683,
+          0.008913325145840645,
+          0.44439446926116943
+        ],
+        "triangles": 4,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Shelf_01",
+        "dimensions": [
+          0.7058312296867371,
+          0.12107790261507034,
+          0.48242059350013733
+        ],
+        "triangles": 280,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Shelf_02",
+        "dimensions": [
+          0.6266192197799683,
+          0.008913325145840645,
+          0.44439446926116943
+        ],
+        "triangles": 4,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Shelf_02",
+        "dimensions": [
+          0.7058312296867371,
+          0.12107791006565094,
+          0.48242059350013733
+        ],
+        "triangles": 280,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Shelf_04",
+        "dimensions": [
+          0.6266192197799683,
+          0.008913200348615646,
+          0.44439446926116943
+        ],
+        "triangles": 4,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Shelf_04",
+        "dimensions": [
+          0.7058312296867371,
+          0.12107803672552109,
+          0.48242059350013733
+        ],
+        "triangles": 280,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Bracket Holder",
+        "dimensions": [
+          0.010124004445970058,
+          0.4683419167995453,
+          0.9535455703735352
+        ],
+        "triangles": 176,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_LargeShelf",
+        "dimensions": [
+          0.6266195178031921,
+          0.008913485333323479,
+          0.9354812502861023
+        ],
+        "triangles": 4,
+        "materials": []
+      },
+      {
+        "name": "Fridge_LargeShelf",
+        "dimensions": [
+          0.7058314085006714,
+          0.014266281388700008,
+          0.9735074043273926
+        ],
+        "triangles": 244,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Drawer_01",
+        "dimensions": [
+          0.6961895823478699,
+          0.21348893642425537,
+          0.47119367122650146
+        ],
+        "triangles": 432,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Drawer_02",
+        "dimensions": [
+          0.6961895823478699,
+          0.21348893642425537,
+          0.47119367122650146
+        ],
+        "triangles": 432,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Inside",
+        "dimensions": [
+          0.8484666347503662,
+          1.3252925872802734,
+          1.0256096124649048
+        ],
+        "triangles": 182,
+        "materials": []
+      },
+      {
+        "name": "Freezer_Inside",
+        "dimensions": [
+          0.8233534693717957,
+          0.9059681296348572,
+          1.0256094932556152
+        ],
+        "triangles": 50,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Door_Shelf_02",
+        "dimensions": [
+          0.053465183824300766,
+          0.1535077840089798,
+          0.3708372712135315
+        ],
+        "triangles": 188,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Door_Shelf_02",
+        "dimensions": [
+          0.11141395568847656,
+          0.15936586260795593,
+          0.39603185653686523
+        ],
+        "triangles": 324,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Door_Shelf_04",
+        "dimensions": [
+          0.053465183824300766,
+          0.1535077840089798,
+          0.3708372712135315
+        ],
+        "triangles": 188,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Door_Shelf_04",
+        "dimensions": [
+          0.11141395568847656,
+          0.15936586260795593,
+          0.39603185653686523
+        ],
+        "triangles": 324,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Glass_Door_Shelf_06",
+        "dimensions": [
+          0.053465183824300766,
+          0.1535077840089798,
+          0.3708372712135315
+        ],
+        "triangles": 188,
+        "materials": []
+      },
+      {
+        "name": "Fridge_Door_Shelf_06",
+        "dimensions": [
+          0.11141395568847656,
+          0.15936586260795593,
+          0.39603185653686523
+        ],
+        "triangles": 324,
+        "materials": []
+      },
+      {
+        "name": "Door.Fridge.Inside.R",
+        "dimensions": [
+          0.09690698236227036,
+          1.3203084468841553,
+          0.47598981857299805
+        ],
+        "triangles": 246,
+        "materials": []
+      },
+      {
+        "name": "Handle_Fridge.002",
+        "dimensions": [
+          0.08080637454986572,
+          1.055696725845337,
+          0.03915712982416153
+        ],
+        "triangles": 464,
+        "materials": []
+      },
+      {
+        "name": "Door.Fridge.R",
+        "dimensions": [
+          0.20158566534519196,
+          1.443528652191162,
+          0.5447369813919067
+        ],
+        "triangles": 270,
+        "materials": []
+      },
+      {
+        "name": "Fridge_01",
+        "dimensions": [
+          0.9164713621139526,
+          2.4555904865264893,
+          1.0926334857940674
+        ],
+        "triangles": 198,
+        "materials": []
+      },
+      {
+        "name": "Pull.003",
+        "dimensions": [
+          0.03723454102873802,
+          0.01938501000404358,
+          0.21209445595741272
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Plane.035",
+        "dimensions": [
+          0.0361340194940567,
+          0.29207512736320496,
+          1.3237299919128418
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.023",
+        "dimensions": [
+          0.037234436720609665,
+          0.21209439635276794,
+          0.019384998828172684
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.006",
+        "dimensions": [
+          0.03613373264670372,
+          0.9132022857666016,
+          0.6600750088691711
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.022",
+        "dimensions": [
+          0.037234436720609665,
+          0.21209439635276794,
+          0.019384998828172684
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_R.003",
+        "dimensions": [
+          0.036133673042058945,
+          0.9132022857666016,
+          0.6600750088691711
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Faucet_Handle",
+        "dimensions": [
+          0.07924171537160873,
+          0.18399202823638916,
+          0.14280371367931366
+        ],
+        "triangles": 748,
+        "materials": []
+      },
+      {
+        "name": "Faucet_01",
+        "dimensions": [
+          0.3541577458381653,
+          0.5695570707321167,
+          0.08663533627986908
+        ],
+        "triangles": 3200,
+        "materials": []
+      },
+      {
+        "name": "Sink_01",
+        "dimensions": [
+          0.7618075609207153,
+          0.5215634107589722,
+          0.9760317802429199
+        ],
+        "triangles": 1920,
+        "materials": []
+      },
+      {
+        "name": "Counter_Sink_01",
+        "dimensions": [
+          0.992867112159729,
+          0.07261566817760468,
+          1.361142873764038
+        ],
+        "triangles": 228,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Base_Sink_01",
+        "dimensions": [
+          0.9074287414550781,
+          1.2944035530090332,
+          1.3611431121826172
+        ],
+        "triangles": 196,
+        "materials": []
+      },
+      {
+        "name": "Hood_Glow",
+        "dimensions": [
+          0.07109928131103516,
+          2.6775524020195007e-08,
+          0.5740493535995483
+        ],
+        "triangles": 28,
+        "materials": []
+      },
+      {
+        "name": "Hood_Light",
+        "dimensions": [
+          0.08765017986297607,
+          0.005521248560398817,
+          0.5906001329421997
+        ],
+        "triangles": 320,
+        "materials": []
+      },
+      {
+        "name": "Vent",
+        "dimensions": [
+          0.5790539979934692,
+          0.0036171372048556805,
+          1.0556846857070923
+        ],
+        "triangles": 24,
+        "materials": []
+      },
+      {
+        "name": "Range_Hood",
+        "dimensions": [
+          0.7852645516395569,
+          0.21503429114818573,
+          1.119816780090332
+        ],
+        "triangles": 466,
+        "materials": []
+      },
+      {
+        "name": "Pull.011",
+        "dimensions": [
+          0.037234459072351456,
+          0.21209439635276794,
+          0.019385043531656265
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.002",
+        "dimensions": [
+          0.03613461181521416,
+          1.164870023727417,
+          0.8668113350868225
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Wall_SD_01",
+        "dimensions": [
+          0.5749539136886597,
+          1.1790826320648193,
+          0.8873081207275391
+        ],
+        "triangles": 164,
+        "materials": []
+      },
+      {
+        "name": "Pull.013",
+        "dimensions": [
+          0.03905418887734413,
+          0.21209445595741272,
+          0.039054278284311295
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_R.001",
+        "dimensions": [
+          0.4522261321544647,
+          1.1628377437591553,
+          0.454258531332016
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.012",
+        "dimensions": [
+          0.037234459072351456,
+          0.21209439635276794,
+          0.01938505843281746
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L",
+        "dimensions": [
+          0.03613416850566864,
+          1.164869785308838,
+          0.2758462727069855
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.017",
+        "dimensions": [
+          0.019385037943720818,
+          0.21209439635276794,
+          0.037234481424093246
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Plane.002",
+        "dimensions": [
+          0.2758461534976959,
+          1.164869785308838,
+          0.036134351044893265
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Wall_Corner_01",
+        "dimensions": [
+          1.3591116666793823,
+          1.1790831089019775,
+          1.3611433506011963
+        ],
+        "triangles": 556,
+        "materials": []
+      },
+      {
+        "name": "Pull.009",
+        "dimensions": [
+          0.03723450005054474,
+          0.21209439635276794,
+          0.019385002553462982
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_R.004",
+        "dimensions": [
+          0.036133695393800735,
+          0.661353588104248,
+          0.5410826802253723
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.010",
+        "dimensions": [
+          0.03723450005054474,
+          0.21209439635276794,
+          0.019385002553462982
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.004",
+        "dimensions": [
+          0.03613369166851044,
+          0.661353588104248,
+          0.5410826802253723
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Wall_DD_02",
+        "dimensions": [
+          0.5749534368515015,
+          0.675566554069519,
+          1.121702790260315
+        ],
+        "triangles": 120,
+        "materials": []
+      },
+      {
+        "name": "Pull",
+        "dimensions": [
+          0.03723447769880295,
+          0.21209436655044556,
+          0.019385002553462982
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.001",
+        "dimensions": [
+          0.03613375127315521,
+          0.6613536477088928,
+          0.6674748063087463
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.001",
+        "dimensions": [
+          0.03723447769880295,
+          0.21209436655044556,
+          0.019384998828172684
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.003",
+        "dimensions": [
+          0.03613375127315521,
+          0.6613536477088928,
+          0.6674748063087463
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Tall_DD_01",
+        "dimensions": [
+          0.9918690919876099,
+          3.1817965507507324,
+          1.374488353729248
+        ],
+        "triangles": 208,
+        "materials": []
+      },
+      {
+        "name": "Pull.014",
+        "dimensions": [
+          0.03723444044589996,
+          0.21209439635276794,
+          0.01938500627875328
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_R.005",
+        "dimensions": [
+          0.03613385930657387,
+          1.164870023727417,
+          0.6600750684738159
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.015",
+        "dimensions": [
+          0.03723444044589996,
+          0.21209439635276794,
+          0.01938500627875328
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.010",
+        "dimensions": [
+          0.03613385930657387,
+          1.164870023727417,
+          0.6600751280784607
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Wall_DD_03",
+        "dimensions": [
+          0.574953556060791,
+          1.179082989692688,
+          1.361142873764038
+        ],
+        "triangles": 164,
+        "materials": []
+      },
+      {
+        "name": "Pull.027",
+        "dimensions": [
+          0.03723454847931862,
+          0.01938501000404358,
+          0.21209445595741272
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Drawer.004",
+        "dimensions": [
+          0.8597028851509094,
+          0.2920750677585602,
+          1.1265971660614014
+        ],
+        "triangles": 162,
+        "materials": []
+      },
+      {
+        "name": "Pull.028",
+        "dimensions": [
+          0.03723441809415817,
+          0.21209436655044556,
+          0.01938500627875328
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.014",
+        "dimensions": [
+          0.036133743822574615,
+          0.9132022857666016,
+          0.5615085959434509
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.030",
+        "dimensions": [
+          0.03723441809415817,
+          0.21209436655044556,
+          0.019384995102882385
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.016",
+        "dimensions": [
+          0.0361335389316082,
+          0.9132022857666016,
+          0.5615085959434509
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Counter_02",
+        "dimensions": [
+          0.9928669929504395,
+          0.0726156011223793,
+          1.1640102863311768
+        ],
+        "triangles": 60,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Base_DD_01",
+        "dimensions": [
+          0.9074285626411438,
+          1.2944036722183228,
+          1.1640105247497559
+        ],
+        "triangles": 256,
+        "materials": []
+      },
+      {
+        "name": "Pull.029",
+        "dimensions": [
+          0.03723447769880295,
+          0.21209436655044556,
+          0.01938500627875328
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.015",
+        "dimensions": [
+          0.036133792251348495,
+          1.1648699045181274,
+          0.5615087151527405
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pull.031",
+        "dimensions": [
+          0.03723447024822235,
+          0.21209436655044556,
+          0.019384995102882385
+        ],
+        "triangles": 64,
+        "materials": []
+      },
+      {
+        "name": "Door_L.017",
+        "dimensions": [
+          0.03613361716270447,
+          1.1648699045181274,
+          0.5615086555480957
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Wall_DD_01",
+        "dimensions": [
+          0.5749533772468567,
+          1.1790828704833984,
+          1.1640102863311768
+        ],
+        "triangles": 148,
+        "materials": []
+      },
+      {
+        "name": "Cabinet_Shelf_01",
+        "dimensions": [
+          0.5366867780685425,
+          0.06971628218889236,
+          1.361142635345459
+        ],
+        "triangles": 44,
+        "materials": []
+      }
+    ]
+  },
+  "Bathroom_Apt_01.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\Apartment Kit\\Common\\Models\\Bathroom_Apt_01.fbx",
+    "objects": [
+      {
+        "name": "Toilet_Seat_01",
+        "dimensions": [
+          0.750667929649353,
+          0.056744400411844254,
+          0.6222493648529053
+        ],
+        "triangles": 480,
+        "materials": []
+      },
+      {
+        "name": "Toilet_Cover_01",
+        "dimensions": [
+          0.8116412162780762,
+          0.0775238424539566,
+          0.62224942445755
+        ],
+        "triangles": 400,
+        "materials": []
+      },
+      {
+        "name": "Toilet_Apt_01",
+        "dimensions": [
+          1.1887857913970947,
+          1.10428786277771,
+          0.6891797780990601
+        ],
+        "triangles": 1832,
+        "materials": []
+      },
+      {
+        "name": "Handle",
+        "dimensions": [
+          0.020219922065734863,
+          0.03325113281607628,
+          0.13612698018550873
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Drawer_Fake",
+        "dimensions": [
+          0.026314159855246544,
+          0.3748810589313507,
+          0.565203070640564
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Handle.001",
+        "dimensions": [
+          0.020219922065734863,
+          0.03325113281607628,
+          0.13612698018550873
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Drawer_01",
+        "dimensions": [
+          0.6081617474555969,
+          0.37488099932670593,
+          0.565203070640564
+        ],
+        "triangles": 204,
+        "materials": []
+      },
+      {
+        "name": "Handle.004",
+        "dimensions": [
+          0.020219922065734863,
+          0.03325113281607628,
+          0.13612698018550873
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Drawer_02",
+        "dimensions": [
+          0.6081617474555969,
+          0.37488093972206116,
+          0.565203070640564
+        ],
+        "triangles": 220,
+        "materials": []
+      },
+      {
+        "name": "Handle.003",
+        "dimensions": [
+          0.020219922065734863,
+          0.03325113281607628,
+          0.13612698018550873
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Drawer_03",
+        "dimensions": [
+          0.6081617474555969,
+          0.3757663071155548,
+          0.7633925080299377
+        ],
+        "triangles": 220,
+        "materials": []
+      },
+      {
+        "name": "Handle.005",
+        "dimensions": [
+          0.02021990902721882,
+          0.12510986626148224,
+          0.03617922216653824
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Door.R",
+        "dimensions": [
+          0.026314137503504753,
+          0.7586151361465454,
+          0.37680208683013916
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Handle.002",
+        "dimensions": [
+          0.02021990902721882,
+          0.12510986626148224,
+          0.03617922216653824
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Door.L",
+        "dimensions": [
+          0.026314135640859604,
+          0.7586151361465454,
+          0.3768021762371063
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Pipe",
+        "dimensions": [
+          0.35799044370651245,
+          0.222512885928154,
+          0.07540752738714218
+        ],
+        "triangles": 704,
+        "materials": []
+      },
+      {
+        "name": "Faucet",
+        "dimensions": [
+          0.27579838037490845,
+          0.25651055574417114,
+          0.10121732205152512
+        ],
+        "triangles": 700,
+        "materials": []
+      },
+      {
+        "name": "FaucetHandel_L",
+        "dimensions": [
+          0.07342466711997986,
+          0.08898309618234634,
+          0.15759983658790588
+        ],
+        "triangles": 248,
+        "materials": []
+      },
+      {
+        "name": "FaucetHande_R",
+        "dimensions": [
+          0.07342466711997986,
+          0.08898307383060455,
+          0.15759986639022827
+        ],
+        "triangles": 248,
+        "materials": []
+      },
+      {
+        "name": "SinkTop",
+        "dimensions": [
+          0.7357916235923767,
+          0.25576210021972656,
+          1.3499524593353271
+        ],
+        "triangles": 316,
+        "materials": []
+      },
+      {
+        "name": "BR_Vanity_01",
+        "dimensions": [
+          0.7146339416503906,
+          1.2595365047454834,
+          1.3508797883987427
+        ],
+        "triangles": 562,
+        "materials": []
+      },
+      {
+        "name": "BathTub",
+        "dimensions": [
+          1.6129891872406006,
+          0.9127519130706787,
+          3.2340776920318604
+        ],
+        "triangles": 1884,
+        "materials": []
+      },
+      {
+        "name": "GlassWall_01",
+        "dimensions": [
+          1.6738836765289307,
+          2.2033469676971436,
+          0.023218542337417603
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "GlassDoorHandel",
+        "dimensions": [
+          0.07111209630966187,
+          0.051797688007354736,
+          1.5067031383514404
+        ],
+        "triangles": 1660,
+        "materials": []
+      },
+      {
+        "name": "GlassDoor",
+        "dimensions": [
+          0.023218221962451935,
+          2.2033472061157227,
+          1.7461018562316895
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "GlassWall_02",
+        "dimensions": [
+          0.017352275550365448,
+          2.2033472061157227,
+          1.751121997833252
+        ],
+        "triangles": 12,
+        "materials": []
+      },
+      {
+        "name": "ShowerDoorBase_01",
+        "dimensions": [
+          1.710442304611206,
+          2.251652717590332,
+          3.3532419204711914
+        ],
+        "triangles": 956,
+        "materials": []
+      },
+      {
+        "name": "BathTub_Base_01",
+        "dimensions": [
+          1.7272939682006836,
+          0.8975010514259338,
+          3.3681418895721436
+        ],
+        "triangles": 64,
+        "materials": [
+          "Material"
+        ]
+      },
+      {
+        "name": "MirrorDoor_01",
+        "dimensions": [
+          0.014537953771650791,
+          1.0094165802001953,
+          0.42486652731895447
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "MirrorDoor_03",
+        "dimensions": [
+          0.014537952840328217,
+          1.0094165802001953,
+          0.42486655712127686
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "MirrorDoor_02",
+        "dimensions": [
+          0.014537966810166836,
+          1.0094165802001953,
+          0.5186300873756409
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "BR_Cabinet_01",
+        "dimensions": [
+          0.14435607194900513,
+          0.99342280626297,
+          1.3724584579467773
+        ],
+        "triangles": 196,
+        "materials": []
+      },
+      {
+        "name": "Bulb.003",
+        "dimensions": [
+          0.10929529368877411,
+          0.15323591232299805,
+          0.1092953085899353
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "BulbBase.003",
+        "dimensions": [
+          0.05886083096265793,
+          0.053003132343292236,
+          0.05886085331439972
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Shade_02",
+        "dimensions": [
+          0.21226650476455688,
+          0.2326783835887909,
+          0.2122664451599121
+        ],
+        "triangles": 1020,
+        "materials": []
+      },
+      {
+        "name": "Bulb.001",
+        "dimensions": [
+          0.10929529368877411,
+          0.15323591232299805,
+          0.1092953085899353
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "BulbBase.001",
+        "dimensions": [
+          0.05886085703969002,
+          0.05300315096974373,
+          0.058860816061496735
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Shade_01",
+        "dimensions": [
+          0.21226650476455688,
+          0.2326783537864685,
+          0.21226641535758972
+        ],
+        "triangles": 1020,
+        "materials": []
+      },
+      {
+        "name": "Bulb.002",
+        "dimensions": [
+          0.10929529368877411,
+          0.15323591232299805,
+          0.1092953085899353
+        ],
+        "triangles": 444,
+        "materials": []
+      },
+      {
+        "name": "BulbBase.002",
+        "dimensions": [
+          0.05886085703969002,
+          0.05300315096974373,
+          0.058860816061496735
+        ],
+        "triangles": 78,
+        "materials": []
+      },
+      {
+        "name": "Shade_03",
+        "dimensions": [
+          0.21226650476455688,
+          0.2326783537864685,
+          0.21226641535758972
+        ],
+        "triangles": 1020,
+        "materials": []
+      },
+      {
+        "name": "BR_Lamp_01",
+        "dimensions": [
+          0.33688265085220337,
+          0.27372393012046814,
+          1.2290152311325073
+        ],
+        "triangles": 1838,
+        "materials": []
+      },
+      {
+        "name": "HamperFlap",
+        "dimensions": [
+          0.8011457324028015,
+          0.0298231802880764,
+          0.7960416078567505
+        ],
+        "triangles": 88,
+        "materials": []
+      },
+      {
+        "name": "Hamper_01",
+        "dimensions": [
+          0.7960414886474609,
+          1.1371568441390991,
+          0.7960415482521057
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Shower_Faucet_01",
+        "dimensions": [
+          0.40164703130722046,
+          0.1635170578956604,
+          0.1635170578956604
+        ],
+        "triangles": 1984,
+        "materials": []
+      },
+      {
+        "name": "Shower_Head_01",
+        "dimensions": [
+          0.47288236021995544,
+          0.41095757484436035,
+          0.4161214232444763
+        ],
+        "triangles": 892,
+        "materials": []
+      },
+      {
+        "name": "Circle.005",
+        "dimensions": [
+          0.09887495636940002,
+          0.20711667835712433,
+          0.09150812029838562
+        ],
+        "triangles": 1344,
+        "materials": []
+      },
+      {
+        "name": "Shower_Handel_01",
+        "dimensions": [
+          0.04230862483382225,
+          0.3503357768058777,
+          0.3503357768058777
+        ],
+        "triangles": 1088,
+        "materials": []
+      },
+      {
+        "name": "Mirror.001",
+        "dimensions": [
+          0.21828997135162354,
+          0.010334370657801628,
+          0.6286108493804932
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "Mirror",
+        "dimensions": [
+          0.21828997135162354,
+          0.010334355756640434,
+          0.6286108493804932
+        ],
+        "triangles": 44,
+        "materials": []
+      },
+      {
+        "name": "TowelRack_Apt_02",
+        "dimensions": [
+          0.2290063351392746,
+          0.8614802360534668,
+          0.6459553837776184
+        ],
+        "triangles": 1260,
+        "materials": []
+      },
+      {
+        "name": "ToiletPaperHolder_01",
+        "dimensions": [
+          0.23906956613063812,
+          0.12478893995285034,
+          0.11958584934473038
+        ],
+        "triangles": 414,
+        "materials": []
+      },
+      {
+        "name": "TowelRack_Apt_01",
+        "dimensions": [
+          0.2263619303703308,
+          0.15424443781375885,
+          1.4308629035949707
+        ],
+        "triangles": 628,
+        "materials": []
+      },
+      {
+        "name": "BR_Tile_APT_02",
+        "dimensions": [
+          0.014086604118347168,
+          1.8421789407730103,
+          2.5
+        ],
+        "triangles": 10,
+        "materials": [
+          "Material"
+        ]
+      },
+      {
+        "name": "BR_Tile_APT_01",
+        "dimensions": [
+          0.014086604118347168,
+          3.3765978813171387,
+          2.500000238418579
+        ],
+        "triangles": 10,
+        "materials": [
+          "Material"
+        ]
+      },
+      {
+        "name": "BR_Tile_APT_03",
+        "dimensions": [
+          0.014086604118347168,
+          3.376598358154297,
+          2.5000009536743164
+        ],
+        "triangles": 34,
+        "materials": [
+          "Material"
+        ]
+      },
+      {
+        "name": "BR_Tile_APT_04",
+        "dimensions": [
+          0.014086604118347168,
+          1.8417811393737793,
+          2.500000476837158
+        ],
+        "triangles": 20,
+        "materials": [
+          "Material"
+        ]
+      }
+    ]
+  },
+  "BPS_Chair_01.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\_BPS Basic Assets\\Common\\Models\\BPS_Chair_01.fbx",
+    "objects": [
+      {
+        "name": "HandRest",
+        "dimensions": [
+          0.9697294235229492,
+          0.2956923544406891,
+          0.6330389976501465
+        ],
+        "triangles": 768,
+        "materials": []
+      },
+      {
+        "name": "Seat.001",
+        "dimensions": [
+          0.784064769744873,
+          0.9971479773521423,
+          0.844537615776062
+        ],
+        "triangles": 784,
+        "materials": []
+      },
+      {
+        "name": "Bar",
+        "dimensions": [
+          0.17161476612091064,
+          0.39580467343330383,
+          0.18044479191303253
+        ],
+        "triangles": 76,
+        "materials": []
+      },
+      {
+        "name": "Wheels.000",
+        "dimensions": [
+          0.07639960199594498,
+          0.05767512694001198,
+          0.07509183883666992
+        ],
+        "triangles": 504,
+        "materials": []
+      },
+      {
+        "name": "Wheel Cover.001",
+        "dimensions": [
+          0.08576267212629318,
+          0.06013135239481926,
+          0.08401133120059967
+        ],
+        "triangles": 112,
+        "materials": []
+      },
+      {
+        "name": "Wheels.001",
+        "dimensions": [
+          0.07644040882587433,
+          0.05767514184117317,
+          0.07523804903030396
+        ],
+        "triangles": 504,
+        "materials": []
+      },
+      {
+        "name": "Wheel Cover.002",
+        "dimensions": [
+          0.08579681068658829,
+          0.06013135984539986,
+          0.08418671786785126
+        ],
+        "triangles": 112,
+        "materials": []
+      },
+      {
+        "name": "Wheels.003",
+        "dimensions": [
+          0.07095271348953247,
+          0.05767512694001198,
+          0.0741930902004242
+        ],
+        "triangles": 504,
+        "materials": []
+      },
+      {
+        "name": "Wheel Cover.003",
+        "dimensions": [
+          0.0791616290807724,
+          0.06013137474656105,
+          0.08350084722042084
+        ],
+        "triangles": 112,
+        "materials": []
+      },
+      {
+        "name": "Wheels.004",
+        "dimensions": [
+          0.07216010987758636,
+          0.057675138115882874,
+          0.06802350282669067
+        ],
+        "triangles": 504,
+        "materials": []
+      },
+      {
+        "name": "Wheel Cover.004",
+        "dimensions": [
+          0.0813203975558281,
+          0.06013137474656105,
+          0.07578104734420776
+        ],
+        "triangles": 112,
+        "materials": []
+      },
+      {
+        "name": "Wheels.005",
+        "dimensions": [
+          0.06565786153078079,
+          0.05767513066530228,
+          0.07039492577314377
+        ],
+        "triangles": 504,
+        "materials": []
+      },
+      {
+        "name": "Wheel Cover.005",
+        "dimensions": [
+          0.07306434214115143,
+          0.06013135984539986,
+          0.07940776646137238
+        ],
+        "triangles": 112,
+        "materials": []
+      },
+      {
+        "name": "Chair_BA_01",
+        "dimensions": [
+          0.8118632435798645,
+          0.04460057616233826,
+          0.7751737833023071
+        ],
+        "triangles": 1344,
+        "materials": []
+      }
+    ]
+  },
+  "BPS_Table.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\_BPS Basic Assets\\Common\\Models\\BPS_Table.fbx",
+    "objects": [
+      {
+        "name": "Table",
+        "dimensions": [
+          2.0741944313049316,
+          0.9715533256530762,
+          1.3143528699874878
+        ],
+        "triangles": 212,
+        "materials": []
+      }
+    ]
+  },
+  "office chair.fbx": {
+    "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\apartment-kit\\Assets\\Brick Project Studio\\_BPS Basic Assets\\Common\\Models\\Legacy\\office chair.fbx",
+    "objects": [
+      {
+        "name": "Cushion",
+        "dimensions": [
+          0.8312027454376221,
+          0.19307224452495575,
+          0.8312235474586487
+        ],
+        "triangles": 112,
+        "materials": []
+      },
+      {
+        "name": "Stand",
+        "dimensions": [
+          0.2914433181285858,
+          0.8546322584152222,
+          0.6204251050949097
+        ],
+        "triangles": 92,
+        "materials": []
+      },
+      {
+        "name": "Seat Back",
+        "dimensions": [
+          0.7115518450737,
+          0.8135961890220642,
+          0.14921195805072784
+        ],
+        "triangles": 112,
+        "materials": []
+      },
+      {
+        "name": "Wheel.003",
+        "dimensions": [
+          0.08364861458539963,
+          0.10284221172332764,
+          0.09260021895170212
+        ],
+        "triangles": 368,
+        "materials": []
+      },
+      {
+        "name": "Wheel.004",
+        "dimensions": [
+          0.06951876729726791,
+          0.10284220427274704,
+          0.09317325800657272
+        ],
+        "triangles": 368,
+        "materials": []
+      },
+      {
+        "name": "Wheel.001",
+        "dimensions": [
+          0.09003948420286179,
+          0.10284220427274704,
+          0.09022819250822067
+        ],
+        "triangles": 368,
+        "materials": []
+      },
+      {
+        "name": "Wheel",
+        "dimensions": [
+          0.09120992571115494,
+          0.10284219682216644,
+          0.0610424242913723
+        ],
+        "triangles": 368,
+        "materials": []
+      },
+      {
+        "name": "Wheel.002",
+        "dimensions": [
+          0.08640211075544357,
+          0.10284220427274704,
+          0.09219425171613693
+        ],
+        "triangles": 368,
+        "materials": []
+      },
+      {
+        "name": "Seat",
+        "dimensions": [
+          1.237620234489441,
+          0.5084064602851868,
+          1.177046775817871
+        ],
+        "triangles": 106,
+        "materials": []
+      }
+    ]
+  }
+}

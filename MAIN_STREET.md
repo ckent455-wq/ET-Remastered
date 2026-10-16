@@ -123,8 +123,10 @@ weapon collection, the complete rescue quest, and real-renderer previews.
 
 ## Chapel and continuous town entry
 
-The chapel replaces the sealed west shop at the north end of Main Street, centered
-at (-13.5, 0, -85). Its stonework, twin spires, pointed arches, and rose window are
+The chapel stands on a wooded hill northeast of Main Street, centered
+at (29, 9, -141). The west shop is restored. Chapel Road begins at the north
+end of Main Street and bends uphill through the forest to a level forecourt.
+Its sloped collision supports the full nine metre climb and return journey. Its stonework, twin spires, pointed arches, and rose window are
 inspired by Holy Trinity Catholic Church in Weston, Missouri, using the parish's
 official exterior and interior photos as reference:
 https://holytrinitycatholic.org/photoalbums/holy-trinity-church
@@ -143,3 +145,213 @@ sections by eight centimetres, with connecting edge lines and a faded center das
 `smoke_test_church_street.gd` checks five unique parked models, the road join,
 51 chapel entrance/aisle capsule samples, and church ambience. Rendered previews
 are produced by tools/preview_church_street.gd.
+
+The enclosed forest boundary follows the hill route, with raised tree roots and
+continuous tall collision through the thicket. The journal map includes Chapel Road
+and the relocated chapel. Two hillside mist emitters bring the bounded fog total
+to 164 particles; church interiors still exclude drifting mist.
+`smoke_test_chapel_hill.gd` walks the full route up and down with normal player
+physics, including the chapel aisle. `tools/preview_chapel_hill.gd` captures the climb.
+
+Chapel Road now ends eight metres before the entrance at (29, 9, -126),
+with a narrow bent stone footpath across a grassy forecourt to the doors.
+The paired wooden doors start closed with solid entrance collision. E opens
+both leaves outward; closing requires the player to stand clear and outside.
+Restart restores the closed state.
+
+The world HUD retains health, a flashlight charge bar, recovering stamina,
+and equipped weapon ammunition. Location, objective, radio status and supplies
+are in the journal; feedback messages expire after six seconds. The flashlight
+starts at 45% and uses 0.5% per second while on (90 seconds initially, 200 seconds
+for a new cell). Turning it off or opening a menu stops drain. At zero it shuts
+off and cannot restart until a collected battery is fitted with Q. Batteries
+remain in searchable town storage. The workshop panel no longer recharges it.
+`smoke_test_chapel_survival.gd` checks physical doors, E targeting, outward opening,
+safe closing, battery exhaustion, collection/consumption, and reset behavior.
+
+
+## Chapel cellar quest
+
+Two modest stone planting beds reuse the downloaded bush models beside the
+entrance. Warm lanterns and a weathered bench frame the porch, with the path
+and church doorway kept clear.
+
+Searching the powered workshop signal-coil cabinet now also gives the chapel
+cellar key. The locked wooden door at the chapel's back right first unlocks
+with E, then E descends to a furnished cellar interior through a short fade.
+The cellar is a separate enclosed interior below the chapel, with stone walls,
+wooden beams, local shelf/books/crate assets, a workbench, a spare flashlight
+battery and a visible return stair flight. E at its upper door returns upstairs.
+Negative-height player movement is allowed within this enclosed cellar only.
+Indoor fog and creak ambience follow the cellar.
+
+The workbench holds a spare emergency-radio tuning unit. The radio receiver
+requires BOTH this unit and the workshop signal coil; a failed repair keeps
+any already collected parts. A successful repair consumes both. Rescue remains
+gated on the repaired radio and proximity to its receiver. The field journal,
+maintenance log, ranger log and NPC hints describe the extra step. New journeys
+relock the cellar and restore its key, pickups and entrance decorations.
+
+`smoke_test_church_quest.gd` walks the nave, approaches the locked door, checks
+power/key gating, uses actual E targeting to unlock/enter/collect/leave, walks
+the cellar and return stairs, finishes the two-part rescue quest and checks reset.
+`tools/preview_church_cellar.gd` renders entrance planting, the locked door,
+cellar workbench, stairs and revised journal.
+
+
+## Chapel Road cleanup
+
+The uphill road now rounds the original route corners with sampled quadratic
+curves. Asphalt sections share cross-sections instead of overlapping separate
+straight pieces, so bends have continuous edges and consistent texture scale.
+A half-metre gravel shoulder blends into the hillside. Restrained worn edge
+paint replaces the segmented box markings and short center dashes.
+
+The upper approach gains height earlier and levels into the forecourt, keeping
+the tightest bend walkable across the lane. Terrain follows the curved route
+at one-metre resolution, with corrected upward-facing triangles. The forecourt
+footpath is a continuous gentle curve; asphalt still stops eight metres before
+the chapel doors. The journal map follows the sampled road curve.
+
+`smoke_test_chapel_road.gd` checks identical adjacent mesh edges, upward-facing
+triangles and normal player walks up/down both sides of the lane. The existing
+full hill/chapel walk also passes. `tools/preview_chapel_road.gd` renders road
+entry, bends and the chapel approach (the overview lowers fog only for inspection).
+
+
+## Cellar darkness and police lightbar
+
+The cellar now excludes the moon and title lightning, uses a dark camera
+Environment and minimal world ambient while inside, and restores surface
+lighting on exit. Compatibility rendering needs explicit directional visibility
+control as well as light layers. The workbench lamp is removed; a faint short-range
+stair light remains. The radio unit and spare battery have non-emissive materials,
+and cellar labels are shaded. Cellar stone uses pixel lighting so the flashlight
+beam reveals walls and the workbench without illuminating the whole room.
+
+The parked police model's existing roof bar receives fitted emissive red/blue
+lenses, two short-range shadowless colored lights, and small soft lens halos.
+Intensity varies gently over several seconds instead of strobing. Asphalt uses
+pixel lighting to show the local color spill. Exterior ambience and sound remain
+unchanged. `smoke_test_atmospheric_lighting.gd` checks darkness isolation,
+upstairs restoration and bounded police lights. The lighting preview verifies
+that the cellar view is dark with the flashlight off and readable with it on.
+
+
+## Crow on the Blackwood sign
+
+The installed Living Birds pack was found in `My project (2)/Assets/living birds`.
+Its original crow FBX (726 triangles), crowDiffuse texture, watch/sing/ruffle
+animation tracks and both crow recordings are used. The source files remain
+unchanged. The game copy has a 256-pixel matte albedo, a compact native animation
+library and 22050 Hz mono calls. Source paths and hashes are in assets/crow/source.json.
+
+A single crow perches on the upper left of the town sign, with feet aligned to
+the sloping board. It idles, occasionally ruffles its feathers, and caws as the
+player first approaches. Further calls alternate the two recordings at 14?24
+second intervals while nearby. Sound is spatial, range-limited and uses the
+existing game mute bus. Title/journal/pause states stop animation and pause calls;
+a new journey restores the perched greeting. No bird collision obstructs the road.
+
+`smoke_test_sign_crow.gd` checks placement, original animation clips, texture
+budget, both audio assets, approach/range gating, pause/resume/mute and restart.
+`tools/preview_sign_crow.gd` renders its perch and calling pose at the town entrance.
+
+
+## Crow audibility, damage and achievement
+
+Crow calls now play at -4 dB with a 12-metre reference distance and 36-metre
+range, and the first approach cue triggers within 18 metres. This replaces the
+previous -17 dB/four-metre settings that were easily masked by the wind. The
+rendered verification captures actual crow output on the game bus at the entrance
+approach, checking nonzero audible peak/RMS rather than just the play trigger.
+
+The crow has a fitted bullet collider. A gun hit plays the original Living Birds
+death clip, stops calling, and drops the body off the sign. Corpses cannot retrigger
+hits or calls; menus pause the fall. New journeys restore the live perched crow.
+
+The first kill unlocks "Wow, what an asshole" with an eight-second toast. Achievements
+save locally in user://achievements.cfg, survive new journeys/app restarts, and
+appear in the field journal. Repeated kills do not unlock it again. Verification
+uses separate temporary achievement profiles, leaving the player's profile untouched.
+`smoke_test_crow_death.gd` checks actual pistol ray hits, the fall, persistent reload,
+no duplicate unlocks and reset. `tools/preview_crow_death.gd` verifies real audio
+output, rendered death and the exact popup text.
+
+
+## Crow proximity flight and return
+
+Within 3.3 metres of the sign, a live crow switches to the original Living Birds
+wing-flap animation and follows a curved escape over the open approach road.
+It leaves view for 24?36 seconds. A return starts only when the player is at least
+seven metres from the perch; waiting under the sign keeps it away. It flies back,
+plays the original landing clip and resumes watching and calling. Approaching
+during its return sends it away again. Menus pause every stage.
+
+The flying crow remains shootable. Killing it stops its flight and prevents
+return for that journey; achievements retain their existing persistent behavior.
+New journeys restore the live perched crow. `smoke_test_crow_flight.gd` checks
+proximity, delayed/camping-safe return, interrupted landing, pause, calls,
+shootable flight, death and reset. `tools/preview_crow_flight.gd` verifies the
+original wing/landing clips and the clear route in the game renderer.
+
+
+Achievement notification fix: a save that already contained crow_killer previously
+silently skipped the popup on later kills. Unlocking now always displays the exact
+achievement title for eight seconds after a live crow is killed. The first event
+says ACHIEVEMENT UNLOCKED; already-earned events say ACHIEVEMENT. Saved progress
+remains a single entry. The gun-hit test now reloads a saved unlock before a second
+actual kill, and the rendered preview supports --already-unlocked to verify this
+case without modifying the player's progress.
+
+Apartment interiors: the user's cached Brick Project Studio Apartment Kit supplies
+24 converted furniture/household models and 85 placements across the six buildings.
+The millkeeper's rooms have a bedroom, sitting area and kitchenette; the clinic has
+beds and waiting seats; the offices have desks, computer equipment and chairs;
+the shop has a break table and the radio room has a lounge. Original searchable
+drawers/cabinets and quest items remain accessible. Large furniture has collision.
+Source provenance and dimensions are in assets/apartment/manifest.json. Source
+files remain unchanged; exports use flat shading, matte materials, 256px albedos
+and fewer than 2,500 triangles each. Staged source files under builds are excluded
+from Godot import and Git. Rebuild tools: extract_apartment_kit.py and
+prepare_apartment_assets.py (Blender). smoke_test_apartment_interiors.gd checks
+model presence and budgets; town, storage and patrol tests verify circulation and
+progression. tools/preview_apartment_interiors.gd captures all six rooms.
+
+Photo-led interior redesign (October 16):
+- Living/seating reference: https://www.ikea.com/nl/nl/p/jarnvag-vloerkleed-laagpolig-ornamentenpatroon-beige-donkerbeige-50624246/
+- Bedroom reference: https://www.ikea.com/at/de/rooms/bedroom/gallery/dein-kleines-ruhiges-aufgeraeumtes-schlafzimmer-pubd9bdace0/
+- Clinic reference: https://hoshino-ent.jp/clinic.html
+- Shop reference: https://www.aboutbritain.com/BlistsHill.htm
+
+These photographs guide furniture relationships and functional room planning;
+the game's existing assets remain the actual geometry and textures. Sofas face
+coffee tables within full-size rugs; storage is against walls; beds have bedside
+access; waiting chairs form a row; shop counters and merchandise shelves read as
+retail fixtures. The house has a new bedroom divider, continuous kitchen and a
+pendant above its dining table. The clinic uses tiled flooring and a suspended
+privacy curtain. Repeated floor litter, stacked boxes, oversize legacy shelves
+and unrelated colorful paintings were removed. Interior brick is covered with
+plaster and low wall paneling; lower ceilings, skirting, bulletin boards, framed
+landscapes, clocks and restrained lighting finish the rooms. Furniture colors
+use muted timber, brown upholstery and sage clinical fabric. Existing searchable
+storage and quest positions remain functional; 13 renderer views cover the
+layouts, with quest, storage, camera and patrol regression checks.
+
+Abandonment pass: interior_decay.gd adds authored damage and departure stories
+after furnishing, without changing quest/storage state. Each building has a
+roof-leak patch, ceiling water ring, streaked wall damp, mold along the skirting,
+a shallow stained puddle and fallen plaster. The Compatibility-safe cutout shader
+interior_stains.gdshader uses quantized procedural noise with irregular edges.
+Damage is concentrated at leaks rather than spread evenly over every surface.
+The house has an open suitcase, discarded place setting and a broken dining
+chair. Clinic supplies and a blanket have spilled beside the treatment bay.
+The store has broken shelf timber and ceramics; the workshop has a split table
+and a broken chair. Ranger paperwork, skewed seating and filing supplies show a
+rushed evacuation; the radio room has a packed bag, scattered records and fallen
+lamp. Selected intact chairs are hidden and their collision disabled when replaced.
+Small debris is visual-only to preserve steady close-range camera movement.
+All new dressing is static, with no additional per-frame script processing.
+smoke_test_interior_decay.gd checks all six rooms, 30 stain patches, distinct story
+props and the absence of small-debris collision. Town/quest, storage, NPC patrol
+and camera regressions pass; the 13-view renderer preview covers the changes.

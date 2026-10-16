@@ -92,10 +92,7 @@ func dress_buildings():
 		prop("box",root,Vector3(-w/2+0.65,0.02,2.8),Vector3(1,1,1),0.22)
 		prop("box",root,Vector3(-w/2+0.65,0.5,2.8),Vector3(0.75,0.75,0.75),-0.1)
 		prop("books",root,Vector3(w/2-1.0,0.025,2.3),Vector3(0.6,0.6,0.6),-0.3)
-		# Paper litter is intentionally flat and does not obstruct movement.
-		for i in range(4):
-			var paper = town.box(root,Vector3(-1.1+i*0.7,0.022,1.6+sin(i)*0.4),Vector3(0.22,0.005,0.3),town.mats.paper,false)
-			paper.rotation.y = i*0.71
+		# Room-specific disorder is placed by ApartmentKitInteriors.
 		poster(root,data.id,Vector3(-1.9,2.45,-d/2+0.18))
 	for shelf in get_tree().get_nodes_in_group("InteriorShelfBases"):
 		prop("shelf",shelf,Vector3.ZERO,Vector3(2.2/manifest.shelf.dimensions[0],1,1))
@@ -108,14 +105,7 @@ func dress_buildings():
 	prop("books",town.buildings.radio,Vector3(-3.5,0.89,-3.5),Vector3(0.6,0.6,0.6))
 	prop("box",town.buildings.store,Vector3(4.9,0.02,-2.7),Vector3(1.2,1.2,1.2),0.2)
 	prop("box",town.buildings.workshop,Vector3(5.1,0.02,2.6),Vector3(1.2,1.2,1.2),-0.3)
-	# Low-poly bed frames, blankets, and radiator pipes.
-	for x in [-3.3,3.3]:
-		var clinic = town.buildings.clinic
-		for side in [-1,1]:
-			town.box(clinic,Vector3(x+side*0.6,0.55,-1.18),Vector3(0.07,1.1,0.07),town.mats.metal,false)
-			town.box(clinic,Vector3(x+side*0.6,0.35,1.18),Vector3(0.07,0.7,0.07),town.mats.metal,false)
-		town.box(clinic,Vector3(x,0.88,0.3),Vector3(1.25,0.05,1.5),town.mats.fabric,false)
-		town.box(clinic,Vector3(x,1.0,-1.18),Vector3(1.25,0.07,0.07),town.mats.metal,false)
+	# The apartment kit supplies the beds; retain the old wall radiator.
 	for i in range(9):
 		town.box(town.buildings.clinic,Vector3(4.7-i*0.13,0.55,4.68),Vector3(0.065,0.8,0.12),town.mats.metal,false)
 
@@ -132,7 +122,7 @@ func make_storage():
 	drawer("clinic","clinic_drawer",Vector3(-4.6,0,1.6),"bedside drawer",[],{},"Only empty blister packs and old receipts.")
 	drawer("store","store_drawer",Vector3(-3.85,0.12,-3.65),"store counter drawer",["fuse"])
 	cabinet("store","store_cabinet",Vector3(3.5,0,-4.45),"stock cabinet",["battery_a","battery_b"])
-	cabinet("workshop","workshop_cabinet",Vector3(-4.6,0,0.6),"signal-coil cabinet",["coil"],{},true,Vector3(1.25,1.75,0.7),"metal")
+	cabinet("workshop","workshop_cabinet",Vector3(-4.6,0,0.6),"signal-coil cabinet",["coil"],{"chapel_key":1},true,Vector3(1.25,1.75,0.7),"metal")
 	drawer("workshop","workshop_drawer",Vector3(-4.0,0.12,-2.6),"spare-parts drawer",[],{"battery":1})
 	drawer("house","house_drawer",Vector3(-4.6,0,-2.6),"bedside drawer",["medkit_c"])
 	cabinet("house","house_cabinet",Vector3(3.7,0,-4.45),"kitchen cabinet",["battery_c"],{},false,Vector3(1.5,0.9,0.7))
@@ -247,7 +237,7 @@ func toggle(id: String):
 			found.append(LOOT_NAMES[item_id])
 	for key in data.extras:
 		town.inventory[key] += data.extras[key]
-		found.append("flashlight battery" if key=="battery" else "first-aid kit")
+		found.append({"battery":"flashlight battery","medkit":"first-aid kit","chapel_key":"chapel cellar key"}.get(key,key))
 	town.game.message = "Found: "+", ".join(found)+"." if not found.is_empty() else data.empty_text
 	if not found.is_empty():
 		town.game.soundscape.feedback("pickup")

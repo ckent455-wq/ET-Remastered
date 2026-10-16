@@ -2,6 +2,9 @@ extends Node3D
 ## Compatibility/ANGLE-friendly particle fog; no Forward+ volumetric dependency.
 var game
 var environment: Environment
+var cellar_environment: Environment
+var surface_ambient_energy = 0.52
+var surface_directionals: Array[DirectionalLight3D] = []
 var emitters: Array[CPUParticles3D] = []
 var material: ShaderMaterial
 var elapsed = 0.0
@@ -9,6 +12,17 @@ var indoors = false
 
 func _ready():
 	name = "BlackwoodDriftingFog"
+	for light in game.find_children("*","DirectionalLight3D",true,false):
+		surface_directionals.append(light)
+	surface_ambient_energy = environment.ambient_light_energy
+	cellar_environment = environment.duplicate()
+	cellar_environment.ambient_light_source = Environment.AMBIENT_SOURCE_DISABLED
+	cellar_environment.ambient_light_energy = 0.0
+	cellar_environment.ambient_light_color = Color("737e7a")
+	cellar_environment.fog_enabled = false
+	cellar_environment.fog_density = 0.007
+	cellar_environment.fog_light_energy = 0.025
+	cellar_environment.background_color = Color("030505")
 	var noise = FastNoiseLite.new()
 	noise.seed = 14503
 	noise.frequency = 0.065
@@ -25,6 +39,9 @@ func _ready():
 	make_emitter(Vector3(0,1.0,-16),Vector3(4,0.8,18),32)
 	make_emitter(Vector3(0,1.0,-49),Vector3(5,0.8,12),32)
 	make_emitter(Vector3(0,1.0,-76),Vector3(5,0.8,15),32)
+
+	make_emitter(Vector3(10,3.8,-109),Vector3(7,1,9),20)
+	make_emitter(Vector3(29,9.8,-130),Vector3(8,0.8,12),24)
 
 func make_emitter(p: Vector3, extents: Vector3, count: int):
 	var particles = CPUParticles3D.new()
@@ -58,6 +75,12 @@ func make_emitter(p: Vector3, extents: Vector3, count: int):
 	emitters.append(particles)
 
 func update_fog(delta: float):
+	var in_cellar = game.state not in ["intro","title"] and game.town.streetscape.church.basement.contains(game.player.global_position)
+	for light in surface_directionals:
+		light.visible = not in_cellar
+	game.camera.environment = cellar_environment if in_cellar else null
+	# Compatibility uses world ambient for some mesh lighting even with a camera override.
+	environment.ambient_light_energy = 0.004 if in_cellar else surface_ambient_energy
 	var active = game.state in ["play","title","intro"]
 	for particles in emitters:
 		particles.speed_scale = 1 if active else 0

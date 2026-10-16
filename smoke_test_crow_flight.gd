@@ -1,0 +1,60 @@
+extends SceneTree
+func _initialize():
+	call_deferred("run")
+func run():
+	var game = load("res://main.tscn").instantiate()
+	root.add_child(game)
+	game.reset_game()
+	game.set_state("play")
+	game.set_physics_process(false)
+	var crow = game.town.sign_crow
+	crow.set_process(false)
+	var perch = crow.perch_global()
+	game.player.position = perch+Vector3(0,-2,2.5)
+	crow._process(0.01)
+	assert(crow.flight_state=="outbound" and crow.animation.current_animation=="fly","Close approach starts original flight animation")
+	crow._process(1)
+	assert(crow.global_position.y>perch.y+1 and not crow.voice.playing,"Crow flies up and stops perched calls")
+	var midair = crow.global_transform
+	var elapsed = crow.flight_time
+	game.set_state("journal")
+	crow._process(60)
+	assert(crow.global_transform.is_equal_approx(midair) and crow.flight_time==elapsed and crow.animation.speed_scale==0,"Menus pause flight")
+	game.set_state("play")
+	crow._process(4)
+	await physics_frame
+	assert(crow.flight_state=="away" and not crow.model.visible and crow.hit_shape.disabled,"Crow departs completely")
+	crow._process(60)
+	assert(crow.flight_state=="away","Won't return while player camps under sign")
+	game.player.position = perch+Vector3(0,-2,9)
+	crow._process(0.1)
+	assert(crow.flight_state=="inbound" and crow.model.visible,"Returns when delay elapsed and player steps away")
+	crow._process(1)
+	game.player.position = perch+Vector3(0,-2,2)
+	crow._process(0.1)
+	assert(crow.flight_state=="outbound","Close player interrupts a return")
+	game.player.position = perch+Vector3(0,-2,9)
+	crow._process(4)
+	crow._process(60)
+	assert(crow.flight_state=="inbound")
+	crow._process(4)
+	assert(crow.flight_state=="landing" and crow.animation.current_animation=="landing","Original landing animation at perch")
+	crow._process(1)
+	assert(crow.flight_state=="perched" and crow.position.is_equal_approx(crow.PERCH_POSITION),"Same crow returns to original perch")
+	crow._process(4)
+	assert(crow.calls_played>0,"Crow calls again after returning")
+	var test_path = "user://crow-flight-test-"+str(Time.get_ticks_usec())+".cfg"
+	game.achievements.storage_path = test_path
+	game.achievements.unlocked.clear()
+	crow.take_flight()
+	assert(crow.shoot(),"Flying crow remains shootable")
+	crow._process(100)
+	assert(crow.dead and crow.flight_state!="perched","Dead crow never flies back")
+	game.reset_game()
+	await physics_frame
+	assert(not crow.dead and crow.flight_state=="perched" and crow.model.visible and not crow.hit_shape.disabled,"New journey resets flight and death")
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(test_path))
+	print("PASS: proximity takeoff, animated ascent, paused flight, delayed safe return, camping/interruption behavior, landing/calls, shootable flight, no dead return, reset")
+	game.queue_free()
+	await process_frame
+	quit()
