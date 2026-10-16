@@ -11,13 +11,13 @@ func check():
 	assert(town.buildings.size()==6,"Six enterable quest buildings retained")
 	for data in town.BUILDINGS:
 		var front = town.buildings[data.id].to_global(Vector3(0,0,5))
-		assert(absf(absf(front.x)-8.5)<0.01,"Storefront faces the shared Main Street: "+data.id)
+		assert(absf(absf(front.x)-6.5)<0.01,"Storefront faces the shared Main Street: "+data.id)
 	var query = PhysicsShapeQueryParameters3D.new()
 	query.shape = game.player.get_child(0).shape
 	query.collision_mask = 1
 	query.exclude = [game.player.get_rid()]
 	var samples = 0
-	for x in [0.0,-6.55,6.55]:
+	for x in [0.0,-4.95,4.95]:
 		for i in range(103):
 			var p = Vector3(x,0.79,-38-i*0.5)
 			query.transform = Transform3D(Basis.IDENTITY,p)

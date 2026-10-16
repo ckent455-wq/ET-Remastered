@@ -40,7 +40,7 @@ func run():
 	await observe("forest physics and audio",4)
 	look_from(Vector3(0,0.1,-55),Vector3(7,2,-69))
 	await observe("town physics",4)
-	look_from(Vector3(0,0.001,-44),Vector3(8.5,3,-46))
+	look_from(Vector3(0,0.001,-44),Vector3(6.5,3,-46))
 	for id in ["weapon_pistol","weapon_rifle","weapon_shotgun"]:
 		game.town.perform(id)
 	for index in range(3):
@@ -53,7 +53,7 @@ func run():
 		await observe("weapon reload %d" % index,0.5)
 	game.weapons.equip(-1)
 	assert(game.arm_visual.visible,"Arm restored when holstered")
-	look_from(Vector3(-5.9,0.001,-42),Vector3(-5.9,1.35,-45))
+	look_from(Vector3(-5.65,0.001,-42),Vector3(-5.65,1.35,-45))
 	game.town.perform("npc_ranger")
 	await observe("NPC conversation",2)
 	game.state = "play"

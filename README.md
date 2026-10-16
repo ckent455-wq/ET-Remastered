@@ -113,6 +113,8 @@ Town doors use a local creak recording positioned at the doorway. Pickups, resto
 Drawers and cabinets use a short positional slide-and-clunk cue, also controlled by M and pause.
 
 ## Local assets
+- assets/flashlight/flashlight.glb and flashlight_albedo.png: original 530-triangle local Unity flashlight from My project (2)/Assets/Flashlight/Misc/Flashlight.FBX, centered to 34 cm with a 256-pixel copy of the supplied albedo and matte PS2-style materials. Source records are in assets/flashlight/source.json; originals are unchanged.
+- assets/atmosphere/overcast_sky.png: reduced and desaturated copy of Downloads/lonely_road_afternoon_puresky_8k.exr. A procedural cloud ceiling overlays it in cloud_sky.gdshader. Two original low-poly hill rings use the existing ground texture. See MAIN_STREET.md for details.
 - assets/audio/horror/*.wav: selected recordings from the user-provided Downloads/Horror SFX Free pack, converted to mono 22050 Hz with controlled peaks and edge fades/crossfades. Original filenames and hashes are retained in assets/audio/horror/sources.json. No author or license document was included in the downloaded archive.
 - assets/roads/road_straight.glb and associated textures: user-provided Downloads/4pc_lowpoly_roads_glb. Original asphalt geometry and UVs are retained with matte PS2-style materials. Raised concrete and generated collision are omitted. See assets/roads/sources.json. No author or license document was included in the downloaded archive.
 - assets/forest.jpg: copied from Downloads/forrest_ground_01_2k.blend/textures/forrest_ground_01_diff_2k.jpg. No license accompanied the source folder; verify it before distributing.

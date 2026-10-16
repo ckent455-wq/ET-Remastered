@@ -1,4 +1,4 @@
-# Far From Home — Blackwood Main Street Preview v0.2.0
+# Far From Home — Through the Fog Preview v0.3.0
 
 Windows 10/11, 64-bit. Godot is not required to play.
 

@@ -1,0 +1,9 @@
+{
+  "source": "C:\\Users\\jkern\\My project (2)\\Assets\\Flashlight\\Misc\\Flashlight.FBX",
+  "model": "LP_FlashLight",
+  "triangles": 530,
+  "texture_limit": 256,
+  "length_m": 0.34,
+  "muzzle_axis": "Godot -Z",
+  "adaptation": "centered original mesh, flat normals, original albedo reduced to 256 pixels, matte surfaces"
+}

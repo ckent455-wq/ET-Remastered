@@ -47,7 +47,7 @@ func build_street():
 	build_downloaded_roads()
 	var flare = SurfaceTool.new()
 	flare.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var corners = [Vector3(-1.6,0.016,-35),Vector3(1.6,0.016,-35),Vector3(-5.2,0.016,-38),Vector3(5.2,0.016,-38)]
+	var corners = [Vector3(-1.6,0.016,-35),Vector3(1.6,0.016,-35),Vector3(-3.8,0.016,-38),Vector3(3.8,0.016,-38)]
 	for index in [0,1,2,1,3,2]:
 		flare.set_normal(Vector3.UP)
 		flare.set_uv(Vector2(corners[index].x/3.2,corners[index].z/4))
@@ -57,30 +57,30 @@ func build_street():
 	entry.material_override = asphalt
 	add_child(entry)
 	for side in [-1,1]:
-		town.box(self,Vector3(side*6.85,0.012,-64),Vector3(3.3,0.016,56),pavement,false)
-		town.box(self,Vector3(side*5.27,0.04,-64),Vector3(0.11,0.07,56),stone,false)
+		town.box(self,Vector3(side*5.15,0.012,-64),Vector3(2.7,0.016,56),pavement,false)
+		town.box(self,Vector3(side*3.87,0.04,-64),Vector3(0.11,0.07,56),stone,false)
 		for z in range(-39,-91,-3):
-			town.box(self,Vector3(side*6.85,0.024,z),Vector3(3.15,0.008,0.025),town.mats.dark,false)
+			town.box(self,Vector3(side*5.15,0.024,z),Vector3(2.6,0.008,0.025),town.mats.dark,false)
 		for z in range(-44,-88,-5):
-			var mark = town.box(self,Vector3(side*3.9,0.021,z),Vector3(2.3,0.008,0.045),stone,false)
+			var mark = town.box(self,Vector3(side*2.7,0.021,z),Vector3(1.85,0.008,0.045),stone,false)
 			mark.rotation.y = side*0.45
 		for z in [-43,-57,-76]:
-			street_lamp(Vector3(side*5.85,0,z),side== -1 and z!= -57)
+			street_lamp(Vector3(side*4.35,0,z),side== -1 and z!= -57)
 		for z in [-50,-65,-80]:
-			planter(Vector3(side*7.8,0,z))
+			planter(Vector3(side*6.0,0,z))
 		sealed_shop(side,-85)
 	# Random scars and patching interrupt the road without changing collision.
 	var rng = RandomNumberGenerator.new()
 	rng.seed = 68410
 	for i in range(28):
-		var scar = town.box(self,Vector3(rng.randf_range(-4.6,4.6),0.024,rng.randf_range(-88,-39)),Vector3(rng.randf_range(0.3,1.1),0.008,0.045),town.mats.dark,false)
+		var scar = town.box(self,Vector3(rng.randf_range(-3.4,3.4),0.024,rng.randf_range(-88,-39)),Vector3(rng.randf_range(0.3,1.1),0.008,0.045),town.mats.dark,false)
 		scar.rotation.y = rng.randf_range(-PI,PI)
 	for i in range(18):
 		var side = -1 if i%2==0 else 1
-		var paper = town.box(self,Vector3(side*rng.randf_range(5.5,7.9),0.03,rng.randf_range(-87,-39)),Vector3(0.18,0.008,0.26),town.mats.paper,false)
+		var paper = town.box(self,Vector3(side*rng.randf_range(4.1,6.1),0.03,rng.randf_range(-87,-39)),Vector3(0.18,0.008,0.26),town.mats.paper,false)
 		paper.rotation.y = rng.randf_range(-PI,PI)
 	for i in range(3):
-		parked_car(Vector3(-3.9 if i%2==0 else 3.9,0.015,[-52,-66,-79][i]),0.40 if i%2==0 else PI-0.4,i)
+		parked_car(Vector3(-2.7 if i%2==0 else 2.7,0.015,[-52,-66,-79][i]),0.40 if i%2==0 else PI-0.4,i)
 	weeds()
 	# The far junction disappears into fog behind a temporary road closure.
 	for x in [-3.0,0.0,3.0]:
@@ -100,7 +100,7 @@ func build_downloaded_roads():
 	assert(road_mesh.get_surface_count()>0,"Downloaded road mesh is available")
 	for i in range(5):
 		road_segment(Vector3(0,-0.232,14.5-i*11),3.2)
-		road_segment(Vector3(0,-0.232,-43.5-i*11),10.4)
+		road_segment(Vector3(0,-0.232,-43.5-i*11),7.6)
 
 func extract_road_mesh(node: Node):
 	if node is MeshInstance3D:
@@ -297,7 +297,7 @@ func sealed_shop(side: int, z: float):
 	var root = Node3D.new()
 	root.name = "BoardedAntiques" if side<0 else "BoardedDryGoods"
 	add_child(root)
-	root.position = Vector3(side*12.5,0,z)
+	root.position = Vector3(side*10.5,0,z)
 	root.rotation.y = PI/2 if side<0 else -PI/2
 	town.box(root,Vector3(0,3.1,0),Vector3(10,6.2,8),brick("ranger"))
 	for x in [-3,0,3]:
@@ -329,7 +329,7 @@ func weeds():
 	add_child(node)
 	for i in range(48):
 		var side = -1 if i%2==0 else 1
-		multi.set_instance_transform(i,Transform3D(Basis(Vector3.UP,i*1.3),Vector3(side*(5.2 if i%3==0 else 8.23),0.025,-39-i*1.02)))
+		multi.set_instance_transform(i,Transform3D(Basis(Vector3.UP,i*1.3),Vector3(side*(3.8 if i%3==0 else 6.23),0.025,-39-i*1.02)))
 
 func _process(_delta):
 	for i in range(lamps.size()):

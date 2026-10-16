@@ -1,12 +1,12 @@
 extends Node3D
 ## Abandoned Blackwood: furnished, enterable buildings and a resettable item quest.
 const BUILDINGS = [
-	{"id":"ranger","label":"RANGER OFFICE","p":Vector3(-13.5,0,-46),"w":11.0,"d":10.0,"r":PI/2,"wall":"brick"},
-	{"id":"clinic","label":"BLACKWOOD PHARMACY","p":Vector3(-13.5,0,-59),"w":11.0,"d":10.0,"r":PI/2,"wall":"brick"},
-	{"id":"store","label":"GENERAL STORE","p":Vector3(-13.5,0,-72),"w":12.0,"d":10.0,"r":PI/2,"wall":"brick"},
-	{"id":"radio","label":"RADIO STATION","p":Vector3(13.5,0,-72),"w":11.0,"d":10.0,"r":-PI/2,"wall":"brick"},
-	{"id":"workshop","label":"MILL REPAIR SHOP","p":Vector3(13.5,0,-59),"w":12.0,"d":10.0,"r":-PI/2,"wall":"brick"},
-	{"id":"house","label":"MILLKEEPER'S ROOMS","p":Vector3(13.5,0,-46),"w":12.0,"d":10.0,"r":-PI/2,"wall":"plaster"}]
+	{"id":"ranger","label":"RANGER OFFICE","p":Vector3(-11.5,0,-46),"w":11.0,"d":10.0,"r":PI/2,"wall":"brick"},
+	{"id":"clinic","label":"BLACKWOOD PHARMACY","p":Vector3(-11.5,0,-59),"w":11.0,"d":10.0,"r":PI/2,"wall":"brick"},
+	{"id":"store","label":"GENERAL STORE","p":Vector3(-11.5,0,-72),"w":12.0,"d":10.0,"r":PI/2,"wall":"brick"},
+	{"id":"radio","label":"RADIO STATION","p":Vector3(11.5,0,-72),"w":11.0,"d":10.0,"r":-PI/2,"wall":"brick"},
+	{"id":"workshop","label":"MILL REPAIR SHOP","p":Vector3(11.5,0,-59),"w":12.0,"d":10.0,"r":-PI/2,"wall":"brick"},
+	{"id":"house","label":"MILLKEEPER'S ROOMS","p":Vector3(11.5,0,-46),"w":12.0,"d":10.0,"r":-PI/2,"wall":"plaster"}]
 var game
 var buildings = {}
 var doors = {}

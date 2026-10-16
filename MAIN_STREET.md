@@ -37,6 +37,58 @@ radio station remain enterable, with the existing furniture, searchable storage,
 weapon pickups, NPCs, and rescue quest. Two additional boarded shops close the
 north end of the street. The crash opening remains south of town.
 
+## Enclosure and drifting fog
+
+Main Street is now 7.6 metres wide, with storefronts brought two metres inward
+on each side. Sidewalks, lamps, parking, cars, planters, and Elias's patrol move
+with the street. Boarded returns close the gaps between shops, and masonry walls
+close the broad spaces behind them. Additional local pine and shrub instances
+and uneven timber fencing enclose the approach; the wreck, sign, continuous road,
+and three forest trails retain their walking clearance.
+
+The atmosphere takes its oppressive, obscured sightlines from Silent Hill as a
+mood reference. Muted grey-green distance haze hides the far end of the street,
+with a shorter flashlight range and subdued ambient/moon lighting. Four CPU
+particle emitters share one procedural 64-pixel noise texture and billboard shader,
+using 120 slow wisps in total. Particles fade near the eye, fade over their lifetime,
+and are clipped out of furnished interiors. Indoor distance fog is reduced so
+storage, NPCs, and pickups remain legible. Menus pause the fog animation.
+
+The existing ANGLE compatibility renderer is retained. Godot's reference for
+[CPU particles](https://docs.godotengine.org/en/4.5/classes/class_cpuparticles3d.html)
+describes the emitter used here; this effect does not require Forward+ volumetric fog.
+`smoke_test_fog.gd` checks the particle budget, indoor/outdoor density, camera,
+pause/resume, and enclosure. `tools/preview_fog.gd` verifies visible particle
+contribution in a real rendered frame and captures approach, street, and interior views.
+
+## Distant hills, clouds, and local flashlight
+
+Two low-poly hill rings frame the horizon beyond the playable area. Their combined
+768 triangles use subdued height-based haze and the existing ground texture, with
+no movement collision. The cameras can see the backdrop while forest distance
+culling remains unchanged. Hill silhouettes remain faintly visible above the
+dense street fog.
+
+The overcast sky combines a reduced, desaturated 512 x 256 copy of the local
+`Downloads/lonely_road_afternoon_puresky_8k.exr` panorama with a static procedural
+cloud ceiling. Planar cloud projection avoids polar stretching. The ambient-light
+source remains a fixed colour, so the sky does not brighten the horror lighting.
+The source panorama is unchanged; its copy and source record are in assets/atmosphere.
+
+The original 530-triangle flashlight was found at
+`My project (2)/Assets/Flashlight/Misc/Flashlight.FBX`. Its mesh and supplied albedo
+are retained, centered to a 34 cm prop, given flat normals and matte materials,
+and reduced to a 256-pixel texture. It replaces the placeholder cylinder. The arm
+and hand geometry are removed; only the flashlight appears. F switches the beam
+immediately while the model lowers and disappears, or raises back into view,
+over 0.3 seconds. Rapid toggles reverse smoothly; menus pause the motion.
+Charge, sound, weapon hiding, holstering, and restart behavior
+are retained. The source FBX and textures are unchanged. See assets/flashlight/source.json.
+
+`smoke_test_landscape.gd` checks the sky, geometry budget, lack of terrain collision,
+and flashlight controls/visibility. `tools/preview_landscape.gd` captures the
+clouds, hill silhouettes, flashlight, interiors, and title using the real renderer.
+
 Validation includes all six entrances, 309 road/sidewalk collision samples,
 all twelve storage interactions, NPC patrols and deaths, the crash-to-town walk,
 weapon collection, the complete rescue quest, and real-renderer previews.

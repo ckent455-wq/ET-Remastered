@@ -27,7 +27,7 @@ for name in ['LICENSE.txt', 'COPYRIGHT.txt']:
     with urllib.request.urlopen(request, timeout=45) as response:
         (licenses/('Godot-'+name)).write_bytes(response.read())
 credits = (ROOT/'README.md').read_text(encoding='utf-8').split('## Local assets', 1)[1].split('Validation:', 1)[0].strip()
-(package/'CREDITS.md').write_text('# Far From Home — asset credits\n\nBuilt with Godot Engine 4.5.1. Engine, font and weapon licenses are in LICENSES.\n\n'+credits+'\n', encoding='utf-8')
+(package/'CREDITS.md').write_text('# Far From Home - asset credits\n\nBuilt with Godot Engine 4.5.1. Engine, font and weapon licenses are in LICENSES.\n\n'+credits+'\n', encoding='utf-8')
 commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
 info = {'game':'Far From Home', 'version':version, 'platform':'Windows x86_64', 'engine':'Godot 4.5.1', 'source_commit':commit,
         'sha256':{name:hashlib.sha256((package/name).read_bytes()).hexdigest() for name in ['FarFromHome.exe','FarFromHome.pck']}}

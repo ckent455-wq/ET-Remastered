@@ -4,7 +4,7 @@ var town
 var characters = {}
 const DEATH_DURATION = 1.7
 const PEOPLE = [
-	{"id":"ranger","name":"Elias / Ranger","variant":"ranger","building":"","p":Vector3(-5.9,0,-45),"yaw":0.0,"route":[Vector3(-5.9,0,-45),Vector3(-5.9,0,-49),Vector3(-5.9,0,-44.5)]},
+	{"id":"ranger","name":"Elias / Ranger","variant":"ranger","building":"","p":Vector3(-5.65,0,-45),"yaw":0.0,"route":[Vector3(-5.65,0,-45),Vector3(-5.65,0,-49),Vector3(-5.65,0,-44.5)]},
 	{"id":"nurse","name":"Mara / Nurse","variant":"nurse","building":"clinic","p":Vector3(-0.95,0,0.6),"yaw":0.0,"route":[Vector3(-0.95,0,0.6),Vector3(-0.95,0,2.5),Vector3(0.65,0,2.5),Vector3(0.65,0,0.6)]},
 	{"id":"mechanic","name":"Owen / Mechanic","variant":"mechanic","building":"workshop","p":Vector3(1.2,0,1.5),"yaw":0.0,"route":[Vector3(1.2,0,1.5),Vector3(3,0,1.5),Vector3(3,0,3.1),Vector3(1.2,0,3.1)]}]
 

@@ -1,0 +1,9 @@
+{
+  "source": "C:\\Users\\jkern\\Downloads\\lonely_road_afternoon_puresky_8k.exr",
+  "output": "overcast_sky.png",
+  "size": [
+    512,
+    256
+  ],
+  "adaptation": "tone-mapped, desaturated, darkened panoramic clouds; original unchanged"
+}

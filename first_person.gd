@@ -23,6 +23,13 @@ var soundscape: Node
 var arm_visual: Node3D
 var weapons: Node3D
 var town: Node3D
+var fog_atmosphere: Node3D
+var distant_landscape: Node3D
+var flashlight_model: Node3D
+var flashlight_raise = 1.0
+const FLASHLIGHT_UP = Vector3(0.30,-0.19,-0.77)
+const FLASHLIGHT_DOWN = Vector3(0.34,-0.72,-0.57)
+const FLASHLIGHT_ANIMATION_SECONDS = 0.30
 var flashlight_charge = 100.0
 var journal_page = 0
 
@@ -59,20 +66,20 @@ func _ready():
 	var world = WorldEnvironment.new()
 	var env = Environment.new()
 	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color("172b37")
+	env.background_color = Color("343d3b")
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("879fa9")
-	env.ambient_light_energy = 0.7
+	env.ambient_light_color = Color("9a9e91")
+	env.ambient_light_energy = 0.52
 	env.fog_enabled = true
-	env.fog_light_color = Color("2b444e")
-	env.fog_light_energy = 0.7
-	env.fog_density = 0.024
+	env.fog_light_color = Color("626e68")
+	env.fog_light_energy = 0.65
+	env.fog_density = 0.070
 	world.environment = env
 	add_child(world)
 	var moon = DirectionalLight3D.new()
 	moon.rotation_degrees = Vector3(-48,-35,0)
-	moon.light_color = Color("a1b6d0")
-	moon.light_energy = 0.7
+	moon.light_color = Color("b4b9ab")
+	moon.light_energy = 0.5
 	add_child(moon)
 	var ground_mat = mat(Color("8d9a91"),preload("res://assets/forest/ground_ps2.png"))
 	ground_mat.uv1_scale = Vector3(30,30,30)
@@ -108,26 +115,18 @@ func _ready():
 	flashlight = SpotLight3D.new()
 	flashlight.light_color = Color("b9e1cc")
 	flashlight.light_energy = 2.5
-	flashlight.spot_range = 24
+	flashlight.spot_range = 17
 	flashlight.spot_angle = 39
 	flashlight.position = Vector3(0.15,-0.15,0)
 	camera.add_child(flashlight)
 	arm_visual = Node3D.new()
-	arm_visual.name = "FlashlightArm"
+	arm_visual.name = "FlashlightHolder"
 	camera.add_child(arm_visual)
-	var hand = mesh_at(arm_visual,cylinder(0.055,0.045,0.48),Vector3(0.30,-0.35,-0.45),mat(Color("3f4845")))
-	hand.rotation_degrees = Vector3(-65,0,0)
-	var palm = SphereMesh.new()
-	palm.radius = 0.07
-	palm.height = 0.12
-	palm.radial_segments = 8
-	palm.rings = 4
-	mesh_at(arm_visual,palm,Vector3(0.30,-0.23,-0.69),mat(Color("b49275")))
-	for i in range(4):
-		var finger = mesh_at(arm_visual,cylinder(0.015,0.012,0.08,5),Vector3(0.25+i*0.033,-0.20,-0.73),mat(Color("b49275")))
-		finger.rotation_degrees.x = -30
-	var torch = mesh_at(arm_visual,cylinder(0.045,0.055,0.28,8),Vector3(0.3,-0.19,-0.77),mat(Color("343b3b")))
-	torch.rotation.x = PI/2
+	flashlight_model = load("res://assets/flashlight/flashlight.glb").instantiate()
+	flashlight_model.name = "LocalFlashlightModel"
+	arm_visual.add_child(flashlight_model)
+	flashlight_model.position = FLASHLIGHT_UP
+	prepare_flashlight(flashlight_model)
 	var canvas = CanvasLayer.new()
 	add_child(canvas)
 	hud = Control.new()
@@ -159,7 +158,37 @@ func _ready():
 	title_weather.set_script(preload("res://title_weather.gd"))
 	title_weather.game = self
 	add_child(title_weather)
+	var enclosure = Node3D.new()
+	enclosure.set_script(preload("res://world_enclosure.gd"))
+	enclosure.game = self
+	add_child(enclosure)
+	fog_atmosphere = Node3D.new()
+	fog_atmosphere.set_script(preload("res://fog_atmosphere.gd"))
+	fog_atmosphere.game = self
+	fog_atmosphere.environment = env
+	add_child(fog_atmosphere)
+	distant_landscape = Node3D.new()
+	distant_landscape.set_script(preload("res://distant_landscape.gd"))
+	distant_landscape.game = self
+	distant_landscape.environment = env
+	add_child(distant_landscape)
 	update_camera()
+
+func prepare_flashlight(node: Node):
+	if node is MeshInstance3D:
+		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		for surface in range(node.mesh.get_surface_count()):
+			var original = node.mesh.surface_get_material(surface)
+			if original is StandardMaterial3D:
+				var material = original.duplicate() as StandardMaterial3D
+				material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+				material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+				material.roughness = 1
+				material.metallic = 0
+				material.metallic_specular = 0
+				node.set_surface_override_material(surface,material)
+	for child in node.get_children():
+		prepare_flashlight(child)
 
 func make_audio():
 	soundscape = Node.new()
@@ -180,6 +209,10 @@ func reset_game():
 	invincible = 0
 	flashlight_charge = 100
 	flashlight.visible = true
+	flashlight_raise = 1.0
+	flashlight_model.position = FLASHLIGHT_UP
+	flashlight_model.rotation = Vector3.ZERO
+	flashlight_model.visible = true
 	journal_page = 0
 	message = "Your car is wrecked. Follow the road into Blackwood and find help."
 	soundscape.reset()
@@ -299,8 +332,19 @@ func rescue_available() -> bool:
 
 func _process(delta):
 	update_camera()
+	update_flashlight_visual(delta)
 	if state=="intro":
 		# Give the presentation its full screen time even after cold shader compilation.
 		intro_elapsed += minf(delta,0.1)
 		if intro_elapsed>=3.6:
 			set_state("title")
+
+func update_flashlight_visual(delta: float):
+	if state!="play":
+		return
+	var wanted = 1.0 if flashlight.visible and weapons.selected<0 else 0.0
+	flashlight_raise = move_toward(flashlight_raise,wanted,delta/FLASHLIGHT_ANIMATION_SECONDS)
+	var eased = smoothstep(0.0,1.0,flashlight_raise)
+	flashlight_model.position = FLASHLIGHT_DOWN.lerp(FLASHLIGHT_UP,eased)
+	flashlight_model.rotation = Vector3(-0.28,0,0.06)*(1.0-eased)
+	flashlight_model.visible = flashlight_raise>0.001
