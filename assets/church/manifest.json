@@ -1,0 +1,78 @@
+{
+  "package": "Flooded Grounds, local Unity assets",
+  "assets": [
+    {
+      "asset": "pew",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\Flooded_Grounds\\Content\\Meshes\\mProps\\lo_Prop_ChurchBench_A.fbx",
+      "dimensions": [
+        2.8499999046325684,
+        1.297176480293274,
+        1.0976110696792603
+      ],
+      "triangles": 396
+    },
+    {
+      "asset": "door",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\Flooded_Grounds\\Content\\Meshes\\mBuildings\\mChurches\\Church1_Door_C.fbx",
+      "dimensions": [
+        1.4070180654525757,
+        2.700000047683716,
+        0.14022542536258698
+      ],
+      "triangles": 120
+    },
+    {
+      "asset": "gothic_trim",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\Flooded_Grounds\\Content\\Meshes\\mBuildings\\mChurches\\Church1_Deco_Column_A.fbx",
+      "dimensions": [
+        10.100000381469727,
+        9.968160629272461,
+        0.24187546968460083
+      ],
+      "triangles": 196
+    },
+    {
+      "asset": "front",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\Flooded_Grounds\\Content\\Meshes\\mBuildings\\mChurches\\Church1_End_A.fbx",
+      "dimensions": [
+        10.100000381469727,
+        19.091066360473633,
+        3.4078023433685303
+      ],
+      "triangles": 4869
+    },
+    {
+      "asset": "nave",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\Flooded_Grounds\\Content\\Meshes\\mBuildings\\mChurches\\Church1_Mid_A.fbx",
+      "dimensions": [
+        10.100000381469727,
+        9.581128120422363,
+        3.2056353092193604
+      ],
+      "triangles": 2999
+    },
+    {
+      "asset": "apse",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\Flooded_Grounds\\Content\\Meshes\\mBuildings\\mChurches\\Church1_End_B.fbx",
+      "dimensions": [
+        10.09999942779541,
+        9.49817180633545,
+        4.8089094161987305
+      ],
+      "triangles": 1160
+    }
+  ],
+  "adaptation": "Original UVs and albedos, 256/512px atlas, matte flat shading, bounded triangle counts; source unchanged.",
+  "active_assembly": {
+    "assets": [
+      "bell_tower",
+      "door",
+      "pew",
+      "siding.png"
+    ],
+    "shell": "One continuous shell with separate interior lining and roof; no overlapping full building modules.",
+    "tower": "Source facade clipped to roof slopes, preserving UVs.",
+    "door_prefab": "Flooded_Grounds/Prefabs/Buildings/Churches/Church1_Door_C.prefab",
+    "door_instances": "Two exactly fitted entrance leaves and one scaled cellar leaf."
+  }
+}

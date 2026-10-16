@@ -17,7 +17,9 @@ func _ready():
 	grass.albedo_texture = preload("res://assets/forest/ground_ps2.png")
 	grass.albedo_color = Color("65705b")
 	grass.uv1_scale = Vector3(4,1,2)
-	town.box(self,Vector3(29,8.88,-130),Vector3(16,0.24,8.0),grass)
+	# The terrain is the walking surface. A second raised collision slab made
+	# an invisible step around the court, especially for approaching creatures.
+	town.box(self,Vector3(29,9.012,-130),Vector3(16,0.016,8.0),grass,false)
 	# Asphalt stops at a small arrival court; only a narrow footpath reaches the door.
 	build_footpath()
 	# A low foundation is buried in the sculpted hill beneath the chapel.
@@ -50,7 +52,8 @@ func terrain_height_at(p: Vector3) -> float:
 	height = maxf(height,9*(1-smoothstep(0.0,18.0,court_distance)))
 	if distance<5:
 		height = nearest.y
-	return maxf(0,height-0.24)
+	var burial = 0.24*minf(smoothstep(4.0,6.0,distance),smoothstep(0.0,3.0,court_distance))
+	return maxf(0,height-burial)
 
 func make_surface(label: String, tool: SurfaceTool, material: Material, solid: bool):
 	var mesh = tool.commit()
@@ -75,8 +78,12 @@ func make_surface(label: String, tool: SurfaceTool, material: Material, solid: b
 func build_land():
 	var tool = SurfaceTool.new()
 	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var church_floor = Rect2(Vector2(church.position.x-5,church.position.z-7),Vector2(10,14))
 	for z in range(-157,-90):
 		for x in range(-14,56):
+			# The chapel owns this floor and its collision. Terrain at the same
+			# height rendered through the wood, producing the flickering patches.
+			if church_floor.has_point(Vector2(x+0.5,z+0.5)): continue
 			var points = [Vector3(x,0,z),Vector3(x+1,0,z),Vector3(x,0,z+1),Vector3(x+1,0,z+1)]
 			for j in range(points.size()):
 				points[j].y = terrain_height_at(points[j])

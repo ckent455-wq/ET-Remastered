@@ -41,7 +41,7 @@ func check():
 	assert(game.weapons.owned[0] and game.weapons.selected==0 and not area.visible,"E discovers and equips pistol")
 	game.weapons.magazines[0] -= 1
 	game.town.perform("weapon_pistol")
-	assert(game.weapons.magazines[0]==7,"Repeated pickup cannot duplicate ammo")
+	assert(game.weapons.magazines[0]==2,"Repeated pickup cannot duplicate ammo")
 	game.reset_game()
 	assert(game.player.position==game.START_POSITION and not game.town.reached_town,"New journey restores crash opening")
 	assert(not game.weapons.owned.has(true) and game.weapons.selected== -1 and area.visible and area.collision_layer==2,"Weapon discovery resets")

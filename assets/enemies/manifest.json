@@ -1,0 +1,30 @@
+{
+  "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\creep\\Assets\\Creep Horror Creature\\Meshes\\Creep_mesh_lod1.fbx",
+  "source_sha256": "cee0c0285d862f8385850e50fea3f1e1745efd51630bc219729891732170c091",
+  "author": "Andrii Chykrii",
+  "pack": "Creep Horror Creature",
+  "triangles": 3169,
+  "texture_limit": 256,
+  "height": 2.1,
+  "actions": [
+    "a_pose",
+    "bite",
+    "crouch",
+    "crouch_pose",
+    "death",
+    "eating",
+    "idle1",
+    "idle2",
+    "idle_pose",
+    "jumpin",
+    "jumpout",
+    "punch",
+    "roar",
+    "roar_pose",
+    "slide",
+    "sniff",
+    "walk1",
+    "walk2"
+  ],
+  "adaptation": "Original skinned LOD1 mesh, UVs and animation clips; reduced triangles and albedo; source untouched."
+}

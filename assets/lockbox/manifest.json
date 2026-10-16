@@ -1,0 +1,32 @@
+{
+  "assets": [
+    {
+      "asset": "body",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\HIVEMIND\\HauntedFarmHouse\\HDRP (Default)\\Art\\StaticMeshes\\Props\\Crates\\SM_Crate_A_01.fbx",
+      "dimensions": [
+        1.4965914487838745,
+        0.5900943875312805,
+        0.9770010709762573
+      ]
+    },
+    {
+      "asset": "lid",
+      "source": "C:\\Users\\jkern\\My project (2)\\Assets\\HIVEMIND\\HauntedFarmHouse\\HDRP (Default)\\Art\\StaticMeshes\\Props\\Crates\\SM_Crate_Lid_A_01.fbx",
+      "dimensions": [
+        1.4701507091522217,
+        0.05034555494785309,
+        0.9519730806350708
+      ]
+    },
+    {
+      "asset": "key",
+      "source": "C:\\Users\\jkern\\Documents\\et-remastered\\builds\\asset-source\\rust-key\\Assets\\Rust Key\\Mesh\\rust_key.FBX",
+      "dimensions": [
+        0.09434863179922104,
+        0.18000000715255737,
+        0.030259355902671814
+      ]
+    }
+  ],
+  "adaptation": "Original local asset geometry and UVs; matte, flat shading, 256px albedos; originals unchanged."
+}

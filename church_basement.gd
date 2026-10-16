@@ -18,12 +18,18 @@ func contains(p: Vector3) -> bool:
 	return absf(local.x)<4.9 and absf(local.z)<5.8 and local.y>=-0.4 and local.y<3.8
 
 func build_entry():
-	var p = Vector3(3.25,0,-6.64)
-	town.box(church,p+Vector3(0,1.4,-0.05),Vector3(1.95,2.8,0.06),town.mats.dark,false)
+	var p = Vector3(3.25,0,-6.72)
+	town.box(church,p+Vector3(0,1.35,0.035),Vector3(1.80,2.60,0.015),town.color_material(Color("070b0c")),false)
 	entry_hinge = Node3D.new()
 	church.add_child(entry_hinge)
 	entry_hinge.position = p+Vector3(-0.85,0,0)
-	town.box(entry_hinge,Vector3(0.85,1.3,0.05),Vector3(1.7,2.6,0.10),town.mats.wood,false)
+	var leaf = church.native_prop("door",entry_hinge,Vector3(0.85,0,0.05))
+	leaf.name = "NativeCellarDoorLeaf"
+	leaf.scale = Vector3(1.7/1.407018065,2.6/2.7,1.0)
+	leaf.set_meta("source_prefab","Flooded_Grounds/Prefabs/Buildings/Churches/Church1_Door_C.prefab")
+	var frame = town.color_material(Color("555c50"))
+	for side in [-1,1]: town.box(church,p+Vector3(side*0.93,1.38,0.015),Vector3(0.16,2.76,0.16),frame,false)
+	town.box(church,p+Vector3(0,2.68,0.015),Vector3(2.02,0.16,0.16),frame,false)
 	town.box(entry_hinge,Vector3(1.48,1.15,0.15),Vector3(0.06,0.25,0.08),town.mats.metal,false)
 	padlock = town.box(entry_hinge,Vector3(1.44,1.05,0.20),Vector3(0.16,0.20,0.07),town.mats.amber,false)
 	var sign = town.sign_text(church,"CELLAR\nKEEP LOCKED",p+Vector3(0,2.98,0.15),22,Color("b5ad92"))
@@ -117,15 +123,13 @@ func interact():
 			return
 		unlocked = true
 		padlock.hide()
-		entry_hinge.rotation.y = -1.4
-		town.game.soundscape.door_move(church.to_global(Vector3(3.25,1,-6.5)),true)
-		town.game.message = "Cellar unlocked. Press E again to descend the stairs."
-		return
+	entry_hinge.rotation.y = -1.4
 	visited = true
 	move_player(to_global(Vector3(0,0.01,1.5)),0)
 	town.game.message = "Chapel cellar. Find the spare tuning unit; the stairs lead back upstairs."
 
 func leave():
+	entry_hinge.rotation.y = 0
 	move_player(church.to_global(Vector3(3.25,0.01,-4.9)),PI)
 	town.game.message = "Back in the chapel. Follow Chapel Road down to town."
 

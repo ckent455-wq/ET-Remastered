@@ -41,8 +41,8 @@ func run():
 	look_from(Vector3(0,0.1,-55),Vector3(7,2,-69))
 	await observe("town physics",4)
 	look_from(Vector3(0,0.001,-44),Vector3(6.5,3,-46))
-	for id in ["weapon_pistol","weapon_rifle","weapon_shotgun"]:
-		game.town.perform(id)
+	# Pickup access is exercised separately; this stage checks all gun renders.
+	for index in range(3): game.weapons.collect(index)
 	for index in range(3):
 		game.weapons.equip(index)
 		game.weapons.delay = 0
@@ -52,7 +52,7 @@ func run():
 		game.weapons.reload()
 		await observe("weapon reload %d" % index,0.5)
 	game.weapons.equip(-1)
-	assert(not game.arm_visual.visible,"Flashlight has no visible arm")
+	assert(game.arm_visual.visible,"Flashlight holder restored when holstered")
 	look_from(Vector3(-5.65,0.001,-42),Vector3(-5.65,1.35,-45))
 	game.town.perform("npc_ranger")
 	await observe("NPC conversation",2)
@@ -74,7 +74,6 @@ func run():
 	game.town.perform("workshop_cabinet")
 	look_from(game.town.buildings.workshop.to_global(Vector3(1,0.001,1)),game.town.buildings.workshop.to_global(Vector3(-2,1,-2)))
 	await observe("powered workshop and cabinets",3)
-	game.town.perform("cellar_door")
 	game.town.perform("cellar_door")
 	await observe("dark chapel cellar",2)
 	game.town.perform("radio_tuner")

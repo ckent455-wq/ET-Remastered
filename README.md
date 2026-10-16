@@ -1,4 +1,4 @@
-# Far From Home — first-person edition
+# Far From Home â€” first-person edition
 
 Open project.godot in Godot 4.5 and press F5.
 
@@ -10,7 +10,7 @@ After the engine splash, a short presentation reads "Traingle Studios Presents..
 
 The Far From Home title screen now presents Blackwood as survival horror: a live roadside view, weathered cream lettering, muted rust accents, scanlines, and the Population 3 sign. Enter Blackwood starts a new game; Controls shows the key guide; Quit closes the game. Enter also starts, and M toggles sound. The title camera never changes the player's starting position. The title and pause/end menus no longer use alien or spaceship story text.
 
-Title atmosphere: soft distant lightning appears at irregular 12–21 second intervals after an initial 4–7 second wait. A gentle 7.5-second thunder roll follows each flash by 1.5–2.9 seconds. M mutes the thunder with the other sounds; flashes and pending thunder stop when gameplay starts.
+Title atmosphere: soft distant lightning appears at irregular 12â€“21 second intervals after an initial 4â€“7 second wait. A gentle 7.5-second thunder roll follows each flash by 1.5â€“2.9 seconds. M mutes the thunder with the other sounds; flashes and pending thunder stop when gameplay starts.
 
 On Windows, this project uses the ANGLE/Direct3D11 compatibility driver and caps rendering at 60 FPS. A native stack sample of a frozen game on this computer showed the main thread spinning inside Intel's `ig11icd64.dll` OpenGL driver. ANGLE avoids that OpenGL driver path while keeping the compatibility renderer and the PS2-style visuals.
 
@@ -24,11 +24,13 @@ A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest
 - WASD or arrow keys: move
 - Shift: sprint (uses stamina)
 - Left mouse: fire; right mouse: aim
+- Mouse wheel / V: cycle collected guns (wheel up reverses)
 - 1 / 2 / 3: equip a discovered pistol, rifle, or shotgun; undiscovered weapons stay unavailable
 - R: reload; 0: holster (restores the flashlight hand)
 - F: flashlight
 - E: search/open/close drawers and cabinets, or interact with the note, panel, receiver, or door under the crosshair
 - Tab: open / close inventory, objectives, journal, and town map
+- C while the journal is open: switch between inventory and story case notes
 - Left / right (or A / D) in journal: change pages
 - H: use a first-aid kit (+45 vitality, saved if vitality is full)
 - Q: use a spare flashlight battery (saved if already charged)
@@ -37,7 +39,7 @@ A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest
 - Escape: pause and release the mouse
 - M: mute / unmute all game audio
 
-Follow Old Mill Road north from the accident scene into Blackwood. The first objective guides you into town; later markers guide radio repairs. Inspect the wreck with E for context. Find the pistol on the ranger office's front crate, the rifle on the workshop bench, and the shotgun on the millkeeper's desk. Guns and their ammunition are only awarded once per journey when picked up; a new journey removes ownership and restores the world pickups. The alien pulse, glowing landing pad, rescue beam, and return-to-clearing ending have been removed.
+Follow Old Mill Road north from the accident scene into Blackwood. The first objective guides you into town; later markers guide radio repairs. Inspect the wreck with E for context. Find the pistol on the ranger office's front crate, the service rifle in the locked chapel basement, and the shotgun in the keyed lockbox at the back of the ranger office. Guns and their ammunition are only awarded once per journey when picked up; a new journey removes ownership and restores the world pickups. The alien pulse, glowing landing pad, rescue beam, and return-to-clearing ending have been removed.
 
 ## Abandoned town
 
@@ -65,7 +67,7 @@ The source humanoid has 402 triangles. Each variant keeps that count and a 256-p
 The flashlight starts at 45% charge and drains only while switched on. The HUD bar shows charge; collected disposable batteries refill it with Q. At zero the light stays off until a spare is fitted. Health-kit and battery counts, objectives and radio status are in the TAB journal. Drones and their audio are disabled for now. The first-person camera stays at a fixed eye height without head bob. The journal pauses movement and ambient audio. Starting a new journey resets doors, supplies, notes, inventory, workshop power, radio calibration, and flashlight charge.
 
 ## Detailed interiors and searching
-Eight local model types appear as 74 reused instances: wooden doors, bookshelves, books, floor lamps, curtains, cardboard packing boxes, a teapot, and a sink. Converted meshes contain 348–1,782 triangles and diffuse textures are capped at 256 pixels. Simple vertex lighting, small textures, the original render resolution, and fog preserve the PS2-inspired appearance. Buildings also have painted wall panels, wood trim, rafters, window frames, porch posts, drainpipes, room-specific posters, improved chairs and beds, and paper clutter.
+Eight local model types appear as 74 reused instances: wooden doors, bookshelves, books, floor lamps, curtains, cardboard packing boxes, a teapot, and a sink. Converted meshes contain 348â€“1,782 triangles and diffuse textures are capped at 256 pixels. Simple vertex lighting, small textures, the original render resolution, and fog preserve the PS2-inspired appearance. Buildings also have painted wall panels, wood trim, rafters, window frames, porch posts, drainpipes, room-specific posters, improved chairs and beds, and paper clutter.
 
 Aim at a drawer front or cabinet and press E. The drawer slides or the cabinet doors swing outward into the room; the first search adds its contents to the pack. E closes it, and reopening a searched container never awards more loot. Prompts identify searched storage; the journal shows the number searched. The coil cabinet stays locked until workshop power is restored. Storage movement and sound pause with the journal or a conversation. All twelve containers and their concealed contents reset for a new journey.
 
@@ -112,11 +114,16 @@ The PS2-inspired treatment uses 256 x 256 diffuse textures, cutout foliage, simp
 
 The downloaded Horror SFX Free pack adds quiet atmospheric sound, contextual building creaks and distant calls, an arrival bell, frogs, and localized radio static. The static recedes after radio repair, and wind quiets indoors. Distinct recorded on/off clicks, door squeaks, and drawer/cabinet opening and closing sounds replace the earlier interaction cues. Accents have long cooldowns and stop outside gameplay; all new audio follows the existing mute control.
 
-The flashlight uses a local switch-click recording. Five leaf-crunch footstep variations follow distance travelled, with louder, quicker steps during sprinting. Wind and rustling leaves loop softly; owl, night-bird, and insect calls play from random nearby locations every 10–24 seconds. Escape pauses the soundscape; M mutes all sound, including effects.
+The flashlight uses a local switch-click recording. Five leaf-crunch footstep variations follow distance travelled, with louder, quicker steps during sprinting. Wind and rustling leaves loop softly; owl, night-bird, and insect calls play from random nearby locations every 10â€“24 seconds. Escape pauses the soundscape; M mutes all sound, including effects.
 Town doors use a local creak recording positioned at the doorway. Pickups, restored power, and radio calibration have short synthesized cues.
 Drawers and cabinets use a short positional slide-and-clunk cue, also controlled by M and pause.
 
 ## Local assets
+
+- assets/enemies/: original animated Creep Horror Creature from the user's Unity asset download, adapted to low-poly meshes and matte materials. Local Horror SFX Free recordings provide creature sounds; provenance is in the asset manifests.
+- assets/church/: Flooded Grounds bell tower, Church1_Door_C prefab geometry/materials and church pews from the user's local Unity assets. A single original shell surrounds these details; source UVs are preserved and textures reduced.
+- assets/lockbox/: Haunted Farmhouse crate and separate lid, plus the Rust Key asset from the user's local Unity downloads. Converted copies preserve the source geometry and UVs.
+- assets/ammo/: the user's Bullets and Boxes.zip, with original low-poly pistol/rifle cartons. A native closed carton is re-labeled for shotgun shells using the local cardboard-box albedo. Provenance and triangle counts are in manifest.json.
 
 - assets/apartment/: optimized furniture from the user's cached Brick Project Studio Apartment Kit, with 256px source albedos. Provenance and geometry budgets are recorded in manifest.json.
 - assets/crow/: original crow model, textures, animation clips and calls adapted from the user's Living Birds assets. Source provenance is recorded alongside the converted files.
@@ -180,3 +187,30 @@ The abandoned interiors also have ceiling leaks, water-streaked plaster, mold,
 fallen plaster, broken chairs and room-specific signs of a hurried departure:
 half-packed bags, spilled supplies, discarded paperwork and shattered dishes.
 Small debris has no collision, keeping movement and storage interaction stable.
+
+Two hostile creatures hide in the woods around the hilltop chapel. They crouch
+behind real boulders and undergrowth, then stalk along wooded flank routes after
+the player approaches. Main Street stays clear of visible waiting enemies.
+They move through cover before closing in; losing the player sends them back
+to cover. The locally cached Creep
+Horror Creature by Andrii Chykrii supplies the original skinned LOD model and 18
+animation clips, reduced to 3,169 triangles and a 256px albedo. They see the player,
+investigate nearby gunfire, pursue with collision steering, telegraph claw attacks,
+react to shots and die using the original animation. Walls block sight and melee;
+menus pause movement, animation and audio. New journeys restore them. The crash
+opening remains clear of enemies. Spatial breathing, growls and attacks come from
+the user's Horror SFX Free download. Source details are in assets/enemies, with
+preparation tools in tools/prepare_enemy.py and tools/prepare_enemy_audio.py.
+smoke_test_enemies.gd verifies actual pursuit/damage, dodging, wall occlusion,
+pause, gunfire investigation, real weapon-ray kills and restart.
+
+Blackwood has an original evidence-driven storyline about an evacuation, a
+reopened road and an old civil-defense relay beneath the chapel. Nine readable
+records and clue-aware NPC conversations reveal the residents' secrets. Press
+C in the journal for case notes. The physical desk bypass selects the final transmission and ending;
+reading explains its purpose, while evidence remains optional. STORY.md contains
+the story guide and implementation details (ending spoilers).
+
+Enemy health bars appear above visible active creatures within combat range; they do not reveal hidden enemies through cover. The service rifle deals 48 damage per hit, twice the pistol's 24 (two versus four hits against an 85-health creature). The shotgun retains 12 damage per pellet.
+
+Ammunition is scavenged from nine low-poly cartons using the local Bullets and Boxes download. The found pistol starts with exactly three rounds and zero spare ammo. Collect cartons with E and reload with R. The journal tracks separate pistol, rifle and shotgun reserves, including ammo found before a weapon. The shotgun-lockbox key lies flat on the hotel dresser.

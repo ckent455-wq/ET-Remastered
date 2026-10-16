@@ -16,8 +16,18 @@ func check():
 		guns.equip(index)
 		assert(guns.selected== -1 and not guns.fire(),"Cannot select or fire undiscovered gun")
 	for id in ["weapon_pistol","weapon_rifle","weapon_shotgun"]:
+		if id=="weapon_rifle":
+			for quest in ["ranger_drawer","store_drawer","fuse_panel","workshop_cabinet","cellar_door"]: game.town.perform(quest)
+		if id=="weapon_shotgun":
+			game.town.perform("shotgun_key")
+			game.town.perform("shotgun_lockbox")
+			game.weapons.lockbox._process(1)
 		game.town.perform(id)
+	assert(guns.magazines[0]==3 and guns.reserves[0]==0,"Pistol starts with exactly three rounds and no spare ammo")
+	game.town.perform("ammo_pistol_store")
 	guns.equip(0)
+	guns.reload()
+	guns._physics_process(2)
 	guns.delay = 0
 	assert(not game.arm_visual.visible,"Arm hidden with discovered gun")
 	game.player.position = Vector3(30,0.001,-40)
@@ -35,6 +45,8 @@ func check():
 	game.state = "play"
 	guns.magazines[0] = 0
 	assert(not guns.fire() and guns.magazines[0]==0,"Empty gun never fires")
+	game.town.perform("ammo_pistol_house")
+	game.town.perform("ammo_pistol_clinic")
 	var total: int = guns.reserves[0]
 	guns.reload()
 	game.state = "paused"
@@ -55,7 +67,7 @@ func check():
 	assert(guns.marks.size()<=20,"Bounded impact effects")
 	guns.equip(-1)
 	assert(not guns.fire(),"Holstered cannot fire")
-	assert(game.arm_visual.visible,"Holstering restores arm")
+	assert(game.arm_visual.visible and game.arm_visual.name=="FlashlightHolder","Holstering restores the flashlight holder")
 	game.reset_game()
 	assert(guns.selected== -1 and guns.magazines==[0,0,0] and not guns.owned.has(true) and guns.marks.is_empty(),"Restart returns to unarmed and clears ammo")
 	var sign = game.town.get_node("BlackwoodRoadSign")

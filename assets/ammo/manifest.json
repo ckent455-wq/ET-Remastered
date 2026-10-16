@@ -1,0 +1,36 @@
+{
+  "source": "C:\\Users\\jkern\\Downloads\\Bullets and Boxes.zip",
+  "assets": [
+    {
+      "asset": "pistol",
+      "source_object": "9mm-box",
+      "dimensions": [
+        0.23999999463558197,
+        0.13827969133853912,
+        0.07099023461341858
+      ],
+      "triangles": 44
+    },
+    {
+      "asset": "rifle",
+      "source_object": "556x45-box",
+      "dimensions": [
+        0.29999998211860657,
+        0.14984947443008423,
+        0.1669057160615921
+      ],
+      "triangles": 68
+    },
+    {
+      "asset": "shotgun",
+      "source_object": "9mm-box",
+      "dimensions": [
+        0.25999999046325684,
+        0.14980299770832062,
+        0.18000000715255737
+      ],
+      "triangles": 44
+    }
+  ],
+  "adaptation": "Original low-poly geometry and UVs; 256px matte albedos. Native 9mm and 5.56 cartons. Native closed carton repurposed with neutral cardboard and shotgun-shell labels. Source unchanged."
+}

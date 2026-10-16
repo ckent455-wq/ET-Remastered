@@ -2,9 +2,11 @@ extends Node3D
 ## Bounded first-person weapons: recoil affects the model, never the camera.
 var game
 const LOADOUT = [
-	{"id":"pistol","label":"COVERT PISTOL","clip":8,"reserve":64,"delay":0.38,"reload":1.35,"pellets":1,"spread":0.006},
-	{"id":"rifle","label":"SERVICE RIFLE","clip":20,"reserve":120,"delay":0.15,"reload":1.8,"pellets":1,"spread":0.012},
-	{"id":"shotgun","label":"DOUBLE BARREL","clip":2,"reserve":32,"delay":0.65,"reload":2.1,"pellets":8,"spread":0.055}]
+	{"id":"pistol","label":"COVERT PISTOL","clip":8,"max_reserve":64,"pickup_rounds":3,"delay":0.38,"reload":1.35,"pellets":1,"spread":0.006,"damage":24.0},
+	{"id":"rifle","label":"SERVICE RIFLE","clip":20,"max_reserve":120,"pickup_rounds":20,"delay":0.15,"reload":1.8,"pellets":1,"spread":0.012,"damage":48.0},
+	{"id":"shotgun","label":"DOUBLE BARREL","clip":2,"max_reserve":32,"pickup_rounds":2,"delay":0.65,"reload":2.1,"pellets":8,"spread":0.055,"damage":12.0}]
+var ammo_pickups: Node3D
+var lockbox: Node3D
 var models: Array[Node3D] = []
 var magazines: Array[int] = []
 var reserves: Array[int] = []
@@ -12,8 +14,8 @@ var owned: Array[bool] = [false,false,false]
 var selected = -1
 const PICKUPS = [
 	{"building":"ranger","p":Vector3(-1.9,0.94,2.8)},
-	{"building":"workshop","p":Vector3(-2.1,0.96,-2.7)},
-	{"building":"house","p":Vector3(3.2,0.96,0.1)}]
+	{"building":"cellar","p":Vector3(2.8,0.96,1.2)},
+	{"building":"ranger","p":Vector3(-2.7,0.39,-3.0)}]
 var delay = 0.0
 var reload_remaining = 0.0
 var recoil = 0.0
@@ -59,30 +61,50 @@ func _ready():
 	muzzle.add_child(flash_light)
 	make_targets()
 	make_pickups()
+	lockbox = preload("res://shotgun_lockbox.gd").new()
+	lockbox.game = game
+	game.town.buildings.ranger.add_child(lockbox)
+	ammo_pickups = preload("res://ammo_pickups.gd").new()
+	ammo_pickups.game = game
+	add_child(ammo_pickups)
 	reset()
 
 func make_pickups():
 	game.town.box(game.town.buildings.ranger,Vector3(-1.9,0.45,2.8),Vector3(1.1,0.9,0.75),game.town.mats.furniture)
+	var basement = game.town.streetscape.church.basement
+	var rack = game.town.box(basement,Vector3(2.8,0.42,1.2),Vector3(1.5,0.84,1.2),game.town.mats.wood)
+	var label = game.town.sign_text(rack,"COUNTY LOCKUP / SERVICE RIFLE",Vector3(0,0.15,0.61),15,Color("b3b099"))
+	label.pixel_size = 0.003
+	basement.prepare_cellar_lighting(rack)
 	for i in range(LOADOUT.size()):
 		var data = PICKUPS[i]
 		var id = "weapon_"+LOADOUT[i].id
-		var area = game.town.action_area(game.town.buildings[data.building],data.p,Vector3(0.8,0.3,1.1),id,{"kind":"weapon","weapon_index":i,"label":"Take "+LOADOUT[i].label.to_lower()})
+		var parent = basement if data.building=="cellar" else game.town.buildings[data.building]
+		var area = game.town.action_area(parent,data.p,Vector3(0.8,0.3,1.1),id,{"kind":"weapon","weapon_index":i,"label":"Take "+LOADOUT[i].label.to_lower()})
 		var model = load("res://assets/weapons/%s.glb" % LOADOUT[i].id).instantiate() as Node3D
 		area.add_child(model)
 		model.rotation.z = PI/2
 		model.rotation.y = 0.15
+		if data.building=="cellar": model.rotation.y = PI/2
 		model.scale = Vector3.ONE*0.8
 		adapt(model)
+		if data.building=="cellar": basement.prepare_cellar_lighting(area)
 
 func collect(index: int) -> bool:
 	if game.state!="play" or index<0 or index>=LOADOUT.size() or owned[index]:
 		return false
 	owned[index] = true
-	magazines[index] = LOADOUT[index].clip
-	reserves[index] = LOADOUT[index].reserve
+	magazines[index] = LOADOUT[index].pickup_rounds
+	# Keep scavenged rounds collected before finding this weapon.
 	if selected<0:
 		equip(index)
 	return true
+
+func add_ammo(index: int, amount: int) -> int:
+	if game.state!="play" or index<0 or index>=LOADOUT.size() or amount<=0: return 0
+	var added = mini(amount,LOADOUT[index].max_reserve-reserves[index])
+	reserves[index] += added
+	return added
 
 func adapt(node: Node):
 	if node is MeshInstance3D:
@@ -132,7 +154,17 @@ func reset():
 	for target in targets:
 		target.rotation = Vector3.ZERO
 		target.set_meta("hits",0)
+	if lockbox: lockbox.reset()
 	update_model(1)
+
+func cycle(direction = 1):
+	if game.state!="play": return
+	var start: int = selected if selected>=0 else (-1 if direction>0 else 0)
+	for step in range(1,LOADOUT.size()+1):
+		var index = wrapi(start+step*direction,0,LOADOUT.size())
+		if owned[index]:
+			equip(index)
+			return
 
 func equip(index: int):
 	if game.state!="play" or index==selected:
@@ -171,6 +203,7 @@ func fire() -> bool:
 	recoil = 1
 	flash_remaining = 0.065
 	game.soundscape.weapon_sound(LOADOUT[selected].id)
+	if game.enemies: game.enemies.alert_shot(game.camera.global_position)
 	for pellet in range(LOADOUT[selected].pellets):
 		var spread: float = LOADOUT[selected].spread*(0.25 if aiming else 1.0)
 		var direction = -game.camera.global_basis.z
@@ -185,6 +218,10 @@ func fire() -> bool:
 
 func impact(hit: Dictionary):
 	var body = hit.collider as Node3D
+	if body.is_in_group("HostileEnemies"):
+		if game.enemies.shoot(int(body.get_meta("enemy_index")),LOADOUT[selected].damage):
+			hit_feedback = 0.18
+		return
 	if body.is_in_group("CrowTargets"):
 		if body.get_parent().shoot():
 			hit_feedback = 0.18

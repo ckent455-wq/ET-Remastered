@@ -225,7 +225,7 @@ func house():
 	furniture("bowl",room,Vector3(-3.82,0.59,1.3),0,Vector3.ONE,false)
 	furniture("plate",room,Vector3(3.15,0.93,0.05),0,Vector3.ONE,false)
 	furniture("bowl",room,Vector3(3.15,0.95,0.05),0,Vector3.ONE,false)
-	furniture("fridge",room,Vector3(1.9,0.04,-4.23))
+	furniture("fridge",room,Vector3(1.9,0.04,-4.23),PI/2)
 	furniture("counter",room,Vector3(2.82,0.04,-4.27),0,Vector3(1.0,1,1))
 	furniture("stove",room,Vector3(4.82,0.04,-4.27))
 	furniture("counter",room,Vector3(5.49,0.04,-4.27),0,Vector3(0.7,1,1))
@@ -296,7 +296,7 @@ func store():
 		for z in [-0.3,1.15]:
 			shelving(room,Vector3(x,0.04,z),PI/2 if x<0 else -PI/2,true)
 	shelving(room,Vector3(-3.0,0.04,-4.4),0,true)
-	furniture("fridge",room,Vector3(5.0,0.04,-4.25))
+	furniture("fridge",room,Vector3(5.0,0.04,-4.25),PI/2)
 	furniture("office_chair",room,Vector3(-2.8,0.04,-2.55),PI)
 	furniture("coffee_maker",room,Vector3(-4.05,0.91,-3.85),0,Vector3.ONE,false)
 	furniture("trash",room,Vector3(-5.1,0.04,-2.4))

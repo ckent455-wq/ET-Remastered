@@ -23,6 +23,9 @@ var crash_site: Node3D
 var soundscape: Node
 var arm_visual: Node3D
 var weapons: Node3D
+var enemies: Node3D
+var story: Node
+var journal_casefile = false
 var town: Node3D
 var fog_atmosphere: Node3D
 var distant_landscape: Node3D
@@ -155,6 +158,14 @@ func _ready():
 	crash_site.set_script(preload("res://crash_site.gd"))
 	crash_site.game = self
 	add_child(crash_site)
+	story = Node.new()
+	story.set_script(preload("res://blackwood_story.gd"))
+	story.game = self
+	add_child(story)
+	enemies = Node3D.new()
+	enemies.set_script(preload("res://enemies.gd"))
+	enemies.game = self
+	add_child(enemies)
 	reset_game()
 	title_camera = Camera3D.new()
 	title_camera.name = "BlackwoodTitleCamera"
@@ -232,6 +243,8 @@ func reset_game():
 	soundscape.reset()
 	town.reset()
 	weapons.reset()
+	if enemies: enemies.reset()
+	if story: story.reset()
 
 func set_state(next: String):
 	state = next
@@ -266,6 +279,10 @@ func _unhandled_input(event):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		if captured and event.button_index==MOUSE_BUTTON_LEFT:
 			weapons.fire()
+		elif event.button_index==MOUSE_BUTTON_WHEEL_UP:
+			weapons.cycle(-1)
+		elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN:
+			weapons.cycle(1)
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode==KEY_ENTER and state!="play":
 			if state not in ["paused","journal"]:
@@ -275,11 +292,15 @@ func _unhandled_input(event):
 			set_state("paused" if state=="play" else "play")
 		if event.keycode==KEY_TAB and state in ["play","journal"]:
 			journal_page = 0
+			journal_casefile = false
 			set_state("journal" if state=="play" else "play")
 		if state=="journal" and event.keycode in [KEY_LEFT,KEY_RIGHT,KEY_A,KEY_D]:
+			journal_casefile = false
 			journal_page = wrapi(journal_page+(-1 if event.keycode in [KEY_LEFT,KEY_A] else 1),0,town.journal_entries.size()+2)
 		if event.keycode==KEY_M:
 			soundscape.toggle_mute()
+		if state=="journal" and event.keycode==KEY_C:
+			journal_casefile = not journal_casefile
 		if event.keycode==KEY_F and state=="play":
 			toggle_flashlight()
 			soundscape.flashlight_click(flashlight.visible)
@@ -293,6 +314,8 @@ func _unhandled_input(event):
 			weapons.equip({KEY_0:-1,KEY_1:0,KEY_2:1,KEY_3:2}[event.keycode])
 		if state=="play" and event.keycode==KEY_R:
 			weapons.reload()
+		if state=="play" and event.keycode==KEY_V:
+			weapons.cycle(1)
 
 func _physics_process(delta):
 	clock += delta
@@ -333,13 +356,14 @@ func update_contact(delta: float, held: bool):
 		return
 	if rescue_available() and held:
 		contact_progress += delta
+		message = story.rescue_line(contact_progress)
 		if contact_progress>=4:
 			set_state("won")
 	else:
 		contact_progress = maxf(0,contact_progress-delta*0.5)
 
 func rescue_available() -> bool:
-	return town.radio_ready and town.player_inside_building("radio") and camera.global_position.distance_to(town.actions.receiver.area.global_position)<3.2
+	return town.radio_ready and town.focus_action!="radio_bypass" and town.player_inside_building("radio") and camera.global_position.distance_to(town.actions.receiver.area.global_position)<3.2
 
 func _process(delta):
 	update_camera()

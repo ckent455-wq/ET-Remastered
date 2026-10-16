@@ -205,20 +205,27 @@ func talk(id: String):
 
 func words(id: String) -> String:
 	if town.radio_ready:
-		return "The radio is working. Someone out there can hear you now.\n\nStay near the receiver in the radio station and hold E to call for rescue. Give them your location. We'll wait here with you."
+		if town.game.story.direct_channel_selected():
+			return "The bypass is green. That is the direct county channel. Tell them our location and ask for no sirens.\n\nHold E at the main receiver to transmit, then switch it off. We need a real person on the road, not another recording."
+		return "Repairing the radio restores its power, not its routing. Set the small BYPASS switch on the left of the station desk to GREEN before you call.\n\nAmber still feeds the chapel repeater. The operator's note explains it. Mara's records tell you why the rescue team should come without sirens."
 	match id:
 		"ranger":
+			if town.game.story.evidence.has("ranger_note"):
+				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store fuse to the workshop panel. Its powered cabinet holds the coil and cellar key."
+				return "That was three nights ago. The horn came from the chapel speaker. I should have locked the barrier again. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
 			if town.inventory.station_key==0:
-				return "You crashed on Old Mill Road? I'm Elias. You're lucky you made it here.\n\nThe radio station can reach emergency services. Its brass key is in my desk drawer. There's a pistol on the crate near the front of my office. Search with E."
-			return "Good, you found the key. Now try the general store's counter drawer for a fuse. Fit it at the workshop's outside panel, then get the signal coil from the powered cabinet.\n\nThe cabinet also holds the chapel cellar key. Follow Chapel Road uphill for the spare tuning unit; bring both parts to the station."
+				return "We evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Elias. Only Mara, Owen and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's on the front crate. Read my log."
+			return "You have the station key. The store counter drawer has a fuse; the workshop's outside panel takes it. Its powered cabinet holds a coil and chapel cellar key.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
 		"nurse":
-			return "I'm Mara. Most of Blackwood left in a hurry. Some of us stayed to help anyone still coming through.\n\nSearch the medicine cabinet in the back room for first-aid kits. Press H to use one. Spare flashlight cells are in town's drawers and cabinets; use Q to fit a fresh battery."
+			if town.game.story.evidence.has("clinic_note"):
+				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a first-aid kit. Q fits a battery."
+			return "I'm Mara. The bus took everyone fit to travel three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a kit; Q fits a battery."
 		"mechanic":
 			if not town.powered:
-				return "Name's Owen. The workshop lost power, and the signal coil is stuck in that locked cabinet.\n\nFind the spare fuse in the store's counter drawer. The panel is outside, next to this building's door. Restore power there, then search the coil cabinet."
+				return "Owen. The radio needs a coil from my powered cabinet. Fuse is in the store counter drawer; the panel is outside this workshop.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
 			if town.inventory.coil==0:
-				return "You got the power back! Search the metal signal-coil cabinet here in the workshop.\n\nTake the cellar key from the same cabinet. The other radio part is in the chapel cellar, uphill along Chapel Road. The ranger keeps the station key in his desk drawer."
+				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil and cellar key from this cabinet. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
 			if town.inventory.tuner==0:
-				return "The coil alone will not transmit. Take the cellar key from my cabinet and follow Chapel Road uphill. Unlock the door at the back right of the church; the spare tuning unit is on the cellar workbench."
-			return "You've got both parts. Take them to the receiver in the radio station and press E to repair it.\n\nThen stay near the radio and hold E to call for rescue. Your car isn't going anywhere tonight."
+				return "Ada left on the last bus. Her letter is at our house. I told her I'd catch up after securing the equipment.\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle. The bench instructions explain the station's bypass switch."
+			return "You have both parts. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nNo sirens. Tell them there are people missing in the woods, and that the chapel repeater must be disconnected. Don't let another team mistake its old messages for us."
 	return "Stay safe out there."

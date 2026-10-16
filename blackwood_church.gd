@@ -1,5 +1,5 @@
 extends Node3D
-## Original abandoned chapel inspired by Holy Trinity, Weston, Missouri.
+## Local Flooded Grounds church modules, fitted to the playable hilltop chapel.
 ## Reference: https://holytrinitycatholic.org/photoalbums/holy-trinity-church
 var town
 var masonry: StandardMaterial3D
@@ -13,36 +13,21 @@ var door_tween: Tween
 func _ready():
 	name = "BlackwoodChurch"
 	position = Vector3(29,9,-141)
-	rotation.y = 0
 	masonry = make_stone()
-	window = town.color_material(Color("263a36"))
+	window = town.color_material(Color("263631"))
 	window.cull_mode = BaseMaterial3D.CULL_DISABLED
-	# The entrance starts closed; its floor is flush with the hilltop forecourt.
-	town.box(self,Vector3(0,-0.12,0),Vector3(10,0.24,14),town.mats.floor)
-	for side in [-1,1]:
-		town.box(self,Vector3(side*5,3.6,0),Vector3(0.40,7.2,14),masonry)
-		town.box(self,Vector3(side*3.2,1.5,7),Vector3(3.6,3.0,0.4),masonry)
-	town.box(self,Vector3(0,5.1,7),Vector3(10,4.2,0.4),masonry)
-	town.box(self,Vector3(0,3.6,-7),Vector3(10,7.2,0.4),masonry)
-	build_roof()
-	pointed_panel(self,Vector3(0,3.6,7.23),3.3,4.25,0,true)
-	rose_window(self,Vector3(0,5.5,7.30),0.65)
-	pointed_panel(self,Vector3(0,0.06,7.26),2.7,4.0,0,false)
+	build_asset_shell()
 	for side in [-1,1]:
 		var hinge = Node3D.new()
 		add_child(hinge)
+		hinge.name = "EntranceLeftHinge" if side<0 else "EntranceRightHinge"
 		hinge.position = Vector3(side*1.4,0,7.0)
 		door_hinges.append(hinge)
-		town.box(hinge,Vector3(-side*0.7,1.35,0),Vector3(1.4,2.7,0.16),town.mats.wood,false)
+		var door = native_prop("door",hinge,Vector3(-side*0.7,0,0))
+		door.scale.x = (1.4/1.407018065) * (-1 if side>0 else 1)
 		for face in [-1,1]:
-			town.box(hinge,Vector3(-side*1.17,1.16,face*0.12),Vector3(0.07,0.32,0.07),town.mats.metal,false)
-		for z in [-4.8,-1.7,1.5,4.5]:
-			pointed_panel(self,Vector3(side*5.22,2.7,z),1.25,2.8,side*PI/2,true)
-		for z in [-5.5,-2.5,0.5,3.5]:
-			town.box(self,Vector3(side*5.22,2.15,z),Vector3(0.65,4.3,0.5),masonry)
-		bell_tower(side,12.2 if side<0 else 11.4)
-		for i in range(4):
-			pew(Vector3(side*2.85,0,3.0-i*2.0))
+			town.box(hinge,Vector3(-side*1.17,1.16,face*0.10),Vector3(0.07,0.30,0.06),town.mats.metal,false)
+		for i in range(4): pew(Vector3(side*2.85,0,3.0-i*2.0))
 	var blocker = StaticBody3D.new()
 	blocker.name = "ClosedChapelDoors"
 	add_child(blocker)
@@ -58,10 +43,6 @@ func _ready():
 	plaque.pixel_size = 0.005
 	plaque.shaded = true
 	plaque.outline_size = 0
-	# Unkempt forecourt details do not obstruct the sidewalk or center aisle.
-	for p in [Vector3(-4.7,0.14,7.35),Vector3(4.7,0.14,7.35)]:
-		town.box(self,p,Vector3(0.45,0.28,0.6),masonry)
-
 	decorate_entrance()
 	basement = Node3D.new()
 	basement.set_script(preload("res://church_basement.gd"))
@@ -96,87 +77,138 @@ func make_stone() -> StandardMaterial3D:
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
 	return material
 
-func build_roof():
+func native_prop(asset: String, parent: Node3D, p: Vector3) -> Node3D:
+	var model = load("res://assets/church/"+asset+".glb").instantiate()
+	parent.add_child(model)
+	model.position = p
+	model.set_meta("church_asset",asset)
+	adapt_native(model)
+	if asset=="door": apply_door_material(model)
+	return model
+
+func build_asset_shell():
+	# A single coherent shell: no complete prefab end sections overlap inside it.
+	var siding = town.mats.wood.duplicate()
+	siding.albedo_texture = preload("res://assets/church/siding.png")
+	siding.albedo_color = Color("b5b8a9")
+	siding.uv1_scale = Vector3(0.32,0.32,0.32)
+	siding.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	var plaster = town.mats.plaster.duplicate()
+	plaster.albedo_color = Color("aaa99a")
+	plaster.uv1_scale = Vector3(0.26,0.26,0.26)
+	plaster.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	var trim = town.color_material(Color("555c50"))
+	var floor = town.box(self,Vector3(0,-0.12,0),Vector3(10,0.24,14),town.mats.floor)
+	floor.name = "ContinuousChapelFloor"
+	for side in [-1,1]:
+		var wall = town.box(self,Vector3(side*5,2.9,0),Vector3(0.4,5.8,14.4),siding)
+		wall.name = "ChapelSideWall%d" % side
+		# Interior lining is separated from the exterior wall face by 4 cm.
+		town.box(self,Vector3(side*4.77,2.9,0),Vector3(0.04,5.8,13.6),plaster,false)
+		town.box(self,Vector3(side*4.73,0.52,0),Vector3(0.04,1.04,13.6),town.mats.wood,false)
+		town.box(self,Vector3(side*4.70,1.08,0),Vector3(0.06,0.08,13.6),trim,false)
+		# Front sections meet the 2.8 x 2.7m doors exactly.
+		town.box(self,Vector3(side*3.2,1.35,7),Vector3(3.6,2.7,0.4),siding)
+		town.box(self,Vector3(side*3.2,1.35,6.77),Vector3(3.6,2.7,0.04),plaster,false)
+		for z in [-4.2,-0.5,3.2]:
+			window_panel(Vector3(side*4.72,1.8,z),-side*PI/2,trim)
+			window_panel(Vector3(side*5.23,1.8,z),side*PI/2,trim)
+		# Straight jambs and header, with no uncovered arch above the door leaves.
+		town.box(self,Vector3(side*1.49,1.43,7.23),Vector3(0.18,2.86,0.14),trim,false)
+		town.box(self,Vector3(side*4.99,2.9,7.23),Vector3(0.24,5.8,0.16),trim,false)
+	town.box(self,Vector3(0,4.25,7),Vector3(10,3.1,0.4),siding)
+	town.box(self,Vector3(0,4.25,6.77),Vector3(9.6,3.1,0.04),plaster,false)
+	town.box(self,Vector3(0,2.79,7.23),Vector3(3.16,0.18,0.14),trim,false)
+	town.box(self,Vector3(0,-0.02,7),Vector3(2.8,0.04,0.4),town.mats.wood,false)
+	town.box(self,Vector3(0,2.9,-7),Vector3(10,5.8,0.4),siding)
+	town.box(self,Vector3(0,2.9,-6.77),Vector3(9.6,5.8,0.04),plaster,false)
+	town.box(self,Vector3(0,0.52,-6.73),Vector3(9.6,1.04,0.04),town.mats.wood,false)
+	for side in [-1,1]:
+		gable_face(side*7.21,5.2,5.8,8.6,siding)
+		gable_face(side*6.74,4.75,5.8,8.32,plaster)
+	continuous_roof(5.4,5.8,8.6,7.4,town.mats.roof,"ContinuousExteriorRoof")
+	continuous_roof(4.75,5.60,8.32,6.74,plaster,"ContinuousInteriorCeiling")
+	rose_panel(Vector3(0,4.15,7.25),0,trim)
+	rose_panel(Vector3(0,4.15,6.73),PI,trim)
+	# Only the isolated bell tower is retained from the native facade.
+	# Its cut base is embedded in the roof, never suspended inside the nave.
+	native_prop("bell_tower",self,Vector3(0,0,5.3))
+	for side in [-1,1]:
+		town.box(self,Vector3(side*5.22,5.78,0),Vector3(0.16,0.16,14.5),trim,false)
+
+func gable_face(z: float, width: float, bottom: float, top: float, material: Material):
+	var tool = SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for point in [Vector3(-width,bottom,z),Vector3(0,top,z),Vector3(width,bottom,z)]:
+		tool.set_normal(Vector3(0,0,1 if z>0 else -1))
+		tool.set_uv(Vector2(point.x*0.3,point.y*0.3))
+		tool.add_vertex(point)
+	var visual = MeshInstance3D.new()
+	visual.mesh = tool.commit()
+	visual.material_override = material.duplicate()
+	visual.material_override.cull_mode = BaseMaterial3D.CULL_DISABLED
+	add_child(visual)
+
+func continuous_roof(width: float, eaves: float, ridge: float, depth: float, material: Material, label: String):
 	var tool = SurfaceTool.new()
 	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for side in [-1,1]:
-		var corners = [Vector3(side*5.35,7.2,-7.3),Vector3(side*5.35,7.2,7.3),Vector3(0,10.2,-7.3),Vector3(0,10.2,7.3)]
+		var corners = [Vector3(side*width,eaves,-depth),Vector3(side*width,eaves,depth),Vector3(0,ridge,-depth),Vector3(0,ridge,depth)]
 		for i in [0,2,1,1,2,3]:
-			tool.set_normal(Vector3(side*0.5,1,0).normalized())
-			tool.set_uv(Vector2(corners[i].z*0.2,corners[i].x*0.2))
+			tool.set_normal(Vector3(side*(ridge-eaves)/width,1,0).normalized())
+			tool.set_uv(Vector2(corners[i].z*0.25,corners[i].x*0.25))
 			tool.add_vertex(corners[i])
-	var material = town.mats.roof.duplicate()
-	material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	var roof = MeshInstance3D.new()
+	roof.name = label
 	roof.mesh = tool.commit()
-	roof.material_override = material
+	roof.material_override = material.duplicate()
+	roof.material_override.cull_mode = BaseMaterial3D.CULL_DISABLED
 	add_child(roof)
-	for z in [-7.0,7.0]:
-		var gable = SurfaceTool.new()
-		gable.begin(Mesh.PRIMITIVE_TRIANGLES)
-		for p in [Vector3(-5,7.1,z),Vector3(0,10.2,z),Vector3(5,7.1,z)]:
-			gable.set_normal(Vector3(0,0,1))
-			gable.add_vertex(p)
-		var face = MeshInstance3D.new()
-		face.mesh = gable.commit()
-		var stone = masonry.duplicate()
-		stone.cull_mode = BaseMaterial3D.CULL_DISABLED
-		face.material_override = stone
-		add_child(face)
 
-func pointed_panel(parent: Node3D, p: Vector3, width: float, height: float, yaw: float, fill: bool):
+func window_panel(p: Vector3, yaw: float, frame: Material):
 	var root = Node3D.new()
-	parent.add_child(root)
+	root.name = "MountedGothicWindow"
+	add_child(root)
 	root.position = p
 	root.rotation.y = yaw
-	var outline = [Vector3(-width/2,0,0),Vector3(-width/2,height*0.68,0),Vector3(0,height,0),Vector3(width/2,height*0.68,0),Vector3(width/2,0,0)]
-	if fill:
-		var tool = SurfaceTool.new()
-		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-		for i in range(5):
-			for point in [Vector3(0,height*0.4,0),outline[i],outline[(i+1)%5]]:
-				tool.set_normal(Vector3(0,0,1))
-				tool.add_vertex(point)
-		var pane = MeshInstance3D.new()
-		pane.mesh = tool.commit()
-		pane.material_override = window
-		root.add_child(pane)
-		for x in [-width*0.25,0,width*0.25]:
-			town.box(root,Vector3(x,height*0.38,0.035),Vector3(0.045,height*0.70,0.05),town.mats.dark,false)
-	for i in range(4):
-		var a: Vector3 = outline[i]
-		var b: Vector3 = outline[i+1]
-		var trim = town.box(root,(a+b)/2+Vector3(0,0,0.06),Vector3(0.15,a.distance_to(b)+0.10,0.16),masonry,false)
-		trim.rotation.z = -atan2(b.x-a.x,b.y-a.y)
+	var outline = [Vector3(-0.55,0,0),Vector3(-0.55,1.65,0),Vector3(0,2.25,0),Vector3(0.55,1.65,0),Vector3(0.55,0,0)]
+	var tool = SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in range(5):
+		for point in [Vector3(0,0.9,0),outline[i],outline[(i+1)%5]]:
+			tool.set_normal(Vector3(0,0,1))
+			tool.add_vertex(point)
+	var pane = MeshInstance3D.new()
+	pane.mesh = tool.commit()
+	pane.material_override = window
+	root.add_child(pane)
+	for i in range(5):
+		var a = outline[i]
+		var b = outline[(i+1)%5]
+		var bar = town.box(root,(a+b)/2+Vector3(0,0,0.045),Vector3(0.09,a.distance_to(b)+0.07,0.07),frame,false)
+		bar.rotation.z = -atan2(b.x-a.x,b.y-a.y)
+	for x in [-0.20,0.20]: town.box(root,Vector3(x,0.83,0.04),Vector3(0.035,1.60,0.04),frame,false)
+	town.box(root,Vector3(0,0.8,0.04),Vector3(1.04,0.035,0.04),frame,false)
 
-func rose_window(parent: Node3D, p: Vector3, radius: float):
-	var rim = town.game.mesh_at(parent,town.game.cylinder(radius+0.12,radius+0.12,0.10,16),p,masonry)
+func rose_panel(p: Vector3, yaw: float, frame: Material):
+	var root = Node3D.new()
+	add_child(root)
+	root.position = p
+	root.rotation.y = yaw
+	var rim = town.game.mesh_at(root,town.game.cylinder(0.73,0.73,0.10,16),Vector3.ZERO,frame)
 	rim.rotation.x = PI/2
-	var glass = town.game.mesh_at(parent,town.game.cylinder(radius,radius,0.12,16),p+Vector3(0,0,0.06),window)
+	var glass = town.game.mesh_at(root,town.game.cylinder(0.61,0.61,0.11,16),Vector3(0,0,0.04),window)
 	glass.rotation.x = PI/2
-	for i in range(8):
-		var spoke = town.box(parent,p+Vector3(0,0,0.14),Vector3(0.035,radius*2,0.06),masonry,false)
-		spoke.rotation.z = i*PI/8
-
-func bell_tower(side: int, height: float):
-	var x = side*3.65
-	town.box(self,Vector3(x,height/2,5.4),Vector3(2.3,height,3.3),masonry)
-	for yaw in [0.0,PI/2,-PI/2]:
-		var direction = Vector3(sin(yaw),0,cos(yaw))
-		pointed_panel(self,Vector3(x,height-3.3,5.4)+direction*(1.70 if yaw==0 else 1.19),1.25,2.3,yaw,true)
-	for y in [3.1,height-3.8,height]:
-		town.box(self,Vector3(x,y,5.4),Vector3(2.55,0.18,3.55),masonry,false)
-	var roof = town.game.mesh_at(self,town.game.cylinder(2.2,0,5.2,4),Vector3(x,height+2.6,5.4),town.mats.roof)
-	roof.rotation.y = PI/4
-	town.box(self,Vector3(x,height+5.65,5.4),Vector3(0.10,1.1,0.10),town.mats.dark,false)
-	town.box(self,Vector3(x,height+5.85,5.4),Vector3(0.65,0.10,0.10),town.mats.dark,false)
-	rose_window(self,Vector3(x,5.1,7.12),0.33)
+	for i in range(6):
+		var spoke = town.box(root,Vector3(0,0,0.11),Vector3(0.035,1.20,0.04),frame,false)
+		spoke.rotation.z = i*PI/6
 
 func pew(p: Vector3):
-	town.box(self,p+Vector3(0,0.45,0),Vector3(3.0,0.16,0.58),town.mats.wood)
-	town.box(self,p+Vector3(0,0.86,0.30),Vector3(3.0,0.75,0.12),town.mats.wood)
-	for x in [-1.25,1.25]:
-		town.box(self,p+Vector3(x,0.23,0),Vector3(0.14,0.46,0.5),town.mats.wood)
+	var bench = native_prop("pew",self,p)
+	bench.rotation.y = PI
+	bench.scale = Vector3(1,0.82,0.75)
+	var collider = town.box(self,p+Vector3(0,0.5,0),Vector3(2.85,1.0,0.82),town.mats.wood)
+	collider.get_child(0).hide()
 
 func altar():
 	town.box(self,Vector3(0,0.85,-5.5),Vector3(3.1,0.18,1.05),masonry)
@@ -219,6 +251,7 @@ func decorate_entrance():
 		town.box(self,p+Vector3(0,0.18,0),Vector3(1.4,0.36,2.0),masonry)
 		for i in range(2):
 			forest.place(forest.bush_scenes[(i+1)%3],to_global(p+Vector3(0,0.35,-0.48+i*0.95)),Vector3(1.0,0.9,1.0),"ChapelEntranceShrubs")
+		town.box(self,Vector3(side*1.95,2.05,7.29),Vector3(0.09,0.12,0.20),town.mats.metal,false)
 		var lantern = Vector3(side*1.95,2.05,7.45)
 		town.box(self,lantern,Vector3(0.24,0.4,0.22),town.mats.dark,false)
 		town.box(self,lantern+Vector3(0,0,0.12),Vector3(0.15,0.27,0.025),town.color_material(Color("bf9f68"),0.65),false)
@@ -228,3 +261,33 @@ func decorate_entrance():
 	town.box(self,Vector3(-5.7,0.91,9.85),Vector3(1.8,0.7,0.1),town.mats.wood)
 	for x in [-6.35,-5.05]:
 		town.box(self,Vector3(x,0.23,9.6),Vector3(0.13,0.46,0.5),masonry)
+
+func adapt_native(node: Node):
+	if node is MeshInstance3D:
+		for surface in range(node.mesh.get_surface_count()):
+			var original = node.mesh.surface_get_material(surface)
+			if original is StandardMaterial3D:
+				var mat = original.duplicate()
+				mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+				mat.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+				mat.roughness = 1
+				mat.metallic = 0
+				mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+				node.set_surface_override_material(surface,mat)
+	for child in node.get_children(): adapt_native(child)
+
+func apply_door_material(node: Node):
+	# Use the prefab's BLD_Doors1 atlas on both faces, with its authored UVs.
+	# Do not inherit the building atlas or a triplanar wall material.
+	if node is MeshInstance3D:
+		var mat = StandardMaterial3D.new()
+		mat.resource_name = "ChurchDoorPrefab_BLD_Doors1"
+		mat.albedo_texture = preload("res://assets/church/door_BLD_Doors1_A.png")
+		mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+		mat.roughness = 1
+		mat.metallic = 0
+		mat.uv1_triplanar = false
+		mat.cull_mode = BaseMaterial3D.CULL_BACK
+		for surface in range(node.mesh.get_surface_count()): node.set_surface_override_material(surface,mat)
+	for child in node.get_children(): apply_door_material(child)

@@ -355,3 +355,18 @@ All new dressing is static, with no additional per-frame script processing.
 smoke_test_interior_decay.gd checks all six rooms, 30 stain patches, distinct story
 props and the absence of small-debris collision. Town/quest, storage, NPC patrol
 and camera regressions pass; the 13-view renderer preview covers the changes.
+
+Chapel pursuit/collision repair: horizontal enemy probes used to classify uphill
+terrain as an obstacle and steer the creatures downhill. Probes now allow floor
+normals and account for the elevation ahead. chapel_enemy_paths.gd builds a small
+physics-sampled route graph after the forest exists, avoiding trunks, boulders
+and church walls. Both woodland creatures follow routes to the court and can
+attack a player standing there; watching a stalker no longer freezes it in place.
+The terrain now blends into the road shoulders and the nine-metre plateau. The
+court's redundant raised collision slab was removed, leaving one continuous
+walking surface. smoke_test_hill_pursuit.gd verifies actual attacks from both
+hiding places, smoke_test_chapel_court.gd walks both court edges in both directions,
+and the full-width Chapel Road climb/descent and cellar quest checks pass.
+Mouse wheel and V cycle only owned guns; the pickup message and controls page
+show the controls. smoke_test_weapon_cycle.gd checks real input, both directions,
+wrap, holster, skipped undiscovered guns, reload cancellation and menu guards.

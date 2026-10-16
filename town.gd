@@ -11,7 +11,7 @@ var game
 var buildings = {}
 var doors = {}
 var actions = {}
-var inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0,"chapel_key":0,"tuner":0}
+var inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
@@ -322,7 +322,7 @@ func furnish():
 	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the town is already empty.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
-	inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0,"chapel_key":0,"tuner":0}
+	inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0}
 	journal_entries.clear()
 	discovered.clear()
 	powered = false
@@ -331,6 +331,7 @@ func reset():
 	focus_action = ""
 	for data in actions.values():
 		data.taken = false
+		if data.kind=="ammo": data.amount = data.initial_amount
 		data.area.visible = true
 		data.area.collision_layer = 2
 		data.area.get_child(0).set_deferred("disabled",false)
@@ -365,10 +366,16 @@ func prompt() -> String:
 	if focus_action=="":
 		return ""
 	var data = actions[focus_action]
+	if data.kind=="ammo":
+		return "E / Take %d %s" % [data.amount,["pistol rounds","rifle rounds","shotgun shells"][data.weapon_index]]
+	if data.kind=="radio_bypass":
+		return "E / Set bypass to "+("AMBER - chapel repeater" if game.story.county_bypass else "GREEN - direct county")
 	if data.kind=="cellar_door":
-		return "E / Descend to cellar" if streetscape.church.basement.unlocked else ("E / Unlock cellar door" if inventory.chapel_key>0 else "E / Locked cellar - inspect")
+		return "E / Open cellar door" if streetscape.church.basement.unlocked else ("E / Unlock and open cellar door" if inventory.chapel_key>0 else "E / Locked cellar - inspect")
 	if data.kind=="chapel_door":
 		return "E / "+("Close chapel doors" if streetscape.church.doors_open else "Open chapel doors")
+	if data.kind=="shotgun_lockbox":
+		return game.weapons.lockbox.prompt()
 	if data.kind=="container":
 		return interiors.prompt(data.container)
 	if data.kind=="npc":
@@ -396,17 +403,41 @@ func perform(id: String):
 	var data = actions[id]
 	if data.taken:
 		return
-	if data.kind!="crash":
+	if data.kind!="crash" and id!="crash_record":
 		reached_town = true
 	match data.kind:
+		"ammo":
+			var added = game.weapons.add_ammo(data.weapon_index,data.amount)
+			if added==0:
+				game.message = "Ammo reserve full." if game.state=="play" else game.message
+				return
+			data.amount -= added
+			if data.amount==0:
+				data.taken = true
+				data.area.hide()
+				data.area.collision_layer = 0
+			game.message = "Collected %d %s. R reloads." % [added,["pistol rounds","rifle rounds","shotgun shells"][data.weapon_index]]
+			game.soundscape.feedback("pickup")
+		"shotgun_lockbox":
+			game.weapons.lockbox.interact()
+		"radio_bypass":
+			game.story.toggle_bypass()
 		"crash":
-			game.message = "The engine is dead. No phone signal. Follow Old Mill Road into Blackwood."
+			game.message = "The engine is dead. A detour notice is caught in the glovebox. Inspect the paper."
+			perform("crash_record")
 		"weapon":
+			if data.weapon_index==2 and not game.weapons.lockbox.can_take():
+				game.message = "Open the ranger shotgun lockbox first."
+				return
+			if data.weapon_index==1 and (not streetscape.church.basement.unlocked or not streetscape.church.basement.contains(game.player.global_position)):
+				game.message = "The service rifle is secured in the chapel cellar."
+				return
 			if game.weapons.collect(data.weapon_index):
 				data.taken = true
 				data.area.visible = false
 				data.area.collision_layer = 0
-				game.message = "Found "+game.weapons.LOADOUT[data.weapon_index].label.to_lower()+". LMB fires; R reloads."
+				game.message = "Found "+game.weapons.LOADOUT[data.weapon_index].label.to_lower()+". Wheel / V cycles guns. R reloads."
+				if data.weapon_index==0: game.message = "Pistol: 3 rounds loaded. Search buildings for ammo boxes. R reloads."
 				game.soundscape.feedback("pickup")
 		"cellar_door":
 			streetscape.church.basement.interact()
@@ -457,10 +488,12 @@ func perform(id: String):
 			game.message = data.label.replace("Take ","Collected: ").replace("Recover ","Recovered: ")
 			game.soundscape.feedback("pickup")
 		"note":
+			if game.story: game.story.read_evidence(id)
 			var seen = journal_entries.any(func(entry): return entry.id==id)
 			if not seen:
 				journal_entries.append({"id":id,"title":data.title,"text":data.text})
 			game.journal_page = journal_entries.find(journal_entries.filter(func(entry): return entry.id==id)[0])+2
+			game.journal_casefile = false
 			game.set_state("journal")
 		"panel":
 			if powered:
@@ -486,7 +519,7 @@ func perform(id: String):
 				inventory.tuner -= 1
 				radio_ready = true
 				receiver_light.light_energy = 2
-				game.message = "Radio repaired. Stay at the receiver and hold E to call for help."
+				game.message = "Radio repaired. Set the desk bypass to green, then hold E at the receiver."
 				game.soundscape.feedback("radio")
 
 func use_medkit():
@@ -513,7 +546,7 @@ func use_battery():
 
 func objective() -> String:
 	if radio_ready:
-		return "Hold E at the radio receiver to call for rescue."
+		return "Warn county at radio. Hold E; no sirens." if game.story.direct_channel_selected() else "Set the desk bypass to GREEN / direct county."
 	if not reached_town:
 		return "Reach Blackwood. Find a way to call for help."
 	if inventory.station_key==0:
@@ -525,7 +558,7 @@ func objective() -> String:
 	if inventory.tuner==0:
 		if inventory.chapel_key==0:
 			return "Find the chapel key in the workshop coil cabinet."
-		return "Recover the tuning unit from the chapel cellar."
+		return "Find the isolated tuning unit in the cellar."
 	return "Bring the coil and tuning unit to the radio receiver."
 
 func navigation_target() -> Vector3:

@@ -1,0 +1,26 @@
+{
+  "pack": "User-provided Horror SFX Free",
+  "files": [
+    {
+      "asset": "breath.wav",
+      "source": "C:\\Users\\jkern\\Downloads\\Horror SFX Free\\Horror SFX Free\\Monsters & Ghosts\\Monster_breath.wav",
+      "sha256": "ea1f8bf201ccb1583c88af4d6dfcec3e7d48d3e4e51c49123584964ae2e665ef",
+      "seconds": 1.48281179138322,
+      "conversion": "mono PCM16, 22050Hz, bounded peak and edge fades"
+    },
+    {
+      "asset": "growl.wav",
+      "source": "C:\\Users\\jkern\\Downloads\\Horror SFX Free\\Horror SFX Free\\Monsters & Ghosts\\Monster_growl_1.wav",
+      "sha256": "08c720290ee413d6a9538df2c86b3cad61ab834d58f52552611d39b68ab3414e",
+      "seconds": 2.0317460317460316,
+      "conversion": "mono PCM16, 22050Hz, bounded peak and edge fades"
+    },
+    {
+      "asset": "attack.wav",
+      "source": "C:\\Users\\jkern\\Downloads\\Horror SFX Free\\Horror SFX Free\\Monsters & Ghosts\\Monster_grunt x2 (ghmmm).wav",
+      "sha256": "7a911630159d64c1e30e2a646a097b50d69f17f29df8f1679731489587428907",
+      "seconds": 1.6515192743764173,
+      "conversion": "mono PCM16, 22050Hz, bounded peak and edge fades"
+    }
+  ]
+}
