@@ -27,14 +27,18 @@ func _ready():
 	environment.background_mode = Environment.BG_SKY
 	environment.fog_sky_affect = 0.18
 	# Colour-source ambient lighting stays unchanged; the sky adds no daylight.
-	build_ridge(0,Vector3(62,82,113),Color(0.225,0.265,0.247))
-	build_ridge(1,Vector3(102,130,163),Color(0.266,0.300,0.283))
+	build_ridge(0,Vector3(56,84,116),Color(0.245,0.285,0.255))
+	build_ridge(1,Vector3(99,136,172),Color(0.277,0.312,0.288))
 	game.camera.far = 250
 	game.title_camera.far = 250
 
 func height_at(angle: float, layer: int) -> float:
-	var rolling = sin(angle*3+layer*1.8)*5.0+sin(angle*7-0.8)*3.0+sin(angle*11+0.7)*1.2
-	return (24.0 if layer==0 else 37.0)+rolling
+	var rolling = sin(angle*3+layer*1.8)*7.0+sin(angle*7-0.8)*4.5+sin(angle*11+0.7)*2.2
+	if layer==0:
+		# A lower saddle ahead of Main Street reveals the second ridge at normal eye level.
+		var north_distance = wrapf(angle+PI/2,-PI,PI)
+		rolling -= 14.0*exp(-pow(north_distance/0.42,2))
+	return (23.0 if layer==0 else 43.0)+rolling
 
 func build_ridge(layer: int, radii: Vector3, color: Color):
 	var tool = SurfaceTool.new()

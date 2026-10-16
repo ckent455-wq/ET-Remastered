@@ -23,7 +23,7 @@ surface, sidewalks, furniture, and door thresholds keep their tested behavior.
 Existing cracks, parking stripes, litter, and skid marks sit above the asphalt.
 
 The user's `Horror SFX Free` download supplies a quiet atmospheric bed, occasional
-positional creaks and distant calls, an arrival bell from the hotel, and static
+positional creaks and distant calls, an arrival bell from the chapel, and static
 at the radio. Indoor wind is quieter; radio static recedes after repair. The pack
 also supplies distinct flashlight on/off clicks, a door squeak, drawer and
 cabinet opening/closing recordings, and occasional frogs outside. Accents use
@@ -37,14 +37,28 @@ radio station remain enterable, with the existing furniture, searchable storage,
 weapon pickups, NPCs, and rescue quest. Two additional boarded shops close the
 north end of the street. The crash opening remains south of town.
 
+The six alley barriers are fitted to the actual adjacent building edges instead
+of using fixed 0.9-metre sections. Each end overlaps its wall by 25 cm, including
+the wider gaps beside the sealed shops. Cross rails reinforce the weathered
+boards, and continuous collision closes the visible opening. The alley regression
+sweeps the real player capsule across 31 points per barrier, including the ends.
+
+Main Street now uses five different vehicles from the local FreeCarPack:
+Classic Car_9, N Van_10, Pick Up_11, Police Car N_4, and N_Muscle Car_10.
+Each original mesh is centered, flat shaded, and uses its supplied atlas at 256
+pixels with muted materials and fitted collision. All parked copies of the
+crashed hatchback are removed; that model is used only at the opening accident.
+The central road and sidewalks retain clearance. Source records and budgets are
+in assets/vehicles/street-vehicles.json.
+
 ## Enclosure and drifting fog
 
 Main Street is now 7.6 metres wide, with storefronts brought two metres inward
 on each side. Sidewalks, lamps, parking, cars, planters, and Elias's patrol move
-with the street. Boarded returns close the gaps between shops, and masonry walls
-close the broad spaces behind them. Additional local pine and shrub instances
-and uneven timber fencing enclose the approach; the wreck, sign, continuous road,
-and three forest trails retain their walking clearance.
+with the street. Boarded returns close the gaps between shops. The outer masonry
+walls and repeated approach-fence runs have been replaced by a closed forest belt.
+Additional local pine and shrub instances enclose the approach; the wreck, sign,
+continuous road, and three forest trails retain their walking clearance.
 
 The atmosphere takes its oppressive, obscured sightlines from Silent Hill as a
 mood reference. Muted grey-green distance haze hides the far end of the street,
@@ -69,6 +83,19 @@ no movement collision. The cameras can see the backdrop while forest distance
 culling remains unchanged. Hill silhouettes remain faintly visible above the
 dense street fog.
 
+The hill contours and terrain texture now have stronger separation from the sky.
+A lower saddle ahead of Main Street exposes the second ridge from normal eye
+level. The forest perimeter rises into wooded ground below the hills.
+
+`forest_boundary.gd` builds a closed twelve-section perimeter around all existing
+routes and the town, using five staggered rows with 845 low-poly pine instances,
+two overlapping shrub rows, and rising root/bramble banks. Shared MultiMeshes keep
+the foliage draw calls bounded. The collision belt overlaps at its corners and
+sits within the visible thicket, before the old coordinate limits. The outer rows
+extend sixteen metres beyond the first trees. The boundary has no exits.
+`smoke_test_forest_boundary.gd` checks 252 perimeter crossings and six real player
+capsule sweeps; existing route, entrance and quest tests are retained.
+
 The overcast sky combines a reduced, desaturated 512 x 256 copy of the local
 `Downloads/lonely_road_afternoon_puresky_8k.exr` panorama with a static procedural
 cloud ceiling. Planar cloud projection avoids polar stretching. The ambient-light
@@ -92,3 +119,27 @@ clouds, hill silhouettes, flashlight, interiors, and title using the real render
 Validation includes all six entrances, 309 road/sidewalk collision samples,
 all twelve storage interactions, NPC patrols and deaths, the crash-to-town walk,
 weapon collection, the complete rescue quest, and real-renderer previews.
+
+
+## Chapel and continuous town entry
+
+The chapel replaces the sealed west shop at the north end of Main Street, centered
+at (-13.5, 0, -85). Its stonework, twin spires, pointed arches, and rose window are
+inspired by Holy Trinity Catholic Church in Weston, Missouri, using the parish's
+official exterior and interior photos as reference:
+https://holytrinitycatholic.org/photoalbums/holy-trinity-church
+https://holytrinitycatholic.org/parish-history
+
+This is an original, fictional PS2-style adaptation. No parish photographs are
+included as textures. It has a procedural 128-pixel stone texture, local roof and
+wood materials, a recessed open entrance, eight pews, an altar, a wooden cross,
+and dim candle lighting. The center aisle is walkable. Indoor fog and sound apply
+inside, the chapel is marked on the journal map, and the forest boundary curves
+around its footprint. The six existing quest buildings and progression are intact.
+
+The flare joining Old Mill Road to Main Street had its triangle winding reversed,
+so its top could be culled. It now faces upward and overlaps the two asphalt
+sections by eight centimetres, with connecting edge lines and a faded center dash.
+`smoke_test_church_street.gd` checks five unique parked models, the road join,
+51 chapel entrance/aisle capsule samples, and church ambience. Rendered previews
+are produced by tools/preview_church_street.gd.

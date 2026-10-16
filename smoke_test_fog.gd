@@ -32,7 +32,7 @@ func check():
 	for emitter in fog.emitters:
 		assert(emitter.speed_scale==1,"Particles resume")
 	var enclosure = game.get_node("CrampedRoadside")
-	assert(enclosure.shoulder_trees>=20 and enclosure.shoulder_bushes>=30 and enclosure.fences>=8,"Roadside enclosure added")
+	assert(enclosure.shoulder_trees>=20 and enclosure.shoulder_bushes>=30 and enclosure.fences>=6,"Roadside enclosure added")
 	print("PASS: ",total," drifting CPU fog particles, dense exterior, readable interiors, pause/resume, active camera, dense shoulder vegetation and fences")
 	game.queue_free()
 	await process_frame

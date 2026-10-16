@@ -1,4 +1,4 @@
-# Far From Home — Through the Fog Preview v0.3.0
+# Far From Home — Blackwood Chapel Preview v0.4.0
 
 Windows 10/11, 64-bit. Godot is not required to play.
 
@@ -9,6 +9,9 @@ presentation and title screen; choose **Enter Blackwood** or press Enter.
 You survived a car accident on Old Mill Road. Follow the road into Blackwood,
 find supplies and weapons, and repair the town radio to call for rescue.
 You begin with a flashlight and no gun.
+
+The stone chapel at the north end of Main Street is open for exploration and
+marked on the journal map. The dense forest forms a closed boundary around town.
 
 ## Controls
 

@@ -1,38 +1,44 @@
-# Far From Home v0.3.0 - Through the Fog
+# Far From Home v0.4.0 - Blackwood Chapel
 
-A playable Windows preview with a more enclosed Blackwood, drifting fog,
-distant hills, an overcast sky, and the new flashlight model and animation.
+A playable Windows preview with an explorable church, five distinct parked
+vehicles, a closed forest boundary, and repaired road and alley gaps.
 
 ## Play
 
-Download **FarFromHome-v0.3.0-Windows-x64.zip**, extract the entire folder,
+Download **FarFromHome-v0.4.0-Windows-x64.zip**, extract the complete folder,
 and launch **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
-The ZIP includes controls, credits, build information, and licenses.
+Controls, credits, licenses, and build information are included.
 SHA256SUMS.txt verifies the download.
 
 ## New in this release
 
-- Narrower Main Street, closer storefronts, enclosed shop gaps, rear walls,
-  dense roadside trees and bushes, and uneven timber fencing.
-- Drifting fog particles and thicker grey-green distance haze. Indoor fog is
-  reduced for readable interactions; menus pause the drifting mist.
-- Shorter flashlight reach and subdued lighting for an oppressive horror mood.
-- Two layers of distant rolling hills and a dark, cloudy sky above the fog.
-- The locally found flashlight model with its original texture adapted to the
-  PS2 style. The arm and hand are removed.
-- F gently lowers and hides the flashlight when off and raises it when on.
-  Rapid toggles reverse smoothly; pause, battery depletion, guns, and holstering
-  respect the flashlight's visibility.
+- An open stone chapel at the north end of Main Street, inspired by Holy Trinity
+  Catholic Church in Weston, Missouri. Twin spires, pointed arches, a rose window,
+  pews, an altar, indoor ambience, and a walkable aisle. The chapel is on the map.
+- Five different parked vehicles: pickup, police car, muscle car, classic car,
+  and panel van. The wrecked hatchback is now confined to the opening accident.
+- A continuous town-entry asphalt join with repaired face winding and overlapping
+  edges, connecting the approach road to Main Street.
+- All six alley barriers fitted to their building gaps, with reinforced boards
+  and collision overlapping both walls.
+- A closed, rising forest perimeter with five staggered tree rows, thick shrubs,
+  and collision within the thicket. The boundary curves around the chapel.
+- More readable hill contours and a lower saddle revealing the distant ridge
+  ahead of Main Street.
 
-The crash opening, six furnished interiors, searchable storage, three NPCs,
-discoverable guns, journal/map, horror soundscape, and radio-rescue quest remain
-playable.
+The unarmed crash opening, six quest interiors, searchable storage, NPCs, weapons,
+radio-rescue quest, horror soundscape, drifting fog, cloudy sky, and animated
+flashlight remain playable. PS2-style presentation is retained.
 
 ## Preview scope
 
-Windows 10/11 x64. Progress resets for each new journey. Drones are disabled.
-The build retains ANGLE/Direct3D11 and the 60 FPS cap.
+Windows 10/11 x64. Progress resets for each new journey. Drones remain disabled.
+The build uses ANGLE/Direct3D11 with a 60 FPS cap.
 
-Validation covers fog, terrain/sky budgets, flashlight animation and controls,
-clear roads and entrances, the crash-to-town walk, weapons, and the rescue quest.
-The standalone Windows export and packaged ZIP are tested before publication.
+Validation covers the closed forest perimeter, alley collision, street clearance,
+chapel access, unique vehicles, continuous road join, crash-to-town walk, and
+the complete radio-rescue quest. Standalone rendering and the packaged ZIP are
+also tested before publication.
+
+Church reference: https://holytrinitycatholic.org/photoalbums/holy-trinity-church
+The game uses original geometry; parish photographs are not included as textures.

@@ -22,7 +22,7 @@ void fragment() {
 	bool east_room = world_position.x > 0.0 &&
 		((z < -40.0 && z > -52.0) || (z < -53.0 && z > -65.0) || (z < -66.5 && z > -77.5));
 	if ((x > 6.42 && x < 16.6 && (west_room || east_room)) ||
-		(x > 6.42 && x < 14.6 && z < -80.0 && z > -90.0)) {
+		(x > 6.42 && x < (world_position.x < 0.0 ? 20.6 : 14.6) && z < -80.0 && z > -90.0)) {
 		discard;
 	}
 	float edge = 1.0 - smoothstep(0.25, 1.0, length((UV - 0.5) * 2.0));

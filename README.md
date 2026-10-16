@@ -41,6 +41,9 @@ Follow Old Mill Road north from the accident scene into Blackwood. The first obj
 
 ## Abandoned town
 
+An additional enterable chapel stands on the west side at the north end of Main Street. It is an original Holy Trinity, Weston-inspired stone church with twin spires, pointed arches, pews, an altar, and a walkable center aisle. It is marked on the journal map. See MAIN_STREET.md for references.
+
+
 Version 0.2.0 rebuilds Blackwood around a Weston, Missouri-inspired Main Street, with close brick storefronts, a taller hotel, upper windows, awnings, sidewalks, angled parking, boarded shops, and abandoned cars. The downloaded low-poly road kit supplies asphalt geometry and lane markings on the approach and Main Street. See [MAIN_STREET.md](MAIN_STREET.md) for the reference and implementation details.
 
 Six furnished buildings can be entered: ranger office, clinic, general store, mill workshop, millkeeper's house, and a locked radio station. Doors swing open and closed with E; a building door stays open whenever the player is inside that building or standing in its entrance. Step outside to close it. Twelve searchable drawers and cabinets contain the quest items, three first-aid kits, and six flashlight batteries; a couple of containers are empty. Five readable notes are retained in the journal; the second journal page is the town map.
@@ -113,6 +116,7 @@ Town doors use a local creak recording positioned at the doorway. Pickups, resto
 Drawers and cabinets use a short positional slide-and-clunk cue, also controlled by M and pause.
 
 ## Local assets
+- assets/vehicles/abandoned_*.glb: Classic Car_9, N Van_10, Pick Up_11, Police Car N_4, and N_Muscle Car_10 from the local Downloads/Blend/Blend/FreeCarPack.blend, with original geometry, flat shading, and textures capped at 256 pixels. Parked models are intact and use muted materials; source records and budgets are in assets/vehicles/street-vehicles.json. The original source is unchanged.
 - assets/flashlight/flashlight.glb and flashlight_albedo.png: original 530-triangle local Unity flashlight from My project (2)/Assets/Flashlight/Misc/Flashlight.FBX, centered to 34 cm with a 256-pixel copy of the supplied albedo and matte PS2-style materials. Source records are in assets/flashlight/source.json; originals are unchanged.
 - assets/atmosphere/overcast_sky.png: reduced and desaturated copy of Downloads/lonely_road_afternoon_puresky_8k.exr. A procedural cloud ceiling overlays it in cloud_sky.gdshader. Two original low-poly hill rings use the existing ground texture. See MAIN_STREET.md for details.
 - assets/audio/horror/*.wav: selected recordings from the user-provided Downloads/Horror SFX Free pack, converted to mono 22050 Hz with controlled peaks and edge fades/crossfades. Original filenames and hashes are retained in assets/audio/horror/sources.json. No author or license document was included in the downloaded archive.

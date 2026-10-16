@@ -495,6 +495,8 @@ func navigation_target() -> Vector3:
 	return buildings[building].to_global(Vector3(0,0,7))
 
 func location_name() -> String:
+	if streetscape.church and streetscape.church.contains(game.player.global_position):
+		return "BLACKWOOD CHAPEL"
 	if game.player.global_position.distance_to(game.START_POSITION)<9:
 		return "OLD MILL ROAD / CRASH SITE"
 	for data in BUILDINGS:

@@ -25,6 +25,7 @@ var weapons: Node3D
 var town: Node3D
 var fog_atmosphere: Node3D
 var distant_landscape: Node3D
+var forest_boundary: Node3D
 var flashlight_model: Node3D
 var flashlight_raise = 1.0
 const FLASHLIGHT_UP = Vector3(0.30,-0.19,-0.77)
@@ -172,6 +173,10 @@ func _ready():
 	distant_landscape.game = self
 	distant_landscape.environment = env
 	add_child(distant_landscape)
+	forest_boundary = Node3D.new()
+	forest_boundary.set_script(preload("res://forest_boundary.gd"))
+	forest_boundary.game = self
+	add_child(forest_boundary)
 	update_camera()
 
 func prepare_flashlight(node: Node):

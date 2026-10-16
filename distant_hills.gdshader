@@ -10,8 +10,8 @@ void vertex() {
 }
 void fragment() {
 	// Painted aerial perspective keeps only subtle silhouettes beyond dense mist.
-	float silhouette = smoothstep(1.0, 23.0, world_position.y);
+	float silhouette = smoothstep(0.0, 16.0, world_position.y);
 	vec3 haze = vec3(0.30, 0.34, 0.32);
 	float grain = texture(ground_texture, world_position.xz * 0.025).r - 0.45;
-	ALBEDO = mix(haze, crest_color, silhouette) + (grain * 0.014 + slope * 0.008) * silhouette;
+	ALBEDO = mix(haze, crest_color, silhouette) + (grain * 0.045 + slope * 0.018) * silhouette;
 }

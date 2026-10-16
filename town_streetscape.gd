@@ -10,6 +10,7 @@ var dark_window: StandardMaterial3D
 var lamps: Array[OmniLight3D] = []
 var material_cache = {}
 var road_mesh: ArrayMesh
+var church: Node3D
 const HEIGHTS = {"ranger":6.8,"clinic":7.4,"store":8.2,"house":10.1,"workshop":6.6,"radio":8.6}
 const SIGNS = {"ranger":"RANGER OFFICE","clinic":"BLACKWOOD PHARMACY","store":"GENERAL STORE","house":"BLACKWOOD HOTEL","workshop":"MILL REPAIR CO.","radio":"BLACKWOOD RADIO"}
 const TINTS = {"ranger":Color("8c7964"),"clinic":Color("876a56"),"store":Color("9b715b"),"house":Color("bbb8a2"),"workshop":Color("777b69"),"radio":Color("927361")}
@@ -47,15 +48,21 @@ func build_street():
 	build_downloaded_roads()
 	var flare = SurfaceTool.new()
 	flare.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var corners = [Vector3(-1.6,0.016,-35),Vector3(1.6,0.016,-35),Vector3(-3.8,0.016,-38),Vector3(3.8,0.016,-38)]
-	for index in [0,1,2,1,3,2]:
+	var corners = [Vector3(-1.6,0.018,-34.92),Vector3(1.6,0.018,-34.92),Vector3(-3.8,0.018,-38.08),Vector3(3.8,0.018,-38.08)]
+	for index in [0,2,1,1,2,3]:
 		flare.set_normal(Vector3.UP)
 		flare.set_uv(Vector2(corners[index].x/3.2,corners[index].z/4))
 		flare.add_vertex(corners[index])
 	var entry = MeshInstance3D.new()
+	entry.name = "ContinuousTownEntryAsphalt"
 	entry.mesh = flare.commit()
 	entry.material_override = asphalt
 	add_child(entry)
+	var paint = town.color_material(Color("87835d"))
+	town.box(self,Vector3(0,0.027,-36.5),Vector3(0.06,0.008,1.15),paint,false)
+	for side in [-1,1]:
+		var edge = town.box(self,Vector3(side*2.7,0.028,-36.5),Vector3(0.045,0.008,3.72),stone,false)
+		edge.rotation.y = -side*atan2(2.2,3.0)
 	for side in [-1,1]:
 		town.box(self,Vector3(side*5.15,0.012,-64),Vector3(2.7,0.016,56),pavement,false)
 		town.box(self,Vector3(side*3.87,0.04,-64),Vector3(0.11,0.07,56),stone,false)
@@ -68,7 +75,13 @@ func build_street():
 			street_lamp(Vector3(side*4.35,0,z),side== -1 and z!= -57)
 		for z in [-50,-65,-80]:
 			planter(Vector3(side*6.0,0,z))
-		sealed_shop(side,-85)
+		if side<0:
+			church = Node3D.new()
+			church.set_script(preload("res://blackwood_church.gd"))
+			church.town = town
+			add_child(church)
+		else:
+			sealed_shop(side,-85)
 	# Random scars and patching interrupt the road without changing collision.
 	var rng = RandomNumberGenerator.new()
 	rng.seed = 68410
@@ -79,8 +92,11 @@ func build_street():
 		var side = -1 if i%2==0 else 1
 		var paper = town.box(self,Vector3(side*rng.randf_range(4.1,6.1),0.03,rng.randf_range(-87,-39)),Vector3(0.18,0.008,0.26),town.mats.paper,false)
 		paper.rotation.y = rng.randf_range(-PI,PI)
-	for i in range(3):
-		parked_car(Vector3(-2.7 if i%2==0 else 2.7,0.015,[-52,-66,-79][i]),0.40 if i%2==0 else PI-0.4,i)
+	parked_car(Vector3(-2.7,0.015,-52),0.18,0,"res://assets/vehicles/abandoned_pickup.glb",Vector3(2.0,1.4,4.4))
+	parked_car(Vector3(2.7,0.015,-66),PI-0.24,1,"res://assets/vehicles/abandoned_police.glb",Vector3(1.85,1.4,4.3))
+	parked_car(Vector3(-2.7,0.015,-79),0.18,2,"res://assets/vehicles/abandoned_muscle.glb",Vector3(2.0,1.15,4.1))
+	parked_car(Vector3(2.7,0.015,-48),PI-0.32,3,"res://assets/vehicles/abandoned_classic.glb",Vector3(1.8,1.25,4.2))
+	parked_car(Vector3(-2.7,0.015,-61),0.20,4,"res://assets/vehicles/abandoned_van.glb",Vector3(2.0,1.55,4.5))
 	weeds()
 	# The far junction disappears into fog behind a temporary road closure.
 	for x in [-3.0,0.0,3.0]:
@@ -147,20 +163,21 @@ func planter(p: Vector3):
 	town.box(self,p+Vector3(0,0.22,0),Vector3(0.6,0.44,0.8),town.mats.furniture)
 	town.box(self,p+Vector3(0,0.45,0),Vector3(0.52,0.02,0.72),town.mats.dark,false)
 
-func parked_car(p: Vector3, yaw: float, index: int):
+func parked_car(p: Vector3, yaw: float, index: int, model_path = "res://assets/vehicles/crashed_hatchback.glb", body_size = Vector3(1.85,1.25,3.7)):
 	var body = StaticBody3D.new()
 	body.name = "AbandonedParkedCar%d" % index
 	add_child(body)
 	body.position = p
 	body.rotation.y = yaw
-	var model = preload("res://assets/vehicles/crashed_hatchback.glb").instantiate()
+	body.set_meta("vehicle_model",model_path)
+	var model = load(model_path).instantiate()
 	body.add_child(model)
 	adapt_car(model,index)
 	var collision = CollisionShape3D.new()
 	var shape = BoxShape3D.new()
-	shape.size = Vector3(1.85,1.25,3.7)
+	shape.size = body_size
 	collision.shape = shape
-	collision.position.y = 0.7
+	collision.position.y = body_size.y/2+0.05
 	body.add_child(collision)
 
 func adapt_car(node: Node, index: int):
@@ -169,7 +186,7 @@ func adapt_car(node: Node, index: int):
 			var original = node.mesh.surface_get_material(surface)
 			if original is StandardMaterial3D:
 				var material = original.duplicate() as StandardMaterial3D
-				material.albedo_color = [Color("6c7067"),Color("6d5350"),Color("4e6060")][index]
+				material.albedo_color = [Color("6c7067"),Color("6d5350"),Color("4e6060"),Color("958b70"),Color("7b8780")][index]
 				material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 				material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
 				material.metallic_specular = 0

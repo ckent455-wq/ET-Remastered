@@ -237,12 +237,15 @@ func draw_journal():
 		draw_line(Vector2(320,132),Vector2(320,325),Color("667a76"),10)
 		draw_line(Vector2(320,325),Vector2(320,339),Color("667a76"),5)
 		for data in game.town.BUILDINGS:
-			var p = Vector2(320+data.p.x*5,125+(data.p.z+80)*4)
-			draw_rect(Rect2(p-Vector2(data.d*2.5,data.w*2),Vector2(data.d*5,data.w*4)),Color("385156"))
+			var p = Vector2(320+data.p.x*5,150+(data.p.z+80)*3.4)
+			draw_rect(Rect2(p-Vector2(data.d*2.5,data.w*1.7),Vector2(data.d*5,data.w*3.4)),Color("385156"))
 			text(data.id.to_upper(),p+Vector2(-22,4),10,INK)
+		var chapel = Vector2(252.5,133)
+		draw_rect(Rect2(chapel-Vector2(35,17),Vector2(70,34)),Color("385156"))
+		text("CHAPEL",chapel+Vector2(-20,4),10,INK)
 		var player = game.player.position
-		if player.z< -35 and player.z> -82:
-			draw_circle(Vector2(320+player.x*5,125+(player.z+80)*4),4,AMBER)
+		if player.z< -35 and player.z> -91:
+			draw_circle(Vector2(320+player.x*5,150+(player.z+80)*3.4),4,AMBER)
 		text("SOUTH / OLD MILL ROAD & CRASH SITE",Vector2(211,336),11,DIM)
 	else:
 		var entry = game.town.journal_entries[clampi(game.journal_page-2,0,game.town.journal_entries.size()-1)]

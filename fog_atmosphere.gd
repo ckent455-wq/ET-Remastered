@@ -70,6 +70,8 @@ func update_fog(delta: float):
 			if game.town.player_inside_building(data.id):
 				indoors = true
 				break
+		if game.town.streetscape.church and game.town.streetscape.church.contains(game.player.global_position):
+			indoors = true
 	var density = 0.018 if indoors else (0.070+sin(elapsed*0.065)*0.005)
 	environment.fog_density = lerpf(environment.fog_density,density,clampf(delta*1.5,0,1))
 	var view = game.title_camera if game.state in ["intro","title"] else game.camera

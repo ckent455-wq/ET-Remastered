@@ -1,0 +1,47 @@
+[
+  {
+    "source": "C:\\Users\\jkern\\Downloads\\Blend\\Blend\\FreeCarPack.blend",
+    "model": "Classic Car_9",
+    "asset": "abandoned_classic.glb",
+    "triangles": 3102,
+    "length_m": 4.2,
+    "texture_limit": 256,
+    "adaptation": "intact parked vehicle; centered, flat shaded, matte textures; original unchanged"
+  },
+  {
+    "source": "C:\\Users\\jkern\\Downloads\\Blend\\Blend\\FreeCarPack.blend",
+    "model": "N Van_10",
+    "asset": "abandoned_van.glb",
+    "triangles": 2536,
+    "length_m": 4.5,
+    "texture_limit": 256,
+    "adaptation": "intact parked vehicle; centered, flat shaded, matte textures; original unchanged"
+  },
+  {
+    "source": "C:\\Users\\jkern\\Downloads\\Blend\\Blend\\FreeCarPack.blend",
+    "model": "Pick Up_11",
+    "asset": "abandoned_pickup.glb",
+    "triangles": 3274,
+    "length_m": 4.4,
+    "texture_limit": 256,
+    "adaptation": "intact parked vehicle; centered, flat shaded, matte textures; original unchanged"
+  },
+  {
+    "source": "C:\\Users\\jkern\\Downloads\\Blend\\Blend\\FreeCarPack.blend",
+    "model": "Police Car N_4",
+    "asset": "abandoned_police.glb",
+    "triangles": 3471,
+    "length_m": 4.3,
+    "texture_limit": 256,
+    "adaptation": "intact parked vehicle; centered, flat shaded, matte textures; original unchanged"
+  },
+  {
+    "source": "C:\\Users\\jkern\\Downloads\\Blend\\Blend\\FreeCarPack.blend",
+    "model": "N_Muscle Car_10",
+    "asset": "abandoned_muscle.glb",
+    "triangles": 2574,
+    "length_m": 4.1,
+    "texture_limit": 256,
+    "adaptation": "intact parked vehicle; centered, flat shaded, matte textures; original unchanged"
+  }
+]
