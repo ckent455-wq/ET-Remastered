@@ -1,6 +1,16 @@
 extends Node3D
 const START_POSITION = Vector3(-0.7,0.001,16.8)
 const START_YAW = -0.60
+const STANDING_HEIGHT = 1.5
+const CROUCH_HEIGHT = 0.9
+const STANDING_EYE = 1.25
+const CROUCH_EYE = 0.68
+const JUMP_VELOCITY = 5.2
+const GRAVITY = 18.0
+var crouching = false
+var jump_queued = false
+var player_collider: CollisionShape3D
+var standing_probe: CapsuleShape3D
 var player: CharacterBody3D
 var camera: Camera3D
 var title_camera: Camera3D
@@ -112,12 +122,14 @@ func _ready():
 	var col = CollisionShape3D.new()
 	var capsule = CapsuleShape3D.new()
 	capsule.radius = 0.28
-	capsule.height = 1.5
+	capsule.height = STANDING_HEIGHT
 	col.shape = capsule
-	col.position.y = 0.75
+	col.position.y = STANDING_HEIGHT/2
+	player_collider = col
+	standing_probe = capsule.duplicate()
 	player.add_child(col)
 	camera = Camera3D.new()
-	camera.position.y = 1.25
+	camera.position.y = STANDING_EYE
 	camera.fov = 76
 	camera.far = 85
 	player.add_child(camera)
@@ -224,7 +236,11 @@ func reset_game():
 	achievements.clear_toast()
 	player.position = START_POSITION
 	player.velocity = Vector3.ZERO
-	camera.position.y = 1.25
+	crouching = false
+	jump_queued = false
+	player_collider.shape.height = STANDING_HEIGHT
+	player_collider.position.y = STANDING_HEIGHT/2
+	camera.position.y = STANDING_EYE
 	player.rotation = Vector3(0,START_YAW,0)
 	camera.rotation = Vector3.ZERO
 	pitch = 0
@@ -248,6 +264,7 @@ func reset_game():
 
 func set_state(next: String):
 	state = next
+	if state!="play": jump_queued = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state=="play" else Input.MOUSE_MODE_VISIBLE
 	update_camera()
 
@@ -316,17 +333,24 @@ func _unhandled_input(event):
 			weapons.reload()
 		if state=="play" and event.keycode==KEY_V:
 			weapons.cycle(1)
+		if state=="play" and event.keycode==KEY_SPACE:
+			jump_queued = true
 
 func _physics_process(delta):
 	clock += delta
 	if state!="play":
+		jump_queued = false
 		hud.queue_redraw()
 		return
 	var movement = Vector2(float(Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT))-float(Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)),float(Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN))-float(Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP))).normalized()
-	var sprint = Input.is_physical_key_pressed(KEY_SHIFT) and stamina>1 and movement.length()>0
+	update_stance(delta)
+	var sprint = not crouching and Input.is_physical_key_pressed(KEY_SHIFT) and stamina>1 and movement.length()>0
 	stamina = clampf(stamina+(-24 if sprint else 17)*delta,0,100)
-	var vertical_speed = 0.0 if player.is_on_floor() else player.velocity.y-18.0*delta
-	player.velocity = player.basis*Vector3(movement.x,0,movement.y)*(8.0 if sprint else 4.6)
+	var vertical_speed = 0.0 if player.is_on_floor() else player.velocity.y-GRAVITY*delta
+	if jump_queued and player.is_on_floor(): vertical_speed = JUMP_VELOCITY
+	jump_queued = false
+	var speed = 2.1 if crouching else (8.0 if sprint else 4.6)
+	player.velocity = player.basis*Vector3(movement.x,0,movement.y)*speed
 	# Floor snapping maintains contact without forcing the capsule into the floor.
 	player.velocity.y = vertical_speed
 	var previous_position = player.position
@@ -340,8 +364,7 @@ func _physics_process(delta):
 	player.position.z = clampf(player.position.z,-160,47)
 	var travelled = Vector2(player.position.x-previous_position.x,player.position.z-previous_position.z).length()
 	soundscape.moved(travelled,sprint,player.is_on_floor())
-	# Keep the view fixed, including when movement is blocked by furniture.
-	camera.position.y = 1.25
+	# Stance height is controlled above; collisions never add camera shake.
 	invincible = maxf(0,invincible-delta)
 	update_flashlight_battery(delta)
 	if health<=0:
@@ -350,6 +373,35 @@ func _physics_process(delta):
 	town.refresh_focus()
 	update_contact(delta,Input.is_physical_key_pressed(KEY_E))
 	hud.queue_redraw()
+
+func can_stand() -> bool:
+	var query = PhysicsShapeQueryParameters3D.new()
+	query.shape = standing_probe
+	query.collision_mask = player.collision_mask
+	query.exclude = [player.get_rid()]
+	query.transform = player.global_transform
+	# Lift the query 2cm to ignore the supporting floor and leave headroom.
+	query.transform.origin += Vector3.UP*(STANDING_HEIGHT/2+0.02)
+	return get_world_3d().direct_space_state.intersect_shape(query,1).is_empty()
+
+func update_stance(delta: float):
+	var held = Input.is_physical_key_pressed(KEY_CTRL)
+	crouching = held or ((crouching or player_collider.shape.height<STANDING_HEIGHT-0.001) and not can_stand())
+	var wanted = CROUCH_HEIGHT if crouching else STANDING_HEIGHT
+	var height = move_toward(player_collider.shape.height,wanted,5.5*delta)
+	if not is_equal_approx(player_collider.shape.height,height):
+		player_collider.shape.height = height
+		player_collider.position.y = height/2
+	var eye = CROUCH_EYE if crouching else STANDING_EYE
+	camera.position.y = minf(move_toward(camera.position.y,eye,4.8*delta),height-0.20)
+
+func take_damage(amount: float) -> bool:
+	if state!="play" or health<=0 or amount<=0 or invincible>0: return false
+	health = maxf(0,health-amount)
+	invincible = 0.9
+	soundscape.player_hurt()
+	if health<=0: set_state("lost")
+	return true
 
 func update_contact(delta: float, held: bool):
 	if state!="play":

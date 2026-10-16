@@ -150,7 +150,7 @@ func _draw():
 			text("03   Hold E at the repaired radio to call for rescue.",Vector2(138,273),13)
 		draw_rect(Rect2(213,296,214,34),Color("6b857a"),false,1)
 		centered("ENTER / " + ("RESUME" if game.state=="paused" else "BEGIN JOURNEY"),319,16,AMBER)
-		centered("MOUSE  look    WASD  move    SHIFT  sprint    F  flashlight",359,11,DIM)
+		centered("WASD move   SHIFT sprint   SPACE jump   CTRL crouch   F light",359,11,DIM)
 		centered("E  interact    TAB  journal / map    H  heal    Q  battery    ESC  pause",377,11,DIM)
 
 	if game.state=="play" and passage_fade>0:
@@ -204,9 +204,9 @@ func draw_title_controls():
 	draw_rect(Rect2(62,54,516,310),Color(0.025,0.035,0.037,0.97))
 	draw_rect(Rect2(62,54,516,310),Color("6d6051"),false,1)
 	text("SURVIVING BLACKWOOD",Vector2(80,91),24,Color("dfd8c1"))
-	var rows = ["WASD / ARROWS     Move     SHIFT     Sprint", "MOUSE     Look     F     Flashlight", "E     Search storage / talk / interact", "LMB     Fire     RMB     Aim     R     Reload", "WHEEL / V     Cycle guns     1-3 Select     0 Holster", "H     First aid     Q     Flashlight battery", "TAB     Journal / map     ESC     Pause"]
+	var rows = ["WASD / ARROWS     Move     SHIFT     Sprint", "SPACE     Jump     CTRL (hold)     Crouch", "MOUSE     Look     F     Flashlight", "E     Search storage / talk / interact", "LMB     Fire     RMB     Aim     R     Reload", "WHEEL / V     Cycle guns     1-3 Select     0 Holster", "H     First aid     Q     Flashlight battery", "TAB     Journal / map     ESC     Pause"]
 	for i in range(rows.size()):
-		text(rows[i],Vector2(80,127+i*25),13,Color("b6b6a5"))
+		text(rows[i],Vector2(80,124+i*23),13,Color("b6b6a5"))
 	text("Find supplies, weapons and a working radio.",Vector2(80,310),12,Color("bd725b"))
 
 func paragraph(content: String, x: float, y: float, width: float, size: int, color = INK) -> float:

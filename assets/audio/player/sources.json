@@ -1,0 +1,39 @@
+{
+  "source": "Three user-supplied player hurt voice recordings",
+  "conversion": "Mono PCM16, 22050Hz, restrained peak normalization, quiet-edge trimming and 8ms edge fades. Original M4A files unchanged.",
+  "files": [
+    {
+      "asset": "hurt_0.wav",
+      "source": "C:\\Users\\jkern\\Downloads\\Voice 261016_153259.m4a",
+      "source_sha256": "f688ef580040df070518bc1b1870b8eb1552321bd137654e397e2923785f5c8d",
+      "seconds": 1.3013151927437643,
+      "peak": 0.78,
+      "trim_seconds": [
+        0.0,
+        1.301
+      ]
+    },
+    {
+      "asset": "hurt_1.wav",
+      "source": "C:\\Users\\jkern\\Downloads\\Voice 261016_153315.m4a",
+      "source_sha256": "a685ac2f7e001ddca5b9464812efa8539892b18a97ffc39ca19220bb76047d16",
+      "seconds": 1.1519727891156462,
+      "peak": 0.78,
+      "trim_seconds": [
+        0.0,
+        1.152
+      ]
+    },
+    {
+      "asset": "hurt_2.wav",
+      "source": "C:\\Users\\jkern\\Downloads\\Voice 261016_153330.m4a",
+      "source_sha256": "9216cf7eff44386644f70604560b55aa289592325978897ea451d6e8c798faf6",
+      "seconds": 1.3013151927437643,
+      "peak": 0.78,
+      "trim_seconds": [
+        0.0,
+        1.301
+      ]
+    }
+  ]
+}

@@ -22,6 +22,10 @@ var interaction_voices = {}
 var door_voice: AudioStreamPlayer3D
 var weapon_voices: Array[AudioStreamPlayer] = []
 var weapon_streams = {}
+var hurt_voice: AudioStreamPlayer
+var hurt_streams: Array[AudioStream] = []
+var hurt_bag: Array[int] = []
+var last_hurt = -1
 var reload_voice: AudioStreamPlayer
 var next_shot = 0
 var storage_voice: AudioStreamPlayer3D
@@ -81,6 +85,8 @@ func _ready():
 	for i in range(3):
 		weapon_voices.append(voice(weapon_streams.pistol,-15))
 	reload_voice = voice(stream("gun_reload"),-13)
+	for i in range(3): hurt_streams.append(stream("player/hurt_%d" % i))
+	hurt_voice = voice(hurt_streams[0],-5)
 	wind.play()
 	leaves.play(3.0)
 	for i in range(5):
@@ -100,6 +106,10 @@ func _ready():
 	reset()
 
 func reset():
+	hurt_voice.stop()
+	hurt_voice.stream_paused = false
+	hurt_bag.clear()
+	last_hurt = -1
 	if atmosphere:
 		atmosphere.reset()
 	thunder.stop()
@@ -116,6 +126,19 @@ func reset():
 	weapon_stop_reload()
 	for node in weapon_voices:
 		node.stop()
+
+func player_hurt():
+	if game.state!="play": return
+	if hurt_bag.is_empty(): hurt_bag.assign([0,1,2])
+	var choices = hurt_bag.filter(func(index): return index!=last_hurt)
+	var chosen: int = choices[rng.randi_range(0,choices.size()-1)]
+	hurt_bag.erase(chosen)
+	last_hurt = chosen
+	# One dry, centered voice belongs to the player: successive hits replace
+	# the previous grunt instead of stacking several recordings.
+	hurt_voice.stream = hurt_streams[chosen]
+	hurt_voice.stream_paused = false
+	hurt_voice.play()
 
 func weapon_stop_reload():
 	if reload_voice:
@@ -171,7 +194,7 @@ func moved(distance: float, sprinting: bool, grounded: bool):
 	next_step = (next_step+1)%steps.size()
 	node.stream = step_streams[variation]
 	node.pitch_scale = rng.randf_range(0.90,1.09)*(1.09 if sprinting else 1.0)
-	node.volume_db = -5 if sprinting else -9
+	node.volume_db = -14 if game.crouching else (-5 if sprinting else -9)
 	node.play()
 
 func play_animal():
@@ -194,6 +217,8 @@ func update_sound(delta: float):
 	atmosphere.update_sound(delta)
 	var active = game.state=="play"
 	var paused = game.state in ["paused","journal","dialogue","intro"]
+	hurt_voice.stream_paused = paused
+	if game.state in ["intro","title","won"]: hurt_voice.stop()
 	wind.stream_paused = paused
 	leaves.stream_paused = paused
 	var indoors = active and not atmosphere.current_interior.is_empty()

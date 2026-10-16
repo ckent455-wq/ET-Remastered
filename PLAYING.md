@@ -16,6 +16,7 @@ marked on the journal map. The dense forest forms a closed boundary around town.
 ## Controls
 
 - Mouse: look; WASD / arrows: move; Shift: sprint.
+- Space: jump. Hold Ctrl: crouch; release to stand when there is room.
 - E: inspect, search, collect, open doors, and talk.
 - F: flashlight; Tab: journal and map; Escape: pause.
 - C inside the journal: case notes and evidence leads.
@@ -41,7 +42,7 @@ Chapel Road ends at a grassy court; follow the footpath and press E at the doors
 
 Search the powered workshop coil cabinet for the chapel cellar key. Follow Chapel
 Road uphill and find the locked cellar door at the back right inside the church.
-E unlocks it; E again descends. Recover the tuning unit from the cellar workbench,
+Press E to unlock the door and descend. Recover the tuning unit from the cellar workbench,
 then use the stairs to return. The radio needs both the tuning unit and signal coil.
 
 Inspect your wreck for the detour notice. Read documents and speak to Elias,

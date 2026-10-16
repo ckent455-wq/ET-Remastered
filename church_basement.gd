@@ -134,6 +134,7 @@ func leave():
 	town.game.message = "Back in the chapel. Follow Chapel Road down to town."
 
 func move_player(p: Vector3, yaw: float):
+	town.game.jump_queued = false
 	town.game.player.global_position = p
 	town.game.player.velocity = Vector3.ZERO
 	town.game.player.rotation = Vector3(0,yaw,0)

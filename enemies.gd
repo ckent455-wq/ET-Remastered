@@ -245,11 +245,9 @@ func _physics_process(delta):
 		elif data.state=="attack":
 			if not data.did_hit and data.timer<0.65:
 				data.did_hit = true
-				if data.actor.global_position.distance_to(game.player.global_position)<1.9 and line_clear(data,game.player.global_position+Vector3(0,1,0)) and game.invincible<=0:
-					game.health = maxf(0,game.health-22)
-					game.invincible = 0.9
-					game.message = "Claws tear into you. Run or fight. H uses a first-aid kit."
-					if game.health<=0: game.set_state("lost")
+				if data.actor.global_position.distance_to(game.player.global_position)<1.9 and line_clear(data,game.player.global_position+Vector3(0,1,0)):
+					if game.take_damage(22):
+						game.message = "Claws tear into you. Run or fight. H uses a first-aid kit."
 			if data.timer<=0:
 				data.state = "chase"
 				data.cooldown = 0.8
