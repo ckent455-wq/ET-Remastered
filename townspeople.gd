@@ -2,6 +2,13 @@ extends Node3D
 ## Patrolling townspeople with a resettable, skinned death animation made from the user's downloaded humanoid mesh.
 var town
 var characters = {}
+var managed_doors: Dictionary = {}
+var motion_clock = 0.0
+var grave_key_given = false
+var grave_intro_shown = false
+var grave_approaching = false
+const GRAVE_KEY_LINE = "Hey! I've got the key to my grandpappy's grave. The Whitcomb mausoleum, back in the cemetery. They locked the radio spare in there.\n\nHere. Take it. I haven't been back since the evacuation.\n\nIf you hear somebody talking in there... just get the part and leave."
+
 const DEATH_DURATION = 1.7
 const PEOPLE = [
 	{"id":"ranger","name":"Elias / Ranger","variant":"ranger","building":"","p":Vector3(-5.65,0,-45),"yaw":0.0,"route":[Vector3(-5.65,0,-45),Vector3(-5.65,0,-49),Vector3(-5.65,0,-44.5)]},
@@ -35,7 +42,8 @@ func _ready():
 		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		label.pixel_size = 0.0038
 		label.visibility_range_end = 8
-		characters[data.id] = {"actor":actor,"visual":visual,"parent":parent,"spawn":data.p,"yaw":data.yaw,"name":data.name,"route":data.route,"waypoint":1,"wait":1.5,"blocked":0.0,"animation":null,"walk":"","dead":false,"death_time":0.0,"label":label,"area":area,"skeleton":find_skeleton(visual)}
+		characters[data.id] = {"actor":actor,"visual":visual,"parent":parent,"spawn":data.p,"yaw":data.yaw,"name":data.name,"route":data.route,"waypoint":1,"wait":1.5,"blocked":0.0,"animation":null,"walk":"","dead":false,"death_time":0.0,"label":label,"area":area,"skeleton":find_skeleton(visual),"was_walking":true,"phase":characters.size()*2.1,"door_reach":0.0,"activity":"watch"}
+		characters[data.id].route = routine_route(data,parent)
 		var animation = visual.find_child("AnimationPlayer",true,false) as AnimationPlayer
 		if animation:
 			for animation_name in animation.get_animation_list():
@@ -68,6 +76,11 @@ func retro_materials(node: Node):
 		retro_materials(child)
 
 func reset():
+	grave_key_given=false
+	grave_intro_shown=false
+	grave_approaching=false
+	managed_doors.clear()
+	motion_clock=0
 	for data in characters.values():
 		data.dead = false
 		data.death_time = 0.0
@@ -82,73 +95,172 @@ func reset():
 		data.actor.position = data.spawn
 		data.actor.velocity = Vector3.ZERO
 		data.waypoint = 1
-		data.wait = 1.5
+		data.wait = 1.5+data.phase
+		data.was_walking = true
+		data.door_reach = 0.0
 		data.blocked = 0.0
 		animate_walk(data,false)
 		data.actor.rotation = Vector3(0,data.yaw,0)
 		data.visual.scale = Vector3.ONE
 		data.visual.rotation = Vector3.ZERO
 
+func routine_route(person: Dictionary, parent: Node3D) -> Array:
+	var home="ranger" if person.id=="ranger" else person.building
+	var building=town.buildings[home]
+	var inspection=Vector3(0.45,0,1.4) if person.id!="mechanic" else Vector3(1.2,0,1.5)
+	var local_points=[inspection,Vector3(0,0,3.0),Vector3(0,0,5),Vector3(0,0,7.2),Vector3(-2.3,0,7.2),Vector3(1.8,0,7.2),Vector3(0,0,7.2),Vector3(0,0,5),Vector3(0,0,3.0),inspection]
+	var result: Array = []
+	for point in local_points: result.append(parent.to_local(building.to_global(point)))
+	return result
+
 func animate_walk(data: Dictionary, moving: bool):
-	var animation = data.animation as AnimationPlayer
-	if animation==null:
-		return
+	var animation=data.animation as AnimationPlayer
+	if data.was_walking==moving: return
+	data.was_walking=moving
+	if data.skeleton: data.skeleton.reset_bone_poses()
+	if animation==null: return
 	if moving:
-		if not animation.is_playing():
-			animation.play(data.walk,0.15)
+		animation.speed_scale=1.15
+		animation.play(data.walk,0.18)
 	else:
 		animation.play(data.walk)
 		animation.seek(0,true)
 		animation.pause()
 
+func animate_living(data: Dictionary, walking: bool, near_player: bool, delta: float):
+	var t=motion_clock+data.phase
+	var body=data.visual as Node3D
+	var lean=0.025*sin(t*2) if walking else 0.012*sin(t*1.6)
+	body.rotation.z=lerpf(body.rotation.z,lean,minf(1,delta*5))
+	body.position.y=0.012*sin(t*2.0) if not walking else 0.0
+	if walking: return
+	var breath=sin(t*1.7)*0.018
+	var gesture=pow(maxf(0,sin(t*0.6)),3)
+	bone_pose(data,"body",Vector3(breath,0.025*sin(t*0.45),0.012*sin(t)))
+	if near_player:
+		bone_pose(data,"arm_R",Vector3(-0.18*gesture,0.08*gesture,-0.16*gesture))
+		bone_pose(data,"arm_L",Vector3(0.025*sin(t),0,0.025*sin(t*0.8)))
+	elif data.actor.name=="NPC_mechanic":
+		bone_pose(data,"body",Vector3(0.07+breath,0,0))
+		bone_pose(data,"arm_R",Vector3(-0.20-0.10*gesture,0,-0.12))
+		bone_pose(data,"arm_L",Vector3(-0.16-0.05*sin(t*1.9),0,0.10))
+	elif data.actor.name=="NPC_nurse":
+		bone_pose(data,"body",Vector3(breath,0.035*sin(t*0.5),0.025*sin(t*0.7)))
+		bone_pose(data,"arm_L",Vector3(-0.15*gesture,0,0.11*gesture))
+		bone_pose(data,"arm_R",Vector3(0.02*sin(t),0,-0.03))
+	else:
+		bone_pose(data,"body",Vector3(breath,0.10*sin(t*0.35),0))
+		bone_pose(data,"arm_R",Vector3(-0.28*gesture,0,-0.10*gesture))
+	if data.door_reach>0:
+		bone_pose(data,"arm_R",Vector3(-0.46,0.08,-0.18))
+
 func _physics_process(delta):
+	var playing=town.game.state=="play"
+	if playing or town.game.state=="dialogue": motion_clock+=delta
+	var requests: Dictionary = {}
 	for data in characters.values():
-		var actor = data.actor as CharacterBody3D
+		var actor=data.actor as CharacterBody3D
 		if data.dead:
-			if town.game.state=="play" and data.death_time<DEATH_DURATION:
-				data.death_time = minf(DEATH_DURATION,data.death_time+delta)
+			if playing and data.death_time<DEATH_DURATION:
+				data.death_time=minf(DEATH_DURATION,data.death_time+delta)
 				animate_death(data)
 			continue
-		if town.game.state!="play":
-			actor.velocity = Vector3.ZERO
+		if not playing:
+			actor.velocity=Vector3.ZERO
 			animate_walk(data,false)
+			if town.game.state=="dialogue" and town.game.dialogue_name==data.name:
+				animate_living(data,false,true,delta)
 			continue
-		var offset = town.game.player.global_position-actor.global_position
-		var near_player = Vector2(offset.x,offset.z).length()<2.8
-		var direction: Vector3 = data.route[data.waypoint]-actor.position
-		direction.y = 0
-		data.wait = maxf(0,data.wait-delta)
-		var walking = not near_player and data.wait<=0 and direction.length()>0.12
+		var offset=town.game.player.global_position-actor.global_position
+		var near_player=Vector2(offset.x,offset.z).length()<1.65 and absf(offset.y)<1.8
+		# Only react to nearby players with a clear sightline, not people behind a wall.
+		if near_player:
+			var ray=PhysicsRayQueryParameters3D.create(actor.global_position+Vector3(0,1.25,0),town.game.player.global_position+Vector3(0,1.25,0),1,[actor.get_rid()])
+			var hit=actor.get_world_3d().direct_space_state.intersect_ray(ray)
+			near_player=hit.is_empty() or hit.collider==town.game.player
+		var target: Vector3=data.parent.to_global(data.route[data.waypoint])
+		var rushing=false
+		if actor.name=="NPC_ranger" and not grave_key_given and not grave_intro_shown and not town.cemetery.unlocked:
+			var player=town.game.player.global_position
+			var on_street=absf(player.x)<4.0 and player.z< -37 and player.z> -78
+			var outside=not town.player_inside_building("ranger") # Player must be outside too.
+			var ranger_local=town.buildings.ranger.to_local(actor.global_position)
+			if on_street and outside and ranger_local.z>5.8 and offset.length()<14: grave_approaching=true
+			if grave_approaching and on_street and ranger_local.z>5.5:
+				var ray=PhysicsRayQueryParameters3D.create(actor.global_position+Vector3(0,1.2,0),player+Vector3(0,1.2,0),1,[actor.get_rid()])
+				var hit=actor.get_world_3d().direct_space_state.intersect_ray(ray)
+				var clear=hit.is_empty() or hit.collider==town.game.player
+				if clear:
+					if Vector2(offset.x,offset.z).length()<2.0:
+						actor.velocity=Vector3.ZERO
+						offer_grave_key()
+						return
+					target=player-offset.normalized()*1.7
+					rushing=true
+					data.wait=0.0
+					near_player=false
+		var direction=target-actor.global_position
+		direction.y=0
+		data.wait=maxf(0,data.wait-delta)
+		data.door_reach=maxf(0,data.door_reach-delta)
+		# Request doors while approaching the authored entrance waypoints.
+		for id in ["ranger","clinic","workshop","house"]:
+			var doorway=town.doorway_position(id)
+			var distance=Vector2(actor.global_position.x-doorway.x,actor.global_position.z-doorway.z).length()
+			if distance<2.0 or (target.distance_to(doorway)<0.25 and distance<3.0):
+				requests[id]=true
+				if not town.doors[id].open and town.set_building_door(id,true):
+					managed_doors[id]=2.0
+					data.door_reach=0.7
+					data.wait=maxf(data.wait,0.7)
+		var walking=not near_player and data.wait<=0 and direction.length()>0.16
 		if walking:
-			var step_direction = direction.normalized()
-			actor.rotation.y = lerp_angle(actor.rotation.y,atan2(step_direction.x,step_direction.z),minf(1,delta*5))
-			var world_direction: Vector3 = data.parent.global_basis*step_direction
-			actor.velocity = world_direction*0.75
-			actor.velocity.y = -0.5
-			var previous = actor.global_position
+			var step_direction=direction.normalized()
+			var local_direction: Vector3=data.parent.global_basis.inverse()*step_direction
+			actor.rotation.y=lerp_angle(actor.rotation.y,atan2(local_direction.x,local_direction.z),minf(1,delta*5))
+			var velocity=actor.velocity.move_toward(step_direction*(2.2 if rushing else 0.92),delta*(4.5 if rushing else 3.0))
+			actor.velocity=Vector3(velocity.x,-0.5,velocity.z)
+			var previous=actor.global_position
 			actor.move_and_slide()
-			actor.global_position.y = maxf(0.001,actor.global_position.y)
-			var travelled = Vector2(actor.global_position.x-previous.x,actor.global_position.z-previous.z).length()
-			data.blocked = data.blocked+delta if travelled<delta*0.1 else 0.0
-			if data.blocked>1.0:
-				data.waypoint = (data.waypoint+1)%data.route.size()
-				data.wait = 1.0
-				data.blocked = 0.0
-			walking = travelled>delta*0.1
+			actor.global_position.y=maxf(0.001,actor.global_position.y)
+			var travelled=Vector2(actor.global_position.x-previous.x,actor.global_position.z-previous.z).length()
+			data.blocked=data.blocked+delta if travelled<delta*0.08 else 0.0
+			if data.blocked>2.5:
+				# Retrace a safe route segment instead of skipping through an interior wall.
+				data.waypoint=wrapi(data.waypoint-1,0,data.route.size())
+				data.wait=1.2
+				data.blocked=0.0
+			walking=travelled>delta*0.08
 		else:
-			actor.velocity = Vector3.ZERO
-			if direction.length()<=0.12:
-				data.waypoint = (data.waypoint+1)%data.route.size()
-				data.wait = 2.0
+			actor.velocity=Vector3.ZERO
+			if direction.length()<=0.16:
+				data.waypoint=(data.waypoint+1)%data.route.size()
+				var in_doorway=false
+				for id in requests:
+					if actor.global_position.distance_to(town.doorway_position(id))<2.0: in_doorway=true
+				data.wait=0.0 if in_doorway else 3.0+fmod(data.phase+data.waypoint*1.7,4.0)
 			if near_player and offset.length()>0.2:
-				var local = data.parent.global_basis.inverse()*offset
-				actor.rotation.y = lerp_angle(actor.rotation.y,atan2(local.x,local.z),minf(1,delta*4))
+				var local=data.parent.global_basis.inverse()*offset
+				actor.rotation.y=lerp_angle(actor.rotation.y,atan2(local.x,local.z),minf(1,delta*3))
 		animate_walk(data,walking)
+		if data.animation and walking: data.animation.speed_scale=2.5 if rushing else 1.15
+		animate_living(data,walking,near_player,delta)
+	# Close only doors opened by an NPC, after all walkers clear the threshold.
+	if playing:
+		for id in managed_doors.keys():
+			if requests.has(id): managed_doors[id]=2.0
+			else: managed_doors[id]-=delta
+			if managed_doors[id]<=0 and town.set_building_door(id,false): managed_doors.erase(id)
 
 func shoot(id: String) -> bool:
 	if town.game.state!="play" or not characters.has(id) or characters[id].dead:
 		return false
 	var data = characters[id]
+	if id=="ranger" and not grave_key_given and not town.cemetery.unlocked:
+		var storage=town.interiors.containers.ranger_drawer
+		storage.remaining_extras["mausoleum_key"]=1
+		storage.pending_loot=true
+		grave_approaching=false
 	data.dead = true
 	data.death_time = 0.0
 	data.actor.velocity = Vector3.ZERO
@@ -196,14 +308,34 @@ func animate_death(data: Dictionary):
 		bone_pose(data,"shin_"+side,Vector3(lerpf(0.85,0.18,settle)*buckle*stagger,0,0))
 		bone_pose(data,"arm_"+side,Vector3(0.04*buckle*(1-settle),0,sign*0.04*buckle*(1-settle)))
 
+func offer_grave_key():
+	grave_intro_shown=true
+	grave_approaching=false
+	var line=GRAVE_KEY_LINE
+	if town.game.backpack and not town.game.backpack.room_for("mausoleum_key"):
+		line="Hey! I've got the key to my grandpappy's grave. The Whitcomb mausoleum. That's where they locked the radio spare.\n\nYour bag's full. Make a little room, then come talk to me. I'll keep the key safe."
+	else:
+		town.inventory.mausoleum_key+=1
+		grave_key_given=true
+		town.game.message="Elias gave you the Whitcomb mausoleum key."
+		town.game.soundscape.feedback("pickup")
+	town.game.dialogue_name=characters.ranger.name
+	town.game.dialogue_text=line
+	town.game.set_state("dialogue")
+
 func talk(id: String):
 	if characters[id].dead:
+		return
+	if id=="ranger" and not grave_key_given and not town.cemetery.unlocked:
+		offer_grave_key()
 		return
 	town.game.dialogue_name = characters[id].name
 	town.game.dialogue_text = words(id)
 	town.game.set_state("dialogue")
 
 func words(id: String) -> String:
+	if not town.radio_ready and town.inventory.antenna==0:
+		return "The radio aerial coupling is broken. There is a brass spare in the locked Whitcomb mausoleum at Old Mill Cemetery, off the road between town and your wreck. Follow the cemetery footpath on the east side. Bring it back with the workshop coil and chapel tuning unit."
 	if town.radio_ready:
 		if town.game.story.direct_channel_selected():
 			return "The bypass is green. That is the direct county channel. Tell them our location and ask for no sirens.\n\nHold E at the main receiver to transmit, then switch it off. We need a real person on the road, not another recording."
@@ -227,5 +359,5 @@ func words(id: String) -> String:
 				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil and cellar key from this cabinet. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
 			if town.inventory.tuner==0:
 				return "Ada left on the last bus. Her letter is at our house. I told her I'd catch up after securing the equipment.\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle. The bench instructions explain the station's bypass switch."
-			return "You have both parts. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nNo sirens. Tell them there are people missing in the woods, and that the chapel repeater must be disconnected. Don't let another team mistake its old messages for us."
+			return "You have the coil, tuner and cemetery antenna coupler. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nNo sirens. Tell them there are people missing in the woods, and that the chapel repeater must be disconnected. Don't let another team mistake its old messages for us."
 	return "Stay safe out there."

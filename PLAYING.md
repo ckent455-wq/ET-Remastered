@@ -79,3 +79,5 @@ Opening the keyed chapel cellar door takes you straight into the basement in one
 AMMUNITION: The ranger pistol has only 3 loaded rounds and no reserve. Collect ammo cartons with E; R reloads from your reserve. Pistol cartons give 6 rounds, rifle cartons 12 rounds, and shotgun cartons 4 shells. Cartons can be collected before finding their weapon. New weapons give their loaded ammunition only, with no free reserve; previously collected rounds are retained. The journal shows all three reserve counts.
 
 Ammo cartons are scattered through the store, hotel rooms, clinic, ranger office, workshop, radio station and chapel cellar. They stay collected for the current journey, and restore on a new journey.
+
+OLD MILL CEMETERY: Follow the east/right footpath from Old Mill Road between the wreck and town. Get the mausoleum key from Elias at the town entrance, unlock the Whitcomb mausoleum, and take the coupler inside. It occupies two backpack slots and is required alongside the coil and tuning unit to repair the station radio. Press I for the backpack; TAB opens the journal and updated map.

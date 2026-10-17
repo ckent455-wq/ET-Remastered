@@ -199,6 +199,8 @@ func prompt(id: String) -> String:
 	var data = containers[id]
 	if data.needs_power and not town.powered:
 		return "E / Locked coil cabinet - restore workshop power"
+	if data.get("pending_loot",false):
+		return "E / "+("Close " if data.open else "Search ")+data.label+" (supplies remain)"
 	if data.open:
 		return "E / Close "+data.label+" (searched)"
 	return "E / "+("Open "+data.label+" (searched)" if data.searched else "Search "+data.label)
@@ -226,19 +228,28 @@ func toggle(id: String):
 	town.game.soundscape.storage_move(data.root.global_position,data.mode=="drawer",data.open)
 	if not data.open:
 		return
-	if data.searched:
+	if data.searched and not data.get("pending_loot",false):
 		town.game.message = "Already searched. Nothing else in the "+data.label+"."
 		return
 	data.searched = true
+	data.pending_loot = false
 	var found: Array[String] = []
 	for item_id in data.loot_ids:
 		if not town.actions[item_id].taken:
 			town.perform(item_id)
-			found.append(LOOT_NAMES[item_id])
-	for key in data.extras:
-		town.inventory[key] += data.extras[key]
-		found.append({"battery":"flashlight battery","medkit":"first-aid kit","chapel_key":"chapel cellar key"}.get(key,key))
+			if town.actions[item_id].taken: found.append(LOOT_NAMES[item_id])
+			else: data.pending_loot = true
+	if not data.has("remaining_extras"): data.remaining_extras = data.extras.duplicate()
+	for key in data.remaining_extras:
+		while data.remaining_extras[key]>0:
+			if town.game.backpack and not town.game.backpack.room_for(key):
+				data.pending_loot = true
+				break
+			town.inventory[key] += 1
+			data.remaining_extras[key] -= 1
+			found.append({"battery":"flashlight battery","medkit":"first-aid kit","chapel_key":"chapel cellar key","mausoleum_key":"mausoleum key"}.get(key,key))
 	town.game.message = "Found: "+", ".join(found)+"." if not found.is_empty() else data.empty_text
+	if data.pending_loot: town.game.message = "Backpack full. Remaining supplies stay in this container."
 	if not found.is_empty():
 		town.game.soundscape.feedback("pickup")
 	town.focus_action = ""
@@ -251,6 +262,8 @@ func reset():
 		data.tweens.clear()
 		data.open = false
 		data.searched = false
+		data.pending_loot = false
+		data.remaining_extras = data.extras.duplicate()
 		for part in data.moving:
 			if data.mode=="drawer":
 				part.position.z = 0

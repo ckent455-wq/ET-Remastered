@@ -55,6 +55,7 @@ func build_alley_barriers(side: int):
 		alley_barriers.append(barrier)
 
 func shoulder_clear(p: Vector3) -> bool:
+	if p.x>0 and p.z> -18 and p.z< -6: return false
 	if p.distance_to(Vector3(3.8,0,13))<5.5 or p.distance_to(Vector3(4.4,0,-35))<4.8:
 		return false
 	if p.length()<7.0:

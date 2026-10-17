@@ -29,7 +29,7 @@ const RECORDS = {
   ],
   "radio_note": [
     "County radio / bypass switch",
-    "The coil powers this transmitter. The spare tuning unit provides the direct county channel. Fit BOTH parts.\nThen use the small BYPASS switch on the left of this desk. AMBER routes through the chapel repeater; GREEN goes directly to county dispatch.\nHold E at the main receiver to transmit. Identify Old Mill Road and request NO SIRENS.\nMara, Owen and the cellar log explain why.",
+    "The coil powers this transmitter. The spare tuning unit provides the direct county channel. Fit both and the spare antenna coupler from Old Mill Cemetery.\nThen use the small BYPASS switch on the left of this desk. AMBER routes through the chapel repeater; GREEN goes directly to county dispatch.\nHold E at the main receiver to transmit. Identify Old Mill Road and request NO SIRENS.\nMara, Owen and the cellar log explain why.",
     "Radio routing is a physical switch: amber repeats through the chapel; green reaches county directly."
   ],
   "crash_record": [
@@ -39,7 +39,7 @@ const RECORDS = {
   ],
   "workshop_record": [
     "Owen's disconnection log",
-    "AFTER THE EVACUATION\nThe chapel carrier rode every relayed broadcast. Days near a speaker brought confusion; weeks brought changes. Ordinary radio is not the cause. That repeating tone is.\nBefore the bus left, it used Ada's voice while she stood beside me. I removed the station coil after she left. The separately powered hill rack still runs.\nMy cabinet holds the coil and cellar key. The isolated county tuner and rifle are below the chapel. Fit both parts; set the desk bypass GREEN.\n- Owen",
+    "AFTER THE EVACUATION\nThe chapel carrier rode every relayed broadcast. Days near a speaker brought confusion; weeks brought changes. Ordinary radio is not the cause. That repeating tone is.\nBefore the bus left, it used Ada's voice while she stood beside me. I removed the station coil after she left. The separately powered hill rack still runs.\nMy cabinet holds the coil and cellar key. The isolated county tuner and rifle are below the chapel. Collect the antenna coupler from the locked cemetery mausoleum as well. Fit all three parts; set the desk bypass GREEN.\n- Owen",
     "Owen stopped town broadcasts. The separately powered chapel carrier persists; direct county bypass avoids it."
   ],
   "chapel_record": [
@@ -49,7 +49,7 @@ const RECORDS = {
   ],
   "cellar_record": [
     "Carrier test / direct-channel procedure",
-    "OWEN / CELLAR TEST\nThree shapes circle the hill: Jonah in his work coat; Edith with her clinic bracelet; Silas with the splinted hand. The missing did not bring monsters here. They became them.\nA shot stops them, but the carrier starts their bodies moving again about two minutes later. It is not a cure.\nTake the spare tuner and rifle. Fit tuner and coil at the station; set BYPASS GREEN / DIRECT COUNTY. Call Old Mill Road, NO SIRENS, then switch off. Amber feeds this rack.",
+    "OWEN / CELLAR TEST\nThree shapes circle the hill: Jonah in his work coat; Edith with her clinic bracelet; Silas with the splinted hand. The missing did not bring monsters here. They became them.\nA shot stops them, but the carrier starts their bodies moving again about two minutes later. It is not a cure.\nTake the spare tuner and rifle. Fit tuner, coil and cemetery antenna coupler at the station; set BYPASS GREEN / DIRECT COUNTY. Call Old Mill Road, NO SIRENS, then switch off. Amber feeds this rack.",
     "Three transformed residents remain tethered to the active carrier. Gunfire stops them temporarily; green bypass avoids relaying it."
   ]
 }
@@ -86,7 +86,7 @@ func build_bypass():
 
 func toggle_bypass():
 	if not game.town.radio_ready:
-		game.message = "Fit the coil and tuning unit before setting the radio bypass."
+		game.message = "Fit the coil, tuning unit and cemetery antenna coupler before setting the bypass."
 		return
 	county_bypass = not county_bypass
 	bypass_lamp.material_override = game.town.mats.green if county_bypass else game.town.mats.amber

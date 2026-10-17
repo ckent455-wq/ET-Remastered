@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://de74s32c4hv4j"
-path="res://.godot/imported/body_T_CorrugatedMetalSheet_BaseColor.png-307995d9e3e09ce9ff0520611fb06140.ctex"
+path.s3tc="res://.godot/imported/body_T_CorrugatedMetalSheet_BaseColor.png-307995d9e3e09ce9ff0520611fb06140.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "c85da4b3eb43b27c473be0557b9d61d7"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/lockbox/body_T_CorrugatedMetalSheet_BaseColor.png"
-dest_files=["res://.godot/imported/body_T_CorrugatedMetalSheet_BaseColor.png-307995d9e3e09ce9ff0520611fb06140.ctex"]
+dest_files=["res://.godot/imported/body_T_CorrugatedMetalSheet_BaseColor.png-307995d9e3e09ce9ff0520611fb06140.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

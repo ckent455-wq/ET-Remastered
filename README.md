@@ -1,4 +1,8 @@
-# Far From Home â€” first-person edition
+# v0.8.0 update
+
+See [RELEASE_NOTES.md](RELEASE_NOTES.md) for the backpack, cemetery, NPC, and dialogue changes. Godot 4.7.2 is used for this release. Voices are pending user recordings.
+
+# Far From Home — first-person edition
 
 Open project.godot in Godot 4.5 and press F5.
 
@@ -10,7 +14,7 @@ After the engine splash, a short presentation reads "Traingle Studios Presents..
 
 The Far From Home title screen now presents Blackwood as survival horror: a live roadside view, weathered cream lettering, muted rust accents, scanlines, and the Population 3 sign. Enter Blackwood starts a new game; Controls shows the key guide; Quit closes the game. Enter also starts, and M toggles sound. The title camera never changes the player's starting position. The title and pause/end menus no longer use alien or spaceship story text.
 
-Title atmosphere: soft distant lightning appears at irregular 12â€“21 second intervals after an initial 4â€“7 second wait. A gentle 7.5-second thunder roll follows each flash by 1.5â€“2.9 seconds. M mutes the thunder with the other sounds; flashes and pending thunder stop when gameplay starts.
+Title atmosphere: soft distant lightning appears at irregular 12–21 second intervals after an initial 4–7 second wait. A gentle 7.5-second thunder roll follows each flash by 1.5–2.9 seconds. M mutes the thunder with the other sounds; flashes and pending thunder stop when gameplay starts.
 
 On Windows, this project uses the ANGLE/Direct3D11 compatibility driver and caps rendering at 60 FPS. A native stack sample of a frozen game on this computer showed the main thread spinning inside Intel's `ig11icd64.dll` OpenGL driver. ANGLE avoids that OpenGL driver path while keeping the compatibility renderer and the PS2-style visuals.
 
@@ -68,7 +72,7 @@ The source humanoid has 402 triangles. Each variant keeps that count and a 256-p
 The flashlight starts at 45% charge and drains only while switched on. The HUD bar shows charge; collected disposable batteries refill it with Q. At zero the light stays off until a spare is fitted. Health-kit and battery counts, objectives and radio status are in the TAB journal. Drones and their audio are disabled for now. The first-person camera stays at a fixed eye height without head bob. The journal pauses movement and ambient audio. Starting a new journey resets doors, supplies, notes, inventory, workshop power, radio calibration, and flashlight charge.
 
 ## Detailed interiors and searching
-Eight local model types appear as 74 reused instances: wooden doors, bookshelves, books, floor lamps, curtains, cardboard packing boxes, a teapot, and a sink. Converted meshes contain 348â€“1,782 triangles and diffuse textures are capped at 256 pixels. Simple vertex lighting, small textures, the original render resolution, and fog preserve the PS2-inspired appearance. Buildings also have painted wall panels, wood trim, rafters, window frames, porch posts, drainpipes, room-specific posters, improved chairs and beds, and paper clutter.
+Eight local model types appear as 74 reused instances: wooden doors, bookshelves, books, floor lamps, curtains, cardboard packing boxes, a teapot, and a sink. Converted meshes contain 348–1,782 triangles and diffuse textures are capped at 256 pixels. Simple vertex lighting, small textures, the original render resolution, and fog preserve the PS2-inspired appearance. Buildings also have painted wall panels, wood trim, rafters, window frames, porch posts, drainpipes, room-specific posters, improved chairs and beds, and paper clutter.
 
 Aim at a drawer front or cabinet and press E. The drawer slides or the cabinet doors swing outward into the room; the first search adds its contents to the pack. E closes it, and reopening a searched container never awards more loot. Prompts identify searched storage; the journal shows the number searched. The coil cabinet stays locked until workshop power is restored. Storage movement and sound pause with the journal or a conversation. All twelve containers and their concealed contents reset for a new journey.
 
@@ -115,7 +119,7 @@ The PS2-inspired treatment uses 256 x 256 diffuse textures, cutout foliage, simp
 
 The downloaded Horror SFX Free pack adds quiet atmospheric sound, contextual building creaks and distant calls, an arrival bell, frogs, and localized radio static. The static recedes after radio repair, and wind quiets indoors. Distinct recorded on/off clicks, door squeaks, and drawer/cabinet opening and closing sounds replace the earlier interaction cues. Accents have long cooldowns and stop outside gameplay; all new audio follows the existing mute control.
 
-The flashlight uses a local switch-click recording. Five leaf-crunch footstep variations follow distance travelled, with louder, quicker steps during sprinting. Wind and rustling leaves loop softly; owl, night-bird, and insect calls play from random nearby locations every 10â€“24 seconds. Escape pauses the soundscape; M mutes all sound, including effects.
+The flashlight uses a local switch-click recording. Five leaf-crunch footstep variations follow distance travelled, with louder, quicker steps during sprinting. Wind and rustling leaves loop softly; owl, night-bird, and insect calls play from random nearby locations every 10–24 seconds. Escape pauses the soundscape; M mutes all sound, including effects.
 Town doors use a local creak recording positioned at the doorway. Pickups, restored power, and radio calibration have short synthesized cues.
 Drawers and cabinets use a short positional slide-and-clunk cue, also controlled by M and pause.
 

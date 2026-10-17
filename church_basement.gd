@@ -94,7 +94,7 @@ func build_room():
 	stair_light.name = "FaintCellarStairLight"
 	stair_light.light_cull_mask = 2
 	var cell = town.action_area(self,Vector3(3.3,0.92,-2.4),Vector3(0.5,0.4,0.5),"cellar_battery",{"kind":"item","item":"battery","label":"Take flashlight battery"})
-	town.box(cell,Vector3.ZERO,Vector3(0.18,0.24,0.12),display,false)
+	cell.add_child(preload("res://supply_models.gd").build("battery"))
 	town.box(self,Vector3(3.3,0.4,-2.4),Vector3(1.2,0.8,0.7),town.mats.wood)
 
 func dress():

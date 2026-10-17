@@ -93,6 +93,9 @@ func make_pickups():
 func collect(index: int) -> bool:
 	if game.state!="play" or index<0 or index>=LOADOUT.size() or owned[index]:
 		return false
+	if game.backpack and not game.backpack.room_for("gun%d" % index):
+		game.message = "Backpack full. Free space before taking this weapon."
+		return false
 	owned[index] = true
 	magazines[index] = LOADOUT[index].pickup_rounds
 	# Keep scavenged rounds collected before finding this weapon.
@@ -103,6 +106,8 @@ func collect(index: int) -> bool:
 func add_ammo(index: int, amount: int) -> int:
 	if game.state!="play" or index<0 or index>=LOADOUT.size() or amount<=0: return 0
 	var added = mini(amount,LOADOUT[index].max_reserve-reserves[index])
+	if game.backpack:
+		while added>0 and not game.backpack.room_for("ammo%d" % index,added): added-=1
 	reserves[index] += added
 	return added
 

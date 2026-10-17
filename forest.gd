@@ -27,7 +27,6 @@ func _ready():
 	needle_material.roughness = 1
 	needle_material.metallic_specular = 0
 	crowns = [make_crown(33),make_crown(77)]
-	make_paths()
 	for attempt in range(1800):
 		if tree_count>=180:
 			break
@@ -105,6 +104,8 @@ func random_point() -> Vector3:
 	return Vector3(rng.randf_range(-46,46),0,rng.randf_range(-46,46))
 
 func can_place(p: Vector3, path_clearance: float, clearing: float) -> bool:
+	# Reserve the cemetery, its sightlines, and its road connection.
+	if p.x>3 and p.x<28 and p.z> -29 and p.z< -1: return false
 	# Clear the accident scene and the continuous walking lane into town.
 	if Vector2(p.x-3.8,p.z-13).length()<6.0 or (p.z<21 and p.z> -56 and absf(p.x)<2.6):
 		return false
@@ -173,29 +174,3 @@ func add_collision(object: Node3D, radius: float, height: float):
 	collision.shape = shape
 	collision.position.y = height/2
 	object.add_child(collision)
-
-func make_paths():
-	var material = StandardMaterial3D.new()
-	material.albedo_texture = preload("res://assets/forest/ground_ps2.png")
-	material.albedo_color = Color("8a8067")
-	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
-	material.roughness = 1
-	material.metallic_specular = 0
-	for target in TARGETS:
-		var direction = target.normalized()
-		var side = Vector3(-direction.z,0,direction.x)
-		var tool = SurfaceTool.new()
-		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-		for i in range(16):
-			var start = direction*(target.length()*i/16.0)
-			var finish = direction*(target.length()*(i+1)/16.0)
-			var width = 1.1+sin(i*0.8)*0.17
-			var points = [start-side*width,start+side*width,finish-side*width,finish+side*width]
-			for idx in [0,2,1,1,2,3]:
-				tool.set_uv(Vector2(points[idx].x,points[idx].z)*0.3)
-				tool.set_normal(Vector3.UP)
-				tool.add_vertex(points[idx]+Vector3(0,0.015,0))
-		var mesh = MeshInstance3D.new()
-		mesh.mesh = tool.commit()
-		mesh.material_override = material
-		add_child(mesh)

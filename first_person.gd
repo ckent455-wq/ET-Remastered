@@ -28,6 +28,10 @@ var intro_elapsed = 0.0
 var message = "Explore Blackwood and speak to its remaining townspeople."
 var dialogue_name = ""
 var dialogue_text = ""
+var dialogue_pages: Array[String] = []
+var dialogue_page = 0
+var dialogue_view = {}
+
 var pitch = 0.0
 var crash_site: Node3D
 var soundscape: Node
@@ -35,6 +39,7 @@ var arm_visual: Node3D
 var weapons: Node3D
 var enemies: Node3D
 var story: Node
+var backpack
 var journal_casefile = false
 var town: Node3D
 var fog_atmosphere: Node3D
@@ -208,6 +213,9 @@ func _ready():
 	forest_boundary.set_script(preload("res://forest_boundary.gd"))
 	forest_boundary.game = self
 	add_child(forest_boundary)
+	backpack = preload("res://backpack.gd").new()
+	backpack.game = self
+	canvas.add_child(backpack)
 	update_camera()
 
 func prepare_flashlight(node: Node):
@@ -255,7 +263,13 @@ func reset_game():
 	flashlight_model.rotation = Vector3.ZERO
 	flashlight_model.visible = true
 	journal_page = 0
-	message = "Your car is wrecked. Follow the road into Blackwood and find help."
+	if backpack:
+		backpack.selected = 0
+		backpack.saved_cells.clear()
+		backpack.dragging = ""
+		backpack.discard_pending = ""
+		backpack.notice = "Select an item to equip, use or examine."
+	message = "Your car is wrecked. Old Mill Cemetery is on the right along the road into Blackwood."
 	soundscape.reset()
 	town.reset()
 	weapons.reset()
@@ -263,6 +277,44 @@ func reset_game():
 	if story: story.reset()
 
 func set_state(next: String):
+	if next=="dialogue" and state!="dialogue":
+		dialogue_page=0
+		dialogue_pages.clear()
+		for paragraph in dialogue_text.split("\n\n",false):
+			var beat=""
+			for sentence in paragraph.split(". ",false):
+				if beat.length()+sentence.length()>150 and beat!="":
+					dialogue_pages.append(beat.strip_edges())
+					beat=""
+				beat+=sentence+(" " if sentence.ends_with(".") or sentence.ends_with("!") or sentence.ends_with("?") else ". ")
+			if beat!="": dialogue_pages.append(beat.strip_edges())
+		var bounded: Array[String] = []
+		for page in dialogue_pages:
+			var chunk=""
+			for word in page.split(" ",false):
+				if chunk.length()+word.length()>140 and chunk!="":
+					bounded.append(chunk.strip_edges())
+					chunk=""
+				chunk+=word+" "
+			if chunk!="": bounded.append(chunk.strip_edges())
+		dialogue_pages=bounded
+		if dialogue_pages.is_empty(): dialogue_pages.append(dialogue_text)
+		dialogue_view={"yaw":player.rotation.y,"pitch":pitch,"fov":camera.fov}
+		for person in town.townspeople.characters.values():
+			if person.name==dialogue_name:
+				var facing: Vector3=person.parent.global_basis.inverse()*(player.global_position-person.actor.global_position)
+				person.actor.rotation.y=atan2(facing.x,facing.z)
+				var toward=person.actor.global_position+Vector3(0,1.45,0)-camera.global_position
+				player.rotation.y=atan2(-toward.x,-toward.z)
+				pitch=atan2(toward.y,Vector2(toward.x,toward.z).length())
+				camera.rotation.x=pitch
+				camera.fov=66
+	if state=="dialogue" and next!="dialogue" and not dialogue_view.is_empty():
+		player.rotation.y=dialogue_view.yaw
+		pitch=dialogue_view.pitch
+		camera.rotation.x=pitch
+		camera.fov=dialogue_view.fov
+		dialogue_view.clear()
 	state = next
 	if state!="play": jump_queued = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state=="play" else Input.MOUSE_MODE_VISIBLE
@@ -276,6 +328,12 @@ func update_camera():
 		active_camera.make_current()
 
 func _unhandled_input(event):
+	if state=="backpack":
+		backpack.handle(event)
+		return
+	if state=="journal" and event is InputEventKey and event.pressed and event.keycode==KEY_I:
+		set_state("backpack")
+		return
 	if state=="title" and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 		hud.controls_open = false
 		return
@@ -284,8 +342,11 @@ func _unhandled_input(event):
 			set_state("title")
 		return
 	if state=="dialogue":
-		if event is InputEventKey and event.pressed and not event.echo and event.keycode in [KEY_E,KEY_ENTER,KEY_ESCAPE,KEY_TAB]:
-			set_state("play")
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode in [KEY_ESCAPE,KEY_TAB]: set_state("play")
+			elif event.keycode in [KEY_E,KEY_ENTER,KEY_SPACE]: advance_dialogue()
+		if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+			if Rect2(414,279,124,26).has_point(event.position): advance_dialogue()
 		return
 	if event is InputEventMouseMotion and state=="play" and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:
 		player.rotate_y(-event.relative.x*0.0026)
@@ -307,6 +368,8 @@ func _unhandled_input(event):
 			set_state("play")
 		elif event.keycode==KEY_ESCAPE:
 			set_state("paused" if state=="play" else "play")
+		if event.keycode==KEY_I and state=="play":
+			set_state("backpack")
 		if event.keycode==KEY_TAB and state in ["play","journal"]:
 			journal_page = 0
 			journal_casefile = false
@@ -453,3 +516,7 @@ func update_flashlight_battery(delta: float):
 	if flashlight_charge<=0:
 		flashlight.visible = false
 		message = "Flashlight battery exhausted. Find batteries in town; Q fits a spare."
+
+func advance_dialogue():
+	if dialogue_page+1<dialogue_pages.size(): dialogue_page+=1
+	else: set_state("play")

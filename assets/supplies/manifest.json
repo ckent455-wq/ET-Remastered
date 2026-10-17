@@ -1,0 +1,12 @@
+{
+  "battery": {
+    "file": "battery.glb",
+    "source": "https://elbolilloduro.itch.io/survival-psx",
+    "license": "CC0"
+  },
+  "medkit": {
+    "file": "medkit.glb",
+    "source": "https://pomarf.itch.io/medkit",
+    "license": "Author grants unrestricted use, including commercial use; see SOURCES.md"
+  }
+}
