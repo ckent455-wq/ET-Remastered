@@ -39,14 +39,11 @@ static func build(id: String) -> Node3D:
 	var dark=material("252c2a")
 	var cream=material("e0d4b4")
 	match id:
-		"fuse":
-			var glass=material("85a5a0")
-			var body=cylinder(root,Vector3.ZERO,0.045,0.20,glass)
-			body.rotation.z=PI/2
-			for x in [-0.105,0.105]:
-				var cap=cylinder(root,Vector3(x,0,0),0.05,0.05,steel)
-				cap.rotation.z=PI/2
-			box(root,Vector3.ZERO,Vector3(0.16,0.012,0.095),cream)
+		"workshop_battery":
+			box(root,Vector3.ZERO,Vector3(0.38,0.25,0.23),dark)
+			box(root,Vector3(0,0.035,0.12),Vector3(0.28,0.12,0.012),cream)
+			for x in [-0.12,0.12]: cylinder(root,Vector3(x,0.15,0),0.025,0.06,steel)
+			box(root,Vector3(0,0.17,0),Vector3(0.14,0.025,0.035),dark)
 		"coil":
 			var copper=material("b46f3b",0.5)
 			var core=cylinder(root,Vector3.ZERO,0.075,0.31,dark)

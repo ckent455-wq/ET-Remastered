@@ -9,7 +9,7 @@ const PROTOCOL = ["clinic_note","workshop_record","cellar_record"]
 const RECORDS = {
   "ranger_note": [
     "Road closure log",
-    "EVACUATION NIGHT / THREE NIGHTS AGO\n01:40. Last bus went south. I closed the road behind it.\n02:17. A bus horn sounded from the chapel loudspeaker. I reopened the barrier for the returning driver. No vehicle came.\n02:20. I radioed: \"Three still here. Road open.\" No reply.\nAt dawn only Mara, Owen and I remained. Station key is in my desk drawer. Ada left the shotgun-box key on the hotel bedroom dresser.\n- Elias",
+    "EVACUATION NIGHT / THREE NIGHTS AGO\nThe mill closed twelve years ago. Most families left over the next few years; the empty shops were boarded long before this emergency.\n01:40. The final bus took the last families still living here. I closed the road behind it.\n02:17. A bus horn sounded from the chapel loudspeaker. I reopened the barrier for the returning driver. No vehicle came.\n02:20. I radioed: \"Three still here. Road open.\" No reply.\nAt dawn only Mara, Owen and I remained. Station key is in my desk drawer. Ada left the shotgun-box key on the Saint George Hotel bedroom dresser.\n- Elias",
     "Elias reopened the barrier after a recorded bus horn. His last message was never acknowledged."
   ],
   "clinic_note": [
@@ -19,12 +19,12 @@ const RECORDS = {
   ],
   "store_note": [
     "Last departure / 01:40",
-    "Written before the final evacuation bus:\nFour unused tickets remain. Departure is 01:40. The driver will not return tonight.\nFor weeks customers forgot their shopping, then shouted at voices in the ceiling speaker. We called it exhaustion. The clinic called the evacuation.\nThe roof has leaked since winter. Rear stock is spoiled. Do not come back for it.\nI left a fuse in the counter drawer and batteries in the rear cabinet for whoever stays.\n- Ruth",
-    "The last bus was a one-way evacuation. The town's decay predates it."
+    "Written before the final evacuation bus:\nFour unused tickets remain. Departure is 01:40. The driver will not return tonight.\nFor weeks customers forgot their shopping, then shouted at voices in the ceiling speaker. We called it exhaustion. The clinic called the evacuation.\nSebus Hardware and the other boarded shops have stood empty for years. We kept this general store open for the few families who stayed after the mill closed twelve years ago.\nOur roof has leaked through several winters. Last month's storm brought part of the ceiling down. Rear stock is spoiled. Do not come back for it.\nI left a workshop battery in the counter drawer and batteries in the rear cabinet for whoever stays.\n- Ruth",
+    "Blackwood declined for twelve years after the mill closed. The storm worsened old damage; the last remaining families evacuated three nights ago."
   ],
   "house_note": [
     "Ada's letter",
-    "Owen,\nI am taking the 01:40 bus. I packed for two nights in case they let us return.\nFirst it was the ringing. Then you forgot our address. You slept when we unplugged the set and stayed away from the hill. Please keep it off.\nYou heard my voice on the radio while I stood beside you. I believe you. You do not owe that repeater another night.\nCome after you secure the equipment. Mara still needs a seat. The shotgun-box key is on our dresser.\nI left dinner. I thought we had more time.\n- Ada",
+    "Owen,\nI am taking the final 01:40 bus. I packed for two nights in case they let us return.\nMost of the rooms at Saint George Hotel have been shut for years. We kept ours warm and dry. Please do not spend another winter here alone.\nFirst it was the ringing. Then you forgot our address. You slept when we unplugged the set and stayed away from the hill. Please keep it off.\nYou heard my voice on the radio while I stood beside you. I believe you. You do not owe that repeater another night.\nCome after you secure the equipment. Mara still needs a seat. The shotgun-box key is on our dresser.\nI left dinner. I thought we had more time.\n- Ada",
     "Ada describes Owen's early symptoms easing away from the signal. She left on the last bus."
   ],
   "radio_note": [
@@ -34,17 +34,17 @@ const RECORDS = {
   ],
   "crash_record": [
     "The detour sheet",
-    "You picked up this photocopied road notice at the fuel stop before turning onto Old Mill Road. It is still tucked into your map.\nBRIDGE CLOSED. DIVERT THROUGH BLACKWOOD.\nThe seal is reversed and the sheet has no date. You trusted it.\nA shape crossed the headlights. You swerved into the stump beside the road.\nNo phone service. There are lights in town.",
+    "You picked up this photocopied road notice at the fuel stop before turning onto Old Mill Road. You left it on the front seat.\nBRIDGE CLOSED. DIVERT THROUGH BLACKWOOD.\nThe seal is reversed and the sheet has no date. You trusted it.\nA shape crossed the headlights. You swerved into the stump beside the road.\nNo phone service. There are lights in town.",
     "The driver followed an undated detour sheet collected at a fuel stop, then swerved off the road."
   ],
   "workshop_record": [
     "Owen's disconnection log",
-    "AFTER THE EVACUATION\nThe chapel carrier rode every relayed broadcast. Days near a speaker brought confusion; weeks brought changes. Ordinary radio is not the cause. That repeating tone is.\nBefore the bus left, it used Ada's voice while she stood beside me. I removed the station coil after she left. The separately powered hill rack still runs.\nMy cabinet holds the coil and cellar key. The isolated county tuner and rifle are below the chapel. Collect the antenna coupler from the locked cemetery mausoleum as well. Fit all three parts; set the desk bypass GREEN.\n- Owen",
+    "AFTER THE EVACUATION\nThe chapel carrier rode every relayed broadcast. Days near a speaker brought confusion; weeks brought changes. Ordinary radio is not the cause. That repeating tone is.\nBefore the bus left, it used Ada's voice while she stood beside me. I removed the station coil after she left. The separately powered hill rack still runs.\nMy cabinet holds the coil. The mausoleum holds the cellar key. The isolated county tuner and rifle are below the chapel. Collect the antenna coupler from the locked cemetery mausoleum as well. Fit all three parts; set the desk bypass GREEN.\n- Owen",
     "Owen stopped town broadcasts. The separately powered chapel carrier persists; direct county bypass avoids it."
   ],
   "chapel_record": [
     "Vestry maintenance book",
-    "ONE MONTH BEFORE THE EVACUATION\nAfter the storm, the cellar repeater began carrying a low tone beneath old messages. Its buried line feeds the station and porch speaker. Nobody transmitted the tone.\nCaretaker Jonah slept beside the running rack. He forgot prayers, then his own name. His hands changed. I saw him crawl into the woods a week before the bus.\nWe kept the warning speaker running. We were spreading it.\nI am leaving on the final bus.\n- Father Bellamy",
+    "ONE MONTH BEFORE THE EVACUATION\nA month ago, the storm tore at roofs already neglected for years. It damaged the cellar repeater, which began carrying a low tone beneath old messages. Its buried line feeds the station and porch speaker. Nobody transmitted the tone.\nCaretaker Jonah slept beside the running rack. He forgot prayers, then his own name. His hands changed. I saw him crawl into the woods a week before the bus.\nWe kept the warning speaker running. We were spreading it.\nThese entries cover the month since the storm. Tonight I am leaving on the final bus.\n- Father Bellamy",
     "The storm-damaged chapel repeater spread an unidentified carrier. Caretaker Jonah was the first to change."
   ],
   "cellar_record": [
@@ -61,7 +61,7 @@ func _ready():
 			game.town.actions[id].title = RECORDS[id][0]
 			game.town.actions[id].text = RECORDS[id][1]
 	var town = game.town
-	document(game.crash_site.wreck,Vector3(-0.98,1.08,0.95),"crash_record")
+	game.crash_site.build_detour_sheet()
 	document(town.buildings.workshop,Vector3(-3.15,0.94,-2.4),"workshop_record")
 	var chapel = town.streetscape.church
 	# A small lectern in the side aisle leaves the nave's center clear.
@@ -138,3 +138,13 @@ func question() -> String:
 	if evidence.has("clinic_note"): return "Can the carrier be bypassed before it changes anyone else?"
 	if evidence.has("ranger_note"): return "Why did Elias reopen an evacuated road?"
 	return "The detour sheet was undated. Why was the road into Blackwood still open?"
+
+func collect_detour_sheet():
+	var id = "crash_record"
+	read_evidence(id)
+	if not game.town.journal_entries.any(func(entry): return entry.id==id):
+		game.town.journal_entries.append({"id":id,"title":RECORDS[id][0],"text":RECORDS[id][1]})
+	for i in range(game.town.journal_entries.size()):
+		if game.town.journal_entries[i].id==id: game.journal_page=i+2
+	game.journal_casefile=false
+	game.set_state("journal")

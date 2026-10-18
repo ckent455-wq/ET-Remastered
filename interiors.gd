@@ -7,7 +7,7 @@ var scenes = {}
 var manifest = {}
 var prop_count = 0
 var animations_active = false
-const LOOT_NAMES = {"station_key":"radio-station key","fuse":"workshop fuse","coil":"signal coil","medkit_a":"first-aid kit","medkit_b":"first-aid kit","medkit_c":"first-aid kit","battery_a":"flashlight battery","battery_b":"flashlight battery","battery_c":"flashlight battery"}
+const LOOT_NAMES = {"station_key":"radio-station key","workshop_battery":"workshop battery","coil":"signal coil","medkit_a":"first-aid kit","medkit_b":"first-aid kit","medkit_c":"first-aid kit","battery_a":"flashlight battery","battery_b":"flashlight battery","battery_c":"flashlight battery"}
 
 func _ready():
 	name = "InteriorDetails"
@@ -120,9 +120,9 @@ func make_storage():
 	cabinet("ranger","ranger_cabinet",Vector3(-0.6,0,-4.45),"ranger supply cabinet",[],{"battery":1})
 	cabinet("clinic","clinic_cabinet",Vector3(2.4,0,-4.45),"medicine cabinet",["medkit_a","medkit_b"],{},false,Vector3(1.4,1.8,0.7),"plaster")
 	drawer("clinic","clinic_drawer",Vector3(-4.6,0,1.6),"bedside drawer",[],{},"Only empty blister packs and old receipts.")
-	drawer("store","store_drawer",Vector3(-3.85,0.12,-3.65),"store counter drawer",["fuse"])
+	drawer("store","store_drawer",Vector3(-3.85,0.12,-3.65),"store counter drawer",["workshop_battery"])
 	cabinet("store","store_cabinet",Vector3(3.5,0,-4.45),"stock cabinet",["battery_a","battery_b"])
-	cabinet("workshop","workshop_cabinet",Vector3(-4.6,0,0.6),"signal-coil cabinet",["coil"],{"chapel_key":1},true,Vector3(1.25,1.75,0.7),"metal")
+	cabinet("workshop","workshop_cabinet",Vector3(-4.6,0,0.6),"signal-coil cabinet",["coil"],{},true,Vector3(1.25,1.75,0.7),"metal")
 	drawer("workshop","workshop_drawer",Vector3(-4.0,0.12,-2.6),"spare-parts drawer",[],{"battery":1})
 	drawer("house","house_drawer",Vector3(-4.6,0,-2.6),"bedside drawer",["medkit_c"])
 	cabinet("house","house_cabinet",Vector3(3.7,0,-4.45),"kitchen cabinet",["battery_c"],{},false,Vector3(1.5,0.9,0.7))
@@ -208,7 +208,7 @@ func prompt(id: String) -> String:
 func toggle(id: String):
 	var data = containers[id]
 	if data.needs_power and not town.powered:
-		town.game.message = "The coil cabinet is locked. Restore power at the outside panel."
+		town.game.message = "The coil cabinet is locked. Restore power at the rear terminal."
 		return
 	data.open = not data.open
 	for tween in data.tweens:

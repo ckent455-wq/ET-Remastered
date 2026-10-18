@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://b35drhbxrwirm"
+path="res://.godot/imported/dialogue_pixels.fnt-73e54f989d58db23c52f31b48de53ab2.fontdata"
+
+[deps]
+
+source_file="res://assets/dialogue_pixels.fnt"
+dest_files=["res://.godot/imported/dialogue_pixels.fnt-73e54f989d58db23c52f31b48de53ab2.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

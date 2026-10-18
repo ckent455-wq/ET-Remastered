@@ -53,10 +53,8 @@ func build_ridge(layer: int, radii: Vector3, color: Color):
 				var height = height_at(angle,layer) if v.y==1 else -3.0
 				corners.append(Vector3(cos(angle)*radius,height,-30+sin(angle)*radius))
 			for triangle in [[0,2,1],[1,2,3]]:
-				var normal = (corners[triangle[1]]-corners[triangle[0]]).cross(corners[triangle[2]]-corners[triangle[0]]).normalized()
-				for index in triangle:
-					tool.set_normal(normal)
-					tool.add_vertex(corners[index])
+				var vertices: Array[Vector3] = [corners[triangle[0]],corners[triangle[1]],corners[triangle[2]]]
+				add_ridge_triangle(tool,vertices)
 	var material = ShaderMaterial.new()
 	material.shader = preload("res://distant_hills.gdshader")
 	material.set_shader_parameter("ground_texture",preload("res://assets/forest/ground_ps2.png"))
@@ -68,3 +66,24 @@ func build_ridge(layer: int, radii: Vector3, color: Color):
 	ridge.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(ridge)
 	ridges.append(ridge)
+
+func add_ridge_triangle(tool: SurfaceTool, vertices: Array[Vector3]):
+	# Backdrop scenery must stay outside the Victorian house and its approach.
+	var cutout = PackedVector2Array([Vector2(-22,-109),Vector2(-2,-109),Vector2(-2,-87),Vector2(-22,-87)])
+	var projected = PackedVector2Array()
+	for vertex in vertices: projected.append(Vector2(vertex.x,vertex.z))
+	var pieces = Geometry2D.clip_polygons(projected,cutout)
+	var normal = (vertices[1]-vertices[0]).cross(vertices[2]-vertices[0]).normalized()
+	for polygon in pieces:
+		var indices = Geometry2D.triangulate_polygon(polygon)
+		for index in indices:
+			var point: Vector2 = polygon[index]
+			var a: Vector2 = projected[0]
+			var b: Vector2 = projected[1]
+			var c: Vector2 = projected[2]
+			var denominator = (b-a).cross(c-a)
+			var u = (point-a).cross(c-a)/denominator
+			var v = (b-a).cross(point-a)/denominator
+			var height = vertices[0].y+u*(vertices[1].y-vertices[0].y)+v*(vertices[2].y-vertices[0].y)
+			tool.set_normal(normal)
+			tool.add_vertex(Vector3(point.x,height,point.y))

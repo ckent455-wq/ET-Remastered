@@ -59,7 +59,7 @@ func check():
 	game.state = "play"
 	town.perform("ranger_drawer")
 	town.perform("store_drawer")
-	town.perform("fuse_panel")
+	town.perform("battery_panel")
 	town.perform("workshop_cabinet")
 	town.perform("cellar_door")
 	town.perform("cellar_door")

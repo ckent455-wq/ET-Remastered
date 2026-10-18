@@ -42,7 +42,7 @@ func check():
 	town.perform("ranger_drawer")
 	assert(town.inventory.station_key==1,"Reopening cannot duplicate loot")
 	town.perform("store_drawer")
-	town.perform("fuse_panel")
+	town.perform("battery_panel")
 	town.perform("workshop_cabinet")
 	assert(town.inventory.coil==1,"Powered cabinet grants quest coil")
 	await create_timer(0.45).timeout

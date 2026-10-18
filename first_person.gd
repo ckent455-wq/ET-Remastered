@@ -44,6 +44,9 @@ var journal_casefile = false
 var town: Node3D
 var fog_atmosphere: Node3D
 var distant_landscape: Node3D
+var falling_tree: Node3D
+var surface_details: Node
+var victorian_house: Node3D
 var forest_boundary: Node3D
 var flashlight_model: Node3D
 var flashlight_raise = 1.0
@@ -183,6 +186,9 @@ func _ready():
 	enemies.set_script(preload("res://enemies.gd"))
 	enemies.game = self
 	add_child(enemies)
+	falling_tree = preload("res://falling_tree.gd").new()
+	falling_tree.game = self
+	add_child(falling_tree)
 	reset_game()
 	title_camera = Camera3D.new()
 	title_camera.name = "BlackwoodTitleCamera"
@@ -213,9 +219,15 @@ func _ready():
 	forest_boundary.set_script(preload("res://forest_boundary.gd"))
 	forest_boundary.game = self
 	add_child(forest_boundary)
+	victorian_house = preload("res://victorian_house.gd").new()
+	victorian_house.game = self
+	add_child(victorian_house)
 	backpack = preload("res://backpack.gd").new()
 	backpack.game = self
 	canvas.add_child(backpack)
+	surface_details = preload("res://surface_details.gd").new()
+	surface_details.game = self
+	add_child(surface_details)
 	update_camera()
 
 func prepare_flashlight(node: Node):
@@ -257,11 +269,11 @@ func reset_game():
 	contact_progress = 0
 	invincible = 0
 	flashlight_charge = START_FLASHLIGHT_CHARGE
-	flashlight.visible = true
-	flashlight_raise = 1.0
+	flashlight.visible = false
+	flashlight_raise = 0.0
 	flashlight_model.position = FLASHLIGHT_UP
 	flashlight_model.rotation = Vector3.ZERO
-	flashlight_model.visible = true
+	flashlight_model.visible = false
 	journal_page = 0
 	if backpack:
 		backpack.selected = 0
@@ -269,36 +281,19 @@ func reset_game():
 		backpack.dragging = ""
 		backpack.discard_pending = ""
 		backpack.notice = "Select an item to equip, use or examine."
-	message = "Your car is wrecked. Old Mill Cemetery is on the right along the road into Blackwood."
+	message = "Find the driver's door. Look at it and press E to retrieve your gear."
 	soundscape.reset()
 	town.reset()
 	weapons.reset()
 	if enemies: enemies.reset()
 	if story: story.reset()
+	if falling_tree: falling_tree.reset()
+	if crash_site: crash_site.reset()
 
 func set_state(next: String):
 	if next=="dialogue" and state!="dialogue":
 		dialogue_page=0
-		dialogue_pages.clear()
-		for paragraph in dialogue_text.split("\n\n",false):
-			var beat=""
-			for sentence in paragraph.split(". ",false):
-				if beat.length()+sentence.length()>150 and beat!="":
-					dialogue_pages.append(beat.strip_edges())
-					beat=""
-				beat+=sentence+(" " if sentence.ends_with(".") or sentence.ends_with("!") or sentence.ends_with("?") else ". ")
-			if beat!="": dialogue_pages.append(beat.strip_edges())
-		var bounded: Array[String] = []
-		for page in dialogue_pages:
-			var chunk=""
-			for word in page.split(" ",false):
-				if chunk.length()+word.length()>140 and chunk!="":
-					bounded.append(chunk.strip_edges())
-					chunk=""
-				chunk+=word+" "
-			if chunk!="": bounded.append(chunk.strip_edges())
-		dialogue_pages=bounded
-		if dialogue_pages.is_empty(): dialogue_pages.append(dialogue_text)
+		dialogue_pages=preload("res://dialogue_style.gd").pages(dialogue_text)
 		dialogue_view={"yaw":player.rotation.y,"pitch":pitch,"fov":camera.fov}
 		for person in town.townspeople.characters.values():
 			if person.name==dialogue_name:
@@ -332,7 +327,7 @@ func _unhandled_input(event):
 		backpack.handle(event)
 		return
 	if state=="journal" and event is InputEventKey and event.pressed and event.keycode==KEY_I:
-		set_state("backpack")
+		open_backpack()
 		return
 	if state=="title" and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 		hud.controls_open = false
@@ -346,7 +341,7 @@ func _unhandled_input(event):
 			if event.keycode in [KEY_ESCAPE,KEY_TAB]: set_state("play")
 			elif event.keycode in [KEY_E,KEY_ENTER,KEY_SPACE]: advance_dialogue()
 		if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
-			if Rect2(414,279,124,26).has_point(event.position): advance_dialogue()
+			if preload("res://dialogue_style.gd").BOX.has_point(event.position): advance_dialogue()
 		return
 	if event is InputEventMouseMotion and state=="play" and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:
 		player.rotate_y(-event.relative.x*0.0026)
@@ -365,11 +360,13 @@ func _unhandled_input(event):
 		if event.keycode==KEY_ENTER and state!="play":
 			if state not in ["paused","journal"]:
 				reset_game()
-			set_state("play")
+				set_state("play")
+				crash_site.start_opening()
+			else: set_state("play")
 		elif event.keycode==KEY_ESCAPE:
 			set_state("paused" if state=="play" else "play")
 		if event.keycode==KEY_I and state=="play":
-			set_state("backpack")
+			open_backpack()
 		if event.keycode==KEY_TAB and state in ["play","journal"]:
 			journal_page = 0
 			journal_casefile = false
@@ -383,7 +380,7 @@ func _unhandled_input(event):
 			journal_casefile = not journal_casefile
 		if event.keycode==KEY_F and state=="play":
 			toggle_flashlight()
-			soundscape.flashlight_click(flashlight.visible)
+			if crash_site.has_flashlight: soundscape.flashlight_click(flashlight.visible)
 		if state=="play" and event.keycode==KEY_E:
 			town.interact()
 		if state=="play" and event.keycode==KEY_H:
@@ -420,7 +417,7 @@ func _physics_process(delta):
 	player.move_and_slide()
 	# The shared world floor is flat at y=0. Prevent corner recovery from
 	# sinking the capsule into that plane and bouncing it back next frame.
-	if player.position.y<0.001 and not town.streetscape.church.basement.contains(player.global_position):
+	if player.position.y<0.001 and not town.streetscape.church.basement.contains(player.global_position) and not victorian_house.cellar_contains(player.global_position):
 		player.position.y = 0.001
 		player.velocity.y = 0.0
 	player.position.x = clampf(player.position.x,-60,60)
@@ -458,11 +455,11 @@ func update_stance(delta: float):
 	var eye = CROUCH_EYE if crouching else STANDING_EYE
 	camera.position.y = minf(move_toward(camera.position.y,eye,4.8*delta),height-0.20)
 
-func take_damage(amount: float) -> bool:
+func take_damage(amount: float, hurt_clip = -1) -> bool:
 	if state!="play" or health<=0 or amount<=0 or invincible>0: return false
 	health = maxf(0,health-amount)
 	invincible = 0.9
-	soundscape.player_hurt()
+	soundscape.player_hurt(hurt_clip)
 	if health<=0: set_state("lost")
 	return true
 
@@ -490,6 +487,9 @@ func _process(delta):
 			set_state("title")
 
 func update_flashlight_visual(delta: float):
+	if not crash_site.has_flashlight:
+		flashlight_model.hide()
+		return
 	if state!="play":
 		return
 	var wanted = 1.0 if flashlight.visible and weapons.selected<0 else 0.0
@@ -500,6 +500,9 @@ func update_flashlight_visual(delta: float):
 	flashlight_model.visible = flashlight_raise>0.001
 
 func toggle_flashlight():
+	if not crash_site.has_flashlight:
+		message = "Your flashlight is still in the car. Open the door and collect your gear."
+		return
 	if flashlight_charge<=0:
 		flashlight.visible = false
 		message = "Flashlight battery is empty. Find batteries in town; Q fits a spare."
@@ -520,3 +523,9 @@ func update_flashlight_battery(delta: float):
 func advance_dialogue():
 	if dialogue_page+1<dialogue_pages.size(): dialogue_page+=1
 	else: set_state("play")
+
+func open_backpack():
+	if not crash_site.has_backpack:
+		message = "Your backpack is still in the car. Open the driver's door and collect it."
+		return
+	set_state("backpack")

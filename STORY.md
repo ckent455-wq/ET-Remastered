@@ -4,11 +4,11 @@ The chapel repeater spreads an unidentified carrier beneath familiar voices and 
 
 ## Timeline
 
-- Before the incident, neglected roofs already damaged the town interiors.
-- One month before evacuation, a storm damages the civil-defense repeater beneath the chapel. A low tone begins in the relayed signal. Its buried line feeds the town station and porch speaker. The inspection is never completed.
+- Twelve years ago, the mill closed. Most families moved away over the following years. Boarded businesses, old cars, damaged fences, and long-neglected rooms come from this decline. Sebus Hardware is one of the long-shuttered storefronts. A handful of families stayed, supported by the general store, clinic, and repair shop. Owen and Ada lived in an occupied room at Saint George Hotel.
+- One month before evacuation, a storm damages the civil-defense repeater beneath the chapel. The storm also worsens existing roof damage and brings down rotten ceilings. A low tone begins in the relayed signal. Its buried line feeds the town station and porch speaker. The inspection is never completed.
 - Over the following weeks, residents near running sets and loudspeakers lose sleep, hear borrowed voices, forget things and become confused or violent. Severe cases develop locked jaws and distorted hands. Exposure varies; early symptoms ease away from the signal. Ordinary radio is not inherently infectious.
 - One week before evacuation, caretaker Jonah, who sleeps near the continuously running rack, changes and retreats into the woods. Father Bellamy witnesses it. His maintenance book admits that keeping the warning speaker on spread the carrier.
-- Three nights before play, the clinic orders evacuation. Ruth, Ada and Father Bellamy leave on the final 01:40 southbound bus. Owen stays to secure the equipment; Mara and Elias search for the missing.
+- Three nights before play, the clinic evacuates the last remaining families. Most of the town has already been empty for years. Ruth, Ada and Father Bellamy leave on the final 01:40 southbound bus. Owen stays to secure the equipment; Mara and Elias search for the missing.
 - At 02:10, Edith and Silas, two advanced patients who refuse the bus, walk uphill. Mara recognizes Edith's clinic bracelet on a changing wrist. Owen later records Jonah's work coat and Silas's splinted hand. These are the three creatures around the chapel.
 - At 02:17, the loudspeaker plays a recorded bus horn. Elias reopens the barrier; no vehicle returns.
 - At 02:20, Elias broadcasts "Three still here. Road open." This refers to Elias, Mara and Owen, the three remaining untransformed residents. The repeater later loops it. The Population 3 sign does not count the three transformed missing residents or the player.

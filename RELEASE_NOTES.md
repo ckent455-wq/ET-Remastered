@@ -1,13 +1,24 @@
 # Far From Home v0.8.0
 
-This release adds a limited 6 x 4 backpack with draggable items, rendered asset icons, weapon/supply actions, and quest items that occupy space. Press I for inventory; Tab opens the journal/map.
+A Windows playable preview of ET Remastered / Far From Home, built with Godot 4.7.2.
 
-Old Mill Cemetery now sits between the wreck and town, with weathered headstones, iron fencing and a locked, enterable Whitcomb mausoleum. Its antenna coupler is required for radio repairs. Elias can run up at the town entrance and offer his grandfather's mausoleum key. A full backpack postpones the handoff.
+- Limited 6 x 4 backpack with drag-and-drop arrangement, asset-based icons, keys and objective items that occupy space.
+- Crash opening tutorial: open the car, collect the backpack, flashlight and detour sheet; close and reopen the driver's door with E.
+- Falling-tree road scare with recorded tree audio and the hurt_2 reaction if struck.
+- Old Mill Cemetery and locked Whitcomb mausoleum, with the radio-repair quest leading onward to the chapel cellar.
+- NPC indoor/outdoor routines and manual conversations using the black, cream-bordered pixel dialogue panel. Voice recordings remain to be supplied.
+- Workshop rear battery terminal reached through a contained alley.
+- Saint George Hotel brick facade, SEBUS HARDWARE signage and softly pulsing Main Street lamps.
+- Explorable Victorian house with two floors, a detailed staircase, refined landing, wallpaper with restrained water stains, and a separate basement reached through the under-stair door.
+- Realistic paper notes and journal pages; pickups and props adjusted onto their supporting surfaces.
+- Pause-menu Restart Game and revised abandonment timeline.
 
-NPCs have longer indoor/outdoor routines, shared door interactions, idle gestures and conversation animation. Dialogue has a centred panel, readable type and paged delivery. Voices have not been added; the recording script is included.
+## Play
 
-Battery and medkit pickups and inventory models now use downloaded itch.io assets. See assets/supplies/SOURCES.md for authors and licenses.
+Download FarFromHome-v0.8.0-Windows-x64.zip, extract the entire archive, and run FarFromHome.exe. Keep the executable, PCK and supplied DLL files together. Godot is not required to play. See PLAYING.md for controls. I opens the backpack; E interacts; Tab opens the journal; Escape pauses.
 
-Removed the angular starting dirt trails. Built with Godot 4.7.2 for Windows x86_64. Extract the whole Windows ZIP and run FarFromHome.exe, keeping its PCK and DLL files together.
+The Source ZIP contains the editable Godot project. Asset attribution and license files are included under assets. This is an early preview; progress resets for each new journey and the first shader compilation can briefly pause rendering.
 
-Validation: source scripts checked with Godot and export/package checks performed. Recent gameplay changes were left for the user's manual testing. Startup and first-use rendering can pause while shaders compile.
+## Verification
+
+Recent checks cover the crash tutorial and door close/reopen interactions, backpack and flashlight pickup gating, detour journal collection, house porch and stair walking, the upstairs landing turn, basement entry/return, and restart behavior. Visual previews were checked for the house and paper journal. Full gameplay testing remains manual.

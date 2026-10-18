@@ -45,6 +45,7 @@ func build_alley_barriers(side: int):
 	for i in range(fronts.size()-1):
 		var near_edge = fronts[i].z-fronts[i].width/2
 		var far_edge = fronts[i+1].z+fronts[i+1].width/2
+		if side==1 and i==0: continue # Open the contained workshop service alley.
 		var center = (near_edge+far_edge)/2
 		# Each end embeds 25 cm into its building rather than leaving shoulder gaps.
 		var barrier = fence(Vector3(side*6.65,0,center),near_edge-far_edge+0.5,2.8)
@@ -55,6 +56,7 @@ func build_alley_barriers(side: int):
 		alley_barriers.append(barrier)
 
 func shoulder_clear(p: Vector3) -> bool:
+	if Vector2(p.x+4.2,p.z+31).length()<3.0: return false
 	if p.x>0 and p.z> -18 and p.z< -6: return false
 	if p.distance_to(Vector3(3.8,0,13))<5.5 or p.distance_to(Vector3(4.4,0,-35))<4.8:
 		return false

@@ -10,7 +10,7 @@ var crown_material: StandardMaterial3D
 var trunk_material: StandardMaterial3D
 var shrub_mesh: Mesh
 var shrub_material: Material
-const OUTLINE = [Vector3(-42,0,42),Vector3(42,0,42),Vector3(44,0,10),Vector3(42,0,-27),Vector3(26,0,-40),Vector3(23,0,-84),Vector3(13,0,-96),Vector3(27,0,-105),Vector3(39,0,-116),Vector3(42,0,-134),Vector3(43,0,-153),Vector3(17,0,-155),Vector3(16,0,-137),Vector3(15,0,-123),Vector3(2,0,-114),Vector3(-9,0,-101),Vector3(-21,0,-98),Vector3(-27,0,-88),Vector3(-26,0,-40),Vector3(-42,0,-27),Vector3(-44,0,10)]
+const OUTLINE = [Vector3(-42,0,42),Vector3(42,0,42),Vector3(44,0,10),Vector3(42,0,-27),Vector3(26,0,-40),Vector3(23,0,-84),Vector3(13,0,-96),Vector3(27,0,-105),Vector3(39,0,-116),Vector3(42,0,-134),Vector3(43,0,-153),Vector3(17,0,-155),Vector3(16,0,-137),Vector3(15,0,-123),Vector3(2,0,-114),Vector3(-9,0,-110),Vector3(-24,0,-110),Vector3(-28,0,-101),Vector3(-27,0,-88),Vector3(-26,0,-40),Vector3(-42,0,-27),Vector3(-44,0,10)]
 const ROW_DEPTHS = [0.0,3.1,6.4,10.5,16.0]
 
 func _ready():

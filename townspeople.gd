@@ -7,13 +7,13 @@ var motion_clock = 0.0
 var grave_key_given = false
 var grave_intro_shown = false
 var grave_approaching = false
-const GRAVE_KEY_LINE = "Hey! I've got the key to my grandpappy's grave. The Whitcomb mausoleum, back in the cemetery. They locked the radio spare in there.\n\nHere. Take it. I haven't been back since the evacuation.\n\nIf you hear somebody talking in there... just get the part and leave."
+const GRAVE_KEY_LINE = "Hey! I've got the key to my grandpappy's grave. The Whitcomb mausoleum, back in the cemetery. They locked the radio spare in there. The chapel cellar key is with it.\n\nHere. Take it. I haven't been back since the evacuation.\n\nIf you hear somebody talking in there... just get the part and leave."
 
 const DEATH_DURATION = 1.7
 const PEOPLE = [
 	{"id":"ranger","name":"Elias / Ranger","variant":"ranger","building":"","p":Vector3(-5.65,0,-45),"yaw":0.0,"route":[Vector3(-5.65,0,-45),Vector3(-5.65,0,-49),Vector3(-5.65,0,-44.5)]},
 	{"id":"nurse","name":"Mara / Nurse","variant":"nurse","building":"clinic","p":Vector3(-0.95,0,0.6),"yaw":0.0,"route":[Vector3(-0.95,0,0.6),Vector3(-0.95,0,2.5),Vector3(0.65,0,2.5),Vector3(0.65,0,0.6)]},
-	{"id":"mechanic","name":"Owen / Mechanic","variant":"mechanic","building":"workshop","p":Vector3(1.2,0,1.5),"yaw":0.0,"route":[Vector3(1.2,0,1.5),Vector3(3,0,1.5),Vector3(3,0,3.1),Vector3(1.2,0,3.1)]}]
+	{"id":"mechanic","name":"Owen / Mechanic","variant":"mechanic_john","building":"workshop","p":Vector3(1.2,0,1.5),"yaw":0.0,"route":[Vector3(1.2,0,1.5),Vector3(3,0,1.5),Vector3(3,0,3.1),Vector3(1.2,0,3.1)]}]
 
 func _ready():
 	name = "Townspeople"
@@ -180,7 +180,8 @@ func _physics_process(delta):
 			near_player=hit.is_empty() or hit.collider==town.game.player
 		var target: Vector3=data.parent.to_global(data.route[data.waypoint])
 		var rushing=false
-		if actor.name=="NPC_ranger" and not grave_key_given and not grave_intro_shown and not town.cemetery.unlocked:
+		var awaiting_interaction=false
+		if town.powered and town.inventory.coil>0 and actor.name=="NPC_ranger" and not grave_key_given and not grave_intro_shown and not town.cemetery.unlocked:
 			var player=town.game.player.global_position
 			var on_street=absf(player.x)<4.0 and player.z< -37 and player.z> -78
 			var outside=not town.player_inside_building("ranger") # Player must be outside too.
@@ -193,12 +194,15 @@ func _physics_process(delta):
 				if clear:
 					if Vector2(offset.x,offset.z).length()<2.0:
 						actor.velocity=Vector3.ZERO
-						offer_grave_key()
-						return
-					target=player-offset.normalized()*1.7
-					rushing=true
-					data.wait=0.0
-					near_player=false
+						target=actor.global_position
+						awaiting_interaction=true
+						near_player=true
+						data.wait=0.5
+					else:
+						target=player-offset.normalized()*1.7
+						rushing=true
+						data.wait=0.0
+						near_player=false
 		var direction=target-actor.global_position
 		direction.y=0
 		data.wait=maxf(0,data.wait-delta)
@@ -233,7 +237,7 @@ func _physics_process(delta):
 			walking=travelled>delta*0.08
 		else:
 			actor.velocity=Vector3.ZERO
-			if direction.length()<=0.16:
+			if direction.length()<=0.16 and not awaiting_interaction:
 				data.waypoint=(data.waypoint+1)%data.route.size()
 				var in_doorway=false
 				for id in requests:
@@ -326,7 +330,7 @@ func offer_grave_key():
 func talk(id: String):
 	if characters[id].dead:
 		return
-	if id=="ranger" and not grave_key_given and not town.cemetery.unlocked:
+	if town.powered and town.inventory.coil>0 and id=="ranger" and not grave_key_given and not town.cemetery.unlocked:
 		offer_grave_key()
 		return
 	town.game.dialogue_name = characters[id].name
@@ -334,7 +338,7 @@ func talk(id: String):
 	town.game.set_state("dialogue")
 
 func words(id: String) -> String:
-	if not town.radio_ready and town.inventory.antenna==0:
+	if town.powered and town.inventory.coil>0 and not town.radio_ready and town.inventory.antenna==0:
 		return "The radio aerial coupling is broken. There is a brass spare in the locked Whitcomb mausoleum at Old Mill Cemetery, off the road between town and your wreck. Follow the cemetery footpath on the east side. Bring it back with the workshop coil and chapel tuning unit."
 	if town.radio_ready:
 		if town.game.story.direct_channel_selected():
@@ -343,21 +347,22 @@ func words(id: String) -> String:
 	match id:
 		"ranger":
 			if town.game.story.evidence.has("ranger_note"):
-				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store fuse to the workshop panel. Its powered cabinet holds the coil and cellar key."
+				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store battery to the workshop panel. Its powered cabinet holds the coil. Then ask me about my family mausoleum."
 				return "That was three nights ago. The horn came from the chapel speaker. I should have locked the barrier again. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
 			if town.inventory.station_key==0:
-				return "We evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Elias. Only Mara, Owen and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's on the front crate. Read my log."
-			return "You have the station key. The store counter drawer has a fuse; the workshop's outside panel takes it. Its powered cabinet holds a coil and chapel cellar key.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
+				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Elias. Only Mara, Owen and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's on the front crate. Read my log."
+			return "You have the station key. The store counter drawer has a workshop battery; the workshop's rear terminal takes it. Its powered cabinet holds the coil. Elias can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
 				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a first-aid kit. Q fits a battery."
-			return "I'm Mara. The bus took everyone fit to travel three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a kit; Q fits a battery."
+			return "I'm Mara. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a kit; Q fits a battery."
 		"mechanic":
 			if not town.powered:
-				return "Owen. The radio needs a coil from my powered cabinet. Fuse is in the store counter drawer; the panel is outside this workshop.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
+				return "Owen. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop battery is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
 			if town.inventory.coil==0:
-				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil and cellar key from this cabinet. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
+				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil from this cabinet. Ask Elias about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
 			if town.inventory.tuner==0:
-				return "Ada left on the last bus. Her letter is at our house. I told her I'd catch up after securing the equipment.\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle. The bench instructions explain the station's bypass switch."
+				return "Ada left on the last bus. Her letter is in our room at Saint George Hotel. I told her I'd catch up after securing the equipment.\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle. The bench instructions explain the station's bypass switch."
 			return "You have the coil, tuner and cemetery antenna coupler. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nNo sirens. Tell them there are people missing in the woods, and that the chapel repeater must be disconnected. Don't let another team mistake its old messages for us."
 	return "Stay safe out there."
+

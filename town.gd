@@ -6,12 +6,12 @@ const BUILDINGS = [
 	{"id":"store","label":"GENERAL STORE","p":Vector3(-11.5,0,-72),"w":12.0,"d":10.0,"r":PI/2,"wall":"brick"},
 	{"id":"radio","label":"RADIO STATION","p":Vector3(11.5,0,-72),"w":11.0,"d":10.0,"r":-PI/2,"wall":"brick"},
 	{"id":"workshop","label":"MILL REPAIR SHOP","p":Vector3(11.5,0,-59),"w":12.0,"d":10.0,"r":-PI/2,"wall":"brick"},
-	{"id":"house","label":"MILLKEEPER'S ROOMS","p":Vector3(11.5,0,-46),"w":12.0,"d":10.0,"r":-PI/2,"wall":"plaster"}]
+	{"id":"house","label":"SAINT GEORGE HOTEL","p":Vector3(11.5,0,-44),"w":12.0,"d":10.0,"r":-PI/2,"wall":"brick"}]
 var game
 var buildings = {}
 var doors = {}
 var actions = {}
-var inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0}
+var inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
@@ -58,6 +58,7 @@ func _ready():
 	build_street()
 	for data in BUILDINGS:
 		build_house(data)
+	build_workshop_yard()
 	furnish()
 	interiors = Node3D.new()
 	interiors.set_script(preload("res://interiors.gd"))
@@ -167,6 +168,22 @@ func build_street():
 	for p in [Vector3(-32,0.4,-61),Vector3(34,0.35,-51),Vector3(14,0.4,-77)]:
 		box(self,p,Vector3(0.8,0.8,0.8),mats["wood"])
 
+func build_workshop_yard():
+	# The widened hotel gap is the only entrance; walls and solid fencing enclose the service yard.
+	var yard = Node3D.new()
+	yard.name = "WorkshopServiceAlley"
+	add_child(yard)
+	box(yard,Vector3(13.2,0.025,-51.5),Vector3(13.6,0.04,3),streetscape.pavement,false)
+	box(yard,Vector3(18.3,0.025,-58),Vector3(3.4,0.04,12),streetscape.pavement,false)
+	for spec in [[Vector3(20.1,1.45,-57),Vector3(0.18,2.9,14.4)],[Vector3(13.3,1.45,-49.9),Vector3(13.8,2.9,0.18)],[Vector3(18.3,1.45,-64.1),Vector3(3.8,2.9,0.18)]]:
+		box(yard,spec[0],spec[1],mats.wood)
+	for z in [-50,-53.5,-57,-60.5,-64]:
+		box(yard,Vector3(20,1.55,z),Vector3(0.23,3.1,0.23),mats.dark)
+	var arrow = sign_text(yard,"MILL POWER >",Vector3(6.55,1.65,-50.2),24)
+	arrow.rotation.y = -PI/2
+	lamp(yard,Vector3(18.2,2.7,-58.7),Color("99ada1"),0.7,5)
+	box(yard,Vector3(19.4,0.4,-62.5),Vector3(0.7,0.8,0.8),mats.wood)
+
 func build_house(data: Dictionary):
 	var root = Node3D.new()
 	root.name = data.id
@@ -235,7 +252,7 @@ func action_area(parent: Node3D, p: Vector3, size: Vector3, id: String, data: Di
 
 func item(building: String, p: Vector3, id: String, key: String, label: String, color: Color):
 	var area = action_area(buildings[building],p,Vector3(0.55,0.4,0.5),id,{"kind":"item","item":key,"label":label})
-	if key in ["battery","medkit","fuse","coil"]:
+	if key in ["battery","medkit","workshop_battery","coil"]:
 		area.add_child(preload("res://supply_models.gd").build(key))
 	else:
 		box(area,Vector3.ZERO,Vector3(0.35,0.22,0.25),color_material(color,0.45),false)
@@ -281,7 +298,7 @@ func furnish():
 	desk(buildings.ranger,Vector3(-2.6,0,0))
 	shelf(buildings.ranger,Vector3(2.5,0,-3.9))
 	item("ranger",Vector3(-2.7,1.04,0),"station_key","station_key","Take radio-station key",Color("e4c479"))
-	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nfuse. Fit it at the workshop's outside panel, then search\nthe powered cabinet for a signal coil. Take the cellar key from the same cabinet. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
+	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nworkshop battery. Fit it at the workshop's rear terminal, then search\nthe powered cabinet for a signal coil. After recovering the coil, ask Elias about the mausoleum. Its shelf holds the cellar key. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
 	for x in [-3.3,3.3]:
 		var old_bed = box(buildings.clinic,Vector3(x,0.6,0),Vector3(1.3,0.4,2.5),mats["plaster"])
 		old_bed.add_to_group("LegacyClinicBeds")
@@ -294,15 +311,21 @@ func furnish():
 	for x in [-4,4]:
 		shelf(buildings.store,Vector3(x,0,0))
 	desk(buildings.store,Vector3(-2.8,0,-3.7),3.5)
-	item("store",Vector3(-3,1.04,-3.7),"fuse","fuse","Take workshop fuse",Color("e5bd78"))
+	item("store",Vector3(-3,1.04,-3.7),"workshop_battery","workshop_battery","Take workshop battery",Color("e5bd78"))
 	item("store",Vector3(-4,1.13,0),"battery_a","battery","Take flashlight battery",Color("89b9b1"))
 	item("store",Vector3(4,1.13,0),"battery_b","battery","Take flashlight battery",Color("89b9b1"))
-	note("store",Vector3(-2,0.91,-3.7),"store_note","Shopkeeper's note","The millkeeper took the last signal coil to the workshop.\nIts cabinet only releases when power is restored.\nThe spare fuse is in this counter's drawer. The cemetery mausoleum holds the spare aerial coupling. Search it with E.\nThe workshop fuse panel is outside, beside its door.\nSpare flashlight cells are in the stock cabinet.")
+	note("store",Vector3(-2,0.91,-3.7),"store_note","Shopkeeper's note","The millkeeper took the last signal coil to the workshop.\nIts cabinet only releases when power is restored.\nThe spare workshop battery is in this counter's drawer. The cemetery mausoleum holds the spare aerial coupling. Search it with E.\nThe workshop battery panel is behind the workshop; follow the alley beside Saint George Hotel.\nSpare flashlight cells are in the stock cabinet.")
 	desk(buildings.workshop,Vector3(-3.1,0,-2.7),3.6)
 	shelf(buildings.workshop,Vector3(4,0,-3.8))
 	coil_visual = item("workshop",Vector3(-3.1,1.08,-2.7),"coil","coil","Recover signal coil",Color("dda967"))
-	var panel = action_area(buildings.workshop,Vector3(2,1.25,5.2),Vector3(0.85,0.95,0.35),"fuse_panel",{"kind":"panel","label":"Install workshop fuse"})
+	var panel = action_area(buildings.workshop,Vector3(0,1.15,-5.3),Vector3(0.85,0.95,0.35),"battery_panel",{"kind":"panel","label":"Connect workshop battery"})
+	panel.rotation.y = PI
 	box(panel,Vector3.ZERO,Vector3(0.7,0.8,0.20),mats["metal"],false)
+	var installed = preload("res://supply_models.gd").build("workshop_battery")
+	installed.name = "InstalledBattery"
+	installed.position = Vector3(0,-0.36,0.29)
+	panel.add_child(installed)
+	installed.visible = false
 	box(panel,Vector3(0,0.2,0.13),Vector3(0.24,0.09,0.03),mats["amber"],false)
 	powered_lights.append(lamp(buildings.workshop,Vector3(0,2.7,-0.5),Color("d4be85"),1.8,9))
 	desk(buildings.radio,Vector3(-2.7,0,-3.4),3.2)
@@ -323,13 +346,14 @@ func furnish():
 	desk(buildings.house,Vector3(2.7,0,0))
 	item("house",Vector3(2.7,1.04,0),"battery_c","battery","Take flashlight battery",Color("89b9b1"))
 	item("house",Vector3(-3,1,-2.5),"medkit_c","medkit","Take first-aid kit",Color("a56a58"))
-	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the town is already empty.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
+	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the last families have gone. Most buildings have stood empty since the mill closed twelve years ago.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
-	inventory = {"medkit":0,"battery":0,"station_key":0,"fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0}
+	inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0}
 	journal_entries.clear()
 	discovered.clear()
 	powered = false
+	if actions.has("battery_panel"): actions.battery_panel.area.get_node("InstalledBattery").visible = false
 	radio_ready = false
 	reached_town = false
 	focus_action = ""
@@ -407,6 +431,12 @@ func interact():
 
 func perform(id: String):
 	var data = actions[id]
+	if data.kind=="crash_tutorial":
+		game.crash_site.interact_tutorial(id)
+		return
+	if not game.crash_site.has_backpack and data.kind not in ["crash","note"]:
+		game.message = "Get your backpack and flashlight from the crashed car first."
+		return
 	if data.taken:
 		return
 	if data.kind!="crash" and id!="crash_record" and not id.begins_with("cemetery_"):
@@ -431,8 +461,7 @@ func perform(id: String):
 		"radio_bypass":
 			game.story.toggle_bypass()
 		"crash":
-			game.message = "The engine is dead. A detour notice is caught in the glovebox. Inspect the paper."
-			perform("crash_record")
+			game.message = "The engine is dead. You have collected the detour sheet." if game.crash_site.has_detour_sheet else "The engine is dead. Open the driver's door and collect the detour sheet from the seat."
 		"weapon":
 			if data.weapon_index==2 and not game.weapons.lockbox.can_take():
 				game.message = "Open the ranger shotgun lockbox first."
@@ -447,6 +476,10 @@ func perform(id: String):
 				game.message = "Found "+game.weapons.LOADOUT[data.weapon_index].label.to_lower()+". Wheel / V cycles guns. R reloads."
 				if data.weapon_index==0: game.message = "Pistol: 3 rounds loaded. Search buildings for ammo boxes. R reloads."
 				game.soundscape.feedback("pickup")
+		"house_cellar_entry":
+			game.victorian_house.enter_cellar()
+		"house_cellar_exit":
+			game.victorian_house.leave_cellar()
 		"cellar_door":
 			streetscape.church.basement.interact()
 		"cellar_exit":
@@ -478,14 +511,14 @@ func perform(id: String):
 			else:
 				discovered[data.building] = true
 		"item":
-			if id=="cemetery_coupler" and not cemetery.can_take():
-				game.message="The radio spare is inside the locked mausoleum."
+			if id in ["cemetery_coupler","cemetery_cellar_key"] and not cemetery.can_take():
+				game.message="The item is inside the locked mausoleum."
 				return
 			if data.has("container_id") and not interiors.containers[data.container_id].searched:
 				game.message = "Search the "+interiors.containers[data.container_id].label+" first."
 				return
 			if id=="coil" and not powered:
-				game.message = "The coil cabinet needs power. Find and install the fuse."
+				game.message = "The coil cabinet needs power. Find and install the workshop battery."
 				return
 			if game.backpack and not game.backpack.room_for(data.item):
 				game.message = "Backpack full. This item stays here. Open inventory with I to make room."
@@ -506,23 +539,24 @@ func perform(id: String):
 			game.set_state("journal")
 		"panel":
 			if powered:
-				game.message = "Workshop power is on. The flashlight takes disposable batteries; Q fits a spare."
-			elif inventory.fuse>0:
-				inventory.fuse -= 1
+				game.message = "The rear battery is connected. Workshop power is on."
+			elif inventory.workshop_battery>0:
+				inventory.workshop_battery -= 1
+				actions.battery_panel.area.get_node("InstalledBattery").visible = true
 				powered = true
 				for light in powered_lights:
 					light.visible = true
 				game.message = "Workshop power restored. The signal-coil cabinet is released."
 				game.soundscape.feedback("power")
 			else:
-				game.message = "A fuse is missing. Search the general store's counter drawer."
+				game.message = "Bring the workshop battery from the general store counter drawer."
 		"receiver":
 			if radio_ready:
 				game.message = "The radio has power. Hold E nearby to call for rescue."
 			elif inventory.coil==0:
 				game.message = "Receiver needs a signal coil from the powered workshop."
 			elif inventory.tuner==0:
-				game.message = "Receiver also needs the tuning unit in the locked chapel cellar. Key: workshop cabinet."
+				game.message = "Receiver also needs the tuning unit in the locked chapel cellar. Key: Whitcomb mausoleum."
 			elif inventory.antenna==0:
 				game.message = "Receiver needs an antenna coupler. Search inside the locked cemetery mausoleum."
 			else:
@@ -546,6 +580,9 @@ func use_medkit():
 		game.soundscape.feedback("pickup")
 
 func use_battery():
+	if not game.crash_site.has_flashlight:
+		game.message = "Collect your flashlight from the car first."
+		return
 	if inventory.battery<=0:
 		game.message = "No spare batteries. Search cabinets and drawers in town."
 	elif game.flashlight_charge>=99:
@@ -557,45 +594,40 @@ func use_battery():
 		game.soundscape.feedback("pickup")
 
 func objective() -> String:
-	if not radio_ready and inventory.antenna==0:
-		return "Unlock the cemetery mausoleum. Read the gatepost notice for a clue."
+	if game.crash_site and not game.crash_site.tutorial_complete(): return "Open the car door and collect your backpack, flashlight, and detour sheet."
 	if radio_ready:
 		return "Warn county at radio. Hold E; no sirens." if game.story.direct_channel_selected() else "Set the desk bypass to GREEN / direct county."
-	if not reached_town:
-		return "Reach Blackwood. Find a way to call for help."
-	if inventory.station_key==0:
-		return "Search the ranger office for the radio-station key."
-	if not powered:
-		return "Install the fuse at the workshop panel." if inventory.fuse>0 else "Search the general store for a workshop fuse."
-	if inventory.coil==0:
-		return "Recover the signal coil from the powered workshop."
-	if inventory.tuner==0:
-		if inventory.chapel_key==0:
-			return "Find the chapel key in the workshop coil cabinet."
-		return "Find the isolated tuning unit in the cellar."
-	return "Bring the coil, tuning unit and antenna coupler to the radio receiver."
+	if not reached_town: return "Reach Blackwood. Find a way to call for help."
+	if inventory.station_key==0: return "Search the ranger office for the radio-station key."
+	if not powered: return "Take the battery through the alley to the rear workshop terminal." if inventory.workshop_battery>0 else "Search the general store for a workshop battery."
+	if inventory.coil==0: return "Recover the signal coil from the powered workshop."
+	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):
+		if not cemetery.unlocked and inventory.mausoleum_key==0:
+			return "Speak to Elias about his family's mausoleum key." if not townspeople.characters.ranger.dead else "Search the ranger's desk for the spare mausoleum key."
+		return "Search the mausoleum for the radio coupler and chapel cellar key."
+	if inventory.tuner==0: return "Unlock the church basement and recover its tuning unit."
+	return "Bring all three radio parts to the station receiver."
 
 func navigation_target() -> Vector3:
-	if not radio_ready and inventory.antenna==0:
+	if game.crash_site and not game.crash_site.tutorial_complete(): return game.crash_site.wreck.to_global(Vector3(-1.5,0,0.1))
+	if radio_ready: return actions.receiver.area.global_position
+	if not reached_town: return Vector3(0,0,-42)
+	if inventory.station_key==0: return buildings.ranger.to_global(Vector3(0,0,7))
+	if not powered:
+		if inventory.workshop_battery==0: return buildings.store.to_global(Vector3(0,0,7))
+		return actions.battery_panel.area.global_position if game.player.position.x>8 else Vector3(7,0,-51.5)
+	if inventory.coil==0: return buildings.workshop.to_global(Vector3(0,0,7))
+	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):
+		if not cemetery.unlocked and inventory.mausoleum_key==0:
+			return townspeople.characters.ranger.actor.global_position if not townspeople.characters.ranger.dead else actions.ranger_drawer.area.global_position
 		return actions.cemetery_door.area.global_position
-	if not reached_town:
-		return Vector3(0,0,-42)
-	if radio_ready:
-		return actions.receiver.area.global_position
-	var building = "radio"
-	if inventory.station_key==0:
-		building = "ranger"
-	elif not powered:
-		building = "workshop" if inventory.fuse>0 else "store"
-	elif inventory.coil==0:
-		building = "workshop"
-	if inventory.coil>0 and inventory.tuner==0 and inventory.chapel_key>0:
-		if streetscape.church.basement.contains(game.player.global_position):
-			return actions.radio_tuner.area.global_position
-		return actions.cellar_door.area.global_position
-	return buildings[building].to_global(Vector3(0,0,7))
+	if inventory.tuner==0:
+		return actions.radio_tuner.area.global_position if streetscape.church.basement.contains(game.player.global_position) else actions.cellar_door.area.global_position
+	return actions.receiver.area.global_position
 
 func location_name() -> String:
+	if game.victorian_house and game.victorian_house.contains(game.player.global_position): return "OLD VICTORIAN HOUSE"
+	if game.victorian_house and game.victorian_house.cellar_contains(game.player.global_position): return "OLD HOUSE / BASEMENT"
 	if cemetery and cemetery.contains(game.player.global_position): return "OLD MILL CEMETERY"
 	if streetscape.church.basement.contains(game.player.global_position):
 		return "BLACKWOOD CHAPEL / CELLAR"
@@ -615,6 +647,7 @@ func update_arrival():
 		game.message = "Blackwood. Find supplies and a working radio. TAB opens your journal."
 
 func player_inside_building(id: String) -> bool:
+	if id=="victorian": return game.victorian_house.contains(game.player.global_position)
 	for data in BUILDINGS:
 		if data.id==id:
 			var p = buildings[id].to_local(game.player.global_position)
@@ -623,7 +656,7 @@ func player_inside_building(id: String) -> bool:
 
 # Shared by player interaction and NPC routines so both obey the same safety checks.
 func doorway_position(id: String) -> Vector3:
-	return buildings[id].to_global(Vector3(0,0,5))
+	return buildings[id].to_global(Vector3(0,0.22 if id=="victorian" else 0,5))
 
 func doorway_occupied(id: String) -> bool:
 	var doorway=doorway_position(id)

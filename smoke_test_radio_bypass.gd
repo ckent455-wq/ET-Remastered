@@ -6,7 +6,7 @@ func check():
 	game.set_physics_process(false)
 	game.enemies.set_physics_process(false)
 	game.state = "play"
-	for id in ["ranger_drawer","store_drawer","fuse_panel","workshop_cabinet","cellar_door","radio_tuner","cellar_exit","receiver"]: game.town.perform(id)
+	for id in ["ranger_drawer","store_drawer","battery_panel","workshop_cabinet","cellar_door","radio_tuner","cellar_exit","receiver"]: game.town.perform(id)
 	assert(not game.story.county_bypass,"Repair preserves amber repeater routing")
 	for id in game.story.RECORDS: game.story.read_evidence(id)
 	assert(not game.story.county_bypass,"No magical retuning from reading")

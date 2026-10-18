@@ -16,9 +16,9 @@ const INK = Color("ddd8bf")
 const DIM = Color("88998a")
 const GOLD = Color("d4ad70")
 const STACKS = [12,20,6]
-const OBJECTIVES = ["station_key","fuse","coil","chapel_key","tuner","shotgun_key","antenna","mausoleum_key"]
-const OBJECTIVE_LABELS = {"mausoleum_key":"MAUSOLEUM KEY","antenna":"ANTENNA COUPLER","station_key":"RADIO STATION KEY","fuse":"WORKSHOP FUSE","coil":"SIGNAL COIL","chapel_key":"CHAPEL CELLAR KEY","tuner":"RADIO TUNING UNIT","shotgun_key":"SHOTGUN BOX KEY"}
-const OBJECTIVE_DETAILS = {"mausoleum_key":"Old iron key for the Whitcomb mausoleum in Old Mill Cemetery. Used automatically at its door.","antenna":"Spare aerial coupling from Old Mill Cemetery. Bring it to the radio receiver with the signal coil and tuning unit.","station_key":"Unlocks the radio station door. Used automatically at the door.","fuse":"Install at the workshop's outside fuse panel to restore power.","coil":"Bring this signal coil and the tuning unit to the radio receiver.","chapel_key":"Unlocks the chapel cellar. Used automatically at the cellar door.","tuner":"Bring this tuning unit and the signal coil to the radio receiver.","shotgun_key":"Unlocks the ranger's shotgun box. Used automatically at the box."}
+const OBJECTIVES = ["station_key","workshop_battery","coil","chapel_key","tuner","shotgun_key","antenna","mausoleum_key"]
+const OBJECTIVE_LABELS = {"mausoleum_key":"MAUSOLEUM KEY","antenna":"ANTENNA COUPLER","station_key":"RADIO STATION KEY","workshop_battery":"WORKSHOP BATTERY","coil":"SIGNAL COIL","chapel_key":"CHAPEL CELLAR KEY","tuner":"RADIO TUNING UNIT","shotgun_key":"SHOTGUN BOX KEY"}
+const OBJECTIVE_DETAILS = {"mausoleum_key":"Old iron key for the Whitcomb mausoleum in Old Mill Cemetery. Used automatically at its door.","antenna":"Spare aerial coupling from Old Mill Cemetery. Bring it to the radio receiver with the signal coil and tuning unit.","station_key":"Unlocks the radio station door. Used automatically at the door.","workshop_battery":"Install at the workshop's rear battery terminal to restore power.","coil":"Bring this signal coil and the tuning unit to the radio receiver.","chapel_key":"Unlocks the chapel cellar. Used automatically at the cellar door.","tuner":"Bring this tuning unit and the signal coil to the radio receiver.","shotgun_key":"Unlocks the ranger's shotgun box. Used automatically at the box."}
 
 func _ready():
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -30,7 +30,7 @@ func _process(_delta):
 	if visible: queue_redraw()
 
 func counts() -> Dictionary:
-	var result = {"flashlight":1,"medkit":game.town.inventory.medkit,"battery":game.town.inventory.battery}
+	var result = {"flashlight":int(game.crash_site.has_flashlight),"medkit":game.town.inventory.medkit,"battery":game.town.inventory.battery}
 	for id in OBJECTIVES: result[id]=game.town.inventory[id]
 	for i in range(3):
 		result["gun%d" % i] = int(game.weapons.owned[i])
@@ -46,13 +46,13 @@ func fits(cell: Vector2i, dimensions: Vector2i, entries: Array, except_key = "")
 
 func pack(values: Dictionary) -> Array:
 	var requested: Array = []
-	for id in ["gun1","gun2","coil","tuner","gun0","medkit","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","fuse","chapel_key","shotgun_key","mausoleum_key"]:
+	for id in ["gun1","gun2","coil","tuner","gun0","medkit","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","workshop_battery","chapel_key","shotgun_key","mausoleum_key"]:
 		var amount: int = values.get(id,0)
 		var dims = Vector2i(1,1)
 		var limit = 1
 		if id in ["gun1","gun2"]: dims = Vector2i(4,1)
 		if id in ["coil","tuner"]: dims = Vector2i(2,2)
-		if id in ["gun0","medkit","antenna"]: dims = Vector2i(2,1)
+		if id in ["gun0","medkit","antenna","workshop_battery"]: dims = Vector2i(2,1)
 		if id == "flashlight": dims = Vector2i(1,2)
 		if id == "battery": limit = 2
 		if id.begins_with("ammo"): limit = STACKS[int(id.right(1))]
@@ -130,7 +130,7 @@ func _draw():
 		if item.amount>1: write("x%d" % item.amount,box.end-Vector2(23,5),11,GOLD)
 	write("%d / 24 OCCUPIED" % used,Vector2(38,295),11,GOLD)
 	write("OBJECTIVE ITEMS SHARE BACKPACK SPACE",Vector2(38,321),11,DIM)
-	paragraph("Coil / tuning unit: 2 x 2 each. Coupler: 2 slots. Keys / fuse: 1 each. Installed parts free space.",Vector2(38,339),555)
+	paragraph("Coil / tuning unit: 2 x 2 each. Coupler: 2 slots. Keys: 1 slot. Workshop battery: 2 slots. Installed parts free space.",Vector2(38,339),555)
 	write("HEALTH %d / LIGHT %d%%" % [game.health,game.flashlight_charge],Vector2(330,88),12,DIM)
 	if not entries.is_empty():
 		var item: Dictionary = entries[selected]
@@ -196,7 +196,7 @@ func build_icons():
 		add_child(viewport)
 		var model = Node3D.new()
 		viewport.add_child(model)
-		if id in ["battery","medkit","fuse","coil"]:
+		if id in ["battery","medkit","workshop_battery","coil"]:
 			var source=preload("res://supply_models.gd").build(id)
 			copy_meshes(source,model)
 			source.free()

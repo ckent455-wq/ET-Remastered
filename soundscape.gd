@@ -127,12 +127,14 @@ func reset():
 	for node in weapon_voices:
 		node.stop()
 
-func player_hurt():
+func player_hurt(fixed_clip = -1):
 	if game.state!="play": return
-	if hurt_bag.is_empty(): hurt_bag.assign([0,1,2])
-	var choices = hurt_bag.filter(func(index): return index!=last_hurt)
-	var chosen: int = choices[rng.randi_range(0,choices.size()-1)]
-	hurt_bag.erase(chosen)
+	var chosen: int = fixed_clip
+	if chosen<0 or chosen>=hurt_streams.size():
+		if hurt_bag.is_empty(): hurt_bag.assign([0,1,2])
+		var choices = hurt_bag.filter(func(index): return index!=last_hurt)
+		chosen = choices[rng.randi_range(0,choices.size()-1)]
+		hurt_bag.erase(chosen)
 	last_hurt = chosen
 	# One dry, centered voice belongs to the player: successive hits replace
 	# the previous grunt instead of stacking several recordings.

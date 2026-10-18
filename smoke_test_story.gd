@@ -8,7 +8,7 @@ func read_record(id: String):
 func complete_quest(direct = false):
 	var town = game.town
 	game.state = "play"
-	for id in ["ranger_drawer","store_drawer","fuse_panel","workshop_cabinet","cellar_door","radio_tuner","cellar_exit","receiver"]:
+	for id in ["ranger_drawer","store_drawer","battery_panel","workshop_cabinet","cellar_door","radio_tuner","cellar_exit","receiver"]:
 		town.perform(id)
 	assert(town.radio_ready,"Original quest still works")
 	if direct: town.perform("radio_bypass")

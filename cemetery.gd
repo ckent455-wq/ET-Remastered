@@ -86,7 +86,12 @@ func _ready():
 	var part=town.action_area(crypt,Vector3(0.5,1.08,-1.25),Vector3(0.7,0.35,0.45),"cemetery_coupler",{"kind":"item","item":"antenna","label":"Take radio antenna coupler"})
 	town.box(part,Vector3.ZERO,Vector3(0.55,0.12,0.22),town.mats.metal,false)
 	for x in [-0.2,0.2]: town.box(part,Vector3(x,0.015,0),Vector3(0.12,0.18,0.28),town.mats.amber,false)
-	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"The radio spares have been moved out of the rain and locked in the Whitcomb mausoleum.\n\nThe Whitcomb family key is held by Elias at the ranger office. Ask him before entering the vault.\n\nThe station needs the aerial coupling, Owen's signal coil, and the county tuning unit before it can transmit."})
+	var cellar_key=town.action_area(crypt,Vector3(-0.25,1.03,-1.25),Vector3(0.35,0.25,0.35),"cemetery_cellar_key",{"kind":"item","item":"chapel_key","label":"Take chapel cellar key"})
+	var key_model=preload("res://assets/lockbox/key.glb").instantiate()
+	cellar_key.add_child(key_model)
+	key_model.rotation.x=PI/2
+	key_model.position.y=-0.04
+	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"The radio coupling and chapel cellar key have been locked in the Whitcomb mausoleum.\n\nThe Whitcomb family key is held by Elias at the ranger office. Ask him before entering the vault.\n\nThe station needs the aerial coupling, Owen's signal coil, and the county tuning unit before it can transmit."})
 	town.box(note,Vector3.ZERO,Vector3(0.015,0.35,0.26),town.mats.paper,false)
 
 func door_prompt() -> String:
@@ -101,6 +106,9 @@ func can_take() -> bool:
 	return unlocked and opened and inside()
 
 func interact_door():
+	if not unlocked and (not town.powered or town.inventory.coil<=0):
+		town.game.message="The family vault is locked. Head into town and speak with the ranger and mechanic."
+		return
 	if not unlocked:
 		if town.inventory.mausoleum_key<=0:
 			town.game.message="The mausoleum is locked. A groundskeeper's notice is attached to the cemetery gatepost."

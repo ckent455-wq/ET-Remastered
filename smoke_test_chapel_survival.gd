@@ -62,7 +62,7 @@ func run():
 	assert(game.flashlight.visible,"Refilled flashlight works")
 	game.flashlight_charge = 12
 	game.town.powered = true
-	game.town.perform("fuse_panel")
+	game.town.perform("battery_panel")
 	assert(game.flashlight_charge==12,"Workshop cannot recharge disposable cell")
 	game.reset_game()
 	await physics_frame

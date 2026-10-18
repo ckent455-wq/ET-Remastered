@@ -11,7 +11,7 @@ func check():
 	assert(basement.is_ancestor_of(town.actions.weapon_rifle.area),"Rifle physically moved to cellar")
 	town.perform("weapon_rifle")
 	assert(not game.weapons.owned[1],"Cannot take locked cellar rifle remotely")
-	for id in ["ranger_drawer","store_drawer","fuse_panel","workshop_cabinet","cellar_door"]: town.perform(id)
+	for id in ["ranger_drawer","store_drawer","battery_panel","workshop_cabinet","cellar_door"]: town.perform(id)
 	game.player.position = basement.to_global(Vector3(2.8,0.01,3.0))
 	game.camera.look_at(town.actions.weapon_rifle.area.global_position)
 	await physics_frame

@@ -53,7 +53,7 @@ func run():
 	town.perform("workshop_cabinet")
 	assert(town.inventory.chapel_key==0,"Cabinet requires power before key")
 	town.perform("store_drawer")
-	town.perform("fuse_panel")
+	town.perform("battery_panel")
 	town.perform("workshop_cabinet")
 	assert(town.inventory.chapel_key==1 and town.inventory.coil==1,"Cabinet gives key and coil")
 	town.perform("receiver")

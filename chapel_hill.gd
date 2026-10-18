@@ -42,6 +42,7 @@ func nearest_road(p: Vector2) -> Vector3:
 	return result
 
 func terrain_height_at(p: Vector3) -> float:
+	var lot_factor = smoothstep(-6.0,-3.0,p.x) if p.x> -22 and p.x< -3 and p.z< -89 and p.z> -109 else 1.0
 	var point = Vector2(p.x,p.z)
 	if not TERRAIN_RECT.has_point(point):
 		return 0
@@ -53,7 +54,7 @@ func terrain_height_at(p: Vector3) -> float:
 	if distance<5:
 		height = nearest.y
 	var burial = 0.24*minf(smoothstep(4.0,6.0,distance),smoothstep(0.0,3.0,court_distance))
-	return maxf(0,height-burial)
+	return maxf(0,height-burial)*lot_factor
 
 func make_surface(label: String, tool: SurfaceTool, material: Material, solid: bool):
 	var mesh = tool.commit()
@@ -215,6 +216,7 @@ func roadside_detail():
 		var side = Vector3(-direction.z,0,direction.x).normalized()
 		for sign_side in [-1,1]:
 			var root_p = p+side*sign_side*5.7
+			if root_p.x< -2 and root_p.x> -21 and root_p.z< -89 and root_p.z> -109: continue
 			root_p.y = terrain_height_at(root_p)
 			var size = 0.9+float(i%3)*0.07
 			var tree = forest.place(forest.pine_scenes[i%2],root_p,Vector3.ONE*size,"ChapelRoadTrees")
@@ -223,3 +225,4 @@ func roadside_detail():
 			crown.material_override = forest.needle_material
 			tree.add_child(crown)
 			forest.add_collision(tree,0.25,5.5)
+

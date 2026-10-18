@@ -50,7 +50,7 @@ func interact():
 	if game.state!="play": return
 	if not unlocked:
 		if game.town.inventory.shotgun_key<=0:
-			game.message = "Locked shotgun box. A scratched label reads: spare key on the hotel bedroom dresser."
+			game.message = "Locked shotgun box. A scratched label reads: spare key on the Saint George Hotel bedroom dresser."
 			return
 		game.town.inventory.shotgun_key -= 1
 		unlocked = true

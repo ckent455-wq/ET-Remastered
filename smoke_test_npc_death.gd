@@ -44,7 +44,7 @@ func check():
 		people.talk(id)
 		assert(game.state=="play","Dead NPC cannot speak")
 	# The quest remains completable without talking to any survivor.
-	for action in ["ranger_drawer","store_drawer","fuse_panel","workshop_cabinet","receiver"]:
+	for action in ["ranger_drawer","store_drawer","battery_panel","workshop_cabinet","receiver"]:
 		game.town.perform(action)
 	assert(game.town.radio_ready,"NPC deaths do not break item quest")
 	game.reset_game()

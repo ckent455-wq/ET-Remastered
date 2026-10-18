@@ -8,7 +8,7 @@ func check():
 	game.town.townspeople.set_physics_process(false)
 	await physics_frame
 	var barriers = game.get_node("CrampedRoadside").alley_barriers
-	assert(barriers.size()==6,"All six alley mouths guarded")
+	assert(barriers.size()==5,"Five unused alley mouths guarded")
 	var samples = 0
 	for barrier in barriers:
 		var side: float = barrier.get_meta("side")
@@ -27,7 +27,7 @@ func check():
 		if child.has_meta("vehicle_model"):
 			types.append(child.get_meta("vehicle_model"))
 	assert(types.size()==5 and "res://assets/vehicles/abandoned_classic.glb" in types and "res://assets/vehicles/abandoned_van.glb" in types,"Two different downloaded vehicles added")
-	print("PASS: all six alley mouths and endpoints block ",samples," real player sweeps; five parked vehicles including classic car and van")
+	print("PASS: five unused alley mouths and endpoints block ",samples," real player sweeps; five parked vehicles including classic car and van")
 	game.queue_free()
 	await process_frame
 	quit()

@@ -17,7 +17,7 @@ func check():
 		assert(guns.selected== -1 and not guns.fire(),"Cannot select or fire undiscovered gun")
 	for id in ["weapon_pistol","weapon_rifle","weapon_shotgun"]:
 		if id=="weapon_rifle":
-			for quest in ["ranger_drawer","store_drawer","fuse_panel","workshop_cabinet","cellar_door"]: game.town.perform(quest)
+			for quest in ["ranger_drawer","store_drawer","battery_panel","workshop_cabinet","cellar_door"]: game.town.perform(quest)
 		if id=="weapon_shotgun":
 			game.town.perform("shotgun_key")
 			game.town.perform("shotgun_lockbox")

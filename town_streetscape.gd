@@ -8,14 +8,16 @@ var pavement: StandardMaterial3D
 var glass: StandardMaterial3D
 var dark_window: StandardMaterial3D
 var lamps: Array[OmniLight3D] = []
+var lantern_materials: Array[StandardMaterial3D] = []
+var lantern_halos: Array[Sprite3D] = []
 var emergency_lights: Array[OmniLight3D] = []
 var material_cache = {}
 var road_mesh: ArrayMesh
 var church: Node3D
 var chapel_hill: Node3D
 const HEIGHTS = {"ranger":6.8,"clinic":7.4,"store":8.2,"house":10.1,"workshop":6.6,"radio":8.6}
-const SIGNS = {"ranger":"RANGER OFFICE","clinic":"BLACKWOOD PHARMACY","store":"GENERAL STORE","house":"BLACKWOOD HOTEL","workshop":"MILL REPAIR CO.","radio":"BLACKWOOD RADIO"}
-const TINTS = {"ranger":Color("8c7964"),"clinic":Color("876a56"),"store":Color("9b715b"),"house":Color("bbb8a2"),"workshop":Color("777b69"),"radio":Color("927361")}
+const SIGNS = {"ranger":"RANGER OFFICE","clinic":"BLACKWOOD PHARMACY","store":"GENERAL STORE","house":"SAINT GEORGE HOTEL","workshop":"MILL REPAIR CO.","radio":"BLACKWOOD RADIO"}
+const TINTS = {"ranger":Color("8c7964"),"clinic":Color("876a56"),"store":Color("9b715b"),"house":Color("b88b7c"),"workshop":Color("777b69"),"radio":Color("927361")}
 
 func _ready():
 	name = "HistoricMainStreet"
@@ -40,8 +42,6 @@ func brick(id: String) -> StandardMaterial3D:
 		var material = town.mats.brick.duplicate() as StandardMaterial3D
 		material.albedo_color = TINTS.get(id,Color("8c7964"))
 		material.uv1_scale = Vector3(0.7,0.7,0.7)
-		if id=="house":
-			material.albedo_texture = town.mats.plaster.albedo_texture
 		material_cache[id] = material
 	return material_cache[id]
 
@@ -74,7 +74,7 @@ func build_street():
 			var mark = town.box(self,Vector3(side*2.7,0.021,z),Vector3(1.85,0.008,0.045),stone,false)
 			mark.rotation.y = side*0.45
 		for z in [-43,-57,-76]:
-			street_lamp(Vector3(side*4.35,0,z),side== -1 and z!= -57)
+			street_lamp(Vector3(side*4.35,0,z))
 		for z in [-50,-65,-80]:
 			planter(Vector3(side*6.0,0,z))
 		sealed_shop(side,-85)
@@ -144,20 +144,38 @@ func road_segment(p: Vector3, width: float):
 	segment.rotation.y = PI/2
 	segment.scale = Vector3(1.1,1,width/6.166667)
 
-func street_lamp(p: Vector3, lit: bool):
+func street_lamp(p: Vector3):
 	var pole = Node3D.new()
+	pole.name = "PulsingStreetLamp%d" % lamps.size()
 	add_child(pole)
 	pole.position = p
 	town.game.mesh_at(pole,town.game.cylinder(0.14,0.10,0.30),Vector3(0,0.15,0),town.mats.dark)
 	town.game.mesh_at(pole,town.game.cylinder(0.055,0.04,3.2),Vector3(0,1.8,0),town.mats.dark)
-	town.box(pole,Vector3(0,3.65,0),Vector3(0.32,0.43,0.32),stone,false)
+	var lantern = town.color_material(Color("b8a17c"),0.6)
+	lantern.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	town.box(pole,Vector3(0,3.65,0),Vector3(0.28,0.39,0.28),lantern,false)
+	lantern_materials.append(lantern)
 	for x in [-1,1]:
 		for z in [-1,1]:
 			town.box(pole,Vector3(x*0.15,3.65,z*0.15),Vector3(0.03,0.48,0.03),town.mats.dark,false)
 	town.game.mesh_at(pole,town.game.cylinder(0.29,0.02,0.30,4),Vector3(0,4.0,0),town.mats.dark)
-	if lit:
-		var lamp = town.lamp(pole,Vector3(0,3.5,0),Color("c3a274"),0.85,7)
-		lamps.append(lamp)
+	var lamp = town.lamp(pole,Vector3(0,3.5,0),Color("c3a274"),0.4,6)
+	lamp.shadow_enabled = false
+	lamps.append(lamp)
+	var glow_image = Image.create(32,32,false,Image.FORMAT_RGBA8)
+	for y in range(32):
+		for x in range(32):
+			var radius = Vector2(x-15.5,y-15.5).length()/15.5
+			glow_image.set_pixel(x,y,Color(1,1,1,pow(maxf(0,1-radius),2)))
+	var halo = Sprite3D.new()
+	halo.name = "SoftLanternGlow"
+	halo.texture = ImageTexture.create_from_image(glow_image)
+	halo.pixel_size = 0.035
+	halo.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	halo.position.y = 3.65
+	halo.modulate = Color(0.77,0.65,0.46,0.2)
+	pole.add_child(halo)
+	lantern_halos.append(halo)
 
 func planter(p: Vector3):
 	town.box(self,p+Vector3(0,0.22,0),Vector3(0.6,0.44,0.8),town.mats.furniture)
@@ -231,6 +249,9 @@ func adapt_car(node: Node, index: int):
 		adapt_car(child,index)
 
 func decorate_building(root: Node3D, data: Dictionary):
+	if data.id=="house":
+		decorate_saint_george(root,data)
+		return
 	var height: float = HEIGHTS[data.id]
 	var w: float = data.w
 	var front: float = data.d/2
@@ -265,14 +286,90 @@ func decorate_building(root: Node3D, data: Dictionary):
 	town.box(root,Vector3(0,3.28,front+0.16),Vector3(w-0.6,0.65,0.16),fascia,false)
 	var sign = town.sign_text(root,SIGNS[data.id],Vector3(0,3.28,front+0.255),40,Color("b8b09a"))
 	sign.font = ThemeDB.fallback_font
-	sign.pixel_size = 0.010
+	sign.pixel_size = 0.0085 if data.id=="house" else 0.010
 	sign.outline_size = 0
 	sign.shaded = true
-	blade_sign(root,w/2-0.65,front,SIGNS[data.id].split(" ")[0])
 	var notice = town.sign_text(root,"CLOSED BY ORDER" if data.id!="house" else "NO VACANCY",Vector3(1.18,1.85,front+0.20),19,Color("a69d86"))
 	notice.pixel_size = 0.005
 	notice.shaded = true
 	notice.outline_size = 0
+
+func decorate_saint_george(root: Node3D, data: Dictionary):
+	# Original PS2 geometry informed by the May 2025 Google Street View exterior in Weston.
+	var w: float = data.w
+	var d: float = data.d
+	var front = d/2
+	var trim = stone.duplicate()
+	trim.albedo_color = Color("b7b09a")
+	var brickwork = brick("house")
+	var facade = Node3D.new()
+	facade.name = "SaintGeorgeBrickFacade"
+	root.add_child(facade)
+	town.box(facade,Vector3(0,5.48,0),Vector3(w,3.76,d),brickwork,false)
+	for y in [3.73,7.32]:
+		town.box(facade,Vector3(0,y,0),Vector3(w+0.32,0.16,d+0.32),trim,false)
+	# Tall rectangular sash windows replace the old generic arched hotel windows.
+	for i in range(5):
+		upper_window(facade,(i-2)*2.15,4.35,front,false,i==4)
+	for side in [-1,1]:
+		var wall = Node3D.new()
+		facade.add_child(wall)
+		wall.position.x = side*w/2
+		wall.rotation.y = side*PI/2
+		for i in range(3): upper_window(wall,(i-1)*2.7,4.35,0,false,i==2)
+	# Broad ground-floor glazing and shallow transoms respect the existing room openings.
+	for side in [-1,1]:
+		var x = side*w*0.31
+		town.box(facade,Vector3(x,1.65,front+0.14),Vector3(2.5,2.1,0.06),glass,false)
+		for edge in [-1,1]:
+			town.box(facade,Vector3(x+edge*1.29,1.65,front+0.21),Vector3(0.11,2.24,0.12),trim,false)
+		for y in [0.57,2.35,2.76]:
+			town.box(facade,Vector3(x,y,front+0.22),Vector3(2.65,0.09,0.14),trim,false)
+		for offset in [-0.64,0,0.64]:
+			town.box(facade,Vector3(x+offset,1.64,front+0.23),Vector3(0.045,2.14,0.08),trim,false)
+		var board = town.box(facade,Vector3(x,1.15,front+0.28),Vector3(2.6,0.17,0.06),town.mats.wood,false)
+		board.rotation.z = side*0.09
+		# Pilasters flank the central doorway, leaving its swing and threshold clear.
+		town.box(facade,Vector3(side*1.1,1.48,front+0.23),Vector3(0.16,2.96,0.22),trim,false)
+		town.box(facade,Vector3(side*1.1,2.91,front+0.25),Vector3(0.29,0.17,0.28),trim,false)
+	var blue = town.color_material(Color("293e49"))
+	town.box(facade,Vector3(0,3.28,front+0.20),Vector3(w-0.45,0.65,0.18),blue,false)
+	var title = town.sign_text(facade,"SAINT GEORGE HOTEL",Vector3(0,3.28,front+0.305),40,Color("dad2b9"))
+	title.font = ThemeDB.fallback_font
+	title.pixel_size = 0.012
+	title.shaded = true
+	title.outline_size = 0
+	# Four low-poly slate slopes and three dormers create the characteristic roof silhouette.
+	var slate = town.mats.roof.duplicate()
+	slate.albedo_color = Color("4c5655")
+	var roof = SurfaceTool.new()
+	roof.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var lower = [Vector3(-w/2-0.2,7.43,-d/2-0.2),Vector3(w/2+0.2,7.43,-d/2-0.2),Vector3(w/2+0.2,7.43,front+0.2),Vector3(-w/2-0.2,7.43,front+0.2)]
+	var upper = [Vector3(-w/2+0.95,10.0,-d/2+0.95),Vector3(w/2-0.95,10.0,-d/2+0.95),Vector3(w/2-0.95,10.0,front-0.95),Vector3(-w/2+0.95,10.0,front-0.95)]
+	for side in range(4):
+		var next = (side+1)%4
+		var vertices = [lower[side],lower[next],upper[side],upper[next]]
+		var uvs = [Vector2(0,0),Vector2(6,0),Vector2(0,2),Vector2(6,2)]
+		for i in [0,2,1,1,2,3]:
+			roof.set_uv(uvs[i])
+			roof.add_vertex(vertices[i])
+	roof.generate_normals()
+	var slopes = MeshInstance3D.new()
+	slopes.name = "SlateMansardRoof"
+	slopes.mesh = roof.commit()
+	slate.cull_mode = BaseMaterial3D.CULL_DISABLED
+	slopes.material_override = slate
+	facade.add_child(slopes)
+	town.box(facade,Vector3(0,10.02,0),Vector3(w-1.8,0.15,d-1.8),slate,false)
+	for x in [-3.7,0,3.7]:
+		town.box(facade,Vector3(x,8.5,front-0.45),Vector3(1.5,1.75,1.35),slate,false)
+		upper_window(facade,x,7.74,front+0.24,false,false)
+		# Small stepped caps distinguish this version from the real hotel's ornament.
+		town.box(facade,Vector3(x,9.64,front-0.14),Vector3(1.78,0.13,1.95),trim,false)
+		town.box(facade,Vector3(x,9.76,front-0.14),Vector3(1.46,0.12,1.75),slate,false)
+	for x in [-w/2+0.3,w/2-0.3]:
+		town.box(facade,Vector3(x,10.28,-1.7),Vector3(0.7,1.2,0.65),brickwork,false)
+		town.box(facade,Vector3(x,10.90,-1.7),Vector3(0.9,0.12,0.82),trim,false)
 
 func upper_window(root: Node3D, x: float, base: float, front: float, arched: bool, boarded: bool):
 	var top = base+1.25
@@ -331,23 +428,9 @@ func awning(root: Node3D, x: float, front: float, id: String, side: int):
 	mesh.material_override = cloth
 	root.add_child(mesh)
 
-func blade_sign(root: Node3D, x: float, front: float, text: String):
-	town.box(root,Vector3(x,3.05,front+0.80),Vector3(0.06,0.06,1.60),town.mats.dark,false)
-	var sign = Node3D.new()
-	root.add_child(sign)
-	sign.position = Vector3(x,2.52,front+1.05)
-	sign.rotation.y = PI/2
-	town.box(sign,Vector3.ZERO,Vector3(1.15,0.60,0.09),town.mats.furniture,false)
-	for side in [-1,1]:
-		var label = town.sign_text(sign,text,Vector3(0,0,side*0.06),25,Color("b4ac92"))
-		label.pixel_size = 0.006
-		label.rotation.y = PI if side<0 else 0.0
-		label.shaded = true
-		label.outline_size = 0
-
 func sealed_shop(side: int, z: float):
 	var root = Node3D.new()
-	root.name = "BoardedAntiques" if side<0 else "BoardedDryGoods"
+	root.name = "BoardedAntiques" if side<0 else "BoardedSebusHardware"
 	add_child(root)
 	root.position = Vector3(side*10.5,0,z)
 	root.rotation.y = PI/2 if side<0 else -PI/2
@@ -357,8 +440,8 @@ func sealed_shop(side: int, z: float):
 		for i in range(5):
 			town.box(root,Vector3(x,0.35+i*0.45,4.12),Vector3(2.7,0.38,0.12),town.mats.wood,false)
 	town.box(root,Vector3(0,6.2,4.1),Vector3(10.3,0.22,0.3),stone,false)
-	var label = town.sign_text(root,"ANTIQUES" if side<0 else "DRY GOODS",Vector3(0,2.85,4.2),38,Color("96917c"))
-	label.pixel_size = 0.012
+	var label = town.sign_text(root,"ANTIQUES" if side<0 else "SEBUS HARDWARE",Vector3(0,2.85,4.2),38,Color("96917c"))
+	label.pixel_size = 0.012 if side<0 else 0.009
 	label.shaded = true
 	label.outline_size = 0
 
@@ -388,5 +471,10 @@ func _process(_delta):
 		# A slow, shallow pulse suggests a failing battery without sharp flashes.
 		emergency_lights[i].light_energy = 0.8*(0.9+0.1*sin(town.game.clock*0.75+i*PI))
 	for i in range(lamps.size()):
-		var flicker = 0.93+0.07*sin(town.game.clock*1.7+i)
-		lamps[i].light_energy = 0.85*flicker
+		# Low, smooth breathing glow; each lamp drifts slightly out of phase.
+		var pulse = 0.5+0.5*sin(town.game.clock*1.05+i*0.9)
+		lamps[i].light_energy = lerpf(0.28,0.46,pulse)
+		lantern_materials[i].emission_energy_multiplier = lerpf(0.35,0.65,pulse)
+		lantern_materials[i].albedo_color = Color("b8a17c")*lerpf(0.65,0.85,pulse)
+		lantern_halos[i].modulate.a = lerpf(0.13,0.22,pulse)
+

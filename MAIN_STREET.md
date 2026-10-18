@@ -370,3 +370,11 @@ and the full-width Chapel Road climb/descent and cellar quest checks pass.
 Mouse wheel and V cycle only owned guns; the pickup message and controls page
 show the controls. smoke_test_weapon_cycle.gd checks real input, both directions,
 wrap, holster, skipped undiscovered guns, reload cancellation and menu guards.
+
+## Explorable Victorian house
+
+Added an original two-story house in the marked lot beside the antiques shop, with the porch and front door facing Main Street. The house uses existing local town wood/plaster/roof textures and apartment-kit sofa, chairs, table, beds, wardrobe, dresser, bookcase, and debris. Broken porch rails, missing roof patches, exposed rafters, and worn trim establish long-term decay.
+
+Reference images were found through an image search for weathered Victorian houses, including https://oldhousesunder50k.com/fixer-upper-victorian-for-sale/ and https://www.asasbriarcliff.com/hartwell-ga . Photos inform proportions and details; the game uses original geometry and local assets.
+
+Route checks cover the porch approach, doorway, stairs, rooms, actual player movement onto the upper landing, safe door behavior while inside, and new-journey door reset. The woodland boundary and hill grading make room for the house without obstructing the church road.

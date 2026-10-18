@@ -2,6 +2,7 @@ extends Control
 var game
 var font = preload("res://assets/font.ttf")
 var menu_buttons: Array[Button] = []
+var pause_buttons: Array[Button] = []
 var controls_open = false
 var last_menu_state = ""
 var last_controls_open = false
@@ -10,19 +11,22 @@ var message_seconds = 0.0
 var passage_fade = 0.0
 var dialogue_elapsed = 0.0
 var dialogue_last_page = -1
-var dialogue_font: Font = ThemeDB.fallback_font
+var dialogue_font: Font = preload("res://assets/dialogue_pixels.fnt")
 
 const INK = Color("d2dfd0")
 const DIM = Color("87a39f")
 const AMBER = Color("efc58c")
 func _ready():
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	menu_button("ENTER BLACKWOOD",Vector2(42,269),Vector2(244,35),begin_game)
 	menu_button("CONTROLS",Vector2(42,315),Vector2(116,27),func(): controls_open = true)
 	menu_button("QUIT",Vector2(170,315),Vector2(116,27),func(): get_tree().quit())
 	menu_button("BACK",Vector2(80,331),Vector2(144,30),func(): controls_open = false)
+	menu_button("RESUME",Vector2(213,222),Vector2(214,36),func(): game.set_state("play"),false)
+	menu_button("RESTART GAME",Vector2(213,272),Vector2(214,36),begin_game,false)
 
-func menu_button(label: String, p: Vector2, dimensions: Vector2, action: Callable):
+func menu_button(label: String, p: Vector2, dimensions: Vector2, action: Callable, title_menu = true):
 	var button = Button.new()
 	button.text = label
 	button.position = p
@@ -40,13 +44,15 @@ func menu_button(label: String, p: Vector2, dimensions: Vector2, action: Callabl
 	button.add_theme_color_override("font_hover_color",Color("fff1d2"))
 	button.pressed.connect(action)
 	add_child(button)
-	menu_buttons.append(button)
+	if title_menu: menu_buttons.append(button)
+	else: pause_buttons.append(button)
 	button.visible = false
 
 func begin_game():
 	controls_open = false
 	game.reset_game()
 	game.set_state("play")
+	game.crash_site.start_opening()
 
 func _process(_delta):
 	if game.state=="dialogue":
@@ -68,12 +74,15 @@ func _process(_delta):
 		controls_open = false
 	for i in range(menu_buttons.size()):
 		menu_buttons[i].visible = game.state=="title" and (controls_open if i==3 else not controls_open)
+	for button in pause_buttons: button.visible = game.state=="paused"
 	if game.state=="title" and controls_open!=last_controls_open:
 		menu_buttons[3 if controls_open else 0].grab_focus()
 	last_controls_open = controls_open
 	if game.state!=last_menu_state:
 		if game.state=="title":
 			menu_buttons[0].grab_focus()
+		elif game.state=="paused":
+			pause_buttons[0].grab_focus()
 		last_menu_state = game.state
 
 func _unhandled_key_input(event):
@@ -114,10 +123,14 @@ func _draw():
 		if game.stamina<99:
 			status_bar("STAMINA",Vector2(20,372),game.stamina,DIM)
 		var light_color = Color("c48060") if game.flashlight_charge<=15 else Color("d0c59b")
-		status_bar("FLASHLIGHT"+(" / OFF" if not game.flashlight.visible else ""),Vector2(500,350),game.flashlight_charge,light_color)
+		if game.crash_site.has_flashlight:
+			status_bar("FLASHLIGHT"+(" / OFF" if not game.flashlight.visible else ""),Vector2(500,350),game.flashlight_charge,light_color)
 		if game.flashlight_charge<=0:
 			text("EMPTY / Q BATTERY",Vector2(500,374),10,light_color)
-		text("I / BACKPACK",Vector2(20,24),10,DIM)
+		if game.crash_site.has_backpack: text("I / BACKPACK",Vector2(20,24),10,DIM)
+		if not game.crash_site.tutorial_complete():
+			draw_rect(Rect2(34,37,572,37),Color(0.02,0.03,0.025,0.88))
+			centered(game.crash_site.tutorial_prompt(),60,11,AMBER)
 		if game.weapons.selected>=0:
 			text(game.weapons.status(),Vector2(20,329),11,AMBER)
 		if game.weapons.hit_feedback>0:
@@ -138,6 +151,13 @@ func _draw():
 		return
 	if game.state=="dialogue":
 		draw_dialogue()
+		return
+	if game.state=="paused":
+		draw_rect(Rect2(0,0,640,400),Color(0.015,0.045,0.065,0.9))
+		centered("PAUSED",149,40)
+		centered("Take a breath. The road can wait.",184,14,DIM)
+		centered("Restart begins a new journey from the crash site.",334,12,DIM)
+		centered("ESC / RESUME",372,11,DIM)
 		return
 	if game.state!="play":
 		draw_rect(Rect2(0,0,640,400),Color(0.015,0.045,0.065,0.85))
@@ -238,6 +258,18 @@ func paragraph(content: String, x: float, y: float, width: float, size: int, col
 		y += size+5
 	return y
 
+func note_height(content: String, size: int) -> float:
+	var lines = 0
+	for source in content.split("\n"):
+		var line = ""
+		for word in source.split(" "):
+			if font.get_string_size(line+word+" ",HORIZONTAL_ALIGNMENT_LEFT,-1,size).x>478 and line!="":
+				lines+=1
+				line=""
+			line+=word+" "
+		lines+=1
+	return lines*(size+5)
+
 func draw_journal():
 	draw_rect(Rect2(0,0,640,400),Color(0.02,0.04,0.055,0.98))
 	draw_rect(Rect2(55,40,530,313),Color("6e8279"),false,1)
@@ -262,7 +294,7 @@ func draw_journal():
 		paragraph(game.town.objective(),78,127,476,16,AMBER)
 		text("HEALTH %d   LIGHT %d%%   RADIO %s" % [int(game.health),int(game.flashlight_charge),"READY" if game.town.radio_ready else "OFFLINE"],Vector2(78,151),11,DIM)
 		text("PACK / Health kits %d   Batteries %d   [H] Heal   [Q] Fit battery" % [game.town.inventory.medkit,game.town.inventory.battery],Vector2(78,168),12)
-		text("KEY %d   FUSE %d   COIL %d   CELLAR KEY %d   TUNER %d" % [game.town.inventory.station_key,game.town.inventory.fuse,game.town.inventory.coil,game.town.inventory.chapel_key,game.town.inventory.tuner],Vector2(78,184),10,DIM)
+		text("KEY %d   POWER BATTERY %d   COIL %d   CELLAR KEY %d   TUNER %d" % [game.town.inventory.station_key,game.town.inventory.workshop_battery,game.town.inventory.coil,game.town.inventory.chapel_key,game.town.inventory.tuner],Vector2(78,184),10,DIM)
 		var searched = game.town.interiors.containers.values().filter(func(storage): return storage.searched).size()
 		text("STORAGE / %d of 12 searched   SHOTGUN BOX KEY %d" % [searched,game.town.inventory.shotgun_key],Vector2(78,199),10,DIM)
 		text("AMMO RESERVE / Pistol %d   Rifle %d   Shotgun %d" % game.weapons.reserves,Vector2(78,214),10,DIM)
@@ -270,9 +302,9 @@ func draw_journal():
 			[game.town.inventory.antenna>0 or game.town.radio_ready,"Find the antenna coupler in Old Mill Cemetery"],
 			[game.town.reached_town,"Follow Old Mill Road into Blackwood"],
 			[game.town.inventory.station_key>0,"Find the ranger office's radio-station key"],
-			[game.town.powered,"Find store fuse; restore workshop power"],
+			[game.town.powered,"Find store battery; restore workshop power"],
 			[game.town.inventory.coil>0 or game.town.radio_ready,"Recover workshop signal coil"],
-			[game.town.streetscape.church.basement.unlocked,"Find workshop key; unlock the chapel cellar"],
+			[game.town.streetscape.church.basement.unlocked,"Find mausoleum key; unlock the chapel cellar"],
 			[game.town.inventory.tuner>0 or game.town.radio_ready,"Recover the chapel cellar tuning unit"],
 			[game.town.radio_ready,"Repair the receiver with all three radio parts"],
 			[game.contact_progress>=4,"Hold E at the repaired radio to call for rescue"]]
@@ -291,7 +323,10 @@ func draw_journal():
 		for data in game.town.BUILDINGS:
 			var p = journal_map_point(data.p)
 			draw_rect(Rect2(p-Vector2(data.d*2.5,data.w*0.9),Vector2(data.d*5,data.w*1.8)),Color("385156"))
-			text(data.id.to_upper(),p+Vector2(-22,4),10,INK)
+			text("ST GEORGE" if data.id=="house" else data.id.to_upper(),p+Vector2(-22,4),10,INK)
+		var old_house = journal_map_point(Vector3(-13,0,-98))
+		draw_rect(Rect2(old_house-Vector2(12,6),Vector2(24,12)),Color("385156"))
+		text("OLD HOUSE",old_house+Vector2(-35,-9),9,INK)
 		var chapel = journal_map_point(game.town.streetscape.church.position)
 		draw_rect(Rect2(chapel-Vector2(25,13),Vector2(50,26)),Color("385156"))
 		text("CHAPEL",chapel+Vector2(-20,4),10,INK)
@@ -305,8 +340,12 @@ func draw_journal():
 		text("SOUTH / OLD MILL ROAD & CRASH SITE",Vector2(211,336),11,DIM)
 	else:
 		var entry = game.town.journal_entries[clampi(game.journal_page-2,0,game.town.journal_entries.size()-1)]
-		text(entry.title.to_upper(),Vector2(78,110),18,AMBER)
-		paragraph(entry.text,78,150,478,14)
+		draw_texture_rect(preload("res://assets/interiors/detour_paper.jpg"),Rect2(64,88,512,268),false,Color(0.72,0.72,0.66))
+		draw_rect(Rect2(64,88,512,268),Color(0.89,0.86,0.75,0.72))
+		text(entry.title.to_upper(),Vector2(78,110),18,Color("353b35"))
+		var note_size = 14
+		while note_size>10 and note_height(entry.text,note_size)>200: note_size-=1
+		paragraph(entry.text,78,150,478,note_size,Color("353b35"))
 	centered("I  backpack     LEFT / RIGHT  pages     C  case notes     TAB / ESC  close",379,11,DIM)
 
 func draw_intro():
@@ -321,48 +360,18 @@ func dialogue_line(value: String, position: Vector2, size: int, color: Color):
 	draw_string(dialogue_font,position,value,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
 
 func draw_dialogue():
-	var fade=smoothstep(0.0,0.18,dialogue_elapsed)
-	var ink=Color(0.91,0.90,0.85,fade)
-	var quiet=Color(0.57,0.61,0.56,fade)
-	var accent=Color(0.72,0.66,0.48,fade)
-	# A single centred reading surface, with consistent padding and a quiet footer.
-	draw_rect(Rect2(0,0,640,400),Color(0.005,0.01,0.008,0.15*fade))
-	draw_set_transform(Vector2(0,4*(1-fade)))
-	draw_rect(Rect2(81,125,484,192),Color(0,0,0,0.24*fade))
-	draw_rect(Rect2(78,121,484,192),Color(0.035,0.047,0.041,0.96*fade))
-	draw_rect(Rect2(78,121,484,192),Color(0.31,0.35,0.29,0.8*fade),false,1)
-	draw_rect(Rect2(78,121,3,192),accent)
-	var identity=game.dialogue_name.split(" / ")
-	dialogue_line(identity[0],Vector2(103,154),20,ink)
-	var role=identity[1].to_upper() if identity.size()>1 else "BLACKWOOD"
-	dialogue_line(role,Vector2(104,171),9,quiet)
-	var pages=maxi(1,game.dialogue_pages.size())
-	for i in range(pages):
-		var x=537-(pages-1-i)*7
-		draw_rect(Rect2(x,149,4,4),accent if i==game.dialogue_page else Color(0.22,0.26,0.22,fade))
-	draw_line(Vector2(103,182),Vector2(537,182),Color(0.24,0.28,0.23,fade),1)
-	var spoken: String=game.dialogue_pages[game.dialogue_page] if not game.dialogue_pages.is_empty() else game.dialogue_text
-	var lines: Array[String] = []
-	var line=""
-	for word in spoken.replace("\n"," ").split(" ",false):
-		if dialogue_font.get_string_size(line+word,HORIZONTAL_ALIGNMENT_LEFT,-1,16).x>432 and line!="":
-			lines.append(line.strip_edges())
-			line=""
-		line+=word+" "
-	if line!="": lines.append(line.strip_edges())
-	for i in range(lines.size()): dialogue_line(lines[i],Vector2(103,207+i*22),16,ink)
-	draw_line(Vector2(103,272),Vector2(537,272),Color(0.24,0.28,0.23,fade),1)
-	dialogue_line("Esc",Vector2(104,295),11,ink)
-	dialogue_line("Leave",Vector2(132,295),11,quiet)
-	var button=Rect2(414,279,124,26)
-	var hover=button.has_point(get_global_mouse_position())
-	if hover: draw_rect(button,Color(0.16,0.19,0.15,fade))
-	draw_rect(Rect2(421,283,18,17),Color(0.29,0.32,0.26,fade),false,1)
-	dialogue_line("E",Vector2(427,296),11,ink)
-	dialogue_line("Finish" if game.dialogue_page+1>=pages else "Continue",Vector2(449,296),12,ink)
-	draw_line(Vector2(526,288),Vector2(531,292),accent,1)
-	draw_line(Vector2(531,292),Vector2(526,296),accent,1)
-	draw_set_transform(Vector2.ZERO)
+	var ink = Color("e8e2d5")
+	var bounds = preload("res://dialogue_style.gd").BOX
+	# Opaque black, square cream border, and integer-aligned bitmap lettering.
+	draw_rect(bounds,Color.BLACK)
+	draw_rect(bounds,ink,false,2)
+	var spoken: String = game.dialogue_pages[game.dialogue_page] if not game.dialogue_pages.is_empty() else ""
+	var lines = spoken.split("\n")
+	for i in range(lines.size()):
+		dialogue_line(lines[i],Vector2(106,300+i*20),20,ink)
+	# The small stepped arrow replaces the previous buttons and speaker header.
+	for row in range(3):
+		draw_rect(Rect2(520+row*2,365+row*2,14-row*4,2),ink)
 
 func journal_map_point(p: Vector3) -> Vector2:
 	return Vector2(300+p.x*4,133+(p.z+155)*1.08)
@@ -377,3 +386,4 @@ func draw_achievement():
 	draw_rect(Rect2(139,25,362,57),Color("8d805e"),false,1)
 	centered("ACHIEVEMENT UNLOCKED" if game.achievements.toast_is_new else "ACHIEVEMENT",45,11,DIM)
 	centered(game.achievements.toast_title,68,19,AMBER)
+

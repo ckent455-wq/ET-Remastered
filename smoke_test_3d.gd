@@ -13,7 +13,7 @@ func check():
 	assert(game.player.position==game.START_POSITION and game.weapons.selected== -1,"Unarmed crash-site start")
 	game.town.perform("ranger_drawer")
 	game.town.perform("store_drawer")
-	game.town.perform("fuse_panel")
+	game.town.perform("battery_panel")
 	game.town.perform("workshop_cabinet")
 	game.town.perform("receiver")
 	game.player.position = game.town.buildings.radio.to_global(Vector3(-2.7,0.001,-2.0))

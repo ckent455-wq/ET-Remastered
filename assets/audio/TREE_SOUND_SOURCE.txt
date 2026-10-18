@@ -1,0 +1,5 @@
+Tree falling sound used by falling_tree.gd:
+Original filename: 139952__ecfike__a-tree-falling-down.wav
+Creator indicated by filename: ecfike
+Provided by the user from Downloads on 2026-10-17.
+Copied without audio edits as tree_fall_recorded.wav.
