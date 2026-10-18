@@ -378,3 +378,25 @@ Added an original two-story house in the marked lot beside the antiques shop, wi
 Reference images were found through an image search for weathered Victorian houses, including https://oldhousesunder50k.com/fixer-upper-victorian-for-sale/ and https://www.asasbriarcliff.com/hartwell-ga . Photos inform proportions and details; the game uses original geometry and local assets.
 
 Route checks cover the porch approach, doorway, stairs, rooms, actual player movement onto the upper landing, safe door behavior while inside, and new-journey door reset. The woodland boundary and hill grading make room for the house without obstructing the church road.
+
+
+Saint George basement and old passage: hotel_basement.gd adds an upstairs door bolted from below, a passage entrance inside the Whitcomb mausoleum, a 25 m walkable underground tunnel and hotel cellar. The first route is through the mausoleum; using the cellar-side hotel door unbolts the shortcut. E uses each transition, with the chapel passage fade. Underground geometry uses the cellar light layer and camera environment. Restart rebolts the hotel door.
+
+TEMPORARY TEST SETTING: cemetery.gd TEST_UNLOCK_MAUSOLEUM is true at the user's request. New journeys start with the mausoleum unlocked but its door closed. Restore false only when the user requests the lock back. The normal key and workshop/coil checks remain in interact_door for normal play.
+
+Checked hotel lock, mausoleum access gate, action raycasts at both entrances, clear corridor and cellar, actual corridor movement, cellar lighting, hotel unbolt/reentry, mausoleum return and reset in work/check_hotel_tunnel.gd. Tunnel static preview inspected.
+
+The temporary mausoleum test unlock has now been disabled at the user's request. Normal workshop/coil progression and Elias's mausoleum key are required again. Small world captions and nameplates are suppressed by town.sign_text; principal physical building/road signs and printed note/journal/UI text remain.
+
+
+Cemetery apparition: cemetery_shadow.gd shows a dark animated figure between the graves on entering the cemetery. It has no combat collision or nameplate and fades away within seven metres, once per journey. Restart restores the encounter.
+
+Workshop power fight: the fourth enemies.gd creature remains hidden until the rear battery panel restores power. It emerges at the rear alley, navigates a sampled town/alley grid, attacks for 14 damage and has 60 HP. Three pistol hits kill it. The signal-coil cabinet cannot be searched until it is dead; this event creature never respawns during the same journey. Six additional pistol rounds sit just inside the workshop. The three original chapel creatures retain their normal behavior and respawn rules. Restart resets the power encounter.
+
+Verified power activation, navigation toward the rear yard, attack damage, weapon-impact damage, permanent event death, coil access before/after the fight, apparition appearance/fade, and restart with work/check_new_encounters.gd. A static cemetery preview was inspected.
+
+Workshop encounter timing revised: connecting the battery only arms the encounter, with no creature reveal or growl. Crossing westward past x=6.6 at the alley mouth (z=-53 to -50) springs the one-time Main Street ambush. The creature starts on the street at (1.4,0,-57). Waiting at the terminal or walking inside the alley does not trigger it. Exit timing, pursuit and combat rechecked.
+
+NPC shelter: before the workshop ambush is prepared, living townspeople move into their own buildings, stop outdoor routines and close the building doors. Active chapel creatures and the cemetery apparition also request shelter. Door closure preserves occupied-threshold safety, and NPCs resume routines after threats clear. Restart restores normal behavior. Verified homes, all building doors, patrol hold, fight end, other hostiles and reset in work/check_npc_shelter.gd.
+
+Shelter movement revised: NPCs now run continuously along entrance waypoints using CharacterBody3D movement. They open their own doors, pass through the threshold, move safely inside, and close doors behind them. No shelter teleport remains. The alley ambush remembers an early player exit and waits for all living NPCs and door animations to finish before attacking. Verified continuous positions, door entry and closure with work/check_npc_shelter_run.gd.

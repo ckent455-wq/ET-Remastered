@@ -98,5 +98,6 @@ func apply_details():
 			var visual=pickup_visual(data.area)
 			if id=="cemetery_cellar_key": visual.position.x+=0.25
 			rest_on_surface(visual,id)
+	if game.hotel_basement: game.town.streetscape.church.basement.prepare_cellar_lighting(game.hotel_basement)
 	completed=true
 	print("PAPER AND SUPPORT PASS: ",paper_count," notes; ",adjustments)

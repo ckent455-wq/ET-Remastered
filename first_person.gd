@@ -1,9 +1,9 @@
 extends Node3D
 const START_POSITION = Vector3(-0.7,0.001,16.8)
 const START_YAW = -0.60
-const STANDING_HEIGHT = 1.5
+const STANDING_HEIGHT = 1.85
 const CROUCH_HEIGHT = 0.9
-const STANDING_EYE = 1.25
+const STANDING_EYE = 1.65
 const CROUCH_EYE = 0.68
 const JUMP_VELOCITY = 5.2
 const GRAVITY = 18.0
@@ -46,6 +46,8 @@ var fog_atmosphere: Node3D
 var distant_landscape: Node3D
 var falling_tree: Node3D
 var surface_details: Node
+var cemetery_shadow: Node3D
+var hotel_basement: Node3D
 var victorian_house: Node3D
 var forest_boundary: Node3D
 var flashlight_model: Node3D
@@ -222,6 +224,12 @@ func _ready():
 	victorian_house = preload("res://victorian_house.gd").new()
 	victorian_house.game = self
 	add_child(victorian_house)
+	hotel_basement=preload("res://hotel_basement.gd").new()
+	hotel_basement.game=self
+	add_child(hotel_basement)
+	cemetery_shadow=preload("res://cemetery_shadow.gd").new()
+	cemetery_shadow.game=self
+	add_child(cemetery_shadow)
 	backpack = preload("res://backpack.gd").new()
 	backpack.game = self
 	canvas.add_child(backpack)
@@ -289,8 +297,13 @@ func reset_game():
 	if story: story.reset()
 	if falling_tree: falling_tree.reset()
 	if crash_site: crash_site.reset()
+	if hotel_basement: hotel_basement.reset()
+	if cemetery_shadow: cemetery_shadow.reset()
 
 func set_state(next: String):
+	if crash_site and next=="play" and crash_site.wake_phase!="":
+		if crash_site.wake_phase=="dialogue": crash_site.wake_phase="ground"
+		next="waking"
 	if next=="dialogue" and state!="dialogue":
 		dialogue_page=0
 		dialogue_pages=preload("res://dialogue_style.gd").pages(dialogue_text)
@@ -318,11 +331,17 @@ func set_state(next: String):
 func update_camera():
 	if title_camera==null:
 		return
-	var active_camera = title_camera if state in ["intro","title"] else camera
+	var active_camera = title_camera if state in ["intro","title"] or (crash_site and crash_site.wake_phase=="menu_fade") else camera
 	if not active_camera.current:
 		active_camera.make_current()
 
 func _unhandled_input(event):
+	if state=="waking":
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode==KEY_E: crash_site.stand_up()
+			elif event.keycode==KEY_ESCAPE: set_state("paused")
+			elif event.keycode==KEY_M: soundscape.toggle_mute()
+		return
 	if state=="backpack":
 		backpack.handle(event)
 		return
@@ -417,7 +436,7 @@ func _physics_process(delta):
 	player.move_and_slide()
 	# The shared world floor is flat at y=0. Prevent corner recovery from
 	# sinking the capsule into that plane and bouncing it back next frame.
-	if player.position.y<0.001 and not town.streetscape.church.basement.contains(player.global_position) and not victorian_house.cellar_contains(player.global_position):
+	if player.position.y<0.001 and not town.streetscape.church.basement.contains(player.global_position) and not victorian_house.cellar_contains(player.global_position) and not hotel_basement.contains(player.global_position):
 		player.position.y = 0.001
 		player.velocity.y = 0.0
 	player.position.x = clampf(player.position.x,-60,60)

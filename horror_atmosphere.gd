@@ -36,6 +36,7 @@ func reset():
 	bed.volume_db = -42
 
 func interior_id() -> String:
+	if game.hotel_basement and game.hotel_basement.contains(game.player.global_position): return "house"
 	if game.town.streetscape.church and game.town.streetscape.church.contains(game.player.global_position):
 		return "church"
 	for data in game.town.BUILDINGS:

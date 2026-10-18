@@ -23,9 +23,9 @@ func clear_at(p: Vector3) -> bool:
 	query.transform.origin = p+Vector3(0,1.22,0)
 	return enemies.get_world_3d().direct_space_state.intersect_shape(query,1).is_empty()
 
-func build():
-	for z in range(-151,-117):
-		for x in range(14,42):
+func build(bounds=Rect2i(14,-151,28,34)):
+	for z in range(bounds.position.y,bounds.end.y):
+		for x in range(bounds.position.x,bounds.end.x):
 			var p: Vector3 = enemies.ground(Vector3(x,0,z))
 			if not clear_at(p): continue
 			var id = graph.get_point_count()

@@ -105,6 +105,9 @@ func _draw():
 	if game.state=="title":
 		draw_title()
 		return
+	if game.state=="waking":
+		draw_waking()
+		return
 	# Thin scanlines and corner shading evoke an early console display.
 	for y in range(0,400,3):
 		draw_line(Vector2(0,y),Vector2(640,y),Color(0,0,0,0.05))
@@ -387,3 +390,26 @@ func draw_achievement():
 	centered("ACHIEVEMENT UNLOCKED" if game.achievements.toast_is_new else "ACHIEVEMENT",45,11,DIM)
 	centered(game.achievements.toast_title,68,19,AMBER)
 
+
+func draw_waking():
+	if game.crash_site.wake_phase=="menu_fade":
+		if game.crash_site.wake_menu_texture:
+			draw_texture_rect(game.crash_site.wake_menu_texture,Rect2(0,0,640,400),false)
+		else: draw_title()
+		var fade=smoothstep(0.0,game.crash_site.MENU_FADE_SECONDS,game.crash_site.wake_elapsed)
+		draw_rect(Rect2(0,0,640,400),Color(0,0,0,fade))
+		return
+	var opening=game.crash_site.eye_opening()
+	if opening<0.999:
+		var top=PackedVector2Array([Vector2(0,0),Vector2(640,0)])
+		var bottom=PackedVector2Array([Vector2(0,400),Vector2(640,400)])
+		for i in range(25):
+			var x=640.0*(1.0-float(i)/24)
+			var edge=(1.0-opening)*200+sin(x/640*PI)*22*opening*(1.0-opening)
+			top.append(Vector2(x,edge))
+			bottom.append(Vector2(x,400-edge))
+		draw_colored_polygon(top,Color.BLACK)
+		draw_colored_polygon(bottom,Color.BLACK)
+	if game.crash_site.wake_phase=="ground":
+		draw_rect(Rect2(203,312,234,38),Color(0.015,0.02,0.015,0.85))
+		centered("E / STAND UP",337,20,AMBER)

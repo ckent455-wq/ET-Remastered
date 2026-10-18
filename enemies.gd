@@ -2,12 +2,20 @@ extends Node3D
 ## Three native animated creatures. Real collision and sight rays guard combat.
 var game
 var creatures = []
-const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5)]
+const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0)]
 const WOOD_ROUTES = [[Vector3(19.8,0,-129.7),Vector3(21.0,0,-131.5),Vector3(24.0,0,-130.2)],[Vector3(38.3,0,-134.5),Vector3(37.8,0,-130.0),Vector3(34.8,0,-127.5)],[Vector3(39.0,0,-139),Vector3(38.3,0,-134.5),Vector3(37.8,0,-130),Vector3(34.8,0,-127.5)]]
 const HEALTH = 85.0
 const RESPAWN_SECONDS = 120.0
 var sense_clock = 0.0
 var streams = {}
+var workshop_navigation
+var workshop_attack_pending=false
+var workshop_armed=false
+var workshop_previous_x=18.0
+var workshop_spawned=false
+var workshop_defeated=false
+const WORKSHOP_INDEX=3
+const WORKSHOP_HEALTH=60.0
 var navigation
 
 func _ready():
@@ -42,7 +50,7 @@ func _ready():
 		voice.pitch_scale = 0.92+i*0.06
 		voice.unit_size = 5
 		var route: Array[Vector3] = []
-		for point in WOOD_ROUTES[i]: route.append(ground(point))
+		for point in (WOOD_ROUTES[i] if i<3 else [SPAWNS[i]]): route.append(ground(point))
 		var spawn = ground(SPAWNS[i])
 		creatures.append({"actor":actor,"visual":visual,"animation":animation,"clips":clips,"clip":"","hp":HEALTH,"state":"lurking","timer":0.0,"cooldown":0.0,"seen":false,"memory":0.0,"target":spawn,"spawn":spawn,"route":route,"waypoint":0,"voice":voice,"voice_timer":5.0+i*4,"blocked":0.0,"previous":spawn,"did_hit":false,"suspicion":0.0,"stalk_time":0.0,"index":i})
 	reset()
@@ -52,8 +60,15 @@ func build_navigation():
 	await get_tree().physics_frame
 	navigation = preload("res://chapel_enemy_paths.gd").new(self)
 	navigation.build()
+	workshop_navigation=preload("res://chapel_enemy_paths.gd").new(self)
+	workshop_navigation.build(Rect2i(-4,-77,25,39))
 
 func reset():
+	workshop_attack_pending=false
+	workshop_armed=false
+	workshop_previous_x=18.0
+	workshop_spawned=false
+	workshop_defeated=false
 	for data in creatures: reset_creature(data)
 	sense_clock = 0
 
@@ -63,7 +78,9 @@ func reset_creature(data):
 	data.actor.velocity = Vector3.ZERO
 	data.actor.collision_layer = 1
 	data.actor.collision_mask = 1
-	data.hp = HEALTH
+	data.hp = WORKSHOP_HEALTH if data.index==WORKSHOP_INDEX else HEALTH
+	data["max_hp"]=data.hp
+	data.actor.show()
 	data.state = "lurking"
 	data.timer = 2.0
 	data.cooldown = 0.0
@@ -85,6 +102,11 @@ func reset_creature(data):
 	play(data,"crouch_pose")
 	data["respawn_remaining"] = 0.0
 	data.animation.advance(0)
+	if data.index==WORKSHOP_INDEX:
+		data.state="dormant"
+		data.actor.hide()
+		data.actor.collision_layer=0
+		data.actor.collision_mask=0
 
 func play(data, clip: String):
 	if data.clip==clip or not data.clips.has(clip): return
@@ -113,7 +135,10 @@ func alert_shot(p: Vector3):
 func shoot(index: int, damage: float) -> bool:
 	if game.state!="play" or index<0 or index>=creatures.size(): return false
 	var data = creatures[index]
-	if data.hp<=0: return false
+	if data.hp<=0 or data.state=="dormant": return false
+	if data.index==WORKSHOP_INDEX and not workshop_spawned:
+		workshop_spawned=true
+		workshop_armed=false
 	data.hp = maxf(0,data.hp-damage)
 	data.target = game.player.global_position
 	data.memory = 10.0
@@ -121,6 +146,9 @@ func shoot(index: int, damage: float) -> bool:
 	data.did_hit = true
 	if data.hp<=0:
 		data.state = "dead"
+		if data.index==WORKSHOP_INDEX:
+			workshop_defeated=true
+			game.message="The creature collapses. Search the workshop for the signal coil."
 		data.respawn_remaining = RESPAWN_SECONDS
 		data.actor.velocity = Vector3.ZERO
 		data.actor.collision_layer = 0
@@ -166,11 +194,12 @@ func health_bar_targets() -> Array:
 		if game.camera.is_position_behind(point) or not line_clear(data,game.camera.global_position): continue
 		var screen = game.camera.unproject_position(point)
 		if screen.x<26 or screen.x>614 or screen.y>315: continue
-		targets.append({"point":Vector2(screen.x,maxf(28,screen.y)),"fraction":clampf(data.hp/HEALTH,0,1)})
+		targets.append({"point":Vector2(screen.x,maxf(28,screen.y)),"fraction":clampf(data.hp/data.get("max_hp",HEALTH),0,1)})
 	return targets
 
 func _physics_process(delta):
 	var active = game.state=="play"
+	if active: game.town.townspeople.set_sheltering(town_threat_active())
 	sense_clock -= delta
 	var sensing = sense_clock<=0
 	if sensing: sense_clock = 0.18
@@ -182,6 +211,9 @@ func _physics_process(delta):
 		data.animation.speed_scale = animation_rate if active else 0
 		data.voice.stream_paused = not active
 		if not active: continue
+		if data.index==WORKSHOP_INDEX:
+			update_workshop_creature(data,delta)
+			continue
 		if data.state=="dead":
 			data.respawn_remaining = maxf(0,data.respawn_remaining-delta)
 			if data.respawn_remaining<=0: reset_creature(data)
@@ -330,7 +362,7 @@ func ground(p: Vector3) -> Vector3:
 func build_woodland_cover():
 	# Real scenery occludes the resting creatures. The passage around each
 	# boulder faces the woods, leaving Chapel Road and the footpath clear.
-	for i in range(SPAWNS.size()):
+	for i in range(3):
 		var p = ground(SPAWNS[i]+Vector3(0.15,0,2.3))
 		var rock = preload("res://assets/forest/rock_1.glb").instantiate()
 		add_child(rock)
@@ -361,3 +393,92 @@ func build_woodland_cover():
 			bush.position = ground(SPAWNS[i]+offset)
 			bush.scale = Vector3(2.4,1.6,2.2)
 			game.town.apartment_interiors.adapt(bush)
+
+func arm_workshop_encounter():
+	if workshop_spawned or workshop_defeated:return
+	workshop_armed=true
+	game.town.townspeople.set_sheltering(true)
+	workshop_previous_x=game.player.global_position.x
+	# Place him while the workshop blocks the view from the rear terminal.
+	var data=creatures[WORKSHOP_INDEX]
+	data.actor.show()
+	data.actor.collision_layer=1
+	data.actor.collision_mask=1
+	data.state="ambush_wait"
+	data.voice.stop()
+	play(data,"idle1")
+
+func start_workshop_encounter():
+	if workshop_spawned or workshop_defeated:return
+	workshop_spawned=true
+	workshop_armed=false
+	game.message="Something lunges toward you from Main Street. Kill it!"
+	var data=creatures[WORKSHOP_INDEX]
+	data.state="alert"
+	data.timer=1.1
+	data.voice.stream=streams.growl
+	data.voice.play()
+	play(data,"roar")
+
+func workshop_danger() -> bool:
+	return workshop_spawned and not workshop_defeated
+
+func update_workshop_creature(data,delta:float):
+	var p:Vector3=game.player.global_position
+	if workshop_armed and not workshop_spawned:
+		# Crossing the alley mouth toward Main Street springs the ambush.
+		if workshop_previous_x>6.6 and p.x<=6.6 and p.x>3.5 and p.z> -53 and p.z< -50 and p.y> -0.5 and p.y<2:
+			workshop_attack_pending=true
+		if workshop_attack_pending and game.town.townspeople.all_sheltered():start_workshop_encounter()
+		workshop_previous_x=p.x
+	if data.state in ["dormant","dead"]:return
+	if data.state=="ambush_wait":
+		move_creature(data,Vector3.ZERO,delta)
+		return
+	data.timer=maxf(0,data.timer-delta)
+	data.cooldown=maxf(0,data.cooldown-delta)
+	if data.state in ["alert","stagger"]:
+		if data.timer<=0:data.state="chase"
+		return
+	var target:Vector3=game.player.global_position
+	if target.y< -1:
+		play(data,"idle1")
+		move_creature(data,Vector3.ZERO,delta)
+		return
+	if data.state=="attack":
+		if not data.did_hit and data.timer<0.65:
+			data.did_hit=true
+			if data.actor.global_position.distance_to(target)<1.9 and line_clear(data,target+Vector3.UP):game.take_damage(14)
+		if data.timer<=0:
+			data.state="chase"
+			data.cooldown=1.0
+		move_creature(data,Vector3.ZERO,delta)
+		return
+	if data.actor.global_position.distance_to(target)<1.55 and data.cooldown<=0 and line_clear(data,target+Vector3.UP):
+		data.state="attack"
+		data.timer=1.45
+		data.did_hit=false
+		play(data,"punch")
+		data.voice.stream=streams.attack
+		data.voice.play()
+		return
+	var direction=target-data.actor.global_position
+	if workshop_navigation:
+		data.path_timer-=delta
+		if data.path_timer<=0 or data.path_target.distance_to(target)>1.5:
+			data.path=workshop_navigation.path(data.actor.global_position,target)
+			data.path_target=target
+			data.path_timer=0.65
+		while data.path.size()>0 and Vector2(data.actor.position.x,data.actor.position.z).distance_to(Vector2(data.path[0].x,data.path[0].z))<0.55:data.path.remove_at(0)
+		if data.path.size()>0:direction=data.path[0]-data.actor.global_position
+	direction.y=0
+	play(data,"walk1")
+	move_creature(data,direction.normalized()*1.85 if direction.length()>0.5 else Vector3.ZERO,delta)
+
+func town_threat_active()->bool:
+	if game.cemetery_shadow and game.cemetery_shadow.appeared and not game.cemetery_shadow.vanished:return true
+	if workshop_armed or workshop_danger():return true
+	for data in creatures:
+		if data.index==WORKSHOP_INDEX or data.hp<=0:continue
+		if data.state in ["stalking","alert","chase","attack","investigate","stagger"]:return true
+	return false

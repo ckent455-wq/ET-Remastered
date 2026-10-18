@@ -11,6 +11,8 @@ var lamps: Array[OmniLight3D] = []
 var lantern_materials: Array[StandardMaterial3D] = []
 var lantern_halos: Array[Sprite3D] = []
 var emergency_lights: Array[OmniLight3D] = []
+var emergency_lenses:Array[StandardMaterial3D]=[]
+var emergency_halos:Array[Sprite3D]=[]
 var material_cache = {}
 var road_mesh: ArrayMesh
 var church: Node3D
@@ -117,6 +119,9 @@ func build_downloaded_roads():
 	for i in range(5):
 		road_segment(Vector3(0,-0.232,14.5-i*11),3.2)
 		road_segment(Vector3(0,-0.232,-43.5-i*11),7.6)
+	# Scenic continuation behind the crash, beyond the invisible travel limit.
+	for i in range(7):
+		road_segment(Vector3(0,-0.232,25.5+i*11),3.2)
 
 func extract_road_mesh(node: Node):
 	if node is MeshInstance3D:
@@ -232,6 +237,8 @@ func police_lightbar(body: Node3D):
 		halo.position = Vector3(side*0.27,1.48,0.29)
 		body.add_child(halo)
 		emergency_lights.append(glow)
+		emergency_lenses.append(lens)
+		emergency_halos.append(halo)
 
 func adapt_car(node: Node, index: int):
 	if node is MeshInstance3D:
@@ -467,9 +474,7 @@ func weeds():
 		multi.set_instance_transform(i,Transform3D(Basis(Vector3.UP,i*1.3),Vector3(side*(3.8 if i%3==0 else 6.23),0.025,-39-i*1.02)))
 
 func _process(_delta):
-	for i in range(emergency_lights.size()):
-		# A slow, shallow pulse suggests a failing battery without sharp flashes.
-		emergency_lights[i].light_energy = 0.8*(0.9+0.1*sin(town.game.clock*0.75+i*PI))
+	update_emergency_lights(town.game.clock)
 	for i in range(lamps.size()):
 		# Low, smooth breathing glow; each lamp drifts slightly out of phase.
 		var pulse = 0.5+0.5*sin(town.game.clock*1.05+i*0.9)
@@ -478,3 +483,11 @@ func _process(_delta):
 		lantern_materials[i].albedo_color = Color("b8a17c")*lerpf(0.65,0.85,pulse)
 		lantern_halos[i].modulate.a = lerpf(0.13,0.22,pulse)
 
+
+func update_emergency_lights(time:float):
+	for i in range(emergency_lights.size()):
+		var phase=fmod(time+i*0.6,1.2)
+		var lit=phase<0.48
+		emergency_lights[i].light_energy=0.95 if lit else 0.0
+		emergency_lenses[i].emission_energy_multiplier=1.1 if lit else 0.0
+		emergency_halos[i].modulate.a=0.30 if lit else 0.0

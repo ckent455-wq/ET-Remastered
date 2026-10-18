@@ -3,11 +3,25 @@ extends Node3D
 var game
 var wreck: Node3D
 var steam: Array[MeshInstance3D] = []
+var headlight_beams:Array[SpotLight3D]=[]
+var headlight_lens:MeshInstance3D
+var headlight_material:StandardMaterial3D
+var tail_material:StandardMaterial3D
+var tail_lens:MeshInstance3D
+var tail_glows:Array[OmniLight3D]=[]
+const HEADLIGHT_PERIOD=1.25
 var elapsed = 0.0
 var has_backpack = false
 var has_flashlight = false
 var has_detour_sheet = false
 var detour_visual: Node3D
+var wake_phase = ""
+var wake_elapsed = 0.0
+var wake_menu_texture: Texture2D
+const MENU_FADE_SECONDS = 0.85
+const WAKE_EYE = 0.23
+const WAKE_PITCH = 1.28
+const STAND_SECONDS = 1.25
 var door_open = false
 var door: Node3D
 var door_closed = Vector3.ZERO
@@ -37,28 +51,11 @@ func _ready():
 	collision.shape = shape
 	collision.position.y = 0.72
 	wreck.add_child(collision)
-	var headlight = SpotLight3D.new()
-	headlight.position = Vector3(0.65,0.55,-1.75)
-	headlight.rotation.x = -0.12
-	headlight.light_color = Color("d6cda0")
-	headlight.light_energy = 1.2
-	headlight.spot_range = 10
-	headlight.spot_angle = 32
-	wreck.add_child(headlight)
-	var rear_glow = OmniLight3D.new()
-	rear_glow.position = Vector3(0,0.6,1.9)
-	rear_glow.light_color = Color("ad4333")
-	rear_glow.light_energy = 0.35
-	rear_glow.omni_range = 2.8
-	wreck.add_child(rear_glow)
+	build_blinking_headlights(model)
 	game.town.action_area(wreck,Vector3(0,1.1,-1.5),Vector3(1.0,0.4,0.3),"crash_wreck",{"kind":"crash","label":"Inspect wrecked car"})
 	# The car has run off the lane into a broken roadside stump.
 	var stump = game.mesh_at(self,game.cylinder(0.42,0.3,0.9),wreck.to_global(Vector3(0,0.45,-2.05)),game.town.mats.wood)
 	stump.rotation.z = 0.15
-	var hood = game.town.box(wreck,Vector3(0,0.83,-1.30),Vector3(1.25,0.045,0.55),game.mat(Color("787543")),false)
-	hood.rotation = Vector3(-0.20,0,-0.045)
-	var bumper = game.town.box(wreck,Vector3(0.05,0.30,-1.82),Vector3(1.6,0.12,0.10),game.town.mats.dark,false)
-	bumper.rotation.z = 0.13
 	for i in range(8):
 		var start = Vector3(-0.65,0.025,20-i*0.75)
 		start.x += i*0.35
@@ -97,6 +94,7 @@ func adapt(node: Node):
 		adapt(child)
 
 func _process(delta):
+	update_waking(delta)
 	if door_tween and door_tween.is_valid():
 		if game.state=="play" and not door_tween.is_running() and not is_equal_approx(door.rotation.y,door_closed.y-1.15 if door_open else door_closed.y): door_tween.play()
 		elif game.state!="play": door_tween.pause()
@@ -104,6 +102,7 @@ func _process(delta):
 	if game.state!="play":
 		return
 	elapsed += delta
+	update_headlights()
 	for i in range(steam.size()):
 		var phase = fmod(elapsed*0.28+i*0.25,1)
 		steam[i].position = Vector3(sin(phase*4+i)*0.10,0.85+phase*0.8,-1.35)
@@ -143,6 +142,11 @@ func build_tutorial_items():
 	reset()
 
 func reset():
+	elapsed=0
+	update_headlights()
+	wake_phase = ""
+	wake_elapsed = 0.0
+	wake_menu_texture=null
 	has_backpack = false
 	has_flashlight = false
 	has_detour_sheet = false
@@ -158,9 +162,61 @@ func reset():
 	update_door_target()
 
 func start_opening():
+	# Retain the last rendered menu, including buttons, during the fade.
+	if DisplayServer.get_name()!="headless":
+		wake_menu_texture=ImageTexture.create_from_image(get_viewport().get_texture().get_image())
+	wake_phase="menu_fade"
+	wake_elapsed=0.0
+	game.player.velocity=Vector3.ZERO
+	game.pitch=WAKE_PITCH
+	game.camera.position.y=WAKE_EYE
+	game.camera.rotation=Vector3(WAKE_PITCH,0,0.08)
+	game.set_state("waking")
+
+func show_wake_dialogue():
+	wake_phase="dialogue"
 	game.dialogue_name = ""
-	game.dialogue_text = "My head... I must have blacked out. Something crossed the road. I swerved, and the car hit that stump.\n\nThe engine's dead. No phone signal. My backpack and flashlight are still in the car. I need to get them before I look for help."
+	game.dialogue_text = "My head... I must have blacked out. Something crossed the road. I swerved, and the car hit that stump.\n\nThe engine's dead. No phone signal. My backpack and flashlight are still in the car. I need to get up and collect them before I look for help."
 	game.set_state("dialogue")
+
+func stand_up():
+	if wake_phase!="ground": return
+	wake_phase="standing"
+	wake_elapsed=0.0
+	game.jump_queued=false
+
+func update_waking(delta: float):
+	if game.state!="waking": return
+	wake_elapsed+=minf(delta,0.1)
+	game.player.velocity=Vector3.ZERO
+	game.jump_queued=false
+	if wake_phase=="menu_fade" and wake_elapsed>=MENU_FADE_SECONDS:
+		wake_phase="blinking"
+		wake_elapsed=0.0
+		wake_menu_texture=null
+		game.update_camera()
+	elif wake_phase=="blinking" and wake_elapsed>=3.0:
+		show_wake_dialogue()
+	elif wake_phase=="standing":
+		var t=smoothstep(0.0,1.0,clampf(wake_elapsed/STAND_SECONDS,0,1))
+		game.camera.position.y=lerpf(WAKE_EYE,game.STANDING_EYE,t)
+		game.pitch=lerpf(WAKE_PITCH,0,t)
+		game.camera.rotation=Vector3(game.pitch,0,0.08*(1-t))
+		if t>=1:
+			wake_phase=""
+			game.set_state("play")
+			game.message="Find the driver's door. Press E to open it and collect your things."
+	game.hud.queue_redraw()
+
+func eye_opening() -> float:
+	if wake_phase=="menu_fade": return 0.0
+	if wake_phase!="blinking": return 1.0
+	var times=[0.0,0.35,0.85,1.05,1.65,1.90,2.60,3.0]
+	var openings=[0.0,0.0,0.75,0.0,0.95,0.10,1.0,1.0]
+	for i in range(times.size()-1):
+		if wake_elapsed<=times[i+1]:
+			return lerpf(openings[i],openings[i+1],smoothstep(times[i],times[i+1],wake_elapsed))
+	return 1.0
 
 func tutorial_complete() -> bool:
 	return has_backpack and has_flashlight and has_detour_sheet
@@ -173,6 +229,7 @@ func tutorial_prompt() -> String:
 	return ""
 
 func interact_tutorial(id: String):
+	if wake_phase!="": return
 	if id=="crash_driver_door":
 		door_open = not door_open
 		if door_tween: door_tween.kill()
@@ -249,13 +306,14 @@ func build_car_interior():
 		town.box(cabin,Vector3(x*0.44,0.62,0.27),Vector3(0.055,0.10,0.06),plastic,false)
 	town.box(cabin,Vector3(0,0.50,1.10),Vector3(1.42,0.16,0.48),fabric,false)
 	town.box(cabin,Vector3(0,0.79,1.34),Vector3(1.42,0.47,0.14),fabric,false)
+	# Dashboard and instruments fit below the windshield; seats and gear keep their positions.
 	# Dashboard, glovebox, center console, and a simple steering wheel.
-	town.box(cabin,Vector3(0,0.91,-0.94),Vector3(1.45,0.24,0.35),plastic,false)
-	town.box(cabin,Vector3(0.4,0.86,-0.75),Vector3(0.48,0.16,0.02),carpet,false)
-	town.box(cabin,Vector3(0.4,0.90,-0.732),Vector3(0.13,0.02,0.015),pale,false)
-	town.box(cabin,Vector3(-0.43,1.03,-0.77),Vector3(0.40,0.15,0.05),carpet,false)
+	town.box(cabin,Vector3(0,0.70,-0.66),Vector3(1.28,0.16,0.22),plastic,false)
+	town.box(cabin,Vector3(0.4,0.72,-0.535),Vector3(0.48,0.16,0.02),carpet,false)
+	town.box(cabin,Vector3(0.4,0.76,-0.52),Vector3(0.13,0.02,0.015),pale,false)
+	town.box(cabin,Vector3(-0.43,0.86,-0.67),Vector3(0.36,0.10,0.035),carpet,false)
 	for x in [-0.51,-0.35]:
-		town.box(cabin,Vector3(x,1.04,-0.737),Vector3(0.09,0.04,0.01),pale,false)
+		town.box(cabin,Vector3(x,0.88,-0.645),Vector3(0.09,0.04,0.01),pale,false)
 	town.box(cabin,Vector3(0,0.47,-0.22),Vector3(0.16,0.24,0.76),plastic,false)
 	town.box(cabin,Vector3(0,0.67,-0.37),Vector3(0.04,0.22,0.04),carpet,false)
 	town.box(cabin,Vector3(0,0.79,-0.37),Vector3(0.07,0.05,0.07),plastic,false)
@@ -310,3 +368,90 @@ func build_detour_sheet():
 		head.rotation.y = -side*0.7
 	tutorial_areas.crash_record = game.town.action_area(wreck,Vector3(-1.04,0.95,-0.28),Vector3(0.18,0.45,0.50),"crash_record",{"kind":"crash_tutorial","label":"Pick up detour sheet"})
 	tutorial_areas.crash_record.collision_layer = 0
+
+func build_blinking_headlights(model:Node3D):
+	# Copy only the original front lamp faces. The body and cabin stay untouched.
+	var tool=SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var rear_tool=SurfaceTool.new()
+	rear_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var rear_count=0
+	var count=0
+	for part in model.find_children("*","MeshInstance3D",true,false):
+		var pose=wreck.global_transform.affine_inverse()*part.global_transform
+		for surface in range(part.mesh.get_surface_count()):
+			var original=part.mesh.surface_get_material(surface)
+			if not original is StandardMaterial3D or not original.albedo_texture:continue
+			var image=original.albedo_texture.get_image()
+			var arrays=part.mesh.surface_get_arrays(surface)
+			var vertices=arrays[Mesh.ARRAY_VERTEX]
+			var uv=arrays[Mesh.ARRAY_TEX_UV]
+			var indices=arrays[Mesh.ARRAY_INDEX]
+			for i in range(0,indices.size(),3):
+				var center=Vector3.ZERO
+				var sample=Vector2.ZERO
+				for j in range(3):
+					center+=pose*vertices[indices[i+j]]/3
+					sample+=uv[indices[i+j]]/3
+				var color=image.get_pixel(clampi(int(sample.x*image.get_width()),0,image.get_width()-1),clampi(int(sample.y*image.get_height()),0,image.get_height()-1))
+				var front=center.z< -1.44 and center.y>0.57 and center.y<0.78 and absf(center.x)>0.28 and absf(center.x)<0.88 and color.r>0.85 and absf(color.r-color.g)<0.04 and absf(color.g-color.b)<0.04
+				var rear=center.z>1.7 and center.y>0.70 and center.y<1.15 and absf(center.x)>0.45 and color.r>0.4 and color.r>color.g*1.7 and color.r>color.b*1.7
+				if not front and not rear:continue
+				var output=tool if front else rear_tool
+				for j in range(3):output.add_vertex(pose*vertices[indices[i+j]]+Vector3(0,0,-0.004 if front else 0.004))
+				if front:count+=1
+				else:rear_count+=1
+	assert(count>0,"Original headlight faces identified")
+	tool.generate_normals()
+	headlight_lens=MeshInstance3D.new()
+	headlight_lens.name="BlinkingOriginalHeadlightLenses"
+	headlight_lens.mesh=tool.commit()
+	headlight_lens.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	headlight_material=StandardMaterial3D.new()
+	headlight_material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
+	headlight_material.cull_mode=BaseMaterial3D.CULL_DISABLED
+	headlight_material.emission_enabled=true
+	headlight_material.emission=Color("ffc238")
+	headlight_lens.material_override=headlight_material
+	wreck.add_child(headlight_lens)
+	assert(rear_count>0,"Original rear lamp faces identified")
+	rear_tool.generate_normals()
+	tail_lens=MeshInstance3D.new()
+	tail_lens.name="BlinkingOriginalTailLenses"
+	tail_lens.mesh=rear_tool.commit()
+	tail_lens.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	tail_material=headlight_material.duplicate()
+	tail_material.emission=Color("f33422")
+	tail_lens.material_override=tail_material
+	wreck.add_child(tail_lens)
+	for side in [-1,1]:
+		var light=SpotLight3D.new()
+		light.name="BlinkingYellowHeadlight"+str(side)
+		light.position=Vector3(side*0.60,0.65,-1.78)
+		light.rotation.x=-0.12
+		light.light_color=Color("ffcb46")
+		light.light_energy=1.0
+		light.spot_range=10
+		light.spot_angle=32
+		wreck.add_child(light)
+		headlight_beams.append(light)
+		var glow=OmniLight3D.new()
+		glow.name="BlinkingRedTailLight"+str(side)
+		glow.position=Vector3(side*0.65,0.9,1.96)
+		glow.light_color=Color("f33422")
+		glow.light_energy=0.4
+		glow.omni_range=2.8
+		wreck.add_child(glow)
+		tail_glows.append(glow)
+	update_headlights()
+
+func update_headlights():
+	if not headlight_material:return
+	var lit=fmod(elapsed,HEADLIGHT_PERIOD)<0.52
+	headlight_material.albedo_color=Color("ffcb46") if lit else Color("655d44")
+	headlight_material.emission_energy_multiplier=1.0 if lit else 0.0
+	for light in headlight_beams:light.visible=lit
+	if tail_material:
+		tail_material.albedo_color=Color("f33422") if lit else Color("552d26")
+		tail_material.emission_energy_multiplier=1.0 if lit else 0.0
+	for glow in tail_glows:glow.visible=lit

@@ -28,7 +28,20 @@ func _ready():
 	find_shrub(shrub)
 	shrub.free()
 	for i in range(OUTLINE.size()):
-		build_section(OUTLINE[i],OUTLINE[(i+1)%OUTLINE.size()],i)
+		if i==0:
+			# Keep a view down the continuing road through the southern forest belt.
+			build_section(OUTLINE[i],Vector3(-7,0,42),100)
+			build_section(Vector3(7,0,42),OUTLINE[1],101)
+		else: build_section(OUTLINE[i],OUTLINE[(i+1)%OUTLINE.size()],i)
+	var road_limit=StaticBody3D.new()
+	road_limit.name="InvisibleSouthRoadLimit"
+	add_child(road_limit)
+	road_limit.position=Vector3(0,6,19.77) # Aligned with the roadside rock.
+	var limit_shape=BoxShape3D.new()
+	limit_shape.size=Vector3(18,12,0.4)
+	var limit_collision=CollisionShape3D.new()
+	limit_collision.shape=limit_shape
+	road_limit.add_child(limit_collision)
 
 func find_shrub(node: Node):
 	if node is MeshInstance3D and shrub_mesh==null:

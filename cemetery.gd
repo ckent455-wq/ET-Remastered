@@ -7,6 +7,7 @@ var door_collision: CollisionShape3D
 var unlocked = false
 var opened = false
 var door_tween: Tween
+const TEST_UNLOCK_MAUSOLEUM = false # Normal key and quest requirements restored.
 const CENTER = Vector3(15,0,-14)
 
 func _ready():
@@ -128,7 +129,7 @@ func interact_door():
 
 func reset():
 	if door_tween and door_tween.is_valid(): door_tween.kill()
-	unlocked=false
+	unlocked=TEST_UNLOCK_MAUSOLEUM
 	opened=false
 	door_hinge.rotation.y=0
 	door_collision.set_deferred("disabled",false)

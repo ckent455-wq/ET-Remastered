@@ -104,6 +104,7 @@ func random_point() -> Vector3:
 	return Vector3(rng.randf_range(-46,46),0,rng.randf_range(-46,46))
 
 func can_place(p: Vector3, path_clearance: float, clearing: float) -> bool:
+	if p.z>=20 and absf(p.x)<5.5: return false
 	if Vector2(p.x+4.2,p.z+31).length()<3.0: return false
 	# Reserve the cemetery, its sightlines, and its road connection.
 	if p.x>3 and p.x<28 and p.z> -29 and p.z< -1: return false

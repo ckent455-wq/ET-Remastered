@@ -3,6 +3,7 @@ extends Node3D
 var town
 var characters = {}
 var managed_doors: Dictionary = {}
+var sheltering=false
 var motion_clock = 0.0
 var grave_key_given = false
 var grave_intro_shown = false
@@ -76,6 +77,7 @@ func retro_materials(node: Node):
 		retro_materials(child)
 
 func reset():
+	sheltering=false
 	grave_key_given=false
 	grave_intro_shown=false
 	grave_approaching=false
@@ -165,6 +167,9 @@ func _physics_process(delta):
 				data.death_time=minf(DEATH_DURATION,data.death_time+delta)
 				animate_death(data)
 			continue
+		if sheltering and playing:
+			run_to_shelter(data,delta)
+			continue
 		if not playing:
 			actor.velocity=Vector3.ZERO
 			animate_walk(data,false)
@@ -249,6 +254,9 @@ func _physics_process(delta):
 		animate_walk(data,walking)
 		if data.animation and walking: data.animation.speed_scale=2.5 if rushing else 1.15
 		animate_living(data,walking,near_player,delta)
+	if playing and sheltering:
+		close_shelter_doors()
+		return
 	# Close only doors opened by an NPC, after all walkers clear the threshold.
 	if playing:
 		for id in managed_doors.keys():
@@ -366,3 +374,88 @@ func words(id: String) -> String:
 			return "You have the coil, tuner and cemetery antenna coupler. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nNo sirens. Tell them there are people missing in the woods, and that the chapel repeater must be disconnected. Don't let another team mistake its old messages for us."
 	return "Stay safe out there."
 
+
+func set_sheltering(next:bool):
+	if sheltering==next:return
+	sheltering=next
+	managed_doors.clear()
+	grave_approaching=false
+	for person in PEOPLE:
+		var data=characters[person.id]
+		if data.dead:continue
+		data.actor.velocity=Vector3.ZERO
+		data.waypoint=0
+		data.wait=0.0
+		data["shelter_home"]="ranger" if person.id=="ranger" else person.building
+		data["shelter_done"]=false
+		data["shelter_step"]=0
+		data["shelter_wait"]=0.0
+		data["shelter_points"]=[]
+		if next:
+			var building=town.buildings[data.shelter_home]
+			var local=building.to_local(data.actor.global_position)
+			if absf(local.x)<5 and local.z<3.5 and local.z> -4.8:
+				data.shelter_done=true
+			else:
+				if local.z>5.6:data.shelter_points.append(building.to_global(Vector3(0,0.01,7.2)))
+				data.shelter_points.append(building.to_global(Vector3(0,0.01,5)))
+				data.shelter_points.append(building.to_global(Vector3(0,0.01,3)))
+				var inside=Vector3(1.2,0.01,1.5) if person.id=="mechanic" else Vector3(0.45,0.01,1.4)
+				data.shelter_points.append(building.to_global(inside))
+	if next:close_shelter_doors()
+
+func run_to_shelter(data:Dictionary,delta:float):
+	var actor:CharacterBody3D=data.actor
+	if data.get("shelter_done",false):
+		actor.velocity=Vector3.ZERO
+		animate_walk(data,false)
+		animate_living(data,false,false,delta)
+		return
+	data.shelter_wait=maxf(0,data.shelter_wait-delta)
+	var door=town.doors[data.shelter_home]
+	var doorway=town.doorway_position(data.shelter_home)
+	if actor.global_position.distance_to(doorway)<3.0 and not door.open:
+		if town.set_building_door(data.shelter_home,true):data.shelter_wait=0.6
+	if data.shelter_wait>0:
+		actor.velocity=Vector3.ZERO
+		animate_walk(data,false)
+		return
+	var target:Vector3=data.shelter_points[data.shelter_step]
+	var direction=target-actor.global_position
+	direction.y=0
+	if direction.length()<0.18:
+		data.shelter_step+=1
+		if data.shelter_step>=data.shelter_points.size():
+			data.shelter_done=true
+			actor.velocity=Vector3.ZERO
+		return
+	var desired=direction.normalized()
+	var step=desired*minf(0.45,direction.length())
+	for angle in [0.0,0.5,-0.5,0.9,-0.9]:
+		var probe=step.rotated(Vector3.UP,angle)
+		if not actor.test_move(actor.global_transform,probe):
+			desired=probe.normalized()
+			break
+	var local_direction:Vector3=data.parent.global_basis.inverse()*desired
+	actor.rotation.y=lerp_angle(actor.rotation.y,atan2(local_direction.x,local_direction.z),minf(1,delta*8))
+	actor.velocity=desired*minf(2.8,direction.length()/maxf(delta,0.001))
+	actor.velocity.y=-0.5
+	actor.move_and_slide()
+	animate_walk(data,true)
+	if data.animation:data.animation.speed_scale=2.5
+	animate_living(data,true,false,delta)
+
+func close_shelter_doors():
+	for id in town.doors:
+		var approaching=false
+		for data in characters.values():
+			if not data.dead and data.get("shelter_home","")==id and not data.get("shelter_done",false):approaching=true
+		if not approaching:town.set_building_door(id,false,true)
+
+func all_sheltered()->bool:
+	if not sheltering:return false
+	for data in characters.values():
+		if not data.dead and not data.get("shelter_done",false):return false
+	for door in town.doors.values():
+		if door.open or absf(door.hinge.rotation.y)>0.05:return false
+	return true

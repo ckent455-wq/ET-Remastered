@@ -2,6 +2,7 @@ extends Node3D
 ## Scavenged ammo cartons built from the user's downloaded cardboard box.
 var game
 const BOXES = [
+	{"id":"pistol_workshop","room":"workshop","weapon":0,"support":"","offset":Vector3(-0.6,0.016,2.8)},
 	{"id":"pistol_store","room":"store","weapon":0,"support":"dining_table","offset":Vector3(0.35,0,-0.22)},
 	{"id":"pistol_house","room":"house","weapon":0,"support":"counter","offset":Vector3(0.32,0,-0.16)},
 	{"id":"pistol_clinic","room":"clinic","weapon":0,"support":"","offset":Vector3(1.8,0.016,-3.4)},

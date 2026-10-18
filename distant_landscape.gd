@@ -51,7 +51,10 @@ func build_ridge(layer: int, radii: Vector3, color: Color):
 				var angle = float(v.x)*TAU/slices
 				var radius = radii[v.y]
 				var height = height_at(angle,layer) if v.y==1 else -3.0
-				corners.append(Vector3(cos(angle)*radius,height,-30+sin(angle)*radius))
+				var point=Vector3(cos(angle)*radius,height,-30+sin(angle)*radius)
+				# A low saddle lets the scenic southern road disappear into fog.
+				if point.z>18 and absf(point.x)<11: point.y=-0.5
+				corners.append(point)
 			for triangle in [[0,2,1],[1,2,3]]:
 				var vertices: Array[Vector3] = [corners[triangle[0]],corners[triangle[1]],corners[triangle[2]]]
 				add_ridge_triangle(tool,vertices)

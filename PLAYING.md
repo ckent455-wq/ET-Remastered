@@ -8,7 +8,7 @@ presentation and title screen; choose **Enter Blackwood** or press Enter.
 
 You survived a car accident on Old Mill Road. Follow the road into Blackwood,
 find supplies and weapons, and repair the town radio to call for rescue.
-Open the crashed car with E, then collect your backpack, flashlight and detour sheet. You begin without weapons. You can close and reopen the car door.
+After the wake-up dialogue, press E to stand. Open the crashed car with E, then collect your backpack, flashlight and detour sheet. You begin without weapons. You can close and reopen the car door.
 
 The chapel uphill along Chapel Road from the north end of Main Street is open for exploration and
 marked on the journal map. The dense forest forms a closed boundary around town.
@@ -88,3 +88,5 @@ WORKSHOP POWER: Find the workshop battery in the store counter drawer (two backp
 CRASH OPENING: A new journey begins with the driver waking after the crash. Advance the opening dialogue with E, Enter, or Space. Walk to the driver's door, aim at it, and press E to open it. Take the backpack, then the flashlight with E. I opens the collected backpack; F switches on the collected flashlight. Restart Game repeats this opening and puts both items back in the car.
 
 DETOUR SHEET: After collecting the backpack and flashlight, pick up the printed sheet from the front seat with E. It disappears from the car and is saved in the journal. Inspecting the wreck does not collect it automatically. Restart puts it back on the seat.
+
+The hotel basement door is bolted from the other side. Reach its cellar through the hidden tunnel inside the Whitcomb mausoleum, then unbolt the hotel door from below. Normal mausoleum key requirements apply. Restoring workshop power prepares an ambush when you return through the alley to Main Street; the townspeople run indoors first.

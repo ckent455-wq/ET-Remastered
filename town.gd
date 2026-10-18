@@ -108,7 +108,12 @@ func box(parent: Node3D, p: Vector3, size: Vector3, material: Material, solid = 
 
 func sign_text(parent: Node3D, words: String, p: Vector3, size = 28, color = Color("d3c7a3")):
 	var label = Label3D.new()
-	label.text = words
+	# Keep lettering on the main physical signs and the printed detour sheet.
+	# Small environmental captions and floating nameplates are no longer rendered.
+	var physical_signs=["Blackwood","Population 3","RANGER OFFICE","BLACKWOOD PHARMACY","GENERAL STORE","SAINT GEORGE HOTEL","MILL REPAIR CO.","BLACKWOOD RADIO","ANTIQUES","SEBUS HARDWARE","CHAPEL ROAD\nUP THE HILL"]
+	var keep_text=words in physical_signs or parent.name=="DetourSheetOnSeat"
+	label.text = words if keep_text else ""
+	if not keep_text: label.set_meta("removed_world_caption",words)
 	label.font = preload("res://assets/font.ttf")
 	label.font_size = size
 	label.pixel_size = 0.009
@@ -395,6 +400,7 @@ func prompt() -> String:
 	if focus_action=="":
 		return ""
 	var data = actions[focus_action]
+	if data.kind in ["hotel_basement_door","hotel_basement_exit","mausoleum_tunnel","hotel_tunnel_return"]: return game.hotel_basement.prompt(data.kind)
 	if data.kind=="mausoleum_door": return cemetery.door_prompt()
 	if data.kind=="ammo":
 		return "E / Take %d %s" % [data.amount,["pistol rounds","rifle rounds","shotgun shells"][data.weapon_index]]
@@ -442,6 +448,8 @@ func perform(id: String):
 	if data.kind!="crash" and id!="crash_record" and not id.begins_with("cemetery_"):
 		reached_town = true
 	match data.kind:
+		"hotel_basement_door","hotel_basement_exit","mausoleum_tunnel","hotel_tunnel_return":
+			game.hotel_basement.interact(data.kind)
 		"mausoleum_door":
 			cemetery.interact_door()
 		"ammo":
@@ -517,6 +525,9 @@ func perform(id: String):
 			if data.has("container_id") and not interiors.containers[data.container_id].searched:
 				game.message = "Search the "+interiors.containers[data.container_id].label+" first."
 				return
+			if id=="coil" and game.enemies.workshop_danger():
+				game.message="Kill the creature near the workshop before recovering the coil."
+				return
 			if id=="coil" and not powered:
 				game.message = "The coil cabinet needs power. Find and install the workshop battery."
 				return
@@ -548,6 +559,8 @@ func perform(id: String):
 					light.visible = true
 				game.message = "Workshop power restored. The signal-coil cabinet is released."
 				game.soundscape.feedback("power")
+				game.enemies.arm_workshop_encounter()
+				game.message="Workshop power restored. The signal-coil cabinet is released."
 			else:
 				game.message = "Bring the workshop battery from the general store counter drawer."
 		"receiver":
@@ -594,6 +607,7 @@ func use_battery():
 		game.soundscape.feedback("pickup")
 
 func objective() -> String:
+	if game.enemies and game.enemies.workshop_danger(): return "Kill the creature near the workshop, then recover the signal coil."
 	if game.crash_site and not game.crash_site.tutorial_complete(): return "Open the car door and collect your backpack, flashlight, and detour sheet."
 	if radio_ready:
 		return "Warn county at radio. Hold E; no sirens." if game.story.direct_channel_selected() else "Set the desk bypass to GREEN / direct county."
@@ -627,6 +641,7 @@ func navigation_target() -> Vector3:
 
 func location_name() -> String:
 	if game.victorian_house and game.victorian_house.contains(game.player.global_position): return "OLD VICTORIAN HOUSE"
+	if game.hotel_basement and game.hotel_basement.contains(game.player.global_position): return "SAINT GEORGE / CELLAR & OLD PASSAGE"
 	if game.victorian_house and game.victorian_house.cellar_contains(game.player.global_position): return "OLD HOUSE / BASEMENT"
 	if cemetery and cemetery.contains(game.player.global_position): return "OLD MILL CEMETERY"
 	if streetscape.church.basement.contains(game.player.global_position):
@@ -671,12 +686,12 @@ func doorway_occupied(id: String) -> bool:
 			if offset.length()<1.55: return true
 	return false
 
-func set_building_door(id: String, next_open: bool) -> bool:
+func set_building_door(id: String, next_open: bool, shelter_close=false) -> bool:
 	if not doors.has(id): return false
 	var door=doors[id]
 	if door.open==next_open: return true
 	if next_open and id=="radio" and inventory.station_key==0: return false
-	if not next_open and (player_inside_building(id) or doorway_occupied(id)): return false
+	if not next_open and ((not shelter_close and player_inside_building(id)) or doorway_occupied(id)): return false
 	if door.tween!=null and door.tween.is_valid(): door.tween.kill()
 	door.open=next_open
 	door.collision.set_deferred("disabled",next_open)

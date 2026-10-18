@@ -197,6 +197,8 @@ func cabinet(building: String, id: String, p: Vector3, label: String, loot_ids: 
 
 func prompt(id: String) -> String:
 	var data = containers[id]
+	if data.needs_power and town.game.enemies and town.game.enemies.workshop_danger():
+		return "E / Coil cabinet - kill the nearby creature first"
 	if data.needs_power and not town.powered:
 		return "E / Locked coil cabinet - restore workshop power"
 	if data.get("pending_loot",false):
@@ -207,6 +209,9 @@ func prompt(id: String) -> String:
 
 func toggle(id: String):
 	var data = containers[id]
+	if data.needs_power and town.game.enemies and town.game.enemies.workshop_danger():
+		town.game.message="The creature is too close. Kill it before searching the cabinet."
+		return
 	if data.needs_power and not town.powered:
 		town.game.message = "The coil cabinet is locked. Restore power at the rear terminal."
 		return

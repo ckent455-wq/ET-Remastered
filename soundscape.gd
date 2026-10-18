@@ -69,7 +69,7 @@ func _ready():
 		AudioServer.set_bus_name(bus_index,BUS)
 		AudioServer.set_bus_send(bus_index,"Master")
 		owns_bus = true
-	wind = voice(stream("wind",true),-8)
+	wind = voice(stream("wind",true),-12)
 	leaves = voice(stream("leaves",true),-17)
 	flashlight_streams = {true:stream("horror/flashlight_on"),false:stream("horror/flashlight_off")}
 	click = voice(flashlight_streams[true],-12)
@@ -224,7 +224,7 @@ func update_sound(delta: float):
 	wind.stream_paused = paused
 	leaves.stream_paused = paused
 	var indoors = active and not atmosphere.current_interior.is_empty()
-	wind.volume_db = -20 if indoors else (-8 if active else -15)
+	wind.volume_db = -24 if indoors else (-12 if active else -19)
 	leaves.volume_db = -29 if indoors else (-17 if active else -24)
 	if previous_state!=game.state:
 		step_distance = 0

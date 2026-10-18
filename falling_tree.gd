@@ -2,11 +2,14 @@ extends Node3D
 ## One authored road scare. Animation pauses with menus and resets for a new journey.
 const BASE = Vector3(-4.2,0.32,-31)
 const FALL_SECONDS = 1.35
+const SCREAM_LEAD = 0.65
 const HIT_DAMAGE = 8.0
 var game
 var tree: Node3D
 var trunk_collision: CollisionShape3D
 var sound: AudioStreamPlayer3D
+var scream: AudioStreamPlayer3D
+var fall_started = false
 var hit_player = false
 var last_player_position = Vector3.ZERO
 var triggered = false
@@ -41,12 +44,16 @@ func _ready():
 	stump = game.mesh_at(self,game.cylinder(0.31,0.23,0.34),Vector3(BASE.x,0.17,BASE.z),game.mat(Color("78634b")))
 	sound = game.soundscape.spatial_voice(self,game.soundscape.stream("tree_fall_recorded"),-8,42)
 	sound.unit_size = 8
+	scream = game.soundscape.spatial_voice(self,load("res://assets/audio/tree_scream.mp3"),-12,45)
+	scream.unit_size = 12
+	scream.position = Vector3(-7,2,-30)
 	reset()
 
 func reset():
 	hit_player = false
 	last_player_position = game.player.position
 	triggered = false
+	fall_started = false
 	landed = false
 	elapsed = 0.0
 	shake_left = 0.0
@@ -56,6 +63,8 @@ func reset():
 	tree.position = BASE
 	stump.visible = false
 	trunk_collision.set_deferred("disabled",false)
+	scream.stop()
+	scream.stream_paused = false
 	sound.stop()
 	sound.stream_paused = false
 	game.camera.h_offset = 0
@@ -64,6 +73,10 @@ func reset():
 func begin_fall():
 	if triggered: return
 	triggered = true
+	scream.play()
+
+func start_tree_motion():
+	fall_started = true
 	trunk_collision.set_deferred("disabled",true)
 	stump.visible = true
 	shake_left = 0.13
@@ -76,6 +89,7 @@ func _physics_process(delta):
 	last_player_position = p
 	var active: bool = game.state=="play"
 	sound.stream_paused = not active
+	scream.stream_paused = not active
 	if not active:
 		game.camera.h_offset = 0
 		game.camera.v_offset = 0
@@ -87,19 +101,22 @@ func _physics_process(delta):
 	previous_z = p.z
 	if not triggered: return
 	elapsed += delta
+	if elapsed<SCREAM_LEAD: return
+	if not fall_started: start_tree_motion()
+	var fall_elapsed = elapsed-SCREAM_LEAD
 	if not landed:
 		var previous_angle = tree.rotation.z
-		var t = clampf(elapsed/FALL_SECONDS,0,1)
+		var t = clampf(fall_elapsed/FALL_SECONDS,0,1)
 		# A quick splinter, then accelerating weight; no camera turn or control lock.
 		tree.rotation.z = -PI/2*pow(t,1.65)
 		check_falling_hit(previous_angle,tree.rotation.z,previous_p,p)
 		sound.position = BASE.lerp(Vector3(0,0.6,-31),t)
-		if elapsed>=FALL_SECONDS:
+		if fall_elapsed>=FALL_SECONDS:
 			landed = true
 			collision_pending = true
 			shake_left = 0.34
 	else:
-		var settle = elapsed-FALL_SECONDS
+		var settle = fall_elapsed-FALL_SECONDS
 		tree.rotation.z = -PI/2+0.025*sin(settle*28)*exp(-settle*12)
 	# Never enable a fallen collider inside the player's capsule. The low trunk can be jumped.
 	if collision_pending and (absf(p.z-BASE.z)>0.8 or p.x<BASE.x-0.7 or p.x>4.8 or p.y>0.65):

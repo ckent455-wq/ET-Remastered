@@ -62,7 +62,7 @@ func check():
 	await frames(85)
 	key(KEY_W,false)
 	await frames(15)
-	assert(not game.crouching and is_equal_approx(game.player_collider.shape.height,1.5) and is_equal_approx(game.camera.position.y,1.25),"Leaving the overhang safely restores standing")
+	assert(not game.crouching and is_equal_approx(game.player_collider.shape.height,game.STANDING_HEIGHT) and is_equal_approx(game.camera.position.y,game.STANDING_EYE),"Leaving the overhang safely restores standing")
 	game.set_state("journal")
 	var p: Vector3 = game.player.position
 	key(KEY_SPACE,true)
@@ -77,7 +77,7 @@ func check():
 	key(KEY_CTRL,true)
 	await frames(15)
 	game.reset_game()
-	assert(not game.crouching and not game.jump_queued and game.camera.position.y==1.25 and game.player_collider.shape.height==1.5,"Restart resets stance and vertical motion")
+	assert(not game.crouching and not game.jump_queued and is_equal_approx(game.camera.position.y,game.STANDING_EYE) and is_equal_approx(game.player_collider.shape.height,game.STANDING_HEIGHT),"Restart resets stance and vertical motion")
 	key(KEY_CTRL,false)
 	var cellar = game.town.streetscape.church.basement
 	cellar.move_player(cellar.to_global(Vector3(0,0.01,1.5)),0)
