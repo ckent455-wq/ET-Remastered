@@ -1,20 +1,19 @@
-# Far From Home v1.1.0 - Fuses and Forest Fears
+# Far From Home v1.2.0 - Beneath Blackwood
 
 A playable Windows survival-horror preview, built with Godot 4.7.2.
 
-## New since v1.0
+## New since v1.1.0
 
-- Unarmed combat uses the supplied PSX arms and alternating punches. Fists start hidden: press 0 / R3 while unarmed to raise or lower them. If holding a gun, first press holsters it. Fire / RT punches only with fists raised.
-- The Wrapper replaces the upstairs Victorian house monster, with another encounter in the house basement. Each stays on its own floor and remains dead until a new journey.
-- The Straw Reaper emerges from cover when you approach the forest boundary behind the cemetery. It navigates around trees, uses corrected idle/walk/attack/fall clips, and keeps its feet grounded.
-- Shooting now uses animated head, torso and limb hitboxes rather than the movement capsule. Aimed head shots register across all three enemy rigs, while solid cover still blocks bullets.
-- Fourteen native retro prop models replace placeholder clutter across the buildings, including TVs, lockers, clocks, tables, kitchen items and tools. Living-room groups have more clearance, and the enlarged oven cooking surface aligns with its counters.
-- The alley workshop terminal uses the downloaded high-voltage cabinet. Find the one-slot cartridge fuse in the general-store drawer, open the cabinet, install the fuse in its interior holder, then flip the switch. Fuse installation starts the monster walking from its existing Main Street spawn; the switch restores power. The seated fuse glows green only when powered.
+- Three mummy-like Wrapper encounters along the mausoleum route: one near the tunnel entrance, one midway through the passage, and one concealed behind a storage screen in the open Saint George cellar at the far end. They activate separately, pursue and attack physically, respect walls and each other, and cannot follow you through exit portals. They use animated shooting hitboxes and falling death animations, and reset on a new journey.
+- Testing mode can be switched on or off with **F10** or the pause-menu button. It skips the opening and grants all weapons, keys, quest items and tools, with unlimited health, ammunition, stamina and flashlight charge. Testing inventory uses a readable equipment list with capacity limits disabled. Turning it off restores your earlier loadout and normal limits; world events are not rewound. Testing is OFF on a normal launch and after Restart Game.
+- **Check for Updates** on the main menu checks the public GitHub releases, including published previews. Download Update verifies the release ZIP's SHA-256 digest. Install & Restart checks the packaged executable and data, backs up the installed files, installs the update and relaunches the game. Failed copying restores the prior files. Update checks support mouse, keyboard and controller navigation.
 
-## Play
+## Play and update
 
-Download **FarFromHome-v1.1.0-Windows-x64.zip**, extract the complete ZIP, and run **FarFromHome.exe**. Keep the EXE, PCK and bundled DLLs together. Godot is not required. Player instructions, asset credits, licenses and build information are included, with SHA256SUMS.txt for download verification.
+Download **FarFromHome-v1.2.0-Windows-x64.zip**, extract the complete ZIP into a writable folder, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. Instructions, credits, licenses, source-commit information and SHA256SUMS.txt are included.
 
-Keyboard: WASD move, mouse look, Space jump, Ctrl crouch, E interact, F flashlight, 0 holster / toggle fists, left mouse fire / punch, I backpack, Tab journal/map, Escape pause. Controller mappings are shown in Controls.
+This is the first release with the in-game updater. Players on older releases need to download and extract this ZIP once; subsequent published builds can be installed from Check for Updates. Installation is supported by the exported Windows game. Running the Godot source project allows update checks and leaves the checkout unchanged. Achievements are kept in the game's user-data folder; a backup of the previous build is retained beside the EXE.
 
-This remains an early preview. Each new journey resets progress; achievements persist. Windows x64 uses ANGLE/Direct3D11 compatibility rendering with a 60 FPS cap and PS2-style presentation. First-time shader preparation may delay startup.
+WASD move, mouse look, Space jump, Ctrl crouch, E interact, F flashlight, 0 holster / toggle fists, left mouse fire / punch, V or wheel cycle guns, I inventory, Tab journal/map, Escape pause, F10 testing mode. Controller mappings are in Controls.
+
+This remains an early preview. New journeys reset gameplay progress; achievements persist. Windows x64 uses ANGLE/Direct3D11 compatibility rendering with PS2-style presentation and a 60 FPS cap. First-time shader preparation may delay startup.

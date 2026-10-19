@@ -7,6 +7,8 @@ const STANDING_EYE = 1.65
 const CROUCH_EYE = 0.68
 const JUMP_VELOCITY = 5.2
 const GRAVITY = 18.0
+var updater: Node
+var testing_mode: Node
 var controller: Node
 var crouching = false
 var jump_queued = false
@@ -237,6 +239,12 @@ func _ready():
 	controller=preload("res://controller_input.gd").new()
 	controller.game=self
 	add_child(controller)
+	testing_mode = preload("res://testing_mode.gd").new()
+	testing_mode.game = self
+	add_child(testing_mode)
+	updater = preload("res://release_updater.gd").new()
+	updater.game = self
+	add_child(updater)
 	update_camera()
 
 func prepare_flashlight(node: Node):
@@ -262,6 +270,7 @@ func make_audio():
 	add_child(soundscape)
 
 func reset_game():
+	if testing_mode: testing_mode.finish(false)
 	achievements.clear_toast()
 	player.position = START_POSITION
 	player.velocity = Vector3.ZERO
@@ -482,7 +491,7 @@ func update_stance(delta: float):
 	camera.position.y = minf(move_toward(camera.position.y,eye,4.8*delta),height-0.20)
 
 func take_damage(amount: float, hurt_clip = -1) -> bool:
-	if state!="play" or health<=0 or amount<=0 or invincible>0: return false
+	if state!="play" or health<=0 or amount<=0 or invincible>0 or (testing_mode and testing_mode.enabled): return false
 	health = maxf(0,health-amount)
 	invincible = 0.9
 	soundscape.player_hurt(hurt_clip)

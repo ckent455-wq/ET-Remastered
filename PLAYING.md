@@ -13,6 +13,12 @@ After the wake-up dialogue, press E to stand. Open the crashed car with E, then 
 The chapel uphill along Chapel Road from the north end of Main Street is open for exploration and
 marked on the journal map. The dense forest forms a closed boundary around town.
 
+## Testing mode
+
+Press **F10** or use **Testing Mode** in the pause menu to toggle testing on or off. Testing starts immediately without the intro or wake-up sequence. It grants every weapon, key, quest item and tool, unlocks restricted areas, and provides unlimited health, ammo, stamina and flashlight charge. The backpack shows a testing equipment list with capacity limits disabled.
+
+Turning testing off restores the equipment, supplies, health and lock access you had before enabling it. Exploration, combat and story events are not rewound. Restart Game begins a normal journey with testing off. Testing is off by default on every launch.
+
 ## Controls
 
 - Mouse: look; WASD / arrows: move; Shift: sprint.
@@ -114,3 +120,13 @@ With no gun equipped, use the fire control to throw alternating punches. Punches
 The Victorian house now has two separate Wrapper encounters: one upstairs and one in its basement. They use normal weapon and melee damage, stay on their own floors, and remain dead until a new journey.
 
 An optional Straw Reaper encounter waits at the deep forest boundary beyond the cemetery east/rear fence. Approaching that edge triggers it from cover. It stays in the rear woods and remains dead until a new journey.
+
+The mausoleum route contains three Wrappers: one near the entrance, one halfway through the passage, and one concealed behind a storage screen in the open cellar at the far end. They wake separately and cannot follow you through the exit portals.
+
+## Updates
+
+Choose **Check for Updates** on the main menu. The game checks the ET-Remastered GitHub repository for a newer published Windows release, including previews. Choose **Download Update**, then **Install & Restart**. Downloads are checked against GitHub's SHA-256 digest, and the installer verifies the packaged EXE and PCK before replacing the game.
+
+The updater backs up the current build in a `.ffh-update-backup-*` folder beside the EXE. If copying fails, it restores the old files. Achievements remain in the game's user-data folder. The complete portable game folder must be writable; the updater never requests administrator access. Update logs are in `%APPDATA%/Godot/app_userdata/Far From Home/updates/install.log`.
+
+Running the project in Godot supports checking releases; installation is available in exported Windows builds. The updater does not overwrite the source checkout. Updates are installed only when selected, and a failed or cancelled download leaves the installed game untouched.

@@ -90,6 +90,7 @@ func drop_cell() -> Vector2i:
 	return Vector2i(((drag_mouse-drag_offset-ORIGIN)/CELL).round())
 
 func room_for(id: String, amount: int = 1) -> bool:
+	if game.testing_mode and game.testing_mode.enabled: return true
 	var values = counts()
 	values[id] = values.get(id,0)+amount
 	return not pack(values).is_empty()
@@ -107,6 +108,9 @@ func write(value: String, point: Vector2, size = 12, color = INK):
 	draw_string(FONT,point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
 
 func _draw():
+	if game.testing_mode and game.testing_mode.enabled:
+		draw_testing_inventory()
+		return
 	draw_rect(Rect2(0,0,640,400),Color("111813"))
 	write("BLACKWOOD / BACKPACK",Vector2(38,35),23)
 	write("24 SLOTS / MOVE TO ARRANGE" if game.controller.using_controller else "24 SLOTS / DRAG TO ARRANGE",Vector2(38,88),11,DIM)
@@ -273,6 +277,14 @@ func draw_icon(id: String, box: Rect2):
 	draw_texture_rect(texture,Rect2(box.get_center()-drawn_size/2,drawn_size),false)
 
 func handle(event):
+	if game.testing_mode and game.testing_mode.enabled:
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode in [KEY_I,KEY_ESCAPE]: game.set_state("play")
+			elif event.keycode in [KEY_J,KEY_TAB]: game.set_state("journal")
+			elif event.keycode in [KEY_0,KEY_1,KEY_2,KEY_3]:
+				game.set_state("play")
+				game._unhandled_input(event)
+		return
 	var entries = pack(counts())
 	remember(entries)
 	if event is InputEventMouseMotion and dragging!="":
@@ -404,3 +416,20 @@ func controller_button(id:int):
 		elif id==JOY_BUTTON_Y:act("examine")
 		elif id==JOY_BUTTON_LEFT_SHOULDER:act("combine")
 		elif id==JOY_BUTTON_RIGHT_SHOULDER:act("discard")
+
+func draw_testing_inventory():
+	draw_rect(Rect2(0,0,640,400),Color("111813"))
+	write("TESTING / ALL EQUIPMENT",Vector2(38,35),23)
+	write("Capacity limits disabled while testing",Vector2(38,62),12,GOLD)
+	var values=counts()
+	var row=0
+	for id in values:
+		if values[id]<=0: continue
+		var col=row/12
+		var line=row%12
+		var suffix=" x%d" % values[id]
+		if id.begins_with("ammo"): suffix=" / unlimited"
+		write(label(id)+suffix,Vector2(38+col*300,94+line*21),12)
+		row+=1
+	write("1-3 Equip guns    0 Holster / Fists",Vector2(38,360),12,DIM)
+	write("I / ESC Close    TAB Journal    F10 Disable testing",Vector2(38,382),12,GOLD)

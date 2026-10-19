@@ -23,8 +23,11 @@ func _ready():
 	menu_button("CONTROLS",Vector2(42,315),Vector2(116,27),func(): controls_open = true)
 	menu_button("QUIT",Vector2(170,315),Vector2(116,27),func(): get_tree().quit())
 	menu_button("BACK",Vector2(80,331),Vector2(144,30),func(): controls_open = false)
+	menu_button("CHECK FOR UPDATES",Vector2(42,349),Vector2(244,24),func(): game.updater.open())
 	menu_button("RESUME",Vector2(213,222),Vector2(214,36),func(): game.set_state("play"),false)
 	menu_button("RESTART GAME",Vector2(213,272),Vector2(214,36),begin_game,false)
+
+	menu_button("TEST MODE: OFF (F10)",Vector2(213,322),Vector2(214,32),func(): game.testing_mode.toggle(),false)
 
 func menu_button(label: String, p: Vector2, dimensions: Vector2, action: Callable, title_menu = true):
 	var button = Button.new()
@@ -73,8 +76,9 @@ func _process(_delta):
 	if game.state!="title":
 		controls_open = false
 	for i in range(menu_buttons.size()):
-		menu_buttons[i].visible = game.state=="title" and (controls_open if i==3 else not controls_open)
+		menu_buttons[i].visible = game.state=="title" and (controls_open if i==3 else not controls_open) and not (game.updater and game.updater.opened())
 	for button in pause_buttons: button.visible = game.state=="paused"
+	if game.testing_mode: pause_buttons[2].text = "TEST MODE: "+("ON" if game.testing_mode.enabled else "OFF")+" (F10)"
 	if game.state=="title" and controls_open!=last_controls_open:
 		menu_buttons[3 if controls_open else 0].grab_focus()
 	last_controls_open = controls_open
@@ -161,8 +165,8 @@ func _draw():
 		draw_rect(Rect2(0,0,640,400),Color(0.015,0.045,0.065,0.9))
 		centered("PAUSED",149,40)
 		centered("Take a breath. The road can wait.",184,14,DIM)
-		centered("Restart begins a new journey from the crash site.",334,12,DIM)
-		centered("ESC / RESUME",372,11,DIM)
+		centered("Restart begins a new journey from the crash site.",394,10,DIM)
+		centered("ESC / RESUME",375,11,DIM)
 		return
 	if game.state!="play":
 		draw_rect(Rect2(0,0,640,400),Color(0.015,0.045,0.065,0.85))
@@ -236,8 +240,8 @@ func draw_title():
 	draw_line(Vector2(454,335),Vector2(596,335),Color("6d6051"),1)
 	text("POPULATION 3",Vector2(454,351),10,Color("b6ac92"))
 	text("02:17 AM / NO SIGNAL",Vector2(454,367),9,Color("848b80"))
-	text("ENTER / BEGIN",Vector2(43,375),10,Color("969b8c"))
-	text("M / SOUND "+("OFF" if game.soundscape.muted else "ON"),Vector2(181,375),10,Color("969b8c"))
+	text("ENTER / BEGIN",Vector2(43,393),10,Color("969b8c"))
+	text("M / SOUND "+("OFF" if game.soundscape.muted else "ON"),Vector2(181,393),10,Color("969b8c"))
 
 func draw_title_controls():
 	draw_rect(Rect2(62,54,516,310),Color(0.025,0.035,0.037,0.97))
@@ -247,7 +251,7 @@ func draw_title_controls():
 	if game.controller and game.controller.using_controller: rows=game.controller.control_rows()
 	for i in range(rows.size()):
 		text(rows[i],Vector2(80,124+i*23),13,Color("b6b6a5"))
-	text("Find supplies, weapons and a working radio.",Vector2(80,310),12,Color("bd725b"))
+	text("F10 / Toggle testing mode (also in Pause)",Vector2(80,310),12,Color("bd725b"))
 
 func paragraph(content: String, x: float, y: float, width: float, size: int, color = INK) -> float:
 	for line in content.split("\n"):

@@ -1,8 +1,8 @@
 extends Node3D
-## Three native animated creatures. Real collision and sight rays guard combat.
+## Native animated encounters with real collision and sight rays guarding combat.
 var game
 var creatures = []
-const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2),Vector3(-16.1,-12.99,-96.3),Vector3(30,0,-28)]
+const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2),Vector3(-16.1,-12.99,-96.3),Vector3(30,0,-28),Vector3(25.55,-23.99,-104),Vector3(26.45,-23.99,-96.5),Vector3(29.3,-23.99,-79.1)]
 const WOOD_ROUTES = [[Vector3(19.8,0,-129.7),Vector3(21.0,0,-131.5),Vector3(24.0,0,-130.2)],[Vector3(38.3,0,-134.5),Vector3(37.8,0,-130.0),Vector3(34.8,0,-127.5)],[Vector3(39.0,0,-139),Vector3(38.3,0,-134.5),Vector3(37.8,0,-130),Vector3(34.8,0,-127.5)]]
 const HEALTH = 85.0
 const RESPAWN_SECONDS = 120.0
@@ -17,6 +17,8 @@ var workshop_defeated=false
 const HOUSE_INDEX=4
 const CELLAR_INDEX=5
 const REAPER_INDEX=6
+const TUNNEL_INDICES=[7,8,9]
+var tunnel_encounter=preload("res://mausoleum_tunnel_monsters.gd").new()
 var reaper_encounter=preload("res://cemetery_reaper.gd").new()
 var reaper_navigation
 var house_encounter=preload("res://house_monster.gd").new()
@@ -44,13 +46,13 @@ func _ready():
 		collision.shape = capsule
 		collision.position.y = 0.91
 		actor.add_child(collision)
-		var is_wrapper = i in [HOUSE_INDEX,CELLAR_INDEX]
+		var is_wrapper = i in [HOUSE_INDEX,CELLAR_INDEX] or i in TUNNEL_INDICES
 		var scene_path = "res://assets/enemies/wrapper/wrapper.glb" if is_wrapper else "res://assets/enemies/creep.glb"
 		if i==REAPER_INDEX: scene_path="res://assets/enemies/reaper/reaper.glb"
 		var visual = load(scene_path).instantiate()
 		actor.add_child(visual)
 		game.town.apartment_interiors.adapt(visual)
-		if i==CELLAR_INDEX: game.town.streetscape.church.basement.prepare_cellar_lighting(visual)
+		if i==CELLAR_INDEX or i in TUNNEL_INDICES: game.town.streetscape.church.basement.prepare_cellar_lighting(visual)
 		var animation = visual.find_child("AnimationPlayer",true,false) as AnimationPlayer
 		var clips = {}
 		for clip in animation.get_animation_list():
@@ -101,7 +103,7 @@ func reset_creature(data):
 	data.actor.velocity = Vector3.ZERO
 	data.actor.collision_layer = 1
 	data.actor.collision_mask = 1
-	data.hp = WORKSHOP_HEALTH if data.index in [WORKSHOP_INDEX,HOUSE_INDEX,CELLAR_INDEX] else HEALTH
+	data.hp = WORKSHOP_HEALTH if data.index in [WORKSHOP_INDEX,HOUSE_INDEX,CELLAR_INDEX] or data.index in TUNNEL_INDICES else HEALTH
 	data["fall_time"] = 0.0
 	data.visual.rotation = Vector3.ZERO
 	data.visual.position = Vector3.ZERO
@@ -136,6 +138,10 @@ func reset_creature(data):
 		data.state="cellar_wait"
 		data["cellar_waypoint"]=false
 		play(data,"idle1")
+	if data.index in TUNNEL_INDICES:
+		data.state="tunnel_wait"
+		data["tunnel_waypoint"]=0
+		play(data,"idle1")
 	if data.index==REAPER_INDEX:
 		data.state="reaper_wait"
 		data.actor.hide()
@@ -163,7 +169,7 @@ func line_clear(data, target: Vector3) -> bool:
 func alert_shot(p: Vector3):
 	if game.state!="play": return
 	for data in creatures:
-		if data.hp<=0 or data.index in [HOUSE_INDEX,CELLAR_INDEX,REAPER_INDEX] or data.actor.global_position.distance_to(p)>32: continue
+		if data.hp<=0 or data.index in [HOUSE_INDEX,CELLAR_INDEX,REAPER_INDEX] or data.index in TUNNEL_INDICES or data.actor.global_position.distance_to(p)>32: continue
 		data.target = p
 		data.memory = 9.0
 		if data.state in ["lurking","returning"]:
@@ -231,7 +237,7 @@ func health_bar_targets() -> Array:
 	var targets = []
 	if game.state!="play": return targets
 	for data in creatures:
-		if data.hp<=0 or data.state in ["lurking","house_wait"] or not data.actor.is_visible_in_tree(): continue
+		if data.hp<=0 or data.state in ["lurking","house_wait","tunnel_wait"] or not data.actor.is_visible_in_tree(): continue
 		if data.actor.global_position.distance_to(game.camera.global_position)>18: continue
 		var point: Vector3 = data.actor.global_position+Vector3(0,2.25,0)
 		if game.camera.is_position_behind(point) or not line_clear(data,game.camera.global_position): continue
@@ -254,7 +260,7 @@ func _physics_process(delta):
 		data.animation.speed_scale = animation_rate if active else 0
 		data.voice.stream_paused = not active
 		if not active: continue
-		if data.index in [HOUSE_INDEX,CELLAR_INDEX] and data.state=="dead":
+		if (data.index in [HOUSE_INDEX,CELLAR_INDEX] or data.index in TUNNEL_INDICES) and data.state=="dead":
 			data.fall_time = minf(1,data.fall_time+delta/0.7)
 			data.animation.speed_scale = 0
 			data.visual.rotation.x = -smoothstep(0,1,data.fall_time)*PI/2
@@ -264,6 +270,9 @@ func _physics_process(delta):
 			continue
 		if data.index==CELLAR_INDEX:
 			cellar_encounter.update(self,data,delta)
+			continue
+		if data.index in TUNNEL_INDICES:
+			tunnel_encounter.update(self,data,delta)
 			continue
 		if data.index==REAPER_INDEX:
 			if data.state!="dead": reaper_encounter.update(self,data,delta)
@@ -526,6 +535,6 @@ func town_threat_active()->bool:
 	if game.cemetery_shadow and game.cemetery_shadow.appeared and not game.cemetery_shadow.vanished:return true
 	if workshop_armed or workshop_danger():return true
 	for data in creatures:
-		if data.index==WORKSHOP_INDEX or data.hp<=0:continue
+		if data.index==WORKSHOP_INDEX or data.index in TUNNEL_INDICES or data.hp<=0:continue
 		if data.state in ["stalking","alert","chase","attack","investigate","stagger"]:return true
 	return false
