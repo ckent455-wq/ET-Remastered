@@ -1,4 +1,4 @@
-# Far From Home v0.10.0
+# Far From Home v1.0
 
 A Windows playable preview of ET Remastered / Far From Home, built with Godot 4.7.2.
 
@@ -12,7 +12,7 @@ A Windows playable preview of ET Remastered / Far From Home, built with Godot 4.
 
 ## Play
 
-Download **FarFromHome-v0.10.0-Windows-x64.zip**, extract the entire ZIP, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. The Source ZIP contains the editable Godot project.
+Download **FarFromHome-v1.0-Windows-x64.zip**, extract the entire ZIP, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. The Source ZIP contains the editable Godot project.
 
 Keyboard: WASD moves, mouse looks, E interacts (hold to dig), I opens the backpack, Tab opens the journal/map, F toggles the flashlight, Escape pauses and offers Restart Game. Controller mappings are shown in Controls and the included README.
 
