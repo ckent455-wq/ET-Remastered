@@ -1,8 +1,8 @@
-# Elias — Mausoleum key encounter
+# Pat — Mausoleum key encounter
 
 Status: subtitle encounter implemented; awaiting the user's voice recording.
 Suggested audio filename: elias_grandpappys_key.ogg
-Trigger: After workshop power is restored and the signal coil is collected, Elias sees the player on Main Street, runs up, and waits for the player to press E before speaking. Runs once per new journey.
+Trigger: After workshop power is restored and the signal coil is collected, Pat sees the player on Main Street, runs up, and waits for the player to press E before speaking. Runs once per new journey.
 Delivery: call out the first word, slightly out of breath. Let the excitement fall away before the last sentence. Plain, local speech; no villain voice.
 
 Hey! I've got the key to my grandpappy's grave.

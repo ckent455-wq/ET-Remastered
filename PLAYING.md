@@ -40,13 +40,13 @@ Find batteries in town storage and press Q to fit one; an empty flashlight stays
 off until refilled. TAB shows health kits, spare batteries and your objective.
 Chapel Road ends at a grassy court; follow the footpath and press E at the doors.
 
-Restore workshop power and collect the signal coil. Speak to Elias for the mausoleum key, then search the Whitcomb mausoleum for the antenna coupler and chapel cellar key. Follow Chapel
+Restore workshop power and collect the signal coil. Speak to Pat for the mausoleum key, then search the Whitcomb mausoleum for the antenna coupler and chapel cellar key. Follow Chapel
 Road uphill and find the locked cellar door at the back right inside the church.
 Press E to unlock the door and descend. Recover the tuning unit from the cellar workbench,
 then use the stairs to return. The radio needs the tuning unit, signal coil, and antenna coupler.
 
-Inspect your wreck for the detour notice. Read documents and speak to Elias,
-Mara and Owen to investigate the evacuation. The operator's instructions at the
+Inspect your wreck for the detour notice. Read documents and speak to Pat,
+Aubrey and John to investigate the evacuation. The operator's instructions at the
 radio station point to three records that explain a safer transmission procedure.
 Set the small BYPASS switch on the station desk to GREEN for direct county
 dispatch; AMBER still routes through the chapel repeater. Reading does not flip
@@ -80,7 +80,7 @@ AMMUNITION: The ranger pistol has only 3 loaded rounds and no reserve. Collect a
 
 Ammo cartons are scattered through the store, hotel rooms, clinic, ranger office, workshop, radio station and chapel cellar. They stay collected for the current journey, and restore on a new journey.
 
-OLD MILL CEMETERY: Follow the east/right footpath from Old Mill Road between the wreck and town. After restoring workshop power and collecting the signal coil, get the mausoleum key from Elias, unlock the Whitcomb mausoleum, and take the coupler inside. It occupies two backpack slots and is required alongside the coil and tuning unit to repair the station radio. Press I for the backpack; TAB opens the journal and updated map.
+OLD MILL CEMETERY: Follow the east/right footpath from Old Mill Road between the wreck and town. After restoring workshop power and collecting the signal coil, get the mausoleum key from Pat, unlock the Whitcomb mausoleum, and take the coupler inside. It occupies two backpack slots and is required alongside the coil and tuning unit to repair the station radio. Press I for the backpack; TAB opens the journal and updated map.
 
 
 WORKSHOP POWER: Find the workshop battery in the store counter drawer (two backpack slots). Follow the alley between the repair shop and Saint George Hotel into the enclosed rear yard, then press E at the battery terminal. Flashlight cells remain separate.
@@ -90,3 +90,21 @@ CRASH OPENING: A new journey begins with the driver waking after the crash. Adva
 DETOUR SHEET: After collecting the backpack and flashlight, pick up the printed sheet from the front seat with E. It disappears from the car and is saved in the journal. Inspecting the wreck does not collect it automatically. Restart puts it back on the seat.
 
 The hotel basement door is bolted from the other side. Reach its cellar through the hidden tunnel inside the Whitcomb mausoleum, then unbolt the hotel door from below. Normal mausoleum key requirements apply. Restoring workshop power prepares an ambush when you return through the alley to Main Street; the townspeople run indoors first.
+
+## Controller
+
+Use any standard Godot-compatible controller. Button prompts automatically switch when you use the controller or keyboard/mouse; Xbox, PlayStation and Nintendo labels are supported.
+
+- Left stick: move; click left stick: sprint. Right stick: look.
+- A / Cross: jump; B / Circle (hold): crouch; X / Square: interact, talk, stand up.
+- LT / L2: aim; RT / R2: fire; Y / Triangle: reload.
+- LB / RB (L1 / R1): cycle weapons; click right stick: holster.
+- D-pad down: flashlight; up: journal/map; left: first aid; right: spare battery.
+- View / Touchpad: backpack; Start / Options: pause.
+- Menus: left stick or D-pad to select, A / Cross to confirm, B / Circle to go back.
+- Backpack: D-pad or left stick selects; X / Square picks up an item, moves it, and places it. B / Circle cancels a move or closes the bag. A / Cross uses, Y / Triangle examines, LB / L1 combines, RB / R1 discards (confirm twice). Close the bag and press D-pad up for the journal/map.
+- Journal: LB / RB turns pages; Y / Triangle toggles case notes; B / Circle closes.
+
+On Nintendo controllers, the corresponding physical bottom/right/left/top face buttons are B/A/Y/X. Disconnecting the active controller pauses gameplay.
+
+An optional rusted shovel leans against the workshop wall and occupies a 1 x 3 backpack space. Find the one freshly disturbed grave in Old Mill Cemetery and hold E (Xbox X / PlayStation Square) while looking at it to dig. Releasing interact cancels the digging. The uncovered cache contains six pistol rounds and a folded note; the other graves cannot be dug.

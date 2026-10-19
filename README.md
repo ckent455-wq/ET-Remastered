@@ -62,7 +62,7 @@ Quest progression:
 7. Stay near the repaired receiver and hold E to call emergency services.
 
 ## Townspeople
-Three friendly NPCs use the newly downloaded Base Humanoid Mesh: Elias the ranger outside his office, Mara the nurse in the clinic, and Owen the mechanic in the workshop. They have muted clothing variants, skinned patrol animations, collision, and turn toward nearby players. E opens a conversation with useful, quest-aware hints. Conversations pause gameplay and ambience; E / Enter / Escape / Tab closes them.
+Three friendly NPCs use the newly downloaded Base Humanoid Mesh: Pat the ranger outside his office, Aubrey the nurse in the clinic, and John the mechanic in the workshop. They have muted clothing variants, skinned patrol animations, collision, and turn toward nearby players. E opens a conversation with useful, quest-aware hints. Conversations pause gameplay and ambience; E / Enter / Escape / Tab closes them.
 
 The source humanoid has 402 triangles. Each variant keeps that count and a 256-pixel version of its supplied UV atlas. Exact source paths are stored in assets/npcs/manifest.json.
 
@@ -162,7 +162,7 @@ New checks: presentation auto-advance/skip, no obsolete collection objective, th
 
 Camera regression: `smoke_test_camera.gd` walks into all 12 containers, opens and closes storage at close range, and checks stationary view stability and eye height while movement is blocked. It also checks that drone entities and drone audio are absent.
 
-Recent town additions: the weathered two-post "Blackwood / Population 3" sign sits fully beside the approach road, with a vegetation clearance around it. Elias patrols outside the ranger office; Mara walks the clinic aisle; Owen walks the workshop floor. The 402-triangle humanoids have skinned walk cycles. NPCs stop within conversation range, collide with solid scenery, and pause in menus and dialogue.
+Recent town additions: the weathered two-post "Blackwood / Population 3" sign sits fully beside the approach road, with a vegetation clearance around it. Pat patrols outside the ranger office; Aubrey walks the clinic aisle; John walks the workshop floor. The 402-triangle humanoids have skinned walk cycles. NPCs stop within conversation range, collide with solid scenery, and pause in menus and dialogue.
 
 Weapons use the locally downloaded Polyy Guns Pack 2 (CC0; license included in assets/weapons), reduced to 2,200 triangles each with textures capped at 256 pixels. Firing uses collision rays, ammunition, reloads, muzzle flashes and bounded impact marks; the workshop yard has four metal targets. Shooting an NPC triggers a skinned collapse and death animation; dead NPCs stop moving and talking until a new journey. Gun recoil moves only the weapon model; the camera remains steady. The flashlight hand is hidden with an equipped weapon.
 

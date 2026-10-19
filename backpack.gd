@@ -16,9 +16,9 @@ const INK = Color("ddd8bf")
 const DIM = Color("88998a")
 const GOLD = Color("d4ad70")
 const STACKS = [12,20,6]
-const OBJECTIVES = ["station_key","workshop_battery","coil","chapel_key","tuner","shotgun_key","antenna","mausoleum_key"]
-const OBJECTIVE_LABELS = {"mausoleum_key":"MAUSOLEUM KEY","antenna":"ANTENNA COUPLER","station_key":"RADIO STATION KEY","workshop_battery":"WORKSHOP BATTERY","coil":"SIGNAL COIL","chapel_key":"CHAPEL CELLAR KEY","tuner":"RADIO TUNING UNIT","shotgun_key":"SHOTGUN BOX KEY"}
-const OBJECTIVE_DETAILS = {"mausoleum_key":"Old iron key for the Whitcomb mausoleum in Old Mill Cemetery. Used automatically at its door.","antenna":"Spare aerial coupling from Old Mill Cemetery. Bring it to the radio receiver with the signal coil and tuning unit.","station_key":"Unlocks the radio station door. Used automatically at the door.","workshop_battery":"Install at the workshop's rear battery terminal to restore power.","coil":"Bring this signal coil and the tuning unit to the radio receiver.","chapel_key":"Unlocks the chapel cellar. Used automatically at the cellar door.","tuner":"Bring this tuning unit and the signal coil to the radio receiver.","shotgun_key":"Unlocks the ranger's shotgun box. Used automatically at the box."}
+const OBJECTIVES = ["station_key","workshop_battery","coil","chapel_key","tuner","shotgun_key","antenna","mausoleum_key","shovel"]
+const OBJECTIVE_LABELS = {"shovel":"RUSTED SHOVEL","mausoleum_key":"MAUSOLEUM KEY","antenna":"ANTENNA COUPLER","station_key":"RADIO STATION KEY","workshop_battery":"WORKSHOP BATTERY","coil":"SIGNAL COIL","chapel_key":"CHAPEL CELLAR KEY","tuner":"RADIO TUNING UNIT","shotgun_key":"SHOTGUN BOX KEY"}
+const OBJECTIVE_DETAILS = {"shovel":"A battered spade. Hold interact at the freshly disturbed grave in Old Mill Cemetery to dig. Other graves stay untouched.","mausoleum_key":"Old iron key for the Whitcomb mausoleum in Old Mill Cemetery. Used automatically at its door.","antenna":"Spare aerial coupling from Old Mill Cemetery. Bring it to the radio receiver with the signal coil and tuning unit.","station_key":"Unlocks the radio station door. Used automatically at the door.","workshop_battery":"Install at the workshop's rear battery terminal to restore power.","coil":"Bring this signal coil and the tuning unit to the radio receiver.","chapel_key":"Unlocks the chapel cellar. Used automatically at the cellar door.","tuner":"Bring this tuning unit and the signal coil to the radio receiver.","shotgun_key":"Unlocks the ranger's shotgun box. Used automatically at the box."}
 
 func _ready():
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -46,10 +46,11 @@ func fits(cell: Vector2i, dimensions: Vector2i, entries: Array, except_key = "")
 
 func pack(values: Dictionary) -> Array:
 	var requested: Array = []
-	for id in ["gun1","gun2","coil","tuner","gun0","medkit","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","workshop_battery","chapel_key","shotgun_key","mausoleum_key"]:
+	for id in ["gun1","gun2","coil","tuner","gun0","medkit","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","workshop_battery","chapel_key","shotgun_key","mausoleum_key","shovel"]:
 		var amount: int = values.get(id,0)
 		var dims = Vector2i(1,1)
 		var limit = 1
+		if id=="shovel": dims=Vector2i(1,3)
 		if id in ["gun1","gun2"]: dims = Vector2i(4,1)
 		if id in ["coil","tuner"]: dims = Vector2i(2,2)
 		if id in ["gun0","medkit","antenna","workshop_battery"]: dims = Vector2i(2,1)
@@ -108,11 +109,11 @@ func write(value: String, point: Vector2, size = 12, color = INK):
 func _draw():
 	draw_rect(Rect2(0,0,640,400),Color("111813"))
 	write("BLACKWOOD / BACKPACK",Vector2(38,35),23)
-	write("24 SLOTS / DRAG TO ARRANGE",Vector2(38,88),11,DIM)
+	write("24 SLOTS / MOVE TO ARRANGE" if game.controller.using_controller else "24 SLOTS / DRAG TO ARRANGE",Vector2(38,88),11,DIM)
 	for i in range(3):
 		var box = Rect2(38+i*187,48,176,25)
 		draw_rect(box,Color("394335") if i==0 else Color("202b22"))
-		write(["I  BACKPACK","J  JOURNAL","M  MAP"][i],box.position+Vector2(10,17),12)
+		write((["BACKPACK","JOURNAL","MAP"] if game.controller.using_controller else ["I  BACKPACK","J  JOURNAL","M  MAP"])[i],box.position+Vector2(10,17),12)
 	for y in range(4):
 		for x in range(6):
 			draw_rect(Rect2(ORIGIN+Vector2(x,y)*CELL,Vector2(CELL-1,CELL-1)),Color("293126"))
@@ -146,9 +147,13 @@ func _draw():
 		for i in range(4):
 			var box = Rect2(330+(i%2)*139,207+(i/2)*31,130,25)
 			draw_rect(box,Color("3d4734"))
-			write(["ENTER  USE","X  EXAMINE","C  COMBINE","DEL  DISCARD"][i],box.position+Vector2(6,17),11)
+			var actions=["ENTER  USE","X  EXAMINE","C  COMBINE","DEL  DISCARD"]
+			if game.controller.using_controller: actions=[game.controller.label("south")+"  USE",game.controller.label("north")+"  EXAMINE",game.controller.label("lb")+"  COMBINE",game.controller.label("rb")+"  DISCARD"]
+			write(actions[i],box.position+Vector2(6,17),11)
 	paragraph(notice,Vector2(330,286),270)
-	write("DRAG  Move items     ARROWS  Select     I / ESC  Close",Vector2(38,383),11,DIM)
+	var footer="DRAG  Move items     ARROWS  Select     I / ESC  Close"
+	if game.controller.using_controller:footer=game.controller.label("west")+"  Move / place    D-PAD / LS  Select    "+game.controller.label("east")+"  Back"
+	write(footer,Vector2(38,383),11,DIM)
 
 	if dragging!="":
 		for entry in entries:
@@ -189,14 +194,18 @@ func copy_meshes(source: Node, parent: Node3D, accumulated = Transform3D.IDENTIT
 func build_icons():
 	for id in ["gun0","gun1","gun2","ammo0","ammo1","ammo2","flashlight","medkit","battery"]+OBJECTIVES:
 		var viewport = SubViewport.new()
-		viewport.size=Vector2i(256,128) if id.begins_with("gun") or id=="medkit" else Vector2i(128,192) if id=="flashlight" else Vector2i(128,128)
+		viewport.size=Vector2i(256,128) if id.begins_with("gun") or id=="medkit" else Vector2i(128,384) if id=="shovel" else Vector2i(128,192) if id=="flashlight" else Vector2i(128,128)
 		viewport.transparent_bg=true
 		viewport.own_world_3d=true
 		viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
 		add_child(viewport)
 		var model = Node3D.new()
 		viewport.add_child(model)
-		if id in ["battery","medkit","workshop_battery","coil"]:
+		if id=="shovel":
+			var source=preload("res://spade_model.gd").build()
+			copy_meshes(source,model)
+			source.free()
+		elif id in ["battery","medkit","workshop_battery","coil"]:
 			var source=preload("res://supply_models.gd").build(id)
 			copy_meshes(source,model)
 			source.free()
@@ -248,7 +257,7 @@ func build_icons():
 		viewport.add_child(light)
 		var camera = Camera3D.new()
 		camera.projection=Camera3D.PROJECTION_ORTHOGONAL
-		camera.size=1.4
+		camera.size=1.1 if id=="shovel" else 1.4
 		camera.position=Vector3(0,0.65,3)
 		viewport.add_child(camera)
 		camera.look_at(Vector3.ZERO)
@@ -352,3 +361,46 @@ func act(action: String):
 	elif id=="medkit": game.town.use_medkit(); notice=game.message
 	elif id=="battery": game.town.use_battery(); notice=game.message
 	else: notice="Select COMBINE to load this ammunition."
+
+func controller_move(direction: Vector2i):
+	var entries=pack(counts())
+	if entries.is_empty():return
+	selected=clampi(selected,0,entries.size()-1)
+	if dragging!="":
+		var item=entries[selected]
+		var target=drop_cell()+direction
+		target.x=clampi(target.x,0,6-item.size.x)
+		target.y=clampi(target.y,0,4-item.size.y)
+		drag_mouse=ORIGIN+Vector2(target)*CELL
+	else:
+		selected=wrapi(selected+(-1 if direction.x<0 or direction.y<0 else 1),0,entries.size())
+	discard_pending=""
+
+func controller_button(id:int):
+	if id in [JOY_BUTTON_B,JOY_BUTTON_BACK,JOY_BUTTON_START]:
+		if dragging!="":dragging="";notice="Move cancelled."
+		else:game.set_state("play")
+		return
+	var d=game.controller.direction(id)
+	if d!=Vector2i.ZERO:controller_move(d);return
+	var entries=pack(counts())
+	if entries.is_empty():return
+	selected=clampi(selected,0,entries.size()-1)
+	if id==JOY_BUTTON_X:
+		var item=entries[selected]
+		if dragging=="":
+			remember(entries)
+			dragging=item.key
+			drag_offset=Vector2.ZERO
+			drag_mouse=ORIGIN+Vector2(item.cell)*CELL
+			notice="D-pad / left stick to move. Press "+game.controller.label("west")+" to place."
+		elif fits(drop_cell(),item.size,entries,dragging):
+			saved_cells[dragging]=drop_cell()
+			dragging=""
+			notice="Item moved."
+		else:notice="That space is blocked. Choose a free space."
+	elif dragging=="":
+		if id==JOY_BUTTON_A:act("use")
+		elif id==JOY_BUTTON_Y:act("examine")
+		elif id==JOY_BUTTON_LEFT_SHOULDER:act("combine")
+		elif id==JOY_BUTTON_RIGHT_SHOULDER:act("discard")

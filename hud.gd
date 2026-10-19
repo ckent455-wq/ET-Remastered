@@ -91,8 +91,10 @@ func _unhandled_key_input(event):
 		get_viewport().set_input_as_handled()
 
 func text(s: String, p: Vector2, size = 14, color = INK):
+	if game.controller: s=game.controller.hint(s)
 	draw_string(font,p,s,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
 func centered(s: String, y: float, size: int, color = INK):
+	if game.controller: s=game.controller.hint(s)
 	text(s,Vector2(320-font.get_string_size(s,HORIZONTAL_ALIGNMENT_LEFT,-1,size).x/2,y),size,color)
 func _draw():
 	if game==null:
@@ -242,6 +244,7 @@ func draw_title_controls():
 	draw_rect(Rect2(62,54,516,310),Color("6d6051"),false,1)
 	text("SURVIVING BLACKWOOD",Vector2(80,91),24,Color("dfd8c1"))
 	var rows = ["WASD / ARROWS     Move     SHIFT     Sprint", "SPACE     Jump     CTRL (hold)     Crouch", "MOUSE     Look     F     Flashlight", "E     Search storage / talk / interact", "LMB     Fire     RMB     Aim     R     Reload", "WHEEL / V     Cycle guns     1-3 Select     0 Holster", "H     First aid     Q     Flashlight battery", "I  Backpack    TAB  Journal / map    ESC  Pause"]
+	if game.controller and game.controller.using_controller: rows=game.controller.control_rows()
 	for i in range(rows.size()):
 		text(rows[i],Vector2(80,124+i*23),13,Color("b6b6a5"))
 	text("Find supplies, weapons and a working radio.",Vector2(80,310),12,Color("bd725b"))
@@ -282,7 +285,7 @@ func draw_journal():
 		text("WHAT HAPPENED HERE?",Vector2(78,110),18,AMBER)
 		paragraph(game.story.question(),78,140,478,14)
 		text("EVIDENCE / %d of %d records found" % [game.story.evidence.size(),game.story.RECORDS.size()],Vector2(78,187),11,DIM)
-		var labels = ["CLINIC OBSERVATIONS","OWEN'S WORKSHOP LOG","CELLAR ISOLATION PROCEDURE"]
+		var labels = ["CLINIC OBSERVATIONS","JOHN'S WORKSHOP LOG","CELLAR ISOLATION PROCEDURE"]
 		for i in range(3):
 			var id = game.story.PROTOCOL[i]
 			var found = game.story.evidence.has(id)

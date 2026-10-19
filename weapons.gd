@@ -197,6 +197,7 @@ func reload():
 	game.soundscape.weapon_sound("reload")
 
 func fire() -> bool:
+	if game.grave_dig and game.grave_dig.digging:return false
 	if game.state!="play" or selected<0 or delay>0 or reload_remaining>0:
 		return false
 	if magazines[selected]<=0:
@@ -286,5 +287,5 @@ func _physics_process(delta):
 			var amount = mini(LOADOUT[selected].clip-magazines[selected],reserves[selected])
 			magazines[selected] += amount
 			reserves[selected] -= amount
-	aiming = selected>=0 and reload_remaining<=0 and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	aiming = selected>=0 and reload_remaining<=0 and (Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or (game.controller and game.controller.aiming()))
 	update_model(delta)

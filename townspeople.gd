@@ -12,9 +12,9 @@ const GRAVE_KEY_LINE = "Hey! I've got the key to my grandpappy's grave. The Whit
 
 const DEATH_DURATION = 1.7
 const PEOPLE = [
-	{"id":"ranger","name":"Elias / Ranger","variant":"ranger","building":"","p":Vector3(-5.65,0,-45),"yaw":0.0,"route":[Vector3(-5.65,0,-45),Vector3(-5.65,0,-49),Vector3(-5.65,0,-44.5)]},
-	{"id":"nurse","name":"Mara / Nurse","variant":"nurse","building":"clinic","p":Vector3(-0.95,0,0.6),"yaw":0.0,"route":[Vector3(-0.95,0,0.6),Vector3(-0.95,0,2.5),Vector3(0.65,0,2.5),Vector3(0.65,0,0.6)]},
-	{"id":"mechanic","name":"Owen / Mechanic","variant":"mechanic_john","building":"workshop","p":Vector3(1.2,0,1.5),"yaw":0.0,"route":[Vector3(1.2,0,1.5),Vector3(3,0,1.5),Vector3(3,0,3.1),Vector3(1.2,0,3.1)]}]
+	{"id":"ranger","name":"Pat / Ranger","variant":"ranger","building":"","p":Vector3(-5.65,0,-45),"yaw":0.0,"route":[Vector3(-5.65,0,-45),Vector3(-5.65,0,-49),Vector3(-5.65,0,-44.5)]},
+	{"id":"nurse","name":"Aubrey / Nurse","variant":"nurse","building":"clinic","p":Vector3(-0.95,0,0.6),"yaw":0.0,"route":[Vector3(-0.95,0,0.6),Vector3(-0.95,0,2.5),Vector3(0.65,0,2.5),Vector3(0.65,0,0.6)]},
+	{"id":"mechanic","name":"John / Mechanic","variant":"mechanic_john","building":"workshop","p":Vector3(1.2,0,1.5),"yaw":0.0,"route":[Vector3(1.2,0,1.5),Vector3(3,0,1.5),Vector3(3,0,3.1),Vector3(1.2,0,3.1)]}]
 
 func _ready():
 	name = "Townspeople"
@@ -329,7 +329,7 @@ func offer_grave_key():
 	else:
 		town.inventory.mausoleum_key+=1
 		grave_key_given=true
-		town.game.message="Elias gave you the Whitcomb mausoleum key."
+		town.game.message="Pat gave you the Whitcomb mausoleum key."
 		town.game.soundscape.feedback("pickup")
 	town.game.dialogue_name=characters.ranger.name
 	town.game.dialogue_text=line
@@ -351,24 +351,24 @@ func words(id: String) -> String:
 	if town.radio_ready:
 		if town.game.story.direct_channel_selected():
 			return "The bypass is green. That is the direct county channel. Tell them our location and ask for no sirens.\n\nHold E at the main receiver to transmit, then switch it off. We need a real person on the road, not another recording."
-		return "Repairing the radio restores its power, not its routing. Set the small BYPASS switch on the left of the station desk to GREEN before you call.\n\nAmber still feeds the chapel repeater. The operator's note explains it. Mara's records tell you why the rescue team should come without sirens."
+		return "Repairing the radio restores its power, not its routing. Set the small BYPASS switch on the left of the station desk to GREEN before you call.\n\nAmber still feeds the chapel repeater. The operator's note explains it. Aubrey's records tell you why the rescue team should come without sirens."
 	match id:
 		"ranger":
 			if town.game.story.evidence.has("ranger_note"):
 				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store battery to the workshop panel. Its powered cabinet holds the coil. Then ask me about my family mausoleum."
 				return "That was three nights ago. The horn came from the chapel speaker. I should have locked the barrier again. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
 			if town.inventory.station_key==0:
-				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Elias. Only Mara, Owen and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's on the front crate. Read my log."
-			return "You have the station key. The store counter drawer has a workshop battery; the workshop's rear terminal takes it. Its powered cabinet holds the coil. Elias can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
+				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Pat. Only Aubrey, John and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's on the front crate. Read my log."
+			return "You have the station key. The store counter drawer has a workshop battery; the workshop's rear terminal takes it. Its powered cabinet holds the coil. Pat can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
 				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a first-aid kit. Q fits a battery."
-			return "I'm Mara. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a kit; Q fits a battery."
+			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a kit; Q fits a battery."
 		"mechanic":
 			if not town.powered:
-				return "Owen. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop battery is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
+				return "John. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop battery is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
 			if town.inventory.coil==0:
-				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil from this cabinet. Ask Elias about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
+				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil from this cabinet. Ask Pat about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
 			if town.inventory.tuner==0:
 				return "Ada left on the last bus. Her letter is in our room at Saint George Hotel. I told her I'd catch up after securing the equipment.\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle. The bench instructions explain the station's bypass switch."
 			return "You have the coil, tuner and cemetery antenna coupler. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nNo sirens. Tell them there are people missing in the woods, and that the chapel repeater must be disconnected. Don't let another team mistake its old messages for us."

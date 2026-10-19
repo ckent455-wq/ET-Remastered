@@ -1,14 +1,19 @@
 extends Node3D
-## A noncombat apparition: visible between graves until the player approaches.
+## A noncombat apparition walks the east fence, disappearing beyond the mausoleum.
 var game
 var actor:Node3D
 var animation:AnimationPlayer
 var material:StandardMaterial3D
+var idle_clip=""
+var walk_clip=""
 var appeared=false
 var vanished=false
 var vanishing=false
 var fade=0.0
-const SPOT=Vector3(21.5,0.03,-18.6)
+var escape_elapsed=0.0
+const SPOT=Vector3(22.5,0.03,-18.5)
+const END=Vector3(22.5,0.03,-23.55)
+const WALK_SPEED=1.5
 func _ready():
  name="CemeteryShadow"
  actor=Node3D.new()
@@ -27,33 +32,48 @@ func _ready():
   mesh.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
  animation=model.find_child("AnimationPlayer",true,false)
  for clip in animation.get_animation_list():
-  if str(clip).split("/")[-1].to_lower()=="idle1":
-   animation.get_animation(clip).loop_mode=Animation.LOOP_LINEAR
-   animation.play(clip)
-   break
+  var short=str(clip).split("/")[-1].to_lower()
+  if short in ["idle1","walk1"]:animation.get_animation(clip).loop_mode=Animation.LOOP_LINEAR
+  if short=="idle1":idle_clip=clip
+  elif short=="walk1":walk_clip=clip
  reset()
 func reset():
  appeared=false
  vanished=false
  vanishing=false
  fade=0
+ escape_elapsed=0
+ actor.position=SPOT
+ actor.rotation.y=PI
  material.albedo_color.a=1
- actor.hide()
+ actor.show()
+ if idle_clip!="":animation.play(idle_clip)
 func _physics_process(delta):
- animation.speed_scale=0.5 if game.state=="play" else 0
+ animation.speed_scale=(1.22 if appeared else 0.5) if game.state=="play" else 0
  if game.state!="play" or vanished:return
  var p:Vector3=game.player.global_position
- var distance=p.distance_to(SPOT)
- if not appeared and game.town.cemetery.contains(p) and distance>7.5 and distance<23:
+ # He is already waiting in the world; approaching the gate starts his escape.
+ var near_gate=p.x>3.5 and p.x<10 and p.z> -16 and p.z< -8
+ if not appeared and (near_gate or game.town.cemetery.contains(p)):
   appeared=true
-  actor.show()
+  if walk_clip!="":animation.play(walk_clip,0.12)
  if not appeared:return
- var direction=p-actor.global_position
- actor.rotation.y=atan2(direction.x,direction.z)
- if distance<7.0:vanishing=true
+ escape_elapsed+=delta
+ if not vanishing:
+  actor.position=actor.position.move_toward(END,WALK_SPEED*delta)
+  if actor.position.distance_to(END)<0.01:vanishing=true
+  # React when the building actually hides him, rather than waiting for the full route.
+  if escape_elapsed>0.5:
+   var ray=PhysicsRayQueryParameters3D.create(game.camera.global_position,actor.global_position+Vector3(0,1,0))
+   ray.exclude=[game.player.get_rid()]
+   var hit=get_world_3d().direct_space_state.intersect_ray(ray)
+   if not hit.is_empty() and game.town.cemetery.crypt.is_ancestor_of(hit.collider):vanishing=true
  if vanishing:
   fade+=delta
-  material.albedo_color.a=clampf(1.0-fade/0.6,0,1)
-  if fade>=0.6:
+  material.albedo_color.a=clampf(1.0-fade/0.15,0,1)
+  if fade>=0.15:
    vanished=true
    actor.hide()
+   game.dialogue_name=""
+   game.dialogue_text="What is that? Am I seeing things?"
+   game.set_state("dialogue")

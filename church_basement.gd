@@ -37,7 +37,7 @@ func build_entry():
 	town.action_area(church,p+Vector3(0,1.3,0.22),Vector3(1.85,2.6,0.28),"cellar_door",{"kind":"cellar_door","label":"Unlock cellar door"})
 	# A readable maintenance note beside the altar gives an independent clue.
 	town.box(church,Vector3(-3.65,0.5,-5.55),Vector3(0.85,1,0.65),town.mats.wood)
-	var note = town.action_area(church,Vector3(-3.65,1.04,-5.5),Vector3(0.62,0.15,0.5),"cellar_note",{"kind":"note","label":"Read chapel maintenance log","title":"Chapel maintenance log","text":"The civil-defense radio's spare tuning unit is on the\ncellar workbench. The station needs it AND a signal coil\nto transmit clearly. Owen took the cellar key to the mill\nworkshop. It is now stored in the Whitcomb mausoleum.\n\nFollow Chapel Road uphill. The locked cellar door is\nat the back right of the chapel. Bring a fresh battery.\nThe cellar stairs return to the chapel."})
+	var note = town.action_area(church,Vector3(-3.65,1.04,-5.5),Vector3(0.62,0.15,0.5),"cellar_note",{"kind":"note","label":"Read chapel maintenance log","title":"Chapel maintenance log","text":"The civil-defense radio's spare tuning unit is on the\ncellar workbench. The station needs it AND a signal coil\nto transmit clearly. John took the cellar key to the mill\nworkshop. It is now stored in the Whitcomb mausoleum.\n\nFollow Chapel Road uphill. The locked cellar door is\nat the back right of the chapel. Bring a fresh battery.\nThe cellar stairs return to the chapel."})
 	town.box(note,Vector3.ZERO,Vector3(0.45,0.025,0.33),town.mats.paper,false)
 
 func build_room():
@@ -119,7 +119,7 @@ func prepare_cellar_lighting(node: Node):
 func interact():
 	if not unlocked:
 		if town.inventory.chapel_key==0:
-			town.game.message = "Cellar locked. The key is in the Whitcomb mausoleum. Ask Elias after restoring workshop power."
+			town.game.message = "Cellar locked. The key is in the Whitcomb mausoleum. Ask Pat after restoring workshop power."
 			return
 		unlocked = true
 		padlock.hide()

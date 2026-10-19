@@ -11,7 +11,7 @@ var game
 var buildings = {}
 var doors = {}
 var actions = {}
-var inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0}
+var inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
@@ -303,7 +303,7 @@ func furnish():
 	desk(buildings.ranger,Vector3(-2.6,0,0))
 	shelf(buildings.ranger,Vector3(2.5,0,-3.9))
 	item("ranger",Vector3(-2.7,1.04,0),"station_key","station_key","Take radio-station key",Color("e4c479"))
-	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nworkshop battery. Fit it at the workshop's rear terminal, then search\nthe powered cabinet for a signal coil. After recovering the coil, ask Elias about the mausoleum. Its shelf holds the cellar key. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
+	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nworkshop battery. Fit it at the workshop's rear terminal, then search\nthe powered cabinet for a signal coil. After recovering the coil, ask Pat about the mausoleum. Its shelf holds the cellar key. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
 	for x in [-3.3,3.3]:
 		var old_bed = box(buildings.clinic,Vector3(x,0.6,0),Vector3(1.3,0.4,2.5),mats["plaster"])
 		old_bed.add_to_group("LegacyClinicBeds")
@@ -354,7 +354,7 @@ func furnish():
 	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the last families have gone. Most buildings have stood empty since the mill closed twelve years ago.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
-	inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0}
+	inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
 	journal_entries.clear()
 	discovered.clear()
 	powered = false
@@ -401,6 +401,7 @@ func prompt() -> String:
 		return ""
 	var data = actions[focus_action]
 	if data.kind in ["hotel_basement_door","hotel_basement_exit","mausoleum_tunnel","hotel_tunnel_return"]: return game.hotel_basement.prompt(data.kind)
+	if data.kind=="dig_grave": return game.grave_dig.prompt()
 	if data.kind=="mausoleum_door": return cemetery.door_prompt()
 	if data.kind=="ammo":
 		return "E / Take %d %s" % [data.amount,["pistol rounds","rifle rounds","shotgun shells"][data.weapon_index]]
@@ -448,6 +449,10 @@ func perform(id: String):
 	if data.kind!="crash" and id!="crash_record" and not id.begins_with("cemetery_"):
 		reached_town = true
 	match data.kind:
+		"grave_shovel":
+			game.grave_dig.interact_shovel()
+		"dig_grave":
+			game.grave_dig.interact_grave()
 		"hotel_basement_door","hotel_basement_exit","mausoleum_tunnel","hotel_tunnel_return":
 			game.hotel_basement.interact(data.kind)
 		"mausoleum_door":
@@ -617,7 +622,7 @@ func objective() -> String:
 	if inventory.coil==0: return "Recover the signal coil from the powered workshop."
 	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):
 		if not cemetery.unlocked and inventory.mausoleum_key==0:
-			return "Speak to Elias about his family's mausoleum key." if not townspeople.characters.ranger.dead else "Search the ranger's desk for the spare mausoleum key."
+			return "Speak to Pat about his family's mausoleum key." if not townspeople.characters.ranger.dead else "Search the ranger's desk for the spare mausoleum key."
 		return "Search the mausoleum for the radio coupler and chapel cellar key."
 	if inventory.tuner==0: return "Unlock the church basement and recover its tuning unit."
 	return "Bring all three radio parts to the station receiver."

@@ -42,6 +42,23 @@ func _ready():
 	var limit_collision=CollisionShape3D.new()
 	limit_collision.shape=limit_shape
 	road_limit.add_child(limit_collision)
+	# Across from the crash: allow a few yards of shoulder, then stop forest wandering.
+	invisible_section(Vector3(-44,0,19.77),Vector3(-7,0,19.77),"CrashWoodsSouthReturn")
+	invisible_section(Vector3(-7,0,19.77),Vector3(-7,0,-32),"CrashWoodsRoadsideLimit")
+	invisible_section(Vector3(-7,0,-32),Vector3(-26,0,-40),"CrashWoodsNorthReturn")
+
+func invisible_section(a:Vector3,b:Vector3,label:String):
+	var body=StaticBody3D.new()
+	body.name=label
+	add_child(body)
+	body.position=(a+b)*0.5+Vector3(0,5,0)
+	body.look_at(b+Vector3(0,5,0))
+	var shape=BoxShape3D.new()
+	shape.size=Vector3(0.5,12,a.distance_to(b)+0.5)
+	var collision=CollisionShape3D.new()
+	collision.shape=shape
+	body.add_child(collision)
+
 
 func find_shrub(node: Node):
 	if node is MeshInstance3D and shrub_mesh==null:

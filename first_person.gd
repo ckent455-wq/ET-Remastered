@@ -7,6 +7,7 @@ const STANDING_EYE = 1.65
 const CROUCH_EYE = 0.68
 const JUMP_VELOCITY = 5.2
 const GRAVITY = 18.0
+var controller: Node
 var crouching = false
 var jump_queued = false
 var player_collider: CollisionShape3D
@@ -46,6 +47,7 @@ var fog_atmosphere: Node3D
 var distant_landscape: Node3D
 var falling_tree: Node3D
 var surface_details: Node
+var grave_dig: Node3D
 var cemetery_shadow: Node3D
 var hotel_basement: Node3D
 var victorian_house: Node3D
@@ -114,15 +116,7 @@ func _ready():
 	ground_mat.uv1_scale = Vector3(30,30,30)
 	var ground = StaticBody3D.new()
 	add_child(ground)
-	var plane = BoxMesh.new()
-	plane.size = Vector3(140,0.6,180)
-	mesh_at(ground,plane,Vector3(0,-0.3,-25),ground_mat)
-	var collision = CollisionShape3D.new()
-	var ground_shape = BoxShape3D.new()
-	ground_shape.size = plane.size
-	collision.shape = ground_shape
-	collision.position = Vector3(0,-0.3,-25)
-	ground.add_child(collision)
+	preload("res://grave_ground.gd").build(ground,ground_mat)
 	var forest = Node3D.new()
 	forest.set_script(preload("res://forest.gd"))
 	add_child(forest)
@@ -230,12 +224,18 @@ func _ready():
 	cemetery_shadow=preload("res://cemetery_shadow.gd").new()
 	cemetery_shadow.game=self
 	add_child(cemetery_shadow)
+	grave_dig=preload("res://grave_dig.gd").new()
+	grave_dig.game=self
+	add_child(grave_dig)
 	backpack = preload("res://backpack.gd").new()
 	backpack.game = self
 	canvas.add_child(backpack)
 	surface_details = preload("res://surface_details.gd").new()
 	surface_details.game = self
 	add_child(surface_details)
+	controller=preload("res://controller_input.gd").new()
+	controller.game=self
+	add_child(controller)
 	update_camera()
 
 func prepare_flashlight(node: Node):
@@ -299,6 +299,7 @@ func reset_game():
 	if crash_site: crash_site.reset()
 	if hotel_basement: hotel_basement.reset()
 	if cemetery_shadow: cemetery_shadow.reset()
+	if grave_dig: grave_dig.reset()
 
 func set_state(next: String):
 	if crash_site and next=="play" and crash_site.wake_phase!="":
@@ -422,8 +423,10 @@ func _physics_process(delta):
 		hud.queue_redraw()
 		return
 	var movement = Vector2(float(Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT))-float(Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)),float(Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN))-float(Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP))).normalized()
+	if controller: movement=(movement+controller.movement()).limit_length(1.0)
+	if grave_dig and grave_dig.digging: movement=Vector2.ZERO; jump_queued=false
 	update_stance(delta)
-	var sprint = not crouching and Input.is_physical_key_pressed(KEY_SHIFT) and stamina>1 and movement.length()>0
+	var sprint = not crouching and (Input.is_physical_key_pressed(KEY_SHIFT) or (controller and controller.down(JOY_BUTTON_LEFT_STICK))) and stamina>1 and movement.length()>0
 	stamina = clampf(stamina+(-24 if sprint else 17)*delta,0,100)
 	var vertical_speed = 0.0 if player.is_on_floor() else player.velocity.y-GRAVITY*delta
 	if jump_queued and player.is_on_floor(): vertical_speed = JUMP_VELOCITY
@@ -436,7 +439,7 @@ func _physics_process(delta):
 	player.move_and_slide()
 	# The shared world floor is flat at y=0. Prevent corner recovery from
 	# sinking the capsule into that plane and bouncing it back next frame.
-	if player.position.y<0.001 and not town.streetscape.church.basement.contains(player.global_position) and not victorian_house.cellar_contains(player.global_position) and not hotel_basement.contains(player.global_position):
+	if player.position.y<0.001 and not town.streetscape.church.basement.contains(player.global_position) and not victorian_house.cellar_contains(player.global_position) and not hotel_basement.contains(player.global_position) and not (grave_dig and grave_dig.contains_pit(player.global_position)):
 		player.position.y = 0.001
 		player.velocity.y = 0.0
 	player.position.x = clampf(player.position.x,-60,60)
@@ -450,7 +453,7 @@ func _physics_process(delta):
 		set_state("lost")
 	town.update_arrival()
 	town.refresh_focus()
-	update_contact(delta,Input.is_physical_key_pressed(KEY_E))
+	update_contact(delta,Input.is_physical_key_pressed(KEY_E) or (controller and controller.interact_held()))
 	hud.queue_redraw()
 
 func can_stand() -> bool:
@@ -464,7 +467,7 @@ func can_stand() -> bool:
 	return get_world_3d().direct_space_state.intersect_shape(query,1).is_empty()
 
 func update_stance(delta: float):
-	var held = Input.is_physical_key_pressed(KEY_CTRL)
+	var held = Input.is_physical_key_pressed(KEY_CTRL) or (controller and controller.down(JOY_BUTTON_B))
 	crouching = held or ((crouching or player_collider.shape.height<STANDING_HEIGHT-0.001) and not can_stand())
 	var wanted = CROUCH_HEIGHT if crouching else STANDING_HEIGHT
 	var height = move_toward(player_collider.shape.height,wanted,5.5*delta)

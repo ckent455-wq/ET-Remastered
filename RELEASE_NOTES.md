@@ -1,27 +1,23 @@
-# Far From Home v0.9.0
+# Far From Home v0.10.0
 
-A new Windows playable preview of ET Remastered / Far From Home, built with Godot 4.7.2.
+A Windows playable preview of ET Remastered / Far From Home, built with Godot 4.7.2.
 
-- Opening sequence: the main menu fades to black, eyes blink open toward the sky, and the crash dialogue plays while the player is on the ground. Press E to stand up before collecting the backpack, flashlight and detour sheet.
-- Saint George Hotel basement: discover the passage inside the locked Whitcomb mausoleum, walk the underground tunnel, then unbolt the hotel basement door from below to open a shortcut. The temporary mausoleum testing unlock is disabled; normal key and progression requirements apply.
-- A shadowy cemetery apparition watches from between the graves and vanishes when approached.
-- Restoring workshop power prepares a one-time Main Street ambush. The creature is already waiting out of sight; it attacks when the player exits the alley, after the townspeople finish running into their buildings and closing the doors. It remains dead after being killed. Extra pistol ammo is available inside the workshop.
-- NPC shelter uses continuous running and real doorway interactions instead of teleporting.
-- Lower background wind and a spatial horror scream just before the road tree falls. Scream attribution is included in assets/audio/SCREAM_SOURCE.txt.
-- Road continues into the fog behind the crash, with an invisible travel barrier aligned with the roadside rock.
-- Cleaned up small world captions and floating nameplates while retaining readable notes, UI and principal signs.
-- Crash-car dashboard fits inside the hood; both yellow headlights and red tail lights blink together. Police roof lights alternate red and blue.
-- Adult standing eye height of 1.65 m, with matching player collision and preserved crouch behavior.
-- Includes the backpack, dialogue, Victorian house, restrained wallpaper stains, realistic paper notes, and other v0.8.0 features.
+- Controller support for movement, look, combat, menus, dialogue, journal and backpack arrangement. Prompts switch automatically between keyboard/mouse and Xbox, PlayStation or Nintendo layouts. Disconnecting the active controller pauses gameplay.
+- Optional grave cache: collect the rusted shovel from the workshop, then hold interact at the disturbed cemetery grave. Digging uncovers an actual recessed grave with soil walls, roots, a coffin model, six pistol rounds and a readable note. The shovel occupies three backpack slots. The temporary starting-shovel grant is removed.
+- Cemetery creature waits beside the fence, scurries behind the mausoleum as you approach, and triggers a brief reaction once the building hides it.
+- A preplaced upstairs creature ambushes the player through the Victorian house bedroom doorway. It supports normal combat, remains dead after being killed, and resets on a new journey.
+- Invisible boundaries keep players out of the woods across from the crash, with room to leave the roadside shoulder.
+- NPC names updated throughout dialogue, journal records, notes and prompts: Pat the ranger, Aubrey the nurse, and John the mechanic.
+- All earlier crash opening, hotel tunnel, workshop ambush, NPC shelter, inventory and lighting improvements remain included. The mausoleum uses its normal key and quest requirements.
 
 ## Play
 
-Download FarFromHome-v0.9.0-Windows-x64.zip, extract the entire archive, and run FarFromHome.exe. Keep the executable and PCK together. Godot is not required to play. The Source ZIP contains the editable Godot project.
+Download **FarFromHome-v0.10.0-Windows-x64.zip**, extract the entire ZIP, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. The Source ZIP contains the editable Godot project.
 
-WASD moves; mouse looks; E interacts; I opens the draggable backpack; Tab opens the journal; F toggles the flashlight; Escape pauses and offers Restart Game. Press E to stand after the opening dialogue. See the included README for full controls.
+Keyboard: WASD moves, mouse looks, E interacts (hold to dig), I opens the backpack, Tab opens the journal/map, F toggles the flashlight, Escape pauses and offers Restart Game. Controller mappings are shown in Controls and the included README.
 
-This is an early preview. Progress resets for each new journey. First-time shader compilation can briefly pause rendering. Asset credits and supplied license records are included.
+This is an early preview. Each new journey resets progress. First-time shader compilation may briefly pause rendering. Asset credits and licenses are included.
 
 ## Validation
 
-Targeted checks cover the wake/menu transition, standing and car tutorial, car-door close/reopen, falling-tree scream timing and damage, hotel tunnel gates and return routes, road barrier, monster combat and one-time death, NPC running and door closure, car-light synchronization, stairs and landing movement, and crouch/low-ceiling safety. Visual previews were checked for the major additions. Full gameplay remains manually tested by the player.
+Targeted checks passed for controller input and prompt switching, grave digging and reward/reset behavior, real below-ground collision and escape, reachable buried items, the upstairs ambush path/combat/reset, and updated NPC names. The recent crash tutorial and car-door checks also passed. Visual previews were inspected for the grave, coffin, shovel, controller UI and upstairs encounter. Controller checks used simulated input; a physical controller was not connected during verification. A full playthrough remains manually tested by the player.

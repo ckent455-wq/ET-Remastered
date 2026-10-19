@@ -54,7 +54,7 @@ in assets/vehicles/street-vehicles.json.
 ## Enclosure and drifting fog
 
 Main Street is now 7.6 metres wide, with storefronts brought two metres inward
-on each side. Sidewalks, lamps, parking, cars, planters, and Elias's patrol move
+on each side. Sidewalks, lamps, parking, cars, planters, and Pat's patrol move
 with the street. Boarded returns close the gaps between shops. The outer masonry
 walls and repeated approach-fence runs have been replaced by a closed forest belt.
 Additional local pine and shrub instances enclose the approach; the wreck, sign,
@@ -386,7 +386,7 @@ TEMPORARY TEST SETTING: cemetery.gd TEST_UNLOCK_MAUSOLEUM is true at the user's 
 
 Checked hotel lock, mausoleum access gate, action raycasts at both entrances, clear corridor and cellar, actual corridor movement, cellar lighting, hotel unbolt/reentry, mausoleum return and reset in work/check_hotel_tunnel.gd. Tunnel static preview inspected.
 
-The temporary mausoleum test unlock has now been disabled at the user's request. Normal workshop/coil progression and Elias's mausoleum key are required again. Small world captions and nameplates are suppressed by town.sign_text; principal physical building/road signs and printed note/journal/UI text remain.
+The temporary mausoleum test unlock has now been disabled at the user's request. Normal workshop/coil progression and Pat's mausoleum key are required again. Small world captions and nameplates are suppressed by town.sign_text; principal physical building/road signs and printed note/journal/UI text remain.
 
 
 Cemetery apparition: cemetery_shadow.gd shows a dark animated figure between the graves on entering the cemetery. It has no combat collision or nameplate and fades away within seven metres, once per journey. Restart restores the encounter.

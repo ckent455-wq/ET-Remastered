@@ -9,13 +9,13 @@ const PROTOCOL = ["clinic_note","workshop_record","cellar_record"]
 const RECORDS = {
   "ranger_note": [
     "Road closure log",
-    "EVACUATION NIGHT / THREE NIGHTS AGO\nThe mill closed twelve years ago. Most families left over the next few years; the empty shops were boarded long before this emergency.\n01:40. The final bus took the last families still living here. I closed the road behind it.\n02:17. A bus horn sounded from the chapel loudspeaker. I reopened the barrier for the returning driver. No vehicle came.\n02:20. I radioed: \"Three still here. Road open.\" No reply.\nAt dawn only Mara, Owen and I remained. Station key is in my desk drawer. Ada left the shotgun-box key on the Saint George Hotel bedroom dresser.\n- Elias",
-    "Elias reopened the barrier after a recorded bus horn. His last message was never acknowledged."
+    "EVACUATION NIGHT / THREE NIGHTS AGO\nThe mill closed twelve years ago. Most families left over the next few years; the empty shops were boarded long before this emergency.\n01:40. The final bus took the last families still living here. I closed the road behind it.\n02:17. A bus horn sounded from the chapel loudspeaker. I reopened the barrier for the returning driver. No vehicle came.\n02:20. I radioed: \"Three still here. Road open.\" No reply.\nAt dawn only Aubrey, John and I remained. Station key is in my desk drawer. Ada left the shotgun-box key on the Saint George Hotel bedroom dresser.\n- Pat",
+    "Pat reopened the barrier after a recorded bus horn. His last message was never acknowledged."
   ],
   "clinic_note": [
     "Clinic observations",
-    "THREE WEEKS OF EXPOSURE\nFirst: sleeplessness and ringing ears. Then missing hours, violent confusion and voices from unplugged sets. Late cases developed locked jaws and lengthening fingers. No fever or bites.\nThe two who refused the 01:40 bus, Edith and Silas, walked uphill at 02:10. I found Edith's bracelet on a changing wrist. They were my patients.\nElias and I stayed to search. Stop the chapel carrier. Tell rescue: NO SIRENS.\n- Mara",
-    "Mara documented gradual mental and physical changes after prolonged exposure. Two creatures were her patients."
+    "THREE WEEKS OF EXPOSURE\nFirst: sleeplessness and ringing ears. Then missing hours, violent confusion and voices from unplugged sets. Late cases developed locked jaws and lengthening fingers. No fever or bites.\nThe two who refused the 01:40 bus, Edith and Silas, walked uphill at 02:10. I found Edith's bracelet on a changing wrist. They were my patients.\nPat and I stayed to search. Stop the chapel carrier. Tell rescue: NO SIRENS.\n- Aubrey",
+    "Aubrey documented gradual mental and physical changes after prolonged exposure. Two creatures were her patients."
   ],
   "store_note": [
     "Last departure / 01:40",
@@ -24,12 +24,12 @@ const RECORDS = {
   ],
   "house_note": [
     "Ada's letter",
-    "Owen,\nI am taking the final 01:40 bus. I packed for two nights in case they let us return.\nMost of the rooms at Saint George Hotel have been shut for years. We kept ours warm and dry. Please do not spend another winter here alone.\nFirst it was the ringing. Then you forgot our address. You slept when we unplugged the set and stayed away from the hill. Please keep it off.\nYou heard my voice on the radio while I stood beside you. I believe you. You do not owe that repeater another night.\nCome after you secure the equipment. Mara still needs a seat. The shotgun-box key is on our dresser.\nI left dinner. I thought we had more time.\n- Ada",
-    "Ada describes Owen's early symptoms easing away from the signal. She left on the last bus."
+    "John,\nI am taking the final 01:40 bus. I packed for two nights in case they let us return.\nMost of the rooms at Saint George Hotel have been shut for years. We kept ours warm and dry. Please do not spend another winter here alone.\nFirst it was the ringing. Then you forgot our address. You slept when we unplugged the set and stayed away from the hill. Please keep it off.\nYou heard my voice on the radio while I stood beside you. I believe you. You do not owe that repeater another night.\nCome after you secure the equipment. Aubrey still needs a seat. The shotgun-box key is on our dresser.\nI left dinner. I thought we had more time.\n- Ada",
+    "Ada describes John's early symptoms easing away from the signal. She left on the last bus."
   ],
   "radio_note": [
     "County radio / bypass switch",
-    "The coil powers this transmitter. The spare tuning unit provides the direct county channel. Fit both and the spare antenna coupler from Old Mill Cemetery.\nThen use the small BYPASS switch on the left of this desk. AMBER routes through the chapel repeater; GREEN goes directly to county dispatch.\nHold E at the main receiver to transmit. Identify Old Mill Road and request NO SIRENS.\nMara, Owen and the cellar log explain why.",
+    "The coil powers this transmitter. The spare tuning unit provides the direct county channel. Fit both and the spare antenna coupler from Old Mill Cemetery.\nThen use the small BYPASS switch on the left of this desk. AMBER routes through the chapel repeater; GREEN goes directly to county dispatch.\nHold E at the main receiver to transmit. Identify Old Mill Road and request NO SIRENS.\nAubrey, John and the cellar log explain why.",
     "Radio routing is a physical switch: amber repeats through the chapel; green reaches county directly."
   ],
   "crash_record": [
@@ -38,9 +38,9 @@ const RECORDS = {
     "The driver followed an undated detour sheet collected at a fuel stop, then swerved off the road."
   ],
   "workshop_record": [
-    "Owen's disconnection log",
-    "AFTER THE EVACUATION\nThe chapel carrier rode every relayed broadcast. Days near a speaker brought confusion; weeks brought changes. Ordinary radio is not the cause. That repeating tone is.\nBefore the bus left, it used Ada's voice while she stood beside me. I removed the station coil after she left. The separately powered hill rack still runs.\nMy cabinet holds the coil. The mausoleum holds the cellar key. The isolated county tuner and rifle are below the chapel. Collect the antenna coupler from the locked cemetery mausoleum as well. Fit all three parts; set the desk bypass GREEN.\n- Owen",
-    "Owen stopped town broadcasts. The separately powered chapel carrier persists; direct county bypass avoids it."
+    "John's disconnection log",
+    "AFTER THE EVACUATION\nThe chapel carrier rode every relayed broadcast. Days near a speaker brought confusion; weeks brought changes. Ordinary radio is not the cause. That repeating tone is.\nBefore the bus left, it used Ada's voice while she stood beside me. I removed the station coil after she left. The separately powered hill rack still runs.\nMy cabinet holds the coil. The mausoleum holds the cellar key. The isolated county tuner and rifle are below the chapel. Collect the antenna coupler from the locked cemetery mausoleum as well. Fit all three parts; set the desk bypass GREEN.\n- John",
+    "John stopped town broadcasts. The separately powered chapel carrier persists; direct county bypass avoids it."
   ],
   "chapel_record": [
     "Vestry maintenance book",
@@ -49,7 +49,7 @@ const RECORDS = {
   ],
   "cellar_record": [
     "Carrier test / direct-channel procedure",
-    "OWEN / CELLAR TEST\nThree shapes circle the hill: Jonah in his work coat; Edith with her clinic bracelet; Silas with the splinted hand. The missing did not bring monsters here. They became them.\nA shot stops them, but the carrier starts their bodies moving again about two minutes later. It is not a cure.\nTake the spare tuner and rifle. Fit tuner, coil and cemetery antenna coupler at the station; set BYPASS GREEN / DIRECT COUNTY. Call Old Mill Road, NO SIRENS, then switch off. Amber feeds this rack.",
+    "JOHN / CELLAR TEST\nThree shapes circle the hill: Jonah in his work coat; Edith with her clinic bracelet; Silas with the splinted hand. The missing did not bring monsters here. They became them.\nA shot stops them, but the carrier starts their bodies moving again about two minutes later. It is not a cure.\nTake the spare tuner and rifle. Fit tuner, coil and cemetery antenna coupler at the station; set BYPASS GREEN / DIRECT COUNTY. Call Old Mill Road, NO SIRENS, then switch off. Amber feeds this rack.",
     "Three transformed residents remain tethered to the active carrier. Gunfire stops them temporarily; green bypass avoids relaying it."
   ]
 }
@@ -129,14 +129,14 @@ func ending_text() -> String:
 	if direct_channel_selected():
 		var living = game.town.townspeople.characters.values().filter(func(data): return not data.dead).size()
 		return "County dispatch confirms your location and the silent approach.\nYou report %d surviving residents and switch the set off.\nA rescue team will meet you on Old Mill Road.\nFor now, nothing else answers." % living
-	return "The repeater plays Elias's three-night-old message again.\nNo dispatcher identifies themselves or confirms your location.\nYou release the transmit switch. The recording continues.\nThe repaired set was still connected to the chapel."
+	return "The repeater plays Pat's three-night-old message again.\nNo dispatcher identifies themselves or confirms your location.\nYou release the transmit switch. The recording continues.\nThe repaired set was still connected to the chapel."
 
 func question() -> String:
 	if direct_channel_selected(): return "Direct county channel selected. Transmit from the main receiver."
 	if evidence.has("cellar_record"): return "Repair the radio, then set the desk bypass to green before transmitting."
-	if evidence.has("workshop_record"): return "Owen disabled relayed transmissions. The cellar holds a direct-channel unit."
+	if evidence.has("workshop_record"): return "John disabled relayed transmissions. The cellar holds a direct-channel unit."
 	if evidence.has("clinic_note"): return "Can the carrier be bypassed before it changes anyone else?"
-	if evidence.has("ranger_note"): return "Why did Elias reopen an evacuated road?"
+	if evidence.has("ranger_note"): return "Why did Pat reopen an evacuated road?"
 	return "The detour sheet was undated. Why was the road into Blackwood still open?"
 
 func collect_detour_sheet():

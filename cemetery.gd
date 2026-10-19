@@ -92,7 +92,7 @@ func _ready():
 	cellar_key.add_child(key_model)
 	key_model.rotation.x=PI/2
 	key_model.position.y=-0.04
-	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"The radio coupling and chapel cellar key have been locked in the Whitcomb mausoleum.\n\nThe Whitcomb family key is held by Elias at the ranger office. Ask him before entering the vault.\n\nThe station needs the aerial coupling, Owen's signal coil, and the county tuning unit before it can transmit."})
+	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"The radio coupling and chapel cellar key have been locked in the Whitcomb mausoleum.\n\nThe Whitcomb family key is held by Pat at the ranger office. Ask him before entering the vault.\n\nThe station needs the aerial coupling, John's signal coil, and the county tuning unit before it can transmit."})
 	town.box(note,Vector3.ZERO,Vector3(0.015,0.35,0.26),town.mats.paper,false)
 
 func door_prompt() -> String:

@@ -2,7 +2,7 @@ extends Node3D
 ## Three native animated creatures. Real collision and sight rays guard combat.
 var game
 var creatures = []
-const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0)]
+const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2)]
 const WOOD_ROUTES = [[Vector3(19.8,0,-129.7),Vector3(21.0,0,-131.5),Vector3(24.0,0,-130.2)],[Vector3(38.3,0,-134.5),Vector3(37.8,0,-130.0),Vector3(34.8,0,-127.5)],[Vector3(39.0,0,-139),Vector3(38.3,0,-134.5),Vector3(37.8,0,-130),Vector3(34.8,0,-127.5)]]
 const HEALTH = 85.0
 const RESPAWN_SECONDS = 120.0
@@ -14,6 +14,8 @@ var workshop_armed=false
 var workshop_previous_x=18.0
 var workshop_spawned=false
 var workshop_defeated=false
+const HOUSE_INDEX=4
+var house_encounter=preload("res://house_monster.gd").new()
 const WORKSHOP_INDEX=3
 const WORKSHOP_HEALTH=60.0
 var navigation
@@ -51,7 +53,7 @@ func _ready():
 		voice.unit_size = 5
 		var route: Array[Vector3] = []
 		for point in (WOOD_ROUTES[i] if i<3 else [SPAWNS[i]]): route.append(ground(point))
-		var spawn = ground(SPAWNS[i])
+		var spawn = SPAWNS[i] if i==HOUSE_INDEX else ground(SPAWNS[i])
 		creatures.append({"actor":actor,"visual":visual,"animation":animation,"clips":clips,"clip":"","hp":HEALTH,"state":"lurking","timer":0.0,"cooldown":0.0,"seen":false,"memory":0.0,"target":spawn,"spawn":spawn,"route":route,"waypoint":0,"voice":voice,"voice_timer":5.0+i*4,"blocked":0.0,"previous":spawn,"did_hit":false,"suspicion":0.0,"stalk_time":0.0,"index":i})
 	reset()
 	call_deferred("build_navigation")
@@ -78,7 +80,7 @@ func reset_creature(data):
 	data.actor.velocity = Vector3.ZERO
 	data.actor.collision_layer = 1
 	data.actor.collision_mask = 1
-	data.hp = WORKSHOP_HEALTH if data.index==WORKSHOP_INDEX else HEALTH
+	data.hp = WORKSHOP_HEALTH if data.index in [WORKSHOP_INDEX,HOUSE_INDEX] else HEALTH
 	data["max_hp"]=data.hp
 	data.actor.show()
 	data.state = "lurking"
@@ -102,6 +104,10 @@ func reset_creature(data):
 	play(data,"crouch_pose")
 	data["respawn_remaining"] = 0.0
 	data.animation.advance(0)
+	if data.index==HOUSE_INDEX:
+		data.state="house_wait"
+		data["house_waypoint"]=0
+		play(data,"idle1")
 	if data.index==WORKSHOP_INDEX:
 		data.state="dormant"
 		data.actor.hide()
@@ -121,7 +127,7 @@ func line_clear(data, target: Vector3) -> bool:
 func alert_shot(p: Vector3):
 	if game.state!="play": return
 	for data in creatures:
-		if data.hp<=0 or data.actor.global_position.distance_to(p)>32: continue
+		if data.hp<=0 or data.index==HOUSE_INDEX or data.actor.global_position.distance_to(p)>32: continue
 		data.target = p
 		data.memory = 9.0
 		if data.state in ["lurking","returning"]:
@@ -188,7 +194,7 @@ func health_bar_targets() -> Array:
 	var targets = []
 	if game.state!="play": return targets
 	for data in creatures:
-		if data.hp<=0 or data.state=="lurking" or not data.actor.is_visible_in_tree(): continue
+		if data.hp<=0 or data.state in ["lurking","house_wait"] or not data.actor.is_visible_in_tree(): continue
 		if data.actor.global_position.distance_to(game.camera.global_position)>18: continue
 		var point: Vector3 = data.actor.global_position+Vector3(0,2.25,0)
 		if game.camera.is_position_behind(point) or not line_clear(data,game.camera.global_position): continue
@@ -211,6 +217,9 @@ func _physics_process(delta):
 		data.animation.speed_scale = animation_rate if active else 0
 		data.voice.stream_paused = not active
 		if not active: continue
+		if data.index==HOUSE_INDEX:
+			house_encounter.update(self,data,delta)
+			continue
 		if data.index==WORKSHOP_INDEX:
 			update_workshop_creature(data,delta)
 			continue

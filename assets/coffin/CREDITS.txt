@@ -1,0 +1,4 @@
+Coffin-old model: Kenney, Graveyard Kit 5.0
+https://kenney.nl/assets/graveyard-kit
+CC0 1.0. Original license included in LICENSE.txt.
+Retextured with existing project weathered wood.

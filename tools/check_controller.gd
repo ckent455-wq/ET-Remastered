@@ -1,0 +1,48 @@
+extends SceneTree
+func _initialize():call_deferred("check")
+func press(c,id):
+ var e=InputEventJoypadButton.new();e.device=0;e.button_index=id;e.pressed=true;c._input(e)
+ e.pressed=false;c._input(e)
+func axis(c,id,value):
+ var e=InputEventJoypadMotion.new();e.device=0;e.axis=id;e.axis_value=value;c._input(e)
+func check():
+ var g=load("res://main.tscn").instantiate();root.add_child(g)
+ g.set_physics_process(false)
+ var c=g.controller;c.set_process(false)
+ print("CONNECTED CONTROLLERS: ",Input.get_connected_joypads())
+ press(c,JOY_BUTTON_A);assert(g.state=="title")
+ await process_frame
+ g.hud._process(0)
+ press(c,JOY_BUTTON_DPAD_DOWN)
+ press(c,JOY_BUTTON_A);assert(g.hud.controls_open)
+ press(c,JOY_BUTTON_B);assert(not g.hud.controls_open)
+ g.crash_site.wake_phase="";g.set_state("play")
+ axis(c,JOY_AXIS_LEFT_X,0.1);assert(c.movement()==Vector2.ZERO)
+ axis(c,JOY_AXIS_LEFT_X,0.8);assert(c.movement().x>0.7)
+ var old=g.pitch;axis(c,JOY_AXIS_RIGHT_Y,0.8);c._process(0.1);assert(g.pitch<old)
+ axis(c,JOY_AXIS_TRIGGER_LEFT,0.9);assert(c.aiming())
+ press(c,JOY_BUTTON_A);assert(g.jump_queued)
+ press(c,JOY_BUTTON_START);assert(g.state=="paused")
+ press(c,JOY_BUTTON_START);assert(g.state=="play")
+ g.crash_site.has_backpack=true;g.crash_site.has_flashlight=true
+ g.town.inventory.medkit=1
+ press(c,JOY_BUTTON_BACK);assert(g.state=="backpack")
+ var b=g.backpack;b.selected=0
+ var entries=b.pack(b.counts());b.remember(entries)
+ press(c,JOY_BUTTON_X);assert(b.dragging!="")
+ var before=b.drop_cell();press(c,JOY_BUTTON_DPAD_DOWN);assert(b.drop_cell()==before+Vector2i.DOWN)
+ press(c,JOY_BUTTON_X);assert(b.dragging=="")
+ assert(b.saved_cells[entries[0].key]==before+Vector2i.DOWN)
+ press(c,JOY_BUTTON_X);press(c,JOY_BUTTON_B);assert(b.dragging=="" and g.state=="backpack")
+ press(c,JOY_BUTTON_B);assert(g.state=="play")
+ press(c,JOY_BUTTON_DPAD_UP);assert(g.state=="journal")
+ var page=g.journal_page;press(c,JOY_BUTTON_RIGHT_SHOULDER);assert(g.journal_page!=page)
+ press(c,JOY_BUTTON_B);assert(g.state=="play")
+ c.family="xbox";assert(c.hint("E / STAND UP")=="X / STAND UP")
+ c.family="playstation";assert(c.hint("E / STAND UP")=="SQUARE / STAND UP")
+ var keyboard=InputEventKey.new();keyboard.keycode=KEY_W;keyboard.pressed=true;c._input(keyboard)
+ assert(not c.using_controller and c.hint("E / STAND UP")=="E / STAND UP")
+ c.activate(0);c.connection_changed(0,false);assert(g.state=="paused" and c.held.is_empty())
+ print("PASS: controller menus, deadzone, analog movement/look, aim, jump, pause, backpack rearrange/cancel, journal, prompts, keyboard switching and disconnect.")
+ quit()
+
