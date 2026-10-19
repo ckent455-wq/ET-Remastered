@@ -1,0 +1,18 @@
+{
+  "source": "C:\\Users\\jkern\\Downloads\\THE STRAW REAPER\u2013 Retro PSX Monster\\THE STRAW REAPER\u2013 Retro PSX Monster\\THE STRAW REAPER new.fbx",
+  "source_sha256": "18061f8c3140e0f09edddc17b965ac0999d0fee2816efa796397c945f9c38347",
+  "height": 2.05,
+  "triangles": 4650,
+  "animations": [
+    "motion_0",
+    "motion_1",
+    "motion_2",
+    "motion_3",
+    "motion_4",
+    "motion_5",
+    "motion_6",
+    "motion_7",
+    "motion_8"
+  ],
+  "adaptation": "Original skinned body, scythe and teeth with nine usable supplied clips and reduced native textures. Unrelated malformed Scarecrow action excluded. Source unchanged."
+}

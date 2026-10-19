@@ -2,14 +2,11 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdysdo3ees8pg"
+uid="uid://rexajq5fqlrb"
 path.s3tc="res://.godot/imported/creep_creep_albedo.png-fc30daa3e05cc7910b7bb8149934bddf.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
-}
-generator_parameters={
-"md5": "190cbf88918d3146efd38f64d240bdd4"
 }
 
 [deps]

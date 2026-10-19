@@ -11,7 +11,7 @@ var game
 var buildings = {}
 var doors = {}
 var actions = {}
-var inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
+var inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
@@ -257,7 +257,7 @@ func action_area(parent: Node3D, p: Vector3, size: Vector3, id: String, data: Di
 
 func item(building: String, p: Vector3, id: String, key: String, label: String, color: Color):
 	var area = action_area(buildings[building],p,Vector3(0.55,0.4,0.5),id,{"kind":"item","item":key,"label":label})
-	if key in ["battery","medkit","workshop_battery","coil"]:
+	if key in ["battery","medkit","workshop_fuse","coil"]:
 		area.add_child(preload("res://supply_models.gd").build(key))
 	else:
 		box(area,Vector3.ZERO,Vector3(0.35,0.22,0.25),color_material(color,0.45),false)
@@ -303,7 +303,7 @@ func furnish():
 	desk(buildings.ranger,Vector3(-2.6,0,0))
 	shelf(buildings.ranger,Vector3(2.5,0,-3.9))
 	item("ranger",Vector3(-2.7,1.04,0),"station_key","station_key","Take radio-station key",Color("e4c479"))
-	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nworkshop battery. Fit it at the workshop's rear terminal, then search\nthe powered cabinet for a signal coil. After recovering the coil, ask Pat about the mausoleum. Its shelf holds the cellar key. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
+	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nworkshop fuse. Fit it at the workshop's rear terminal, then search\nthe powered cabinet for a signal coil. After recovering the coil, ask Pat about the mausoleum. Its shelf holds the cellar key. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
 	for x in [-3.3,3.3]:
 		var old_bed = box(buildings.clinic,Vector3(x,0.6,0),Vector3(1.3,0.4,2.5),mats["plaster"])
 		old_bed.add_to_group("LegacyClinicBeds")
@@ -316,22 +316,26 @@ func furnish():
 	for x in [-4,4]:
 		shelf(buildings.store,Vector3(x,0,0))
 	desk(buildings.store,Vector3(-2.8,0,-3.7),3.5)
-	item("store",Vector3(-3,1.04,-3.7),"workshop_battery","workshop_battery","Take workshop battery",Color("e5bd78"))
+	item("store",Vector3(-3,1.04,-3.7),"workshop_fuse","workshop_fuse","Take workshop fuse",Color("e5bd78"))
 	item("store",Vector3(-4,1.13,0),"battery_a","battery","Take flashlight battery",Color("89b9b1"))
 	item("store",Vector3(4,1.13,0),"battery_b","battery","Take flashlight battery",Color("89b9b1"))
-	note("store",Vector3(-2,0.91,-3.7),"store_note","Shopkeeper's note","The millkeeper took the last signal coil to the workshop.\nIts cabinet only releases when power is restored.\nThe spare workshop battery is in this counter's drawer. The cemetery mausoleum holds the spare aerial coupling. Search it with E.\nThe workshop battery panel is behind the workshop; follow the alley beside Saint George Hotel.\nSpare flashlight cells are in the stock cabinet.")
+	note("store",Vector3(-2,0.91,-3.7),"store_note","Shopkeeper's note","The millkeeper took the last signal coil to the workshop.\nIts cabinet only releases when power is restored.\nThe spare workshop fuse is in this counter's drawer. The cemetery mausoleum holds the spare aerial coupling. Search it with E.\nThe workshop fuse panel is behind the workshop; follow the alley beside Saint George Hotel.\nSpare flashlight cells are in the stock cabinet.")
 	desk(buildings.workshop,Vector3(-3.1,0,-2.7),3.6)
 	shelf(buildings.workshop,Vector3(4,0,-3.8))
 	coil_visual = item("workshop",Vector3(-3.1,1.08,-2.7),"coil","coil","Recover signal coil",Color("dda967"))
-	var panel = action_area(buildings.workshop,Vector3(0,1.15,-5.3),Vector3(0.85,0.95,0.35),"battery_panel",{"kind":"panel","label":"Connect workshop battery"})
+	var panel = action_area(buildings.workshop,Vector3(0,1.15,-5.3),Vector3(0.85,1.65,0.65),"battery_panel",{"kind":"panel","label":"Open high-voltage cabinet"})
 	panel.rotation.y = PI
-	box(panel,Vector3.ZERO,Vector3(0.7,0.8,0.20),mats["metal"],false)
-	var installed = preload("res://supply_models.gd").build("workshop_battery")
-	installed.name = "InstalledBattery"
-	installed.position = Vector3(0,-0.36,0.29)
+	var terminal=preload("res://high_voltage_terminal.gd").new()
+	terminal.town=self
+	panel.add_child(terminal)
+	var installed = preload("res://supply_models.gd").build("workshop_fuse")
+	installed.name = "InstalledFuse"
+	# Seat the cartridge on the recessed panel, inside the protruding holder.
+	installed.position = Vector3(-0.13,0.26,-0.067)
+	installed.rotation.z = PI/2
 	panel.add_child(installed)
 	installed.visible = false
-	box(panel,Vector3(0,0.2,0.13),Vector3(0.24,0.09,0.03),mats["amber"],false)
+	terminal.configure_fuse(installed)
 	powered_lights.append(lamp(buildings.workshop,Vector3(0,2.7,-0.5),Color("d4be85"),1.8,9))
 	desk(buildings.radio,Vector3(-2.7,0,-3.4),3.2)
 	var receiver = action_area(buildings.radio,Vector3(-2.7,1.20,-3.4),Vector3(1.2,0.7,0.65),"receiver",{"kind":"receiver","label":"Repair emergency radio"})
@@ -354,11 +358,13 @@ func furnish():
 	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the last families have gone. Most buildings have stood empty since the mill closed twelve years ago.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
-	inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_battery":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
+	inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
 	journal_entries.clear()
 	discovered.clear()
 	powered = false
-	if actions.has("battery_panel"): actions.battery_panel.area.get_node("InstalledBattery").visible = false
+	if actions.has("battery_panel"):
+		actions.battery_panel.area.get_node("InstalledFuse").visible = false
+		actions.battery_panel.area.get_node("HighVoltageTerminal").reset()
 	radio_ready = false
 	reached_town = false
 	focus_action = ""
@@ -534,7 +540,7 @@ func perform(id: String):
 				game.message="Kill the creature near the workshop before recovering the coil."
 				return
 			if id=="coil" and not powered:
-				game.message = "The coil cabinet needs power. Find and install the workshop battery."
+				game.message = "The coil cabinet needs power. Find and install the workshop fuse."
 				return
 			if game.backpack and not game.backpack.room_for(data.item):
 				game.message = "Backpack full. This item stays here. Open inventory with I to make room."
@@ -554,20 +560,7 @@ func perform(id: String):
 			game.journal_casefile = false
 			game.set_state("journal")
 		"panel":
-			if powered:
-				game.message = "The rear battery is connected. Workshop power is on."
-			elif inventory.workshop_battery>0:
-				inventory.workshop_battery -= 1
-				actions.battery_panel.area.get_node("InstalledBattery").visible = true
-				powered = true
-				for light in powered_lights:
-					light.visible = true
-				game.message = "Workshop power restored. The signal-coil cabinet is released."
-				game.soundscape.feedback("power")
-				game.enemies.arm_workshop_encounter()
-				game.message="Workshop power restored. The signal-coil cabinet is released."
-			else:
-				game.message = "Bring the workshop battery from the general store counter drawer."
+			actions.battery_panel.area.get_node("HighVoltageTerminal").interact()
 		"receiver":
 			if radio_ready:
 				game.message = "The radio has power. Hold E nearby to call for rescue."
@@ -612,13 +605,15 @@ func use_battery():
 		game.soundscape.feedback("pickup")
 
 func objective() -> String:
-	if game.enemies and game.enemies.workshop_danger(): return "Kill the creature near the workshop, then recover the signal coil."
+	if game.enemies and game.enemies.workshop_danger(): return "Kill the creature near the workshop, then recover the signal coil." if powered else "The creature is approaching. Flip the workshop switch, or fight it off."
 	if game.crash_site and not game.crash_site.tutorial_complete(): return "Open the car door and collect your backpack, flashlight, and detour sheet."
 	if radio_ready:
 		return "Warn county at radio. Hold E; no sirens." if game.story.direct_channel_selected() else "Set the desk bypass to GREEN / direct county."
 	if not reached_town: return "Reach Blackwood. Find a way to call for help."
 	if inventory.station_key==0: return "Search the ranger office for the radio-station key."
-	if not powered: return "Take the battery through the alley to the rear workshop terminal." if inventory.workshop_battery>0 else "Search the general store for a workshop battery."
+	if not powered:
+		if actions.battery_panel.area.get_node("HighVoltageTerminal").installed: return "Flip the switch in the rear workshop cabinet to restore power."
+		return "Open the rear workshop cabinet, install the fuse, then flip its switch." if inventory.workshop_fuse>0 else "Search the general store for a workshop fuse."
 	if inventory.coil==0: return "Recover the signal coil from the powered workshop."
 	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):
 		if not cemetery.unlocked and inventory.mausoleum_key==0:
@@ -633,7 +628,8 @@ func navigation_target() -> Vector3:
 	if not reached_town: return Vector3(0,0,-42)
 	if inventory.station_key==0: return buildings.ranger.to_global(Vector3(0,0,7))
 	if not powered:
-		if inventory.workshop_battery==0: return buildings.store.to_global(Vector3(0,0,7))
+		if actions.battery_panel.area.get_node("HighVoltageTerminal").installed: return actions.battery_panel.area.global_position
+		if inventory.workshop_fuse==0: return buildings.store.to_global(Vector3(0,0,7))
 		return actions.battery_panel.area.global_position if game.player.position.x>8 else Vector3(7,0,-51.5)
 	if inventory.coil==0: return buildings.workshop.to_global(Vector3(0,0,7))
 	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):

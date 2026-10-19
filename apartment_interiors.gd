@@ -1,6 +1,7 @@
 extends Node3D
 ## Room-specific dressing from the user's Brick Project Studio Apartment Kit.
 var town
+var retro:Node3D
 var scenes = {}
 var manifest = {}
 var materials = {}
@@ -9,12 +10,16 @@ var room_counts = {}
 
 func _ready():
 	name = "ApartmentKitInteriors"
+	retro=preload("res://retro_props.gd").new()
+	retro.town=town
+	add_child(retro)
 	var data = JSON.parse_string(FileAccess.get_file_as_string("res://assets/apartment/manifest.json"))
 	for row in data.assets:
 		manifest[row.asset] = row
 		scenes[row.asset] = load("res://assets/apartment/"+row.asset+".glb")
 	var layout = preload("res://interior_layouts.gd").new(self)
 	layout.build()
+	retro.decorate()
 
 func adapt(node: Node):
 	if node is MeshInstance3D:

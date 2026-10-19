@@ -8,7 +8,7 @@ func check():
 	await physics_frame
 	var details = game.town.apartment_interiors
 	assert(details.room_counts.size()==6,"All six buildings furnished")
-	assert(details.instances.size()>=85,"Designed room layouts and storage groups")
+	assert(details.instances.size()+details.retro.instances.size()>=85,"Designed room layouts with native retro replacements and storage groups")
 	for room in details.room_counts:
 		assert(details.room_counts[room]>=6,"Room furniture: "+room)
 	for instance in details.instances:

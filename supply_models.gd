@@ -29,6 +29,15 @@ static func cylinder(root: Node3D, position: Vector3, radius: float, height: flo
 	return part(root,mesh,position,surface)
 
 static func build(id: String) -> Node3D:
+	if id=="workshop_fuse":
+		var holder=Node3D.new()
+		holder.name="WorkshopFuse"
+		var fuse=preload("res://assets/high_voltage/fuse.glb").instantiate()
+		holder.add_child(fuse)
+		fuse.position.y=-0.0105
+		holder.scale=Vector3.ONE*1.35
+		prepare_imported(fuse)
+		return holder
 	if id in ["battery","medkit"]:
 		var imported=load("res://assets/supplies/"+id+".glb").instantiate() as Node3D
 		prepare_imported(imported)
@@ -39,11 +48,7 @@ static func build(id: String) -> Node3D:
 	var dark=material("252c2a")
 	var cream=material("e0d4b4")
 	match id:
-		"workshop_battery":
-			box(root,Vector3.ZERO,Vector3(0.38,0.25,0.23),dark)
-			box(root,Vector3(0,0.035,0.12),Vector3(0.28,0.12,0.012),cream)
-			for x in [-0.12,0.12]: cylinder(root,Vector3(x,0.15,0),0.025,0.06,steel)
-			box(root,Vector3(0,0.17,0),Vector3(0.14,0.025,0.035),dark)
+
 		"coil":
 			var copper=material("b46f3b",0.5)
 			var core=cylinder(root,Vector3.ZERO,0.075,0.31,dark)

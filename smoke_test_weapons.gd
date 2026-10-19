@@ -14,7 +14,7 @@ func check():
 	assert(guns.selected== -1 and not guns.owned.has(true) and guns.magazines==[0,0,0],"Unarmed start with no free ammunition")
 	for index in range(3):
 		guns.equip(index)
-		assert(guns.selected== -1 and not guns.fire(),"Cannot select or fire undiscovered gun")
+		assert(guns.selected== -1 and guns.magazines==[0,0,0],"Cannot select or load undiscovered gun; unarmed fire is melee")
 	for id in ["weapon_pistol","weapon_rifle","weapon_shotgun"]:
 		if id=="weapon_rifle":
 			for quest in ["ranger_drawer","store_drawer","battery_panel","workshop_cabinet","cellar_door"]: game.town.perform(quest)
@@ -66,7 +66,7 @@ func check():
 		assert(guns.fire(),"Weapon fires: "+str(index))
 	assert(guns.marks.size()<=20,"Bounded impact effects")
 	guns.equip(-1)
-	assert(not guns.fire(),"Holstered cannot fire")
+	assert(not guns.fire(),"Holstering enforces the equip delay before punching")
 	assert(game.arm_visual.visible and game.arm_visual.name=="FlashlightHolder","Holstering restores the flashlight holder")
 	game.reset_game()
 	assert(guns.selected== -1 and guns.magazines==[0,0,0] and not guns.owned.has(true) and guns.marks.is_empty(),"Restart returns to unarmed and clears ammo")

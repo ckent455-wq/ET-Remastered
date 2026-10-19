@@ -1,0 +1,15 @@
+{
+  "source": "C:\\Users\\jkern\\Downloads\\TheWrapper V2\\MonsterPSX.fbx",
+  "source_sha256": "0bc97a344a55c5849e70f957deb1f433eefb2fcd1cfff34ceb7d0b7ccc551194",
+  "height": 1.82,
+  "triangles": 1200,
+  "animations": [
+    "attack_lunge",
+    "idle_watchful",
+    "run_frantic",
+    "scream_lol",
+    "walk_nervous",
+    "wallslam_recover"
+  ],
+  "adaptation": "Original skinned mesh and baked clips, 256px supplied diffuse, flat matte PSX materials; controls/lights excluded. Source unchanged."
+}

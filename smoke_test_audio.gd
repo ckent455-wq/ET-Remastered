@@ -9,6 +9,8 @@ func check_audio():
 	var sound = game.soundscape
 	sound.set_process(false)
 	game.state = "play"
+	game.crash_site.wake_phase = ""
+	game.crash_site.has_flashlight = true
 	sound.update_sound(0.016)
 	assert(sound.wind.playing and sound.leaves.playing,"Forest loops")
 	assert(sound.wind.stream.loop_end>0,"Loop configured")

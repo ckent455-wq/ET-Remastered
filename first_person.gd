@@ -218,6 +218,7 @@ func _ready():
 	victorian_house = preload("res://victorian_house.gd").new()
 	victorian_house.game = self
 	add_child(victorian_house)
+	town.apartment_interiors.retro.decorate_house(victorian_house)
 	hotel_basement=preload("res://hotel_basement.gd").new()
 	hotel_basement.game=self
 	add_child(hotel_basement)
@@ -408,7 +409,10 @@ func _unhandled_input(event):
 		if state=="play" and event.keycode==KEY_Q:
 			town.use_battery()
 		if state=="play" and event.keycode in [KEY_0,KEY_1,KEY_2,KEY_3]:
-			weapons.equip({KEY_0:-1,KEY_1:0,KEY_2:1,KEY_3:2}[event.keycode])
+			if event.keycode==KEY_0 and weapons.selected<0:
+				weapons.melee.toggle()
+			else:
+				weapons.equip({KEY_0:-1,KEY_1:0,KEY_2:1,KEY_3:2}[event.keycode])
 		if state=="play" and event.keycode==KEY_R:
 			weapons.reload()
 		if state=="play" and event.keycode==KEY_V:

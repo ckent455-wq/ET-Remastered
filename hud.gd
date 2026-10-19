@@ -243,7 +243,7 @@ func draw_title_controls():
 	draw_rect(Rect2(62,54,516,310),Color(0.025,0.035,0.037,0.97))
 	draw_rect(Rect2(62,54,516,310),Color("6d6051"),false,1)
 	text("SURVIVING BLACKWOOD",Vector2(80,91),24,Color("dfd8c1"))
-	var rows = ["WASD / ARROWS     Move     SHIFT     Sprint", "SPACE     Jump     CTRL (hold)     Crouch", "MOUSE     Look     F     Flashlight", "E     Search storage / talk / interact", "LMB     Fire     RMB     Aim     R     Reload", "WHEEL / V     Cycle guns     1-3 Select     0 Holster", "H     First aid     Q     Flashlight battery", "I  Backpack    TAB  Journal / map    ESC  Pause"]
+	var rows = ["WASD / ARROWS     Move     SHIFT     Sprint", "SPACE     Jump     CTRL (hold)     Crouch", "MOUSE     Look     F     Flashlight", "E     Search storage / talk / interact", "LMB Fire / Punch    RMB Aim    R Reload", "WHEEL / V     Cycle guns     1-3 Select     0 Holster / Fists", "H     First aid     Q     Flashlight battery", "I  Backpack    TAB  Journal / map    ESC  Pause"]
 	if game.controller and game.controller.using_controller: rows=game.controller.control_rows()
 	for i in range(rows.size()):
 		text(rows[i],Vector2(80,124+i*23),13,Color("b6b6a5"))
@@ -300,7 +300,7 @@ func draw_journal():
 		paragraph(game.town.objective(),78,127,476,16,AMBER)
 		text("HEALTH %d   LIGHT %d%%   RADIO %s" % [int(game.health),int(game.flashlight_charge),"READY" if game.town.radio_ready else "OFFLINE"],Vector2(78,151),11,DIM)
 		text("PACK / Health kits %d   Batteries %d   [H] Heal   [Q] Fit battery" % [game.town.inventory.medkit,game.town.inventory.battery],Vector2(78,168),12)
-		text("KEY %d   POWER BATTERY %d   COIL %d   CELLAR KEY %d   TUNER %d" % [game.town.inventory.station_key,game.town.inventory.workshop_battery,game.town.inventory.coil,game.town.inventory.chapel_key,game.town.inventory.tuner],Vector2(78,184),10,DIM)
+		text("KEY %d   POWER FUSE %d   COIL %d   CELLAR KEY %d   TUNER %d" % [game.town.inventory.station_key,game.town.inventory.workshop_fuse,game.town.inventory.coil,game.town.inventory.chapel_key,game.town.inventory.tuner],Vector2(78,184),10,DIM)
 		var searched = game.town.interiors.containers.values().filter(func(storage): return storage.searched).size()
 		text("STORAGE / %d of 12 searched   SHOTGUN BOX KEY %d" % [searched,game.town.inventory.shotgun_key],Vector2(78,199),10,DIM)
 		text("AMMO RESERVE / Pistol %d   Rifle %d   Shotgun %d" % game.weapons.reserves,Vector2(78,214),10,DIM)
@@ -308,7 +308,7 @@ func draw_journal():
 			[game.town.inventory.antenna>0 or game.town.radio_ready,"Find the antenna coupler in Old Mill Cemetery"],
 			[game.town.reached_town,"Follow Old Mill Road into Blackwood"],
 			[game.town.inventory.station_key>0,"Find the ranger office's radio-station key"],
-			[game.town.powered,"Find store battery; restore workshop power"],
+			[game.town.powered,"Find store fuse; restore workshop power"],
 			[game.town.inventory.coil>0 or game.town.radio_ready,"Recover workshop signal coil"],
 			[game.town.streetscape.church.basement.unlocked,"Find mausoleum key; unlock the chapel cellar"],
 			[game.town.inventory.tuner>0 or game.town.radio_ready,"Recover the chapel cellar tuning unit"],

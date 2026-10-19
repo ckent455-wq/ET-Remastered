@@ -20,7 +20,7 @@ marked on the journal map. The dense forest forms a closed boundary around town.
 - E: inspect, search, collect, open doors, and talk.
 - I: backpack (drag items to arrange them). F: flashlight; Tab: journal and map; Escape: pause, with a Restart Game option.
 - C inside the journal: case notes and evidence leads.
-- Left mouse: fire; right mouse: aim; R: reload.
+- Left mouse: fire, or punch while unarmed; right mouse: aim; R: reload.
 - 1 / 2 / 3: switch between guns you have found; 0: holster.
 - H: first-aid kit; Q: flashlight battery; M: mute / unmute.
 - After repairing the receiver, hold E near it inside the radio station to call for help.
@@ -83,7 +83,7 @@ Ammo cartons are scattered through the store, hotel rooms, clinic, ranger office
 OLD MILL CEMETERY: Follow the east/right footpath from Old Mill Road between the wreck and town. After restoring workshop power and collecting the signal coil, get the mausoleum key from Pat, unlock the Whitcomb mausoleum, and take the coupler inside. It occupies two backpack slots and is required alongside the coil and tuning unit to repair the station radio. Press I for the backpack; TAB opens the journal and updated map.
 
 
-WORKSHOP POWER: Find the workshop battery in the store counter drawer (two backpack slots). Follow the alley between the repair shop and Saint George Hotel into the enclosed rear yard, then press E at the battery terminal. Flashlight cells remain separate.
+WORKSHOP POWER: Find the workshop fuse in the store counter drawer (one backpack slot). Follow the alley between the repair shop and Saint George Hotel into the enclosed rear yard, then use E to open the cabinet, E again to install the fuse, and E once more to flip the switch. Installing the fuse starts the monster encounter; the switch restores workshop power. Flashlight cells remain separate.
 
 CRASH OPENING: A new journey begins with the driver waking after the crash. Advance the opening dialogue with E, Enter, or Space. Walk to the driver's door, aim at it, and press E to open it. Take the backpack, then the flashlight with E. I opens the collected backpack; F switches on the collected flashlight. Restart Game repeats this opening and puts both items back in the car.
 
@@ -97,7 +97,7 @@ Use any standard Godot-compatible controller. Button prompts automatically switc
 
 - Left stick: move; click left stick: sprint. Right stick: look.
 - A / Cross: jump; B / Circle (hold): crouch; X / Square: interact, talk, stand up.
-- LT / L2: aim; RT / R2: fire; Y / Triangle: reload.
+- LT / L2: aim; RT / R2: fire or punch while unarmed; Y / Triangle: reload.
 - LB / RB (L1 / R1): cycle weapons; click right stick: holster.
 - D-pad down: flashlight; up: journal/map; left: first aid; right: spare battery.
 - View / Touchpad: backpack; Start / Options: pause.
@@ -108,3 +108,9 @@ Use any standard Godot-compatible controller. Button prompts automatically switc
 On Nintendo controllers, the corresponding physical bottom/right/left/top face buttons are B/A/Y/X. Disconnecting the active controller pauses gameplay.
 
 An optional rusted shovel leans against the workshop wall and occupies a 1 x 3 backpack space. Find the one freshly disturbed grave in Old Mill Cemetery and hold E (Xbox X / PlayStation Square) while looking at it to dig. Releasing interact cancels the digging. The uncovered cache contains six pistol rounds and a folded note; the other graves cannot be dug.
+
+With no gun equipped, use the fire control to throw alternating punches. Punches deal 12 damage within 1.8 meters, with a short windup and recovery. Fists start lowered. Press 0 (R3 on controller) to raise or lower them while unarmed. If holding a gun, press once to holster it, then again to raise fists. Fire does nothing while fists are lowered.
+
+The Victorian house now has two separate Wrapper encounters: one upstairs and one in its basement. They use normal weapon and melee damage, stay on their own floors, and remain dead until a new journey.
+
+An optional Straw Reaper encounter waits at the deep forest boundary beyond the cemetery east/rear fence. Approaching that edge triggers it from cover. It stays in the rear woods and remains dead until a new journey.

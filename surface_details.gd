@@ -85,6 +85,9 @@ func apply_details():
 			var asset: String=object.get_meta("apartment_asset",object.get_meta("source_asset",""))
 			if asset in ["curtain","door","wall_art","wall_cabinet","lamp","sink"]:continue
 			rest_on_surface(object,"prop "+asset,0.6)
+	for object in get_tree().get_nodes_in_group("RetroInteriorProps"):
+		if object.get_meta("retro_asset") in ["cutting_board","knife","plate","burner"]:
+			rest_on_surface(object,"retro clutter",0.12)
 	for id in game.town.actions:
 		var data=game.town.actions[id]
 		if data.kind=="note" and id!="cemetery_note":

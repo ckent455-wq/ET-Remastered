@@ -147,4 +147,4 @@ func hint(value:String)->String:
   for prefix in ["Press ","press ","Hold ","hold ","with "]:value=value.replace(prefix+key+" ",prefix+map[key]+" ")
  return value
 func control_rows()->Array:
- return ["LS  Move     RS  Look     L3  Sprint",label("south")+"  Jump     "+label("east")+" (hold)  Crouch",label("west")+"  Interact / talk / stand up",label("lt")+"  Aim     "+label("rt")+"  Fire     "+label("north")+"  Reload",label("lb")+" / "+label("rb")+"  Cycle weapons     R3  Holster","D-PAD DOWN  Flashlight     UP  Journal / map","D-PAD LEFT  First aid     RIGHT  Battery",label("view")+"  Backpack     "+label("start")+"  Pause"]
+ return ["LS  Move     RS  Look     L3  Sprint",label("south")+"  Jump     "+label("east")+" (hold)  Crouch",label("west")+"  Interact / talk / stand up",label("lt")+"  Aim     "+label("rt")+"  Fire     "+label("north")+"  Reload",label("lb")+" / "+label("rb")+"  Cycle weapons     R3  Holster / Fists","D-PAD DOWN  Flashlight     UP  Journal / map","D-PAD LEFT  First aid     RIGHT  Battery",label("view")+"  Backpack     "+label("start")+"  Pause"]

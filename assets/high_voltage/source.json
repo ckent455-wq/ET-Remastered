@@ -1,0 +1,9 @@
+{
+  "source": "C:\\Users\\jkern\\Downloads\\psx-horror-props-free-assets\\psx-horror-props-free\\glb\\fuse_box.glb",
+  "sha256": "3e38c2bf1e669a9949714edf34f8b140db14c85a9806f0d2daad192597487a71",
+  "credit": "PSX Horror Props Free by heyheythere - https://heyheythere.itch.io/psx-horror-props-free - CC BY 4.0",
+  "adaptation": "Native 186-triangle fuse cabinet, 512px shared atlas with vertex colors, original door and lever clips. Runtime 1.35 scale and wall offset, matte nearest-filtered materials; native cartridge fuse in the left interior holder; external battery cradle removed. Original source unchanged. External atlas URI remapped to adjacent atlas.png; supplied animation cycles held at open/on midpoints.",
+  "fuse_source": "C:\\Users\\jkern\\Downloads\\psx-horror-props-free-assets\\psx-horror-props-free\\glb\\fuse.glb",
+  "fuse_source_sha256": "d493b5bcd4320176e96b4a87777a74e76c57b57f7d27968e41bf7f426b03ba19",
+  "fuse_adaptation": "Native 84-triangle cartridge fuse, atlas URI remapped, centered and scaled 1.35, installed vertically inside left cabinet holder."
+}

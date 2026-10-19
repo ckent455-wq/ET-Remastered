@@ -355,18 +355,18 @@ func words(id: String) -> String:
 	match id:
 		"ranger":
 			if town.game.story.evidence.has("ranger_note"):
-				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store battery to the workshop panel. Its powered cabinet holds the coil. Then ask me about my family mausoleum."
+				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store fuse to the workshop panel. Its powered cabinet holds the coil. Then ask me about my family mausoleum."
 				return "That was three nights ago. The horn came from the chapel speaker. I should have locked the barrier again. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
 			if town.inventory.station_key==0:
 				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Pat. Only Aubrey, John and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's on the front crate. Read my log."
-			return "You have the station key. The store counter drawer has a workshop battery; the workshop's rear terminal takes it. Its powered cabinet holds the coil. Pat can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
+			return "You have the station key. The store counter drawer has a workshop fuse; the workshop's rear terminal takes it. Its powered cabinet holds the coil. Pat can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
 				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a first-aid kit. Q fits a battery."
 			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a kit; Q fits a battery."
 		"mechanic":
 			if not town.powered:
-				return "John. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop battery is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
+				return "John. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop fuse is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
 			if town.inventory.coil==0:
 				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil from this cabinet. Ask Pat about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
 			if town.inventory.tuner==0:

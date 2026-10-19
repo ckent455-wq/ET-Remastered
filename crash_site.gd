@@ -383,6 +383,7 @@ func build_blinking_headlights(model:Node3D):
 			var original=part.mesh.surface_get_material(surface)
 			if not original is StandardMaterial3D or not original.albedo_texture:continue
 			var image=original.albedo_texture.get_image()
+			if image.is_compressed(): image.decompress()
 			var arrays=part.mesh.surface_get_arrays(surface)
 			var vertices=arrays[Mesh.ARRAY_VERTEX]
 			var uv=arrays[Mesh.ARRAY_TEX_UV]

@@ -1,23 +1,20 @@
-# Far From Home v1.0
+# Far From Home v1.1.0 - Fuses and Forest Fears
 
-A Windows playable preview of ET Remastered / Far From Home, built with Godot 4.7.2.
+A playable Windows survival-horror preview, built with Godot 4.7.2.
 
-- Controller support for movement, look, combat, menus, dialogue, journal and backpack arrangement. Prompts switch automatically between keyboard/mouse and Xbox, PlayStation or Nintendo layouts. Disconnecting the active controller pauses gameplay.
-- Optional grave cache: collect the rusted shovel from the workshop, then hold interact at the disturbed cemetery grave. Digging uncovers an actual recessed grave with soil walls, roots, a coffin model, six pistol rounds and a readable note. The shovel occupies three backpack slots. The temporary starting-shovel grant is removed.
-- Cemetery creature waits beside the fence, scurries behind the mausoleum as you approach, and triggers a brief reaction once the building hides it.
-- A preplaced upstairs creature ambushes the player through the Victorian house bedroom doorway. It supports normal combat, remains dead after being killed, and resets on a new journey.
-- Invisible boundaries keep players out of the woods across from the crash, with room to leave the roadside shoulder.
-- NPC names updated throughout dialogue, journal records, notes and prompts: Pat the ranger, Aubrey the nurse, and John the mechanic.
-- All earlier crash opening, hotel tunnel, workshop ambush, NPC shelter, inventory and lighting improvements remain included. The mausoleum uses its normal key and quest requirements.
+## New since v1.0
+
+- Unarmed combat uses the supplied PSX arms and alternating punches. Fists start hidden: press 0 / R3 while unarmed to raise or lower them. If holding a gun, first press holsters it. Fire / RT punches only with fists raised.
+- The Wrapper replaces the upstairs Victorian house monster, with another encounter in the house basement. Each stays on its own floor and remains dead until a new journey.
+- The Straw Reaper emerges from cover when you approach the forest boundary behind the cemetery. It navigates around trees, uses corrected idle/walk/attack/fall clips, and keeps its feet grounded.
+- Shooting now uses animated head, torso and limb hitboxes rather than the movement capsule. Aimed head shots register across all three enemy rigs, while solid cover still blocks bullets.
+- Fourteen native retro prop models replace placeholder clutter across the buildings, including TVs, lockers, clocks, tables, kitchen items and tools. Living-room groups have more clearance, and the enlarged oven cooking surface aligns with its counters.
+- The alley workshop terminal uses the downloaded high-voltage cabinet. Find the one-slot cartridge fuse in the general-store drawer, open the cabinet, install the fuse in its interior holder, then flip the switch. Fuse installation starts the monster walking from its existing Main Street spawn; the switch restores power. The seated fuse glows green only when powered.
 
 ## Play
 
-Download **FarFromHome-v1.0-Windows-x64.zip**, extract the entire ZIP, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. The Source ZIP contains the editable Godot project.
+Download **FarFromHome-v1.1.0-Windows-x64.zip**, extract the complete ZIP, and run **FarFromHome.exe**. Keep the EXE, PCK and bundled DLLs together. Godot is not required. Player instructions, asset credits, licenses and build information are included, with SHA256SUMS.txt for download verification.
 
-Keyboard: WASD moves, mouse looks, E interacts (hold to dig), I opens the backpack, Tab opens the journal/map, F toggles the flashlight, Escape pauses and offers Restart Game. Controller mappings are shown in Controls and the included README.
+Keyboard: WASD move, mouse look, Space jump, Ctrl crouch, E interact, F flashlight, 0 holster / toggle fists, left mouse fire / punch, I backpack, Tab journal/map, Escape pause. Controller mappings are shown in Controls.
 
-This is an early preview. Each new journey resets progress. First-time shader compilation may briefly pause rendering. Asset credits and licenses are included.
-
-## Validation
-
-Targeted checks passed for controller input and prompt switching, grave digging and reward/reset behavior, real below-ground collision and escape, reachable buried items, the upstairs ambush path/combat/reset, and updated NPC names. The recent crash tutorial and car-door checks also passed. Visual previews were inspected for the grave, coffin, shovel, controller UI and upstairs encounter. Controller checks used simulated input; a physical controller was not connected during verification. A full playthrough remains manually tested by the player.
+This remains an early preview. Each new journey resets progress; achievements persist. Windows x64 uses ANGLE/Direct3D11 compatibility rendering with a 60 FPS cap and PS2-style presentation. First-time shader preparation may delay startup.

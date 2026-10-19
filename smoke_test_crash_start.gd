@@ -17,7 +17,7 @@ func check():
 	assert(game.weapons.selected== -1 and game.weapons.magazines==[0,0,0] and not game.weapons.owned.has(true),"Starts unarmed without ammo")
 	for index in range(3):
 		game.weapons.equip(index)
-		assert(game.weapons.selected== -1 and not game.weapons.fire(),"Cannot bypass discovery using number keys")
+		assert(game.weapons.selected== -1 and not game.weapons.owned.has(true),"Cannot bypass gun discovery using number keys; unarmed attacks use fists")
 	assert("Reach Blackwood" in game.town.objective(),"Crash-to-town first objective")
 	game.player.rotation.y = 0
 	move_key(true)

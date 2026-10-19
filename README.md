@@ -122,6 +122,21 @@ Drawers and cabinets use a short positional slide-and-clunk cue, also controlled
 
 ## Local assets
 
+- assets/high_voltage/fuse_box.glb: PSX Horror Props Free by heyheythere - https://heyheythere.itch.io/psx-horror-props-free - CC BY 4.0 (assets/high_voltage/LICENSE.txt). Native high-voltage cabinet, shared atlas, vertex colors and door/lever animation; runtime wall fitting and fitted native cartridge fuse inside the left holder. Source hash in assets/high_voltage/source.json.
+
+
+- assets/retro_props/*.glb: fourteen static models from the local RetroModelPack (buckets, burner, clock, cutting board, entry mat, knife, metal locker, plate, scythe, sheet metal, shovel, slate, table and CRT TV). Native geometry and UVs, original diffuse textures reduced to 256px, grounded metric copies and matte nearest-filtered materials. tools/prepare_retro_props.py records hashes and dimensions in assets/retro_props/manifest.json. Used for 119 authored props including 104 placeholder replacements; original downloads unchanged.
+
+
+- assets/enemies/reaper/reaper.glb: user-supplied THE STRAW REAPER new.fbx with native body, scythe, teeth, nine usable animation clips and supplied textures reduced to 256px. 4,650 triangles at 2.05m; unrelated malformed source action excluded. tools/prepare_reaper.py preserves originals and records source hash. Optional one-time encounter at the rear cemetery forest edge uses physics-sampled tree navigation; tools/check_cemetery_reaper.gd verifies trigger, placement, pursuit, attack, death and reset.
+
+
+- assets/enemies/wrapper/wrapper.glb: TheWrapper V2 / MonsterPSX.fbx from the local Downloads folder. Original 1,200-triangle skinned model and six baked clips, 256px supplied diffuse, matte flat PSX shading, normalized to 1.82m. Used by separate upstairs and basement Victorian house encounters; the other four creatures retain the Creep model. Source hash and export settings are in assets/enemies/wrapper/source.json; exporter is tools/prepare_wrapper.py.
+
+
+- assets/arms/arms.glb: supplied Downloads/psx-first-person-arms-free-game-assets/arms_rig.glb, preserving original low-poly mesh, embedded texture, rig and guard/jab clips; runtime matte PSX materials. Source hash in assets/arms/source.json. Unarmed fire punches for 12 damage at close range; tools/check_melee.gd verifies contact, walls, timing, switching and reset.
+
+
 - assets/enemies/: original animated Creep Horror Creature from the user's Unity asset download, adapted to low-poly meshes and matte materials. Local Horror SFX Free recordings provide creature sounds; provenance is in the asset manifests.
 - assets/church/: Flooded Grounds bell tower, Church1_Door_C prefab geometry/materials and church pews from the user's local Unity assets. A single original shell surrounds these details; source UVs are preserved and textures reduced.
 - assets/lockbox/: Haunted Farmhouse crate and separate lid, plus the Rust Key asset from the user's local Unity downloads. Converted copies preserve the source geometry and UVs.
@@ -217,3 +232,7 @@ the story guide and implementation details (ending spoilers).
 Enemy health bars appear above visible active creatures within combat range; they do not reveal hidden enemies through cover. The service rifle deals 48 damage per hit, twice the pistol's 24 (two versus four hits against an 85-health creature). The shotgun retains 12 damage per pellet.
 
 Ammunition is scavenged from nine low-poly cartons using the local Bullets and Boxes download. The found pistol starts with exactly three rounds and zero spare ammo. Collect cartons with E and reload with R. The journal tracks separate pistol, rifle and shotgun reserves, including ammo found before a weapon. The shotgun-lockbox key lies flat on the hotel dresser.
+
+Enemy gun hits use bone-aligned head spheres and torso/limb capsules sampled from the current animated pose, separate from the movement collider. The nearest solid scenery still blocks bullets. tools/check_enemy_shot_hitboxes.gd verifies actual pistol, rifle and shotgun hits, animated poses, cover, dead/hidden guards and reset.
+
+The rear workshop terminal uses three E interactions: open the cabinet, install the workshop fuse, and flip the switch. Fuse installation begins monster pursuit; workshop lights and coil-cabinet power wait for the switch animation. Progress and prompts persist while pausing and reset on a new journey.

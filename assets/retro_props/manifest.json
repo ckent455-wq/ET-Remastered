@@ -1,0 +1,160 @@
+{
+  "pack": "User-supplied RetroModelPack",
+  "adaptation": "Native static meshes and UVs, grounded metric copies, flat matte shading, textures capped at 256px. Source unchanged.",
+  "assets": [
+    {
+      "asset": "bucket",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Bucket\\Bucket.fbx",
+      "source_sha256": "c4b4beaab7e9abf8b906ef66aec409ec8045239fcfdc495eb9c5e437bd2d24c2",
+      "dimensions": [
+        0.35427,
+        0.32,
+        0.36452
+      ],
+      "triangles": 192
+    },
+    {
+      "asset": "burner",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Burner\\Burner.fbx",
+      "source_sha256": "2d06a3772ee87692a4ad99f615410741a928504d61fb3d0c8f8c3fb749731f56",
+      "dimensions": [
+        0.42,
+        0.06449,
+        0.42
+      ],
+      "triangles": 220
+    },
+    {
+      "asset": "clock",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Clock\\Clock.fbx",
+      "source_sha256": "2a015b8d6cbab36192dc2ea1ca3d32e73aa9cd6ae48208af55c8d4bfcc5893a3",
+      "dimensions": [
+        0.0784,
+        0.32,
+        0.241
+      ],
+      "triangles": 538
+    },
+    {
+      "asset": "cutting_board",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\CuttingBoard\\CuttingBoard.fbx",
+      "source_sha256": "68f899fd0e1deae9104badaec0c742da77972631a5bf022cd7507f4c28af15a9",
+      "dimensions": [
+        0.22609,
+        0.01114,
+        0.38
+      ],
+      "triangles": 44
+    },
+    {
+      "asset": "entrance_mat",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\EntranceMat\\EntranceMat.fbx",
+      "source_sha256": "ef90d4bd81ba468d48b251f49f5cb843d904a8deca5d1c4f8fde5fc11ee3426d",
+      "dimensions": [
+        0.95,
+        0.01231,
+        0.60855
+      ],
+      "triangles": 12
+    },
+    {
+      "asset": "knife",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Knife\\Knife.fbx",
+      "source_sha256": "c13222197a34a1dde7ef9b1ebee21205031301687212cff63318b824319b456f",
+      "dimensions": [
+        0.01186,
+        0.04236,
+        0.28
+      ],
+      "triangles": 72
+    },
+    {
+      "asset": "locker",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\MetalLockerStorage\\MetalLockerStorage.fbx",
+      "source_sha256": "48ad963d7fcf9bb205da532c3311a3a55cd51b504e29317f59677a06141f308f",
+      "dimensions": [
+        0.64836,
+        1.8,
+        0.62977
+      ],
+      "triangles": 54
+    },
+    {
+      "asset": "plate",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Plate\\Plate.fbx",
+      "source_sha256": "231c8fb8a64eefabd92d6d5c8898389ddde2ed2e438a2a83e7cdcc95136f7e9f",
+      "dimensions": [
+        0.26,
+        0.074,
+        0.26
+      ],
+      "triangles": 380
+    },
+    {
+      "asset": "scythe",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Scythe\\Scythe.fbx",
+      "source_sha256": "a08d88c1a7756834bc30f86ec3774a732e460dfeac96d7866735aa7d4cb7d676",
+      "dimensions": [
+        0.15245,
+        1.7,
+        0.7699
+      ],
+      "triangles": 354
+    },
+    {
+      "asset": "sheet_metal",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\SheetMetal\\SheetMetal.fbx",
+      "source_sha256": "0216fc9fc59678457a4ee3ecac1e42b4441cc284719c03b475dcd7dfe14e254c",
+      "dimensions": [
+        0.6325,
+        0.04558,
+        1.2
+      ],
+      "triangles": 60
+    },
+    {
+      "asset": "shovel",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Shovel\\Shovel.fbx",
+      "source_sha256": "1cd418a449340bd6de8d2abb60f55d584c9cc623347e7400008eb363a0f4499f",
+      "dimensions": [
+        0.34994,
+        1.2,
+        0.12927
+      ],
+      "triangles": 176
+    },
+    {
+      "asset": "slate",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Slate\\Slate.fbx",
+      "source_sha256": "0ed0468454a0355d1d6b72679781c8924f6749af593819529efc7c08e3dc0460",
+      "dimensions": [
+        0.5,
+        0.01969,
+        0.5
+      ],
+      "triangles": 28
+    },
+    {
+      "asset": "table",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Tabel\\Tabel.fbx",
+      "source_sha256": "7ba24872218e77953f3c7270b2c6ae214d0a1d6c6263b95c34769fad32b9a996",
+      "dimensions": [
+        0.98105,
+        0.76,
+        1.48161
+      ],
+      "triangles": 232
+    },
+    {
+      "asset": "tv",
+      "source": "C:\\Users\\jkern\\Downloads\\RetroModelPack\\Models\\Tv\\Tv.fbx",
+      "source_sha256": "255789c3b69b331305e045eb2e60eaf6f763b37335b1010dc21d9c2086c4f815",
+      "dimensions": [
+        0.62,
+        0.51368,
+        0.59186
+      ],
+      "triangles": 250
+    }
+  ]
+}

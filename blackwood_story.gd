@@ -19,7 +19,7 @@ const RECORDS = {
   ],
   "store_note": [
     "Last departure / 01:40",
-    "Written before the final evacuation bus:\nFour unused tickets remain. Departure is 01:40. The driver will not return tonight.\nFor weeks customers forgot their shopping, then shouted at voices in the ceiling speaker. We called it exhaustion. The clinic called the evacuation.\nSebus Hardware and the other boarded shops have stood empty for years. We kept this general store open for the few families who stayed after the mill closed twelve years ago.\nOur roof has leaked through several winters. Last month's storm brought part of the ceiling down. Rear stock is spoiled. Do not come back for it.\nI left a workshop battery in the counter drawer and batteries in the rear cabinet for whoever stays.\n- Ruth",
+    "Written before the final evacuation bus:\nFour unused tickets remain. Departure is 01:40. The driver will not return tonight.\nFor weeks customers forgot their shopping, then shouted at voices in the ceiling speaker. We called it exhaustion. The clinic called the evacuation.\nSebus Hardware and the other boarded shops have stood empty for years. We kept this general store open for the few families who stayed after the mill closed twelve years ago.\nOur roof has leaked through several winters. Last month's storm brought part of the ceiling down. Rear stock is spoiled. Do not come back for it.\nI left a workshop fuse in the counter drawer and batteries in the rear cabinet for whoever stays.\n- Ruth",
     "Blackwood declined for twelve years after the mill closed. The storm worsened old damage; the last remaining families evacuated three nights ago."
   ],
   "house_note": [

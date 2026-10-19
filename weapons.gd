@@ -1,6 +1,8 @@
 extends Node3D
 ## Bounded first-person weapons: recoil affects the model, never the camera.
 var game
+var melee: Node3D
+var enemy_hitboxes
 const LOADOUT = [
 	{"id":"pistol","label":"COVERT PISTOL","clip":8,"max_reserve":64,"pickup_rounds":3,"delay":0.38,"reload":1.35,"pellets":1,"spread":0.006,"damage":24.0},
 	{"id":"rifle","label":"SERVICE RIFLE","clip":20,"max_reserve":120,"pickup_rounds":20,"delay":0.15,"reload":1.8,"pellets":1,"spread":0.012,"damage":48.0},
@@ -67,6 +69,10 @@ func _ready():
 	ammo_pickups = preload("res://ammo_pickups.gd").new()
 	ammo_pickups.game = game
 	add_child(ammo_pickups)
+	melee = preload("res://unarmed_melee.gd").new()
+	melee.game = game
+	melee.weapons = self
+	add_child(melee)
 	reset()
 
 func make_pickups():
@@ -160,6 +166,7 @@ func reset():
 		target.rotation = Vector3.ZERO
 		target.set_meta("hits",0)
 	if lockbox: lockbox.reset()
+	if melee: melee.reset()
 	update_model(1)
 
 func cycle(direction = 1):
@@ -180,6 +187,10 @@ func equip(index: int):
 		game.message = "You haven't found that weapon. Search Blackwood's buildings."
 		return
 	selected = index
+	if melee:
+		melee.raised = false
+		melee.cancel()
+		melee.update_visual(0)
 	reload_remaining = 0
 	delay = 0.25
 	recoil = 0
@@ -198,6 +209,7 @@ func reload():
 
 func fire() -> bool:
 	if game.grave_dig and game.grave_dig.digging:return false
+	if selected<0: return melee.attack()
 	if game.state!="play" or selected<0 or delay>0 or reload_remaining>0:
 		return false
 	if magazines[selected]<=0:
@@ -216,11 +228,20 @@ func fire() -> bool:
 		direction += game.camera.global_basis.x*rng.randf_range(-spread,spread)
 		direction += game.camera.global_basis.y*rng.randf_range(-spread,spread)
 		var start: Vector3 = game.camera.global_position
-		var ray = PhysicsRayQueryParameters3D.create(start,start+direction.normalized()*65,1,[game.player.get_rid()])
-		var hit = game.get_world_3d().direct_space_state.intersect_ray(ray)
+		var hit = trace_shot(start,direction.normalized(),65)
 		if not hit.is_empty():
 			impact(hit)
 	return true
+
+func trace_shot(origin:Vector3,direction:Vector3,reach:float)->Dictionary:
+	if not enemy_hitboxes: enemy_hitboxes=preload("res://enemy_shot_hitboxes.gd").new(game.enemies)
+	var excludes:Array[RID]=[game.player.get_rid()]
+	for data in game.enemies.creatures: excludes.append(data.actor.get_rid())
+	var ray=PhysicsRayQueryParameters3D.create(origin,origin+direction*reach,1,excludes)
+	var wall=game.get_world_3d().direct_space_state.intersect_ray(ray)
+	var distance=origin.distance_to(wall.position) if not wall.is_empty() else reach
+	var enemy=enemy_hitboxes.trace(origin,direction,distance)
+	return enemy if not enemy.is_empty() else wall
 
 func impact(hit: Dictionary):
 	var body = hit.collider as Node3D
@@ -251,13 +272,13 @@ func impact(hit: Dictionary):
 
 func status() -> String:
 	if selected<0:
-		return "HOLSTERED / 1 2 3 EQUIP" if owned.has(true) else "UNARMED / SEARCH FOR A WEAPON"
+		return "FISTS / FIRE TO PUNCH / 0 LOWER" if melee.raised else "UNARMED / 0 RAISE FISTS"
 	if reload_remaining>0:
 		return "%s / RELOADING" % LOADOUT[selected].label
 	return "%s  %02d / %02d" % [LOADOUT[selected].label,magazines[selected],reserves[selected]]
 
 func update_model(delta: float):
-	game.arm_visual.visible = selected<0
+	game.arm_visual.visible = selected<0 and (not melee or melee.elapsed<0)
 	for i in range(models.size()):
 		models[i].visible = i==selected and game.state in ["play","paused"]
 	var aim_position = Vector3(0,-0.10,-0.58) if aiming else Vector3(0.25,-0.27,-0.58)
@@ -272,6 +293,7 @@ func update_model(delta: float):
 	flash_light.visible = flash.visible
 
 func _physics_process(delta):
+	melee.update(delta)
 	if game.state!="play":
 		aiming = false
 		flash_remaining = 0

@@ -168,10 +168,10 @@ func shelving(room: String, p: Vector3, yaw = 0.0, stocked = false):
 	# Sparse, aligned contents belong on shelves rather than scattered on floors.
 	for y in [0.37,0.91,1.44]:
 		if stocked:
+			var assets=["bucket","plate","cutting_board"] if room=="clinic" else (["bucket","slate","sheet_metal"] if room=="workshop" else ["plate","burner","cutting_board"])
 			for i in range(3):
-				var material = matte(["887d62","717b6c","8d7965"][i])
-				var pack = town.box(shelf,Vector3(-0.38+i*0.35,y+0.13,0),Vector3(0.25,0.26,0.25),material,false)
-				town.box(pack,Vector3(0,0,0.131),Vector3(0.17,0.10,0.005),town.mats.paper,false)
+				var item=kit.retro.place(assets[i],shelf,Vector3(-0.38+i*0.35,y,0),0,Vector3(0.23,0.12 if assets[i]=="bucket" else 0.035,0.23))
+				kit.retro.replacements+=1
 		else:
 			var local_books = town.interiors.prop("books",shelf,Vector3(-0.19,y,0),Vector3.ONE*0.55)
 			local_books.rotation.y = 0
@@ -195,10 +195,15 @@ func work_desks():
 			furniture("chair",room,Vector3(3.5,0.04,-0.9))
 		elif room in ["store","workshop"]:
 			# A continuous wood counter, not a computer desk stretched three metres.
-			block(room,old.position+Vector3(0,0.845,0),Vector3(d.x,0.09,1.1),finishes[room].wood,true)
+			var supports=[]
+			supports.append(block(room,old.position+Vector3(0,0.845,0),Vector3(d.x,0.09,1.1),finishes[room].wood,true))
 			for x in [-d.x/2+0.16,d.x/2-0.16]:
-				block(room,old.position+Vector3(x,0.42,-0.20),Vector3(0.13,0.84,0.65),finishes[room].wood,true)
-			block(room,old.position+Vector3(0,0.4,-0.48),Vector3(d.x,0.7,0.07),finishes[room].trim)
+				supports.append(block(room,old.position+Vector3(x,0.42,-0.20),Vector3(0.13,0.84,0.65),finishes[room].wood,true))
+			supports.append(block(room,old.position+Vector3(0,0.4,-0.48),Vector3(d.x,0.7,0.07),finishes[room].trim))
+			for support in supports:
+				for mesh in support.find_children("*","MeshInstance3D",true,false): mesh.hide()
+			kit.retro.room("table",room,old.position,0,Vector3(d.x,0.89,1.1))
+			kit.retro.replacements+=supports.size()
 		else:
 			furniture("desk",room,old.position,0,Vector3(d.x/1.93,1,1.1/0.76))
 			furniture("office_chair",room,old.position+Vector3(0,0.04,1.12),PI)
@@ -215,24 +220,25 @@ func house():
 	# Keep the original searchable bedside drawer beside the bed.
 	books(room,Vector3(-4.6,0.6,-2.6),0.3)
 	rug(room,Vector3(-3.1,0.046,-2.75),Vector2(2.7,2.8))
-	furniture("sofa",room,Vector3(-5.02,0.04,1.7),PI/2)
-	furniture("coffee_table",room,Vector3(-3.84,0.04,1.7),PI/2)
-	rug(room,Vector3(-4.05,0.046,1.7),Vector2(3.1,2.6),PI/2)
-	furniture("chair",room,Vector3(-2.63,0.04,2.8),-PI/2-0.2)
-	furniture("side_table",room,Vector3(-4.9,0.04,3.45))
-	furniture("floor_lamp",room,Vector3(-5.23,0.04,0.04))
-	books(room,Vector3(-3.83,0.59,1.94),0.38,PI/2)
-	furniture("bowl",room,Vector3(-3.82,0.59,1.3),0,Vector3.ONE,false)
+	furniture("sofa",room,Vector3(-3.9,0.04,3.3),PI)
+	furniture("coffee_table",room,Vector3(-3.9,0.04,1.8))
+	rug(room,Vector3(-3.9,0.046,1.9),Vector2(3.3,3.0))
+	furniture("chair",room,Vector3(-2.0,0.04,2.0),-PI/2)
+	furniture("side_table",room,Vector3(-5.15,0.04,0.1))
+	furniture("floor_lamp",room,Vector3(-5.2,0.04,2.0))
+	books(room,Vector3(-4.2,0.58,1.8),0.38)
+	furniture("bowl",room,Vector3(-3.65,0.58,1.98),0,Vector3.ONE,false)
 	furniture("plate",room,Vector3(3.15,0.93,0.05),0,Vector3.ONE,false)
 	furniture("bowl",room,Vector3(3.15,0.95,0.05),0,Vector3.ONE,false)
-	furniture("fridge",room,Vector3(1.9,0.04,-4.23),PI/2)
-	furniture("counter",room,Vector3(2.82,0.04,-4.27),0,Vector3(1.0,1,1))
-	furniture("stove",room,Vector3(4.82,0.04,-4.27))
-	furniture("counter",room,Vector3(5.49,0.04,-4.27),0,Vector3(0.7,1,1))
-	for x in [2.7,3.7,4.7]:
+	furniture("fridge",room,Vector3(1.8,0.04,-4.14),PI/2)
+	furniture("counter",room,Vector3(2.92,0.04,-4.1),0,Vector3(1.2/0.766563,0.94/0.9,0.74/0.653856))
+	# Size to the cooking surface; the source height includes its raised control panel.
+	furniture("stove",room,Vector3(4.05,0.04,-4.1),0,Vector3(0.84/0.586142,0.94/0.734713,0.74/0.546268))
+	furniture("counter",room,Vector3(5.15,0.04,-4.1),0,Vector3(1.14/0.766563,0.94/0.9,0.74/0.653856))
+	for x in [2.92,4.05,5.15]:
 		furniture("wall_cabinet",room,Vector3(x,1.88,-4.40),0,Vector3.ONE,false)
 	block(room,Vector3(3.65,1.26,-4.60),Vector3(3.7,0.55,0.035),finishes[room].trim)
-	furniture("coffee_maker",room,Vector3(2.8,0.96,-4.22),0,Vector3.ONE,false)
+	furniture("coffee_maker",room,Vector3(2.65,0.98,-4.15),0,Vector3.ONE,false)
 	furniture("trash",room,Vector3(5.45,0.04,-3.27))
 	landscape(room,Vector3(-5.69,1.94,1.7),PI/2,Vector2(1.35,0.7))
 	landscape(room,Vector3(-3.3,2.0,-4.64),0,Vector2(1.2,0.55))
@@ -313,9 +319,8 @@ func workshop():
 	shelving(room,Vector3(5.35,0.04,-4.3),0,true)
 	# Pegboard tools are grouped over the workbench, not apartment wall art.
 	block(room,Vector3(-3.1,1.65,-3.43),Vector3(3.4,1.0,0.055),finishes[room].wood)
-	for x in [-4.3,-3.8,-3.3,-2.8,-2.3,-1.8]:
-		block(room,Vector3(x,1.65,-3.38),Vector3(0.045,0.42,0.035),town.mats.metal)
-		block(room,Vector3(x,1.82,-3.35),Vector3(0.21,0.07,0.06),town.mats.metal)
+	# The supplied scythe and shovel below replace the twelve cuboid tool shapes.
+	kit.retro.replacements+=12
 	furniture("counter",room,Vector3(-5.25,0.04,3.45),PI/2)
 	furniture("side_table",room,Vector3(4.95,0.04,3.6))
 	furniture("coffee_maker",room,Vector3(4.95,0.74,3.6),0,Vector3.ONE,false)
@@ -332,19 +337,20 @@ func radio():
 	shelving(room,Vector3(-4.75,0.04,0),PI/2)
 	shelving(room,Vector3(-4.75,0.04,1.45),PI/2)
 	# Lounge against the wall leaves the route to the receiver unobstructed.
-	furniture("sofa",room,Vector3(4.55,0.04,2.0),-PI/2)
-	furniture("coffee_table",room,Vector3(3.38,0.04,2.0),PI/2)
-	rug(room,Vector3(3.55,0.046,2.0),Vector2(3.1,2.6),PI/2)
+	furniture("sofa",room,Vector3(3.9,0.04,3.2),PI)
+	furniture("coffee_table",room,Vector3(3.9,0.04,1.6))
+	rug(room,Vector3(3.9,0.046,1.9),Vector2(3.0,3.1))
 	furniture("side_table",room,Vector3(4.55,0.04,3.85))
 	furniture("floor_lamp",room,Vector3(4.8,0.04,0.2))
-	books(room,Vector3(3.38,0.59,2.1),0.4,PI/2)
+	books(room,Vector3(3.9,0.58,1.6),0.4)
 	furniture("trash",room,Vector3(-4.8,0.04,-2.5))
 	landscape(room,Vector3(5.18,1.95,2),-PI/2,Vector2(1.5,0.75))
 	bulletin(room,Vector3(-2.8,2.12,-4.65),0)
 	entry_mat(room)
 
 func entry_mat(room: String):
-	rug(room,Vector3(0,0.046,4.15),Vector2(1.5,0.85))
+	kit.retro.room("entrance_mat",room,Vector3(0,0.044,4.15),0,Vector3(1.5,0.012,0.85))
+	kit.retro.replacements+=1
 
 func pendant(room: String, p: Vector3):
 	block(room,p+Vector3(0,0.28,0),Vector3(0.018,0.56,0.018),finishes[room].trim)
@@ -417,20 +423,5 @@ func bulletin(room: String, p: Vector3, yaw: float):
 			town.box(note,Vector3(0,y,0.007),Vector3(0.17,0.006,0.003),matte("747568"),false)
 
 func clock(room: String, p: Vector3, yaw: float):
-	var root = wall_group(room,p,yaw)
-	var face = MeshInstance3D.new()
-	var mesh = CylinderMesh.new()
-	mesh.top_radius = 0.19
-	mesh.bottom_radius = 0.19
-	mesh.height = 0.035
-	mesh.radial_segments = 16
-	face.mesh = mesh
-	face.rotation.x = PI/2
-	face.material_override = matte("b5b09a")
-	root.add_child(face)
-	for i in range(12):
-		var a = i*TAU/12
-		town.box(root,Vector3(sin(a)*0.155,cos(a)*0.155,0.03),Vector3(0.013,0.024,0.006),finishes[room].trim,false)
-	var hand = town.box(root,Vector3(0.035,0.035,0.04),Vector3(0.012,0.13,0.008),finishes[room].trim,false)
-	hand.rotation.z = -0.8
-	town.box(root,Vector3(-0.045,0,0.045),Vector3(0.1,0.012,0.008),finishes[room].trim,false)
+	kit.retro.room("clock",room,p-Vector3(0,0.16,0),yaw)
+	kit.retro.replacements+=1

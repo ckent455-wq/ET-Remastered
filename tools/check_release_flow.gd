@@ -1,0 +1,38 @@
+extends SceneTree
+func _initialize():call_deferred("check")
+func check():
+ var g=load("res://main.tscn").instantiate();root.add_child(g)
+ g.set_process(false);g.set_physics_process(false);g.enemies.set_physics_process(false)
+ g.town.townspeople.set_physics_process(false)
+ g.crash_site.wake_phase="";g.crash_site.has_backpack=true;g.crash_site.has_flashlight=true;g.crash_site.has_detour_sheet=true;g.state="play"
+ await process_frame
+ var t=g.town
+ var terminal=t.actions.battery_panel.area.get_node("HighVoltageTerminal");terminal.set_process(false)
+ t.perform("ranger_drawer");assert(t.inventory.station_key==1)
+ t.perform("store_drawer");assert(t.inventory.workshop_fuse==1)
+ t.perform("battery_panel")
+ for i in range(45):terminal._process(1.0/60)
+ t.perform("battery_panel");assert(terminal.installed and not t.powered and g.enemies.workshop_danger())
+ t.perform("battery_panel")
+ for i in range(40):terminal._process(1.0/60)
+ assert(t.powered and terminal.energized)
+ g.enemies.shoot(g.enemies.WORKSHOP_INDEX,100)
+ t.perform("workshop_cabinet");assert(t.inventory.coil==1,"Powered workshop supplies coil")
+ t.perform("npc_ranger");assert(t.inventory.mausoleum_key==1,"Pat gives key after coil")
+ g.state="play"
+ t.perform("cemetery_door");assert(t.cemetery.unlocked and t.cemetery.opened)
+ g.player.global_position=t.cemetery.crypt.to_global(Vector3(0,0.01,0))
+ t.perform("cemetery_coupler");t.perform("cemetery_cellar_key")
+ assert(t.inventory.antenna==1 and t.inventory.chapel_key==1)
+ t.perform("cellar_door");assert(t.streetscape.church.basement.contains(g.player.global_position),"Unlock immediately enters cellar")
+ t.perform("radio_tuner");assert(t.inventory.tuner==1)
+ t.perform("cellar_exit")
+ t.perform("receiver");assert(t.radio_ready and t.inventory.coil==0 and t.inventory.tuner==0 and t.inventory.antenna==0)
+ t.perform("radio_bypass");assert(g.story.county_bypass)
+ g.player.global_position=t.actions.receiver.area.global_position+Vector3(0,-1.0,1.2)
+ g.camera.position=Vector3(0,g.STANDING_EYE,0);t.focus_action="receiver"
+ assert(g.rescue_available(),"Player can transmit from receiver")
+ g.update_contact(4.1,true);assert(g.state=="won")
+ g.reset_game();assert(not t.powered and not t.radio_ready and not terminal.installed and not terminal.energized)
+ print("PASS: real drawer pickups, fuse installation ambush, switch power, coil, Pat key, mausoleum, automatic cellar entry, tuning unit, repaired receiver, county rescue and reset")
+ quit()

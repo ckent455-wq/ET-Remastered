@@ -115,7 +115,7 @@ func check():
 	assert(game.flashlight_charge==100 and town.inventory.battery==1,"Battery recharge")
 	town.perform("store_drawer")
 	town.perform("battery_panel")
-	assert(town.powered and town.inventory.workshop_battery==0,"Fuse consumed, power restored")
+	assert(town.powered and town.inventory.workshop_fuse==0,"Fuse consumed, power restored")
 	assert(town.powered_lights[0].visible,"Workshop lamps turn on")
 	town.perform("workshop_cabinet")
 	assert(town.inventory.coil==1,"Coil released")

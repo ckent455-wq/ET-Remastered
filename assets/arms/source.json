@@ -1,0 +1,5 @@
+{
+  "source": "C:\\Users\\jkern\\Downloads\\psx-first-person-arms-free-game-assets\\arms_rig.glb",
+  "sha256": "407d6be3cfee18d8d47318d307a6e759f94ed3a1c27e2ab30dd860862b94172b",
+  "notes": "User-supplied PSX first person arms. Original mesh, embedded texture, skeleton, guard_idle and alternating jab animations retained. Runtime matte nearest-filtered vertex-lit materials. Source unchanged."
+}
