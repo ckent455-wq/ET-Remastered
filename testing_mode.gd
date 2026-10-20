@@ -29,6 +29,7 @@ func begin():
    saved.actions[id]={"taken":data.taken,"visible":data.area.visible,"layer":data.area.collision_layer,"disabled":data.area.get_child(0).disabled,"amount":data.get("amount",0)}
  for id in game.town.interiors.containers:saved.containers[id]=game.town.interiors.containers[id].searched
  enabled=true;badge.show()
+ game.crash_site.leave_seat_for_testing()
  game.crash_site.wake_phase=""
  game.crash_site.has_backpack=true;game.crash_site.has_flashlight=true;game.crash_site.has_detour_sheet=true
  game.crash_site.bag_visual.hide();game.crash_site.light_visual.hide();game.crash_site.detour_visual.hide()

@@ -20,11 +20,17 @@ func run():
 	var hp = enemy.hp
 	var view = game.camera.transform
 	assert(not m.raised and not m.model.visible and not w.fire(),"Fists start lowered; fire cannot draw them")
+	game.crash_site.has_flashlight=true
+	game.flashlight.show()
+	game.update_flashlight_visual(1)
+	assert(game.flashlight_model.is_visible_in_tree(),"Flashlight model appears with hands lowered")
 	var toggle = InputEventKey.new()
 	toggle.keycode = KEY_0
 	toggle.pressed = true
 	game._unhandled_input(toggle)
 	assert(m.raised and m.model.visible,"0 raises fists")
+	game.update_flashlight_visual(1)
+	assert(not game.flashlight_model.is_visible_in_tree() and game.flashlight.visible,"Raised fists hide the held flashlight without turning off its beam")
 	assert(w.fire() and not w.fire(),"Unarmed fire starts one jab, cooldown rejects spam")
 	assert(enemy.hp==hp,"Windup causes no instant damage")
 	m.update(0.29)
@@ -71,6 +77,8 @@ func run():
 	assert(m.model.visible and w.fire(),"0 raises fists after holstering")
 	game._unhandled_input(toggle)
 	assert(not m.raised and not m.model.visible and m.elapsed<0,"0 lowers fists and cancels pending contact")
+	game.update_flashlight_visual(1)
+	assert(game.flashlight_model.is_visible_in_tree() and game.flashlight.visible,"Lowering fists restores the flashlight model")
 	m.update(1)
 	assert(not w.fire(),"Lowered fists cannot attack")
 	game.state = "paused"

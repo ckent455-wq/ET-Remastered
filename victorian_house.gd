@@ -47,7 +47,7 @@ func _ready():
 		for x in [-0.39,0.39]:
 			for y in [-0.72,0.48]:
 				town.box(door_body,Vector3(x,y,face*0.075),Vector3(0.61,0.94,0.035),panel_paint,false)
-	town.note("victorian",Vector3(-3.4,1.02,2.6),"victorian_letter","House clearance notice","PROPERTY CLEARANCE / NINE YEARS AGO\nThe mill is gone. We cannot afford another winter of repairs. The upstairs roof leaks above the back bedroom.\nLeave the heavy furniture. We will come back when we can.\nPlease close the front door.")
+	town.note("victorian",Vector3(-3.4,1.02,2.6),"victorian_letter","House clearance notice","PROPERTY CLEARANCE / NINE YEARS AGO\nFormer mill superintendent's residence.\nThe mill is gone. We cannot afford another winter of repairs. The upstairs roof leaks above the back bedroom.\nLeave the heavy furniture. We will come back when we can.\nKeep the cellar vents open. It is the last dry room in the house.\nPlease close the front door.")
 
 func painted_finish(tint: Color) -> StandardMaterial3D:
 	var material=StandardMaterial3D.new()

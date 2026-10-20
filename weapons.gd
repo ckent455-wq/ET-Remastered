@@ -9,6 +9,7 @@ const LOADOUT = [
 	{"id":"shotgun","label":"DOUBLE BARREL","clip":2,"max_reserve":32,"pickup_rounds":2,"delay":0.65,"reload":2.1,"pellets":8,"spread":0.055,"damage":12.0}]
 var ammo_pickups: Node3D
 var lockbox: Node3D
+var police_car: Node3D
 var models: Array[Node3D] = []
 var magazines: Array[int] = []
 var reserves: Array[int] = []
@@ -76,7 +77,6 @@ func _ready():
 	reset()
 
 func make_pickups():
-	game.town.box(game.town.buildings.ranger,Vector3(-1.9,0.45,2.8),Vector3(1.1,0.9,0.75),game.town.mats.furniture)
 	var basement = game.town.streetscape.church.basement
 	var rack = game.town.box(basement,Vector3(2.8,0.42,1.2),Vector3(1.5,0.84,1.2),game.town.mats.wood)
 	var label = game.town.sign_text(rack,"COUNTY LOCKUP / SERVICE RIFLE",Vector3(0,0.15,0.61),15,Color("b3b099"))
@@ -95,6 +95,9 @@ func make_pickups():
 		model.scale = Vector3.ONE*0.8
 		adapt(model)
 		if data.building=="cellar": basement.prepare_cellar_lighting(area)
+	police_car=preload("res://police_car.gd").new()
+	police_car.game=game
+	game.town.streetscape.add_child(police_car)
 
 func collect(index: int) -> bool:
 	if game.state!="play" or index<0 or index>=LOADOUT.size() or owned[index]:
@@ -167,6 +170,7 @@ func reset():
 		target.set_meta("hits",0)
 	if lockbox: lockbox.reset()
 	if melee: melee.reset()
+	if police_car:police_car.reset()
 	update_model(1)
 
 func cycle(direction = 1):
@@ -278,7 +282,7 @@ func status() -> String:
 	return "%s  %02d / %02d" % [LOADOUT[selected].label,magazines[selected],reserves[selected]]
 
 func update_model(delta: float):
-	game.arm_visual.visible = selected<0 and (not melee or melee.elapsed<0)
+	game.arm_visual.visible = selected<0 and (not melee or not melee.raised)
 	for i in range(models.size()):
 		models[i].visible = i==selected and game.state in ["play","paused"]
 	var aim_position = Vector3(0,-0.10,-0.58) if aiming else Vector3(0.25,-0.27,-0.58)

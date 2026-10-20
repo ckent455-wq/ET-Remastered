@@ -21,7 +21,8 @@ var title_weather: Node
 var flashlight: SpotLight3D
 var hud: Control
 var achievements: Node
-var health = 100.0
+const CRASH_HEALTH = 25.0
+var health = CRASH_HEALTH
 var stamina = 100.0
 var invincible = 0.0
 var contact_progress = 0.0
@@ -286,7 +287,7 @@ func reset_game():
 	player.rotation = Vector3(0,START_YAW,0)
 	camera.rotation = Vector3.ZERO
 	pitch = 0
-	health = 100
+	health = CRASH_HEALTH
 	stamina = 100
 	contact_progress = 0
 	invincible = 0
@@ -317,8 +318,10 @@ func reset_game():
 	if grave_dig: grave_dig.reset()
 
 func set_state(next: String):
+	if next!="dialogue" and town and town.townspeople and town.townspeople.conversation:
+		town.townspeople.conversation.cancel()
 	if crash_site and next=="play" and crash_site.wake_phase!="":
-		if crash_site.wake_phase=="dialogue": crash_site.wake_phase="ground"
+		if crash_site.wake_phase=="dialogue": crash_site.wake_phase="door_ready"
 		next="waking"
 	if next=="dialogue" and state!="dialogue":
 		dialogue_page=0
@@ -341,7 +344,7 @@ func set_state(next: String):
 		dialogue_view.clear()
 	state = next
 	if state!="play": jump_queued = false
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state=="play" else Input.MOUSE_MODE_VISIBLE
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state in ["play","waking"] else Input.MOUSE_MODE_VISIBLE
 	update_camera()
 
 func update_camera():
@@ -352,9 +355,13 @@ func update_camera():
 		active_camera.make_current()
 
 func _unhandled_input(event):
+	if event is InputEventKey and event.pressed and not event.echo and (event.keycode==KEY_F11 or (event.keycode==KEY_ENTER and event.alt_pressed)):
+		get_window().mode=Window.MODE_MAXIMIZED if get_window().mode==Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
+		return
 	if state=="waking":
+		if event is InputEventMouseMotion: crash_site.look_inside(event.relative)
 		if event is InputEventKey and event.pressed and not event.echo:
-			if event.keycode==KEY_E: crash_site.stand_up()
+			if event.keycode==KEY_E: crash_site.interact_waking()
 			elif event.keycode==KEY_ESCAPE: set_state("paused")
 			elif event.keycode==KEY_M: soundscape.toggle_mute()
 		return
@@ -372,6 +379,9 @@ func _unhandled_input(event):
 			set_state("title")
 		return
 	if state=="dialogue":
+		if town.townspeople.conversation.active:
+			town.townspeople.conversation.handle(event)
+			return
 		if event is InputEventKey and event.pressed and not event.echo:
 			if event.keycode in [KEY_ESCAPE,KEY_TAB]: set_state("play")
 			elif event.keycode in [KEY_E,KEY_ENTER,KEY_SPACE]: advance_dialogue()
@@ -419,7 +429,7 @@ func _unhandled_input(event):
 		if state=="play" and event.keycode==KEY_E:
 			town.interact()
 		if state=="play" and event.keycode==KEY_H:
-			town.use_medkit()
+			town.use_healing()
 		if state=="play" and event.keycode==KEY_Q:
 			town.use_battery()
 		if state=="play" and event.keycode in [KEY_0,KEY_1,KEY_2,KEY_3]:
@@ -532,7 +542,7 @@ func update_flashlight_visual(delta: float):
 		return
 	if state!="play":
 		return
-	var wanted = 1.0 if flashlight.visible and weapons.selected<0 else 0.0
+	var wanted = 1.0 if flashlight.visible and weapons.selected<0 and not weapons.melee.raised else 0.0
 	flashlight_raise = move_toward(flashlight_raise,wanted,delta/FLASHLIGHT_ANIMATION_SECONDS)
 	var eased = smoothstep(0.0,1.0,flashlight_raise)
 	flashlight_model.position = FLASHLIGHT_DOWN.lerp(FLASHLIGHT_UP,eased)
@@ -568,6 +578,9 @@ func update_flashlight_battery(delta: float):
 		message = "Flashlight battery exhausted. Find batteries in town; Q fits a spare."
 
 func advance_dialogue():
+	if town.townspeople.conversation.active:
+		town.townspeople.conversation.advance()
+		return
 	if dialogue_page+1<dialogue_pages.size(): dialogue_page+=1
 	else: set_state("play")
 

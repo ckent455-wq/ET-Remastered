@@ -8,6 +8,7 @@ var motion_clock = 0.0
 var grave_key_given = false
 var grave_intro_shown = false
 var grave_approaching = false
+var conversation
 const GRAVE_KEY_LINE = "Hey! I've got the key to my grandpappy's grave. The Whitcomb mausoleum, back in the cemetery. They locked the radio spare in there. The chapel cellar key is with it.\n\nHere. Take it. I haven't been back since the evacuation.\n\nIf you hear somebody talking in there... just get the part and leave."
 
 const DEATH_DURATION = 1.7
@@ -18,6 +19,8 @@ const PEOPLE = [
 
 func _ready():
 	name = "Townspeople"
+	conversation=preload("res://pat_conversation.gd").new()
+	conversation.game=town.game
 	for data in PEOPLE:
 		var actor = CharacterBody3D.new()
 		actor.floor_snap_length = 0.15
@@ -77,6 +80,7 @@ func retro_materials(node: Node):
 		retro_materials(child)
 
 func reset():
+	if conversation:conversation.reset()
 	sheltering=false
 	grave_key_given=false
 	grave_intro_shown=false
@@ -331,9 +335,7 @@ func offer_grave_key():
 		grave_key_given=true
 		town.game.message="Pat gave you the Whitcomb mausoleum key."
 		town.game.soundscape.feedback("pickup")
-	town.game.dialogue_name=characters.ranger.name
-	town.game.dialogue_text=line
-	town.game.set_state("dialogue")
+	conversation.begin(line,true)
 
 func talk(id: String):
 	if characters[id].dead:
@@ -341,6 +343,10 @@ func talk(id: String):
 	if town.powered and town.inventory.coil>0 and id=="ranger" and not grave_key_given and not town.cemetery.unlocked:
 		offer_grave_key()
 		return
+	if id=="ranger":
+		conversation.begin(words(id))
+		return
+	conversation.cancel()
 	town.game.dialogue_name = characters[id].name
 	town.game.dialogue_text = words(id)
 	town.game.set_state("dialogue")
@@ -358,8 +364,8 @@ func words(id: String) -> String:
 				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store fuse to the workshop panel. Its powered cabinet holds the coil. Then ask me about my family mausoleum."
 				return "That was three nights ago. The horn came from the chapel speaker. I should have locked the barrier again. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
 			if town.inventory.station_key==0:
-				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Pat. Only Aubrey, John and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's on the front crate. Read my log."
-			return "You have the station key. The store counter drawer has a workshop fuse; the workshop's rear terminal takes it. Its powered cabinet holds the coil. Pat can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
+				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Pat. Only Aubrey, John and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's in the abandoned police car on Main Street. Open the driver's door and check the seat. Read my log."
+			return "You have the station key. The store counter drawer has a workshop fuse; the workshop's rear terminal takes it. Its powered cabinet holds the coil. I can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
 				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a first-aid kit. Q fits a battery."

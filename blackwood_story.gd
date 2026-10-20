@@ -44,7 +44,7 @@ const RECORDS = {
   ],
   "chapel_record": [
     "Vestry maintenance book",
-    "ONE MONTH BEFORE THE EVACUATION\nA month ago, the storm tore at roofs already neglected for years. It damaged the cellar repeater, which began carrying a low tone beneath old messages. Its buried line feeds the station and porch speaker. Nobody transmitted the tone.\nCaretaker Jonah slept beside the running rack. He forgot prayers, then his own name. His hands changed. I saw him crawl into the woods a week before the bus.\nWe kept the warning speaker running. We were spreading it.\nThese entries cover the month since the storm. Tonight I am leaving on the final bus.\n- Father Bellamy",
+    "PARISH HISTORY / 1891\nMill families built above the flood line. The nave sheltered neighbors. The county added the cellar repeater decades later.\nONE MONTH BEFORE EVACUATION\nThe storm damaged the old repeater. A low tone began beneath recordings. Its buried line feeds the station and porch speaker. Nobody transmitted it.\nCaretaker Jonah slept by the rack. He forgot prayers, then his name. His hands changed. He crawled into the woods a week before the bus.\nWe kept the warning speaker running. We were spreading it.\nThese entries cover the last month. Tonight I leave on the final bus.\n- Father Bellamy",
     "The storm-damaged chapel repeater spread an unidentified carrier. Caretaker Jonah was the first to change."
   ],
   "cellar_record": [

@@ -3,11 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://2mijfb8j8a4p"
-valid=false
+path="res://.godot/imported/rusted_spade_01_nor_gl_1k.exr-2145deb716310d4305f2b65c2856e435.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/tools/textures/rusted_spade_01_nor_gl_1k.exr"
+dest_files=["res://.godot/imported/rusted_spade_01_nor_gl_1k.exr-2145deb716310d4305f2b65c2856e435.ctex"]
 
 [params]
 

@@ -4,6 +4,7 @@ const BASE = Vector3(-4.2,0.32,-31)
 const FALL_SECONDS = 1.35
 const SCREAM_LEAD = 0.65
 const HIT_DAMAGE = 8.0
+const REACTION_LINE = "WHOA, that could have killed me!"
 var game
 var tree: Node3D
 var trunk_collision: CollisionShape3D
@@ -14,6 +15,7 @@ var hit_player = false
 var last_player_position = Vector3.ZERO
 var triggered = false
 var landed = false
+var reaction_shown = false
 var elapsed = 0.0
 var previous_z = 0.0
 var shake_left = 0.0
@@ -55,6 +57,7 @@ func reset():
 	triggered = false
 	fall_started = false
 	landed = false
+	reaction_shown = false
 	elapsed = 0.0
 	shake_left = 0.0
 	collision_pending = false
@@ -126,6 +129,14 @@ func _physics_process(delta):
 	var strength = 0.018*minf(1,shake_left/0.16)
 	game.camera.h_offset = sin(elapsed*103)*strength
 	game.camera.v_offset = sin(elapsed*137)*strength*0.65
+	if landed and not reaction_shown and fall_elapsed>=FALL_SECONDS+0.55 and game.health>0:
+		reaction_shown = true
+		shake_left = 0
+		game.camera.h_offset = 0
+		game.camera.v_offset = 0
+		game.dialogue_name = "You"
+		game.dialogue_text = REACTION_LINE
+		game.set_state("dialogue")
 
 
 func check_falling_hit(from_angle: float, to_angle: float, from_player: Vector3, to_player: Vector3):

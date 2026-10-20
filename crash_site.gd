@@ -19,9 +19,18 @@ var wake_phase = ""
 var wake_elapsed = 0.0
 var wake_menu_texture: Texture2D
 const MENU_FADE_SECONDS = 0.85
-const WAKE_EYE = 0.23
-const WAKE_PITCH = 1.28
-const STAND_SECONDS = 1.25
+const DRIVER_EYE = Vector3(-0.43,1.17,0.12)
+const EXIT_POSITION = Vector3(-1.70,0.01,0.6)
+const STARTER_SECONDS = 1.70
+const EXIT_SECONDS = 1.45
+var ignition_attempts = 0
+var seat_yaw = 0.0
+var seat_pitch = -0.15
+var exit_from = Transform3D.IDENTITY
+var starter_voice: AudioStreamPlayer
+var dashboard_light: OmniLight3D
+var steering_wheel: MeshInstance3D
+var body_materials: Array = []
 var door_open = false
 var door: Node3D
 var door_closed = Vector3.ZERO
@@ -44,7 +53,6 @@ func _ready():
 	add_child(wreck)
 	var model = preload("res://assets/vehicles/crashed_hatchback_rear_hatch.glb").instantiate()
 	wreck.add_child(model)
-	adapt(model)
 	# Reuse the original door, including its authored hinge and local geometry.
 	# The hatch conversion baked that pivot into the mesh at the car origin.
 	var broken_door=model.find_child("DriverDoor",true,false)
@@ -54,12 +62,15 @@ func _ready():
 	door=original_car.find_child("DriverDoor",true,false).duplicate()
 	original_car.free()
 	model.add_child(door)
-	adapt(door)
+	repair_driver_window(model)
+	prepare_cabin_windows(model)
+	adapt(model)
 	door_closed = door.rotation
 	hatch=model.find_child("RearHatch",true,false)
 	hatch_closed=hatch.rotation
 	build_car_interior()
 	build_trunk()
+	starter_voice=game.soundscape.voice(game.soundscape.stream("engine_starter"),-13)
 	build_tutorial_items()
 	var collision = CollisionShape3D.new()
 	var shape = BoxShape3D.new()
@@ -94,6 +105,116 @@ func _ready():
 		visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		steam.append(visual)
 
+func repair_driver_window(model:Node3D):
+	# The same planar cut also put part of the windshield and its painted
+	# support on the swinging door. Restore those pieces to the fixed shell.
+	var door_mesh=ArrayMesh.new();var pillars=ArrayMesh.new()
+	for surface in range(door.mesh.get_surface_count()):
+		var material=door.get_active_material(surface)
+		var arrays=door.mesh.surface_get_arrays(surface)
+		var vertices=arrays[Mesh.ARRAY_VERTEX];var uvs=arrays[Mesh.ARRAY_TEX_UV];var indices=arrays[Mesh.ARRAY_INDEX]
+		var fixed=PackedInt32Array();var moving=PackedInt32Array()
+		for i in range(0,indices.size(),3):
+			var uv=Vector2.ZERO;var center=Vector3.ZERO
+			for k in range(3):
+				uv+=uvs[indices[i+k]]/3.0
+				center+=door.transform*vertices[indices[i+k]]/3.0
+			var windshield=uv.distance_to(Vector2(0.161,0.543))<0.006
+			var windshield_seal=uv.distance_to(Vector2(0.06756,0.03294))<0.006
+			var painted_pillar=uv.distance_to(Vector2(0.855525,0.319231))<0.006 and center.y>1.0
+			for k in range(3):
+				if windshield or windshield_seal or painted_pillar:fixed.append(indices[i+k])
+				else:moving.append(indices[i+k])
+		for selection in [fixed,moving]:
+			if selection.is_empty():continue
+			var parts=arrays.duplicate();parts[Mesh.ARRAY_INDEX]=selection
+			var target=pillars if selection==fixed else door_mesh
+			target.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,parts)
+			target.surface_set_material(target.get_surface_count()-1,material)
+	door.mesh=door_mesh
+	if pillars.get_surface_count()>0:
+		var fixed_shell=MeshInstance3D.new();fixed_shell.name="RestoredWindshieldPillars";fixed_shell.mesh=pillars
+		model.add_child(fixed_shell);fixed_shell.transform=door.transform
+	# The source door was cut at x=-0.6, through the sloping window. Its
+	# upper glass and seals remained on the body and must share the hinge.
+	for mesh in model.find_children("*","MeshInstance3D",true,false):
+		if mesh==door or mesh.name!="Hatchback Car_15":continue
+		var body=ArrayMesh.new();var upper=ArrayMesh.new()
+		var to_car=wreck.global_transform.affine_inverse()*mesh.global_transform
+		for surface in range(mesh.mesh.get_surface_count()):
+			var material=mesh.get_active_material(surface)
+			var arrays=mesh.mesh.surface_get_arrays(surface)
+			var vertices=arrays[Mesh.ARRAY_VERTEX];var uvs=arrays[Mesh.ARRAY_TEX_UV];var indices=arrays[Mesh.ARRAY_INDEX]
+			var image=material.albedo_texture.get_image()
+			if image.is_compressed():image.decompress()
+			var fixed=PackedInt32Array();var moving=PackedInt32Array()
+			for i in range(0,indices.size(),3):
+				var in_window=true;var uv=Vector2.ZERO
+				for k in range(3):
+					var p=to_car*vertices[indices[i+k]];uv+=uvs[indices[i+k]]/3.0
+					var above_cut=p.y>1.28 or (p.z>=0.499 and p.y>1.0)
+					in_window=in_window and p.x < -0.50 and above_cut and p.z> -0.18 and p.z<0.531
+				var color=image.get_pixel(clampi(int(uv.x*image.get_width()),0,image.get_width()-1),clampi(int(uv.y*image.get_height()),0,image.get_height()-1))
+				var glass=color.r>0.17 and color.r<0.43 and color.g-color.r>0.02 and color.b-color.r>0.035
+				var seal=maxf(color.r,maxf(color.g,color.b))<0.22
+				for k in range(3):
+					if in_window and (glass or seal):moving.append(indices[i+k])
+					else:fixed.append(indices[i+k])
+			for selection in [fixed,moving]:
+				if selection.is_empty():continue
+				var parts=arrays.duplicate();parts[Mesh.ARRAY_INDEX]=selection
+				var target=body if selection==fixed else upper
+				target.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,parts)
+				target.surface_set_material(target.get_surface_count()-1,material)
+		mesh.mesh=body
+		if upper.get_surface_count()>0:
+			var window=MeshInstance3D.new();window.name="DriverDoorUpperWindow";window.mesh=upper
+			mesh.add_child(window);window.reparent(door,true)
+
+func prepare_cabin_windows(model:Node3D):
+	var images={}
+	for mesh in model.find_children("*","MeshInstance3D",true,false):
+		var rebuilt=ArrayMesh.new()
+		var transform=wreck.global_transform.affine_inverse()*mesh.global_transform
+		for surface in range(mesh.mesh.get_surface_count()):
+			var material=mesh.get_active_material(surface)
+			var arrays=mesh.mesh.surface_get_arrays(surface)
+			var indices=arrays[Mesh.ARRAY_INDEX]
+			var vertices=arrays[Mesh.ARRAY_VERTEX]
+			var uvs=arrays[Mesh.ARRAY_TEX_UV]
+			var image:Image=null
+			if material is StandardMaterial3D and material.albedo_texture:
+				var key=material.albedo_texture.get_instance_id()
+				if not images.has(key):
+					var source=material.albedo_texture.get_image()
+					if source.is_compressed():source.decompress()
+					images[key]=source
+				image=images[key]
+			var opaque=PackedInt32Array();var glass=PackedInt32Array()
+			for i in range(0,indices.size(),3):
+				var point=Vector3.ZERO;var uv=Vector2.ZERO
+				for k in range(3):point+=transform*vertices[indices[i+k]]/3.0;uv+=uvs[indices[i+k]]/3.0
+				var color=image.get_pixel(clampi(int(uv.x*image.get_width()),0,image.get_width()-1),clampi(int(uv.y*image.get_height()),0,image.get_height()-1)) if image else Color.WHITE
+				# Only the source's blue-grey glass palette above the belt line;
+				# painted frames, rubber seals, mirrors and lamps stay opaque.
+				var is_glass=point.y>0.88 and color.r>0.17 and color.r<0.43 and color.g-color.r>0.02 and color.b-color.r>0.035
+				for k in range(3):
+					if is_glass:glass.append(indices[i+k])
+					else:opaque.append(indices[i+k])
+			for transparent in [false,true]:
+				var selected=glass if transparent else opaque
+				if selected.is_empty():continue
+				var parts=arrays.duplicate();parts[Mesh.ARRAY_INDEX]=selected
+				rebuilt.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,parts)
+				var assigned=material
+				if transparent:
+					assigned=material.duplicate();assigned.resource_name="CabinWindowGlass"
+					assigned.transparency=BaseMaterial3D.TRANSPARENCY_ALPHA
+					assigned.albedo_color.a=0.12;assigned.roughness=0.5
+					rebuilt.set_meta("has_cabin_glass",true)
+				rebuilt.surface_set_material(rebuilt.get_surface_count()-1,assigned)
+		mesh.mesh=rebuilt
+
 func adapt(node: Node):
 	if node is MeshInstance3D:
 		for i in range(node.mesh.get_surface_count()):
@@ -103,9 +224,10 @@ func adapt(node: Node):
 				material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 				material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
 				material.roughness = 1
-				material.albedo_color = Color(0.72,0.70,0.62)
+				material.albedo_color = Color(0.72,0.70,0.62,material.albedo_color.a)
 				material.metallic_specular = 0
 				node.set_surface_override_material(i,material)
+				body_materials.append({"material":material,"cull":material.cull_mode})
 	for child in node.get_children():
 		adapt(child)
 
@@ -163,6 +285,11 @@ func build_tutorial_items():
 	reset()
 
 func reset():
+	if game.camera.top_level: release_seated_camera()
+	ignition_attempts=0;seat_yaw=0;seat_pitch=-0.15
+	if starter_voice: starter_voice.stop()
+	if dashboard_light: dashboard_light.hide()
+	if steering_wheel: steering_wheel.rotation.z=0
 	elapsed=0
 	update_headlights()
 	wake_phase = ""
@@ -190,50 +317,111 @@ func reset():
 	update_door_target()
 
 func start_opening():
-	# Retain the last rendered menu, including buttons, during the fade.
 	if DisplayServer.get_name()!="headless":
 		wake_menu_texture=ImageTexture.create_from_image(get_viewport().get_texture().get_image())
-	wake_phase="menu_fade"
-	wake_elapsed=0.0
+	wake_phase="menu_fade";wake_elapsed=0;ignition_attempts=0
+	seat_yaw=0;seat_pitch=-0.55
 	game.player.velocity=Vector3.ZERO
-	game.pitch=WAKE_PITCH
-	game.camera.position.y=WAKE_EYE
-	game.camera.rotation=Vector3(WAKE_PITCH,0,0.08)
+	game.camera.top_level=true
+	set_cabin_view(true)
+	update_seated_camera()
+	dashboard_light.show()
 	game.set_state("waking")
+
+func update_seated_camera():
+	var tilt=0.07*(1.0-clampf(wake_elapsed/3.0,0,1)) if wake_phase=="blinking" else 0.0
+	game.camera.global_transform=wreck.global_transform*Transform3D(Basis.from_euler(Vector3(seat_pitch,seat_yaw,tilt)),DRIVER_EYE)
+	game.pitch=seat_pitch
+
+func look_inside(relative:Vector2):
+	if wake_phase not in ["ignition_ready","ignition_retry","door_ready"]:return
+	seat_yaw=clampf(seat_yaw-relative.x*0.0026,-1.0,1.65)
+	seat_pitch=clampf(seat_pitch-relative.y*0.0026,-0.65,0.40)
+	update_seated_camera()
+
+func waking_prompt()->String:
+	match wake_phase:
+		"ignition_ready":return "E TO TRY TO START THE CAR"
+		"ignition_retry":return "It didn't start.
+E TO TRY THE IGNITION AGAIN"
+		"cranking":return "Trying the ignition..."
+		"door_ready":return "E TO OPEN THE DRIVER'S DOOR AND GET OUT"
+	return ""
+
+func interact_waking():
+	if wake_phase in ["ignition_ready","ignition_retry"]:
+		ignition_attempts+=1
+		wake_phase="cranking";wake_elapsed=0
+		starter_voice.pitch_scale=1.0 if ignition_attempts==1 else 0.94
+		starter_voice.stream_paused=false;starter_voice.play()
+	elif wake_phase=="door_ready":
+		wake_phase="door_opening";wake_elapsed=0
+		door_open=true
+		if door_tween:door_tween.kill()
+		game.soundscape.storage_move(wreck.global_position,false,true)
+		game.town.actions.crash_driver_door.label="Close driver's door"
 
 func show_wake_dialogue():
 	wake_phase="dialogue"
-	game.dialogue_name = ""
-	game.dialogue_text = "My head... I must have blacked out. Something crossed the road. I swerved, and the car hit that stump.\n\nThe engine's dead. No phone signal. My backpack and flashlight are still in the trunk. I need to get up and collect them before I look for help."
+	game.dialogue_name=""
+	game.dialogue_text="Come on... no. The engine's dead. And there's no phone signal.\n\nMy head... I'm bleeding. Something crossed the road. I swerved and hit that stump.\n\nI have a bandage in my backpack. I need to grab it and stop this bleeding. My backpack and flashlight are in the trunk."
 	game.set_state("dialogue")
 
-func stand_up():
-	if wake_phase!="ground": return
-	wake_phase="standing"
-	wake_elapsed=0.0
-	game.jump_queued=false
+func set_cabin_view(_inside:bool):
+	# Windows have their own transparent surfaces; retain the complete body shell.
+	for entry in body_materials:entry.material.cull_mode=entry.cull
 
-func update_waking(delta: float):
-	if game.state!="waking": return
+func release_seated_camera():
+	set_cabin_view(false)
+	game.camera.top_level=false
+	game.camera.position=Vector3(0,game.STANDING_EYE,0)
+	game.camera.rotation=Vector3.ZERO;game.pitch=0
+
+func leave_seat_for_testing():
+	if not game.camera.top_level:return
+	game.player.global_position=wreck.to_global(EXIT_POSITION)
+	game.player.rotation=Vector3(0,wreck.rotation.y+PI,0)
+	release_seated_camera()
+	starter_voice.stop();dashboard_light.hide();steering_wheel.rotation.z=0
+	door_open=true;door.rotation.y=door_closed.y-1.15
+
+func update_waking(delta:float):
+	if starter_voice:starter_voice.stream_paused=game.state!="waking"
+	if game.state!="waking":return
 	wake_elapsed+=minf(delta,0.1)
-	game.player.velocity=Vector3.ZERO
-	game.jump_queued=false
+	game.player.velocity=Vector3.ZERO;game.jump_queued=false
 	if wake_phase=="menu_fade" and wake_elapsed>=MENU_FADE_SECONDS:
-		wake_phase="blinking"
-		wake_elapsed=0.0
-		wake_menu_texture=null
-		game.update_camera()
-	elif wake_phase=="blinking" and wake_elapsed>=3.0:
-		show_wake_dialogue()
-	elif wake_phase=="standing":
-		var t=smoothstep(0.0,1.0,clampf(wake_elapsed/STAND_SECONDS,0,1))
-		game.camera.position.y=lerpf(WAKE_EYE,game.STANDING_EYE,t)
-		game.pitch=lerpf(WAKE_PITCH,0,t)
-		game.camera.rotation=Vector3(game.pitch,0,0.08*(1-t))
+		wake_phase="blinking";wake_elapsed=0;wake_menu_texture=null;game.update_camera()
+	elif wake_phase=="blinking":
+		seat_pitch=lerpf(-0.55,-0.15,smoothstep(0,3,wake_elapsed))
+		if wake_elapsed>=3:
+			wake_phase="ignition_ready";wake_elapsed=0;seat_pitch=-0.15
+	elif wake_phase=="cranking":
+		dashboard_light.light_energy=0.12+absf(sin(wake_elapsed*39))*0.10
+		steering_wheel.rotation.z=sin(wake_elapsed*32)*0.012
+		if wake_elapsed>=STARTER_SECONDS:
+			starter_voice.stop();steering_wheel.rotation.z=0;dashboard_light.light_energy=0.16
+			if ignition_attempts<2:wake_phase="ignition_retry";wake_elapsed=0
+			else:show_wake_dialogue()
+	elif wake_phase=="door_opening":
+		var t=smoothstep(0,0.7,wake_elapsed)
+		door.rotation.y=lerpf(door_closed.y,door_closed.y-1.15,t)
 		if t>=1:
-			wake_phase=""
-			game.set_state("play")
-			game.message="Go to the rear hatch. Press E to open it and collect your things."
+			wake_phase="exiting";wake_elapsed=0;exit_from=game.camera.global_transform
+	elif wake_phase=="exiting":
+		var t=smoothstep(0,EXIT_SECONDS,wake_elapsed)
+		var endpoint=wreck.to_global(EXIT_POSITION)+Vector3.UP*game.STANDING_EYE
+		var control=wreck.to_global(Vector3(-1.30,1.38,0.3))
+		var position=exit_from.origin.lerp(control,t).lerp(control.lerp(endpoint,t),t)
+		var basis=Basis(Vector3.UP,wreck.rotation.y+PI)
+		game.camera.global_transform=Transform3D(exit_from.basis.slerp(basis,t),position)
+		if t>=1:
+			game.player.global_position=wreck.to_global(EXIT_POSITION)
+			game.player.rotation=Vector3(0,wreck.rotation.y+PI,0)
+			release_seated_camera();dashboard_light.hide()
+			wake_phase="";game.set_state("play")
+			game.message="Walk to the back of the car. E TO OPEN the trunk and collect your backpack and flashlight."
+	if game.camera.top_level and wake_phase!="exiting":update_seated_camera()
 	game.hud.queue_redraw()
 
 func eye_opening() -> float:
@@ -279,18 +467,19 @@ func interact_tutorial(id: String):
 		game.message = "Driver's door opened. Your gear is in the trunk." if door_open else "Driver's door closed."
 	elif id=="crash_backpack" and hatch_open and not has_backpack:
 		has_backpack = true
+		game.town.inventory.bandage+=1
 		bag_visual.hide()
 		tutorial_areas.crash_backpack.collision_layer = 0
 		update_item_targets()
 		game.soundscape.feedback("pickup")
-		game.message = "Backpack collected. Take the flashlight from the trunk if you have not already."
+		game.message = "Backpack collected. There's a bandage inside. H to use it (+10 health), or I to open your backpack."
 	elif id=="crash_flashlight" and hatch_open and not has_flashlight:
 		has_flashlight = true
 		light_visual.hide()
 		tutorial_areas.crash_flashlight.collision_layer = 0
 		game.soundscape.feedback("pickup")
 		update_item_targets()
-		game.message = "Flashlight collected. F switches it on. The detour sheet in the trunk is optional."
+		game.message = "Flashlight collected. F switches it on. H uses the bandage in your backpack to dress your wound."
 	elif id=="crash_record" and hatch_open and not has_detour_sheet:
 		has_detour_sheet = true
 		detour_visual.hide()
@@ -324,9 +513,14 @@ func build_car_interior():
 	var town = game.town
 	var fabric = town.mats.fabric.duplicate()
 	fabric.albedo_color = Color("53594f")
+	fabric.albedo_texture=null
 	var carpet = game.mat(Color("292d29"))
 	var plastic = game.mat(Color("3b403a"))
 	var pale = game.mat(Color("8a8b73"))
+	# A fitted headliner sits below the native roof. Native pillars and door
+	# frames remain intact and visible from both sides.
+	var headliner=town.box(cabin,Vector3(0,1.39,0.55),Vector3(0.90,0.018,0.84),carpet,false)
+	headliner.name="CabinHeadliner"
 	# Visual-only cabin geometry stays inside the car's existing collision shell.
 	town.box(cabin,Vector3(0,0.30,0.1),Vector3(1.55,0.06,2.6),carpet,false)
 	for x in [-0.43,0.43]:
@@ -334,37 +528,34 @@ func build_car_interior():
 		town.box(cabin,Vector3(x,0.50,-0.1),Vector3(0.64,0.14,0.95),fabric,false)
 		var back = town.box(cabin,Vector3(x,0.79,0.43),Vector3(0.63,0.65,0.16),fabric,false)
 		back.rotation.x = -0.12
+		for seam in [-0.16,0,0.16]:town.box(back,Vector3(seam,0,-0.084),Vector3(0.006,0.52,0.004),carpet,false)
 		town.box(cabin,Vector3(x,1.19,0.48),Vector3(0.35,0.22,0.13),fabric,false)
-		for seam in [-0.16,0,0.16]:
-			town.box(cabin,Vector3(x+seam,0.574,-0.11),Vector3(0.012,0.009,0.76),plastic,false)
 		var belt = town.box(cabin,Vector3(x+0.17,0.83,0.325),Vector3(0.045,0.57,0.02),carpet,false)
 		belt.rotation.z = -0.22
 		town.box(cabin,Vector3(x*0.44,0.62,0.27),Vector3(0.055,0.10,0.06),plastic,false)
 	town.box(cabin,Vector3(0,0.50,1.10),Vector3(1.42,0.16,0.48),fabric,false)
 	town.box(cabin,Vector3(0,0.79,1.34),Vector3(1.42,0.47,0.14),fabric,false)
-	# Dashboard and instruments fit below the windshield; seats and gear keep their positions.
-	# Dashboard, glovebox, center console, and a simple steering wheel.
-	town.box(cabin,Vector3(0,0.70,-0.66),Vector3(1.28,0.16,0.22),plastic,false)
-	town.box(cabin,Vector3(0.4,0.72,-0.535),Vector3(0.48,0.16,0.02),carpet,false)
-	town.box(cabin,Vector3(0.4,0.76,-0.52),Vector3(0.13,0.02,0.015),pale,false)
-	town.box(cabin,Vector3(-0.43,0.86,-0.67),Vector3(0.36,0.10,0.035),carpet,false)
-	for x in [-0.51,-0.35]:
-		town.box(cabin,Vector3(x,0.88,-0.645),Vector3(0.09,0.04,0.01),pale,false)
-	town.box(cabin,Vector3(0,0.47,-0.22),Vector3(0.16,0.24,0.76),plastic,false)
-	town.box(cabin,Vector3(0,0.67,-0.37),Vector3(0.04,0.22,0.04),carpet,false)
-	town.box(cabin,Vector3(0,0.79,-0.37),Vector3(0.07,0.05,0.07),plastic,false)
-	var wheel_mesh = TorusMesh.new()
-	wheel_mesh.inner_radius = 0.12
-	wheel_mesh.outer_radius = 0.16
-	wheel_mesh.rings = 10
-	wheel_mesh.ring_segments = 6
-	var wheel = game.mesh_at(cabin,wheel_mesh,Vector3(-0.43,0.97,-0.60),carpet)
-	wheel.rotation.x = PI/2-0.3
-	town.box(cabin,Vector3(-0.43,0.97,-0.60),Vector3(0.26,0.035,0.035),plastic,false)
-	# The door lining and handle move with the opened door.
-	town.box(door,Vector3(0.04,-0.02,0.64),Vector3(0.035,0.40,1.10),plastic,false)
-	town.box(door,Vector3(0.085,0.02,0.55),Vector3(0.08,0.06,0.35),carpet,false)
-	town.box(door,Vector3(0.09,0.12,0.28),Vector3(0.04,0.035,0.16),pale,false)
+	preload("res://car_cabin_details.gd").build(self,cabin,plastic,fabric,carpet,pale)
+	dashboard_light=OmniLight3D.new();dashboard_light.name="DashboardGlow"
+	dashboard_light.position=Vector3(-0.43,1.02,-0.45);dashboard_light.light_color=Color("b29453")
+	dashboard_light.light_energy=0.16;dashboard_light.omni_range=1.6
+	cabin.add_child(dashboard_light);dashboard_light.hide()
+	build_crash_blood(cabin)
+
+func build_crash_blood(cabin:Node3D):
+	var blood=game.mat(Color("54231f"))
+	blood.cull_mode=BaseMaterial3D.CULL_DISABLED
+	var tool=SurfaceTool.new();tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var points=[Vector2(-0.10,-0.025),Vector2(-0.025,-0.045),Vector2(0.07,-0.02),Vector2(0.12,0.015),Vector2(0.03,0.028),Vector2(-0.08,0.016)]
+	for i in range(1,points.size()-1):
+		for index in [0,i,i+1]:
+			var p=points[index]
+			tool.add_vertex(Vector3(p.x+0.05,0.917-p.y*0.048,p.y-0.76))
+	tool.generate_normals()
+	var smear=MeshInstance3D.new();smear.name="CrashBloodSmear";smear.mesh=tool.commit();smear.material_override=blood;cabin.add_child(smear)
+	for i in range(4):
+		var drop=game.mesh_at(wreck,game.cylinder(0.035+i*0.008,0.035+i*0.008,0.002,7),Vector3(-1.12-i*0.10,0.006+0.025*(-1.12-i*0.10),0.25+i*0.12),blood)
+		drop.name="CrashBloodDrop";drop.scale.z=0.65
 
 
 func build_detour_sheet():

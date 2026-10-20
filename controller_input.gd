@@ -92,6 +92,7 @@ func button(id:int):
  if state=="dialogue":
   if id in [JOY_BUTTON_A,JOY_BUTTON_X]:send_key(KEY_E)
   elif id in [JOY_BUTTON_B,JOY_BUTTON_START]:send_key(KEY_ESCAPE)
+  elif game.town.townspeople.conversation.active and direction(id)!=Vector2i.ZERO:send_key(KEY_UP if direction(id).y<0 or direction(id).x<0 else KEY_DOWN)
   return
  if state=="waking":
   if id==JOY_BUTTON_X:send_key(KEY_E)
@@ -119,14 +120,16 @@ func menu_move(step:int):
 func _process(delta):
  if not using_controller:return
  nav_wait=maxf(0,nav_wait-delta)
- if game.state=="play":
+ if game.state=="waking":
+  game.crash_site.look_inside(stick(JOY_AXIS_RIGHT_X,JOY_AXIS_RIGHT_Y)*delta*600.0)
+ elif game.state=="play":
   var look=stick(JOY_AXIS_RIGHT_X,JOY_AXIS_RIGHT_Y)
   var rate=1.55 if aiming() else 2.25
   game.player.rotate_y(-look.x*rate*delta)
   game.pitch=clampf(game.pitch-look.y*rate*delta,-1.35,1.35)
   game.camera.rotation.x=game.pitch
   if axes.get(JOY_AXIS_TRIGGER_RIGHT,0.0)>0.35:game.weapons.fire()
- elif game.state in ["title","paused","backpack","journal"] and nav_wait<=0:
+ elif game.state in ["title","paused","backpack","journal","dialogue"] and nav_wait<=0:
   var v=movement()
   for id in [JOY_BUTTON_DPAD_LEFT,JOY_BUTTON_DPAD_RIGHT,JOY_BUTTON_DPAD_UP,JOY_BUTTON_DPAD_DOWN]:
    if down(id):v=Vector2(direction(id));break
@@ -134,6 +137,8 @@ func _process(delta):
    var d=Vector2i(signi(int(signf(v.x))),0) if absf(v.x)>absf(v.y) else Vector2i(0,signi(int(signf(v.y))))
    if game.state=="backpack":game.backpack.controller_move(d)
    elif game.state=="journal":send_key(KEY_LEFT if d.x<0 or d.y<0 else KEY_RIGHT)
+   elif game.state=="dialogue":
+    if game.town.townspeople.conversation.active:send_key(KEY_UP if d.x<0 or d.y<0 else KEY_DOWN)
    else:menu_move(-1 if d.x<0 or d.y<0 else 1)
    nav_wait=0.17
 func label(token:String)->String:

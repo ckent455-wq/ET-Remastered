@@ -4,7 +4,9 @@ The chapel repeater spreads an unidentified carrier beneath familiar voices and 
 
 ## Timeline
 
+- In 1891, mill families funded the hilltop church above the creek's flood line. Its nave served as a refuge during floods. The county added the civil-defense repeater decades later; the church was a place of safety long before the signal.
 - Twelve years ago, the mill closed. Most families moved away over the following years. Boarded businesses, old cars, damaged fences, and long-neglected rooms come from this decline. Sebus Hardware is one of the long-shuttered storefronts. A handful of families stayed, supported by the general store, clinic, and repair shop. John and Ada lived in an occupied room at Saint George Hotel.
+- Nine years ago, the old Victorian house's occupants left. It was the mill superintendent's residence, separate from John and Ada's hotel room. Its clearance notice remains downstairs. Pat inspected it after the recent storm and found fresh bare footprints leading into the cellar; he does not know who made them.
 - One month before evacuation, a storm damages the civil-defense repeater beneath the chapel. The storm also worsens existing roof damage and brings down rotten ceilings. A low tone begins in the relayed signal. Its buried line feeds the town station and porch speaker. The inspection is never completed.
 - Over the following weeks, residents near running sets and loudspeakers lose sleep, hear borrowed voices, forget things and become confused or violent. Severe cases develop locked jaws and distorted hands. Exposure varies; early symptoms ease away from the signal. Ordinary radio is not inherently infectious.
 - One week before evacuation, caretaker Jonah, who sleeps near the continuously running rack, changes and retreats into the woods. Father Bellamy witnesses it. His maintenance book admits that keeping the warning speaker on spread the carrier.
@@ -23,6 +25,8 @@ Nine existing records distribute the explanation: the clinic charts progressive 
 Pat regrets reopening the barrier. Aubrey stays to search for her patients. John stays to isolate the equipment, then cannot get past the creatures to retrieve the tuner. Ada and Father Bellamy leave on the final bus. Evacuation was a response to weeks of symptoms, not the cause of the pre-existing decay.
 
 ## Radio logic and endings
+
+Pat offers optional questions about town history, the Victorian house, the church, the carrier, the remaining residents and current objectives. His first introduction and the mausoleum-key handoff remain intact. Evidence can deepen his answers, but his testimony does not establish the carrier's origin. Short, deduplicated conversation notes go into the journal without counting as physical story evidence or unlocking quest progress.
 
 The station needs the workshop coil and isolated cellar tuning unit. Repair alone restores power; it does not reroute the antenna. The physical desk BYPASS switch selects AMBER (chapel repeater, carrying the tone) or GREEN (direct county, avoiding it). Reading never toggles hardware. Hold E at the main receiver to call.
 

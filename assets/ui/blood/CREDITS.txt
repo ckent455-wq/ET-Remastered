@@ -1,0 +1,6 @@
+Source: user's downloaded Bloody Screen Effects pack.
+blood_border.png: Effect_5.png
+blood_critical.png: Effect_11.png
+blood_drops.png: Blood_Drops.png
+Original PNG textures retained. Drawn at the game's low resolution with nearest
+filtering; opacity is controlled by current player health.

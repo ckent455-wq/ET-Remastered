@@ -23,6 +23,8 @@ licenses.mkdir(exist_ok=True)
 shutil.copy2(ROOT/'assets'/'OFL.txt', licenses/'Font-OFL.txt')
 shutil.copy2(ROOT/'assets'/'high_voltage'/'LICENSE.txt', licenses/'PSX-Horror-Props-CC-BY-4.0.txt')
 shutil.copy2(ROOT/'assets'/'weapons'/'LICENSE.txt', licenses/'Guns-CC0.txt')
+for folder in ['healing', 'ui/blood']:
+    shutil.copy2(ROOT/'assets'/folder/'CREDITS.txt', licenses/(folder.replace('/', '-')+'-CREDITS.txt'))
 for name in ['LICENSE.txt', 'COPYRIGHT.txt']:
     request = urllib.request.Request('https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/'+name, headers={'User-Agent':'FarFromHome-Release'})
     with urllib.request.urlopen(request, timeout=45) as response:

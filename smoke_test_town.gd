@@ -101,11 +101,12 @@ func check():
 	assert(town.doors.ranger.open,"Door closing blocked while player in doorway")
 	# Full supply and quest progression.
 	town.perform("clinic_cabinet")
+	game.health = 100
 	town.use_medkit()
 	assert(town.inventory.medkit==2,"Don't waste a medkit at full health")
 	game.health = 48
 	town.use_medkit()
-	assert(game.health==93 and town.inventory.medkit==1,"Medkit heals")
+	assert(game.health==98 and town.inventory.medkit==1,"Medkit heals")
 	town.perform("store_cabinet")
 	game.flashlight_charge = 100
 	town.use_battery()

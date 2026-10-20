@@ -12,6 +12,9 @@ var passage_fade = 0.0
 var dialogue_elapsed = 0.0
 var dialogue_last_page = -1
 var dialogue_font: Font = preload("res://assets/dialogue_pixels.fnt")
+const BLOOD_BORDER=preload("res://assets/ui/blood/blood_border.png")
+const BLOOD_CRITICAL=preload("res://assets/ui/blood/blood_critical.png")
+const BLOOD_DROPS=preload("res://assets/ui/blood/blood_drops.png")
 
 const INK = Color("d2dfd0")
 const DIM = Color("87a39f")
@@ -126,6 +129,7 @@ func _draw():
 		draw_line(Vector2(0,y),Vector2(640,y),Color(0,0,0,0.05))
 	for i in range(12):
 		draw_rect(Rect2(i,i,640-i*2,400-i*2),Color(0,0,0,0.025),false,1)
+	if game.state in ["play","dialogue"]:draw_injury()
 	if game.invincible>1:
 		draw_rect(Rect2(0,0,640,400),Color(0.8,0.15,0.1,0.15))
 	if game.state=="play":
@@ -135,7 +139,7 @@ func _draw():
 			draw_rect(Rect2(p,Vector2(52,5)),Color("40352d"))
 			draw_rect(Rect2(p,Vector2(52*target.fraction,5)),Color("a5b187") if target.fraction>0.4 else Color("b96b53"))
 		# Only immediate survival information remains in the world view.
-		status_bar("HEALTH",Vector2(20,350),game.health,Color("a1c8a1"))
+		status_bar("HEALTH",Vector2(20,350),game.health,Color("c97665") if game.health<=25 else Color("c5ab78") if game.health<=50 else Color("a1c8a1"))
 		if game.stamina<99:
 			status_bar("STAMINA",Vector2(20,372),game.stamina,DIM)
 		var light_color = Color("c48060") if game.flashlight_charge<=15 else Color("d0c59b")
@@ -309,7 +313,7 @@ func draw_journal():
 		text("CURRENT OBJECTIVE",Vector2(78,105),11,DIM)
 		paragraph(game.town.objective(),78,127,476,16,AMBER)
 		text("HEALTH %d   LIGHT %d%%   RADIO %s" % [int(game.health),int(game.flashlight_charge),"READY" if game.town.radio_ready else "OFFLINE"],Vector2(78,151),11,DIM)
-		text("PACK / Health kits %d   Batteries %d   [H] Heal   [Q] Fit battery" % [game.town.inventory.medkit,game.town.inventory.battery],Vector2(78,168),12)
+		text("PACK / Bandages %d   Kits %d   Batteries %d   H Heal / Q Battery" % [game.town.inventory.bandage,game.town.inventory.medkit,game.town.inventory.battery],Vector2(78,168),11)
 		text("KEY %d   POWER FUSE %d   COIL %d   CELLAR KEY %d   TUNER %d" % [game.town.inventory.station_key,game.town.inventory.workshop_fuse,game.town.inventory.coil,game.town.inventory.chapel_key,game.town.inventory.tuner],Vector2(78,184),10,DIM)
 		var searched = game.town.interiors.containers.values().filter(func(storage): return storage.searched).size()
 		text("STORAGE / %d of 12 searched   SHOTGUN BOX KEY %d" % [searched,game.town.inventory.shotgun_key],Vector2(78,199),10,DIM)
@@ -376,6 +380,10 @@ func dialogue_line(value: String, position: Vector2, size: int, color: Color):
 	draw_string(dialogue_font,position,value,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
 
 func draw_dialogue():
+	var conversation=game.town.townspeople.conversation
+	if conversation.active and conversation.choosing:
+		draw_pat_questions(conversation)
+		return
 	var ink = Color("e8e2d5")
 	var bounds = preload("res://dialogue_style.gd").BOX
 	# Opaque black, square cream border, and integer-aligned bitmap lettering.
@@ -388,6 +396,23 @@ func draw_dialogue():
 	# The small stepped arrow replaces the previous buttons and speaker header.
 	for row in range(3):
 		draw_rect(Rect2(520+row*2,365+row*2,14-row*4,2),ink)
+	if conversation.active:
+		var hint="PAT / "+("E CONTINUE / ESC QUESTIONS" if game.dialogue_page+1<game.dialogue_pages.size() else "E FOR MORE QUESTIONS")
+		text(game.controller.hint(hint),Vector2(82,257),11,INK)
+
+func draw_pat_questions(conversation):
+	draw_rect(conversation.BOX,Color(0.015,0.02,0.017,0.97))
+	draw_rect(conversation.BOX,INK,false,2)
+	text("PAT / ASK A QUESTION",Vector2(80,144),16,INK)
+	for i in range(conversation.TOPICS.size()+1):
+		var bounds=conversation.row(i)
+		if i==conversation.selected:draw_rect(bounds,Color("354039"))
+		var label="I should get going." if i==conversation.TOPICS.size() else conversation.TOPICS[i].question
+		text(label,Vector2(94,bounds.position.y+18),14,INK)
+		if i<conversation.TOPICS.size() and conversation.asked.has(conversation.TOPICS[i].id):draw_circle(Vector2(84,bounds.position.y+13),2,AMBER)
+	var hint="UP/DOWN  Choose   E or ENTER  Ask   ESC  Leave"
+	if game.controller.using_controller:hint="D-PAD / LS  Choose   "+game.controller.label("south")+"  Ask   "+game.controller.label("east")+"  Leave"
+	text(hint,Vector2(80,376),11,DIM)
 
 func instruction_lines(value:String)->Array[String]:
 	value=value.replace("E / ","E TO ")
@@ -403,11 +428,11 @@ func instruction_lines(value:String)->Array[String]:
 			else:line=next
 		if line!="":lines.append(line)
 	return lines
-func draw_instruction(value:String)->float:
+func draw_instruction(value:String,top_override:float=-1.0)->float:
 	if value.strip_edges()=="":return -1.0
 	var lines=instruction_lines(value)
 	var height=24+lines.size()*22
-	var top=334-height
+	var top=top_override if top_override>=0 else 334-height
 	var bounds=Rect2(80,top,480,height)
 	var ink=Color("e8e2d5")
 	draw_rect(bounds,Color.BLACK)
@@ -431,6 +456,23 @@ func draw_achievement():
 	centered(game.achievements.toast_title,68,19,AMBER)
 
 
+func injury_strength()->float:
+	return 1.0-clampf(game.health/100.0,0,1)
+
+func blood_opacities()->Vector3:
+	var amount=injury_strength()
+	return Vector3(amount*0.65,smoothstep(0.45,1.0,amount)*0.70,smoothstep(0.25,1.0,amount)*0.72)
+
+func draw_injury():
+	var opacity=blood_opacities()
+	if opacity==Vector3.ZERO:return
+	# The downloaded overlays have transparent centres. Successive layers add
+	# coverage as health drops, while all HUD text is drawn on top of the blood.
+	var screen=Rect2(0,0,640,400)
+	draw_texture_rect(BLOOD_BORDER,screen,false,Color(0.80,0.72,0.70,opacity.x))
+	if opacity.y>0:draw_texture_rect(BLOOD_CRITICAL,screen,false,Color(0.80,0.72,0.70,opacity.y))
+	if opacity.z>0:draw_texture_rect(BLOOD_DROPS,screen,false,Color(0.80,0.72,0.70,opacity.z))
+
 func draw_waking():
 	if game.crash_site.wake_phase=="menu_fade":
 		if game.crash_site.wake_menu_texture:
@@ -439,6 +481,7 @@ func draw_waking():
 		var fade=smoothstep(0.0,game.crash_site.MENU_FADE_SECONDS,game.crash_site.wake_elapsed)
 		draw_rect(Rect2(0,0,640,400),Color(0,0,0,fade))
 		return
+	draw_injury()
 	var opening=game.crash_site.eye_opening()
 	if opening<0.999:
 		var top=PackedVector2Array([Vector2(0,0),Vector2(640,0)])
@@ -450,5 +493,5 @@ func draw_waking():
 			bottom.append(Vector2(x,400-edge))
 		draw_colored_polygon(top,Color.BLACK)
 		draw_colored_polygon(bottom,Color.BLACK)
-	if game.crash_site.wake_phase=="ground":
-		draw_instruction("E TO STAND UP")
+	var prompt=game.crash_site.waking_prompt()
+	if prompt!="":draw_instruction(prompt,18.0)

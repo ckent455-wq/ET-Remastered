@@ -119,7 +119,7 @@ func make_storage():
 	drawer("ranger","ranger_drawer",Vector3(-3.25,0.12,0.08),"ranger desk drawer",["station_key"])
 	cabinet("ranger","ranger_cabinet",Vector3(-0.6,0,-4.45),"ranger supply cabinet",[],{"battery":1})
 	cabinet("clinic","clinic_cabinet",Vector3(2.4,0,-4.45),"medicine cabinet",["medkit_a","medkit_b"],{},false,Vector3(1.4,1.8,0.7),"plaster")
-	drawer("clinic","clinic_drawer",Vector3(-4.6,0,1.6),"bedside drawer",[],{},"Only empty blister packs and old receipts.")
+	drawer("clinic","clinic_drawer",Vector3(-4.6,0,1.6),"bedside drawer",[],{"bandage":2},"Only empty blister packs and old receipts.")
 	drawer("store","store_drawer",Vector3(-3.85,0.12,-3.65),"store counter drawer",["workshop_fuse"])
 	cabinet("store","store_cabinet",Vector3(3.5,0,-4.45),"stock cabinet",["battery_a","battery_b"])
 	cabinet("workshop","workshop_cabinet",Vector3(-4.6,0,0.6),"signal-coil cabinet",["coil"],{},true,Vector3(1.25,1.75,0.7),"metal")
@@ -252,7 +252,7 @@ func toggle(id: String):
 				break
 			town.inventory[key] += 1
 			data.remaining_extras[key] -= 1
-			found.append({"battery":"flashlight battery","medkit":"first-aid kit","chapel_key":"chapel cellar key","mausoleum_key":"mausoleum key"}.get(key,key))
+			found.append({"battery":"flashlight battery","medkit":"first-aid kit","bandage":"bandage roll","chapel_key":"chapel cellar key","mausoleum_key":"mausoleum key"}.get(key,key))
 	town.game.message = "Found: "+", ".join(found)+"." if not found.is_empty() else data.empty_text
 	if data.pending_loot: town.game.message = "Backpack full. Remaining supplies stay in this container."
 	if not found.is_empty():

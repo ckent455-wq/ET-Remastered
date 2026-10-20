@@ -1,0 +1,6 @@
+Healing Items DEMO — 3Dexter
+Source: user's locally downloaded DEMO_HealingItems_3Dexter pack.
+Source model: DEMO/Mesh/GLB (Godot)/MedKit_Gdt.glb
+Source atlas: DEMO/Texture/DemoBake.png
+Repacked with the supplied compact atlas; original mesh geometry retained.
+Prepared with tools/prepare_healing_items.py for this game's PS2-style rendering.

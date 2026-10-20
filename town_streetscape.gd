@@ -98,7 +98,7 @@ func build_street():
 		var paper = town.box(self,Vector3(side*rng.randf_range(4.1,6.1),0.03,rng.randf_range(-87,-39)),Vector3(0.18,0.008,0.26),town.mats.paper,false)
 		paper.rotation.y = rng.randf_range(-PI,PI)
 	parked_car(Vector3(-2.7,0.015,-52),0.18,0,"res://assets/vehicles/abandoned_pickup.glb",Vector3(2.0,1.4,4.4))
-	parked_car(Vector3(2.7,0.015,-66),PI-0.24,1,"res://assets/vehicles/abandoned_police.glb",Vector3(1.85,1.4,4.3))
+	parked_car(Vector3(2.7,0.015,-66),PI-0.24,1,"res://assets/vehicles/abandoned_police_openable.glb",Vector3(1.85,1.4,4.3))
 	parked_car(Vector3(-2.7,0.015,-79),0.18,2,"res://assets/vehicles/abandoned_muscle.glb",Vector3(2.0,1.15,4.1))
 	parked_car(Vector3(2.7,0.015,-48),PI-0.32,3,"res://assets/vehicles/abandoned_classic.glb",Vector3(1.8,1.25,4.2))
 	parked_car(Vector3(-2.7,0.015,-61),0.20,4,"res://assets/vehicles/abandoned_van.glb",Vector3(2.0,1.55,4.5))
@@ -254,6 +254,7 @@ func adapt_car(node: Node, index: int):
 			if original is StandardMaterial3D:
 				var material = original.duplicate() as StandardMaterial3D
 				material.albedo_color = [Color("6c7067"),Color("6d5350"),Color("4e6060"),Color("958b70"),Color("7b8780")][index]
+				material.albedo_color.a=original.albedo_color.a
 				material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
 				material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
 				material.metallic_specular = 0

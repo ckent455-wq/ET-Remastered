@@ -30,7 +30,7 @@ func _process(_delta):
 	if visible: queue_redraw()
 
 func counts() -> Dictionary:
-	var result = {"flashlight":int(game.crash_site.has_flashlight),"medkit":game.town.inventory.medkit,"battery":game.town.inventory.battery}
+	var result = {"flashlight":int(game.crash_site.has_flashlight),"medkit":game.town.inventory.medkit,"bandage":game.town.inventory.bandage,"battery":game.town.inventory.battery}
 	for id in OBJECTIVES: result[id]=game.town.inventory[id]
 	for i in range(3):
 		result["gun%d" % i] = int(game.weapons.owned[i])
@@ -46,7 +46,7 @@ func fits(cell: Vector2i, dimensions: Vector2i, entries: Array, except_key = "")
 
 func pack(values: Dictionary) -> Array:
 	var requested: Array = []
-	for id in ["gun1","gun2","coil","tuner","gun0","medkit","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","workshop_fuse","chapel_key","shotgun_key","mausoleum_key","shovel"]:
+	for id in ["gun1","gun2","coil","tuner","gun0","medkit","bandage","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","workshop_fuse","chapel_key","shotgun_key","mausoleum_key","shovel"]:
 		var amount: int = values.get(id,0)
 		var dims = Vector2i(1,1)
 		var limit = 1
@@ -55,7 +55,7 @@ func pack(values: Dictionary) -> Array:
 		if id in ["coil","tuner"]: dims = Vector2i(2,2)
 		if id in ["gun0","medkit","antenna"]: dims = Vector2i(2,1)
 		if id == "flashlight": dims = Vector2i(1,2)
-		if id == "battery": limit = 2
+		if id in ["battery","bandage"]: limit = 2
 		if id.begins_with("ammo"): limit = STACKS[int(id.right(1))]
 		var stack = 0
 		while amount>0:
@@ -99,7 +99,7 @@ func label(id: String) -> String:
 	if OBJECTIVE_LABELS.has(id): return OBJECTIVE_LABELS[id]
 	if id.begins_with("gun"): return ["PISTOL","SERVICE RIFLE","SHOTGUN"][int(id.right(1))]
 	if id.begins_with("ammo"): return ["PISTOL ROUNDS","RIFLE ROUNDS","SHOTGUN SHELLS"][int(id.right(1))]
-	return {"flashlight":"FLASHLIGHT","medkit":"FIRST AID","battery":"BATTERY"}.get(id,id)
+	return {"flashlight":"FLASHLIGHT","medkit":"FIRST AID","bandage":"BANDAGES","battery":"BATTERY"}.get(id,id)
 
 func rect(entry: Dictionary) -> Rect2:
 	return Rect2(ORIGIN+Vector2(entry.cell)*CELL+Vector2(2,2),Vector2(entry.size)*CELL-Vector2(4,4))
@@ -145,7 +145,7 @@ func _draw():
 		if item.id.begins_with("gun"):
 			var index = int(item.id.right(1))
 			detail = "Loaded %d / %d. Reserve %d." % [game.weapons.magazines[index],game.weapons.LOADOUT[index].clip,game.weapons.reserves[index]]
-		else: detail = {"flashlight":"Your light. Equipped on your shoulder strap.","medkit":"Restores 45 health. One kit per space.","battery":"Refills flashlight charge. Stacks of two."}.get(item.id,"Combine with its weapon to reload.")
+		else: detail = {"flashlight":"Your light. Equipped on your shoulder strap.","medkit":"Restores 50 health. One kit per space.","bandage":"Restores 10 health. Two rolls per space. H uses bandages first.","battery":"Refills flashlight charge. Stacks of two."}.get(item.id,"Combine with its weapon to reload.")
 		if OBJECTIVE_DETAILS.has(item.id): detail=OBJECTIVE_DETAILS[item.id]
 		paragraph(detail,Vector2(330,163),270)
 		for i in range(4):
@@ -196,7 +196,7 @@ func copy_meshes(source: Node, parent: Node3D, accumulated = Transform3D.IDENTIT
 	for child in source.get_children(): copy_meshes(child,parent,current)
 
 func build_icons():
-	for id in ["gun0","gun1","gun2","ammo0","ammo1","ammo2","flashlight","medkit","battery"]+OBJECTIVES:
+	for id in ["gun0","gun1","gun2","ammo0","ammo1","ammo2","flashlight","medkit","bandage","battery"]+OBJECTIVES:
 		var viewport = SubViewport.new()
 		viewport.size=Vector2i(256,128) if id.begins_with("gun") or id=="medkit" else Vector2i(128,384) if id=="shovel" else Vector2i(128,192) if id=="flashlight" else Vector2i(128,128)
 		viewport.transparent_bg=true
@@ -209,7 +209,7 @@ func build_icons():
 			var source=preload("res://spade_model.gd").build()
 			copy_meshes(source,model)
 			source.free()
-		elif id in ["battery","medkit","workshop_fuse","coil"]:
+		elif id in ["battery","medkit","bandage","workshop_fuse","coil"]:
 			var source=preload("res://supply_models.gd").build(id)
 			copy_meshes(source,model)
 			source.free()
@@ -371,6 +371,7 @@ func act(action: String):
 		game.set_state("backpack")
 		notice=label(id)+" equipped."
 	elif id=="medkit": game.town.use_medkit(); notice=game.message
+	elif id=="bandage": game.town.use_bandage(); notice=game.message
 	elif id=="battery": game.town.use_battery(); notice=game.message
 	else: notice="Select COMBINE to load this ammunition."
 

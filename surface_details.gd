@@ -97,7 +97,7 @@ func apply_details():
 			paper.position.y=0
 	for id in game.town.actions:
 		var data=game.town.actions[id]
-		if data.kind in ["item","weapon","ammo","cellar_part"] and data.area.is_visible_in_tree():
+		if data.kind in ["item","weapon","ammo","cellar_part"] and data.area.is_visible_in_tree() and not id.begins_with("crash_") and not data.get("authored_placement",false):
 			var visual=pickup_visual(data.area)
 			if id=="cemetery_cellar_key": visual.position.x+=0.25
 			rest_on_surface(visual,id)

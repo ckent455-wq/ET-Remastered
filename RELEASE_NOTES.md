@@ -1,17 +1,18 @@
-# Far From Home v1.3.1 - Clearer Instructions and Door Fixes
+# Far From Home v1.4.0 - Waking in Blackwood
 
 Playable Windows x64 survival-horror preview, built with Godot 4.7.2.
 
-## Changes since v1.3.0
+## Changes since v1.3.1
 
-- Tutorial instructions and feedback use larger dialogue-style boxes with a black background, cream border, wrapped pixel text and more reading time. Gameplay continues while instructions are visible.
-- Interaction instructions say "E TO OPEN" and "E TO TAKE". Controller prompts use the corresponding controller button. Yellow prompts that duplicate the current tutorial instruction are hidden.
-- Building and chapel doors swing inward. You can open and close doors from either side, including closing them after leaving. Doorway interaction targets remain reachable while doors are open.
-- Removed the restriction that kept doors open while the player was inside, including the chapel and mausoleum. Manual building-door interactions no longer fail because of the old broad doorway-occupancy check; NPC routines retain their occupancy checks.
-- Regression checks cover the complete open-enter-close-open-exit-close sequence through interaction prompts for all seven building doors, along with inward swing and closing from inside.
+- Wake in the crashed car, try the ignition twice, open the driver door and retrieve your backpack and flashlight from the trunk. Reworked cabin details and fitted door trim improve the opening.
+- Begin at 25% health after the wreck. Your backpack contains one bandage that heals 10%; collectible medpacks heal 50%. Downloaded blood effects intensify as health drops and fade when you heal.
+- Ask Pat about the abandoned house, church history, signal and survivors. Evidence-aware answers add lore to your journal.
+- Find the pistol on the abandoned police car's driver seat after opening its door. It starts with three rounds. The police cabin has improved seats, dashboard, radio and door trim; its window now moves with the door.
+- Raised fists hide the floating flashlight model while keeping its beam. Added the falling-tree reaction and revised cemetery dialogue.
+- Fullscreen is the default. F11 or Alt+Enter switches display mode while preserving the retro rendering resolution.
 
 ## Play
 
-Download **FarFromHome-v1.3.1-Windows-x64.zip**, extract it completely, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. Read README.md for controls and testing mode. Source, asset credit records, build information and SHA256 checksums accompany this release.
+Download **FarFromHome-v1.4.0-Windows-x64.zip**, extract it completely, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. The included README has controls and testing-mode instructions.
 
-All v1.3.0 road, trunk-pickup, hotel-window and coffin-scare changes are included. The in-game Check for Updates feature supports this preview. Existing achievements persist; new journeys reset gameplay progress. This remains a development preview.
+This development preview includes the in-game update checker. Asset credits, engine licenses, build information and SHA256 checksums accompany the download.

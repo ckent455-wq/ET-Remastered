@@ -87,9 +87,9 @@ func update(delta: float):
 
 func update_visual(_delta: float):
 	model.visible = raised and weapons.selected<0 and game.state in ["play","paused"] and game.crash_site.wake_phase==""
-	# Keep the floating flashlight clear of the fist during a swing.
-	game.arm_visual.visible = weapons.selected<0 and elapsed<0
-	model.position.y = -1.88 if game.flashlight.visible and elapsed<0 else -1.74
+	# Fists occupy both hands; retain the beam without a floating held model.
+	game.arm_visual.visible = weapons.selected<0 and not raised
+	model.position.y = -1.74
 
 func strike():
 	# Resolve at contact time, so stepping away or moving behind a wall avoids it.

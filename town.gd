@@ -11,7 +11,7 @@ var game
 var buildings = {}
 var doors = {}
 var actions = {}
-var inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
+var inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
@@ -257,7 +257,7 @@ func action_area(parent: Node3D, p: Vector3, size: Vector3, id: String, data: Di
 
 func item(building: String, p: Vector3, id: String, key: String, label: String, color: Color):
 	var area = action_area(buildings[building],p,Vector3(0.55,0.4,0.5),id,{"kind":"item","item":key,"label":label})
-	if key in ["battery","medkit","workshop_fuse","coil"]:
+	if key in ["battery","medkit","bandage","workshop_fuse","coil"]:
 		area.add_child(preload("res://supply_models.gd").build(key))
 	else:
 		box(area,Vector3.ZERO,Vector3(0.35,0.22,0.25),color_material(color,0.45),false)
@@ -358,7 +358,7 @@ func furnish():
 	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the last families have gone. Most buildings have stood empty since the mill closed twelve years ago.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
-	inventory = {"medkit":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
+	inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
 	journal_entries.clear()
 	discovered.clear()
 	powered = false
@@ -399,6 +399,9 @@ func refresh_focus():
 		if pickup!="":
 			focus_action=pickup
 			return
+	if game.weapons and game.weapons.police_car:
+		var pickup=game.weapons.police_car.pickup_focus(start,finish)
+		if pickup!="":focus_action=pickup;return
 	var query = PhysicsRayQueryParameters3D.create(start,finish,3,[game.player.get_rid()])
 	query.collide_with_areas = true
 	var hit = get_world_3d().direct_space_state.intersect_ray(query)
@@ -455,7 +458,7 @@ func perform(id: String):
 		return
 	if data.taken:
 		return
-	if data.kind!="crash" and id!="crash_record" and not id.begins_with("cemetery_"):
+	if data.kind!="crash" and not id.begins_with("crash_") and not id.begins_with("cemetery_"):
 		reached_town = true
 	match data.kind:
 		"grave_shovel":
@@ -485,6 +488,9 @@ func perform(id: String):
 		"crash":
 			game.message = "The engine is dead. You have collected the detour sheet." if game.crash_site.has_detour_sheet else "The engine is dead. Open the driver's door and collect the detour sheet from the seat."
 		"weapon":
+			if data.weapon_index==0 and not game.weapons.police_car.can_take():
+				game.message="Open the abandoned police car's driver door to reach the pistol on the seat."
+				return
 			if data.weapon_index==2 and not game.weapons.lockbox.can_take():
 				game.message = "Open the ranger shotgun lockbox first."
 				return
@@ -519,6 +525,8 @@ func perform(id: String):
 				game.soundscape.feedback("pickup")
 		"chapel_door":
 			streetscape.church.toggle_doors()
+		"police_door":
+			game.weapons.police_car.interact()
 		"npc":
 			townspeople.talk(data.npc)
 		"container":
@@ -553,6 +561,7 @@ func perform(id: String):
 			data.area.visible = false
 			data.area.get_child(0).set_deferred("disabled",true)
 			game.message = data.label.replace("Take ","Collected: ").replace("Recover ","Recovered: ")
+			if data.item=="bandage":game.message="Bandage collected. H to dress your wound (+10 health), or use it from your backpack."
 			game.soundscape.feedback("pickup")
 		"note":
 			if game.story: game.story.read_evidence(id)
@@ -582,14 +591,30 @@ func perform(id: String):
 				game.message = "Radio repaired. Set the desk bypass to green, then hold E at the receiver."
 				game.soundscape.feedback("radio")
 
+func use_healing():
+	if inventory.bandage>0: use_bandage()
+	else: use_medkit()
+
+func use_bandage():
+	if inventory.bandage<=0:
+		game.message="No bandages. Collect your backpack from the car or search the clinic."
+	elif game.health>=100:
+		game.message="Health is full. Bandage saved."
+	else:
+		inventory.bandage-=1
+		var restored=minf(10,100-game.health)
+		game.health+=restored
+		game.message="Wound bandaged. Restored %d health." % int(restored)
+		game.soundscape.feedback("pickup")
+
 func use_medkit():
 	if inventory.medkit<=0:
-		game.message = "No first-aid kits. Search the clinic's medicine cabinet."
+		game.message = "No healing supplies. Collect your backpack from the car or search the clinic."
 	elif game.health>=100:
 		game.message = "Vitality is full. First-aid kit saved."
 	else:
 		inventory.medkit -= 1
-		game.health = minf(100,game.health+45)
+		game.health = minf(100,game.health+50)
 		game.message = "Used first-aid kit. Vitality restored."
 		game.soundscape.feedback("pickup")
 

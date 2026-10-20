@@ -75,5 +75,5 @@ func _physics_process(delta):
    vanished=true
    actor.hide()
    game.dialogue_name=""
-   game.dialogue_text="What is that? Am I seeing things?"
+   game.dialogue_text="I'm seeing things, I must have hit my head harder than I thought..."
    game.set_state("dialogue")
