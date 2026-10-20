@@ -143,3 +143,9 @@ John rewards delivery of Ada's letter with **12 pistol rounds**. If your backpac
 Footsteps now follow the surface beneath you: concrete paving, wooden floors, forest grass, loose gravel, dirt, stone, metal and stairs. Sprinting is louder; crouching is quieter.
 
 To finish: collect the radio parts, **shut down the chapel basement repeater at MAIN ISOLATOR**, repair the station receiver, select **GREEN / DIRECT COUNTY**, and hold E at the receiver. The chapel has independent power; repairing or switching off the station alone does not silence it. Once the chapel rack is off, its amber relay route cannot complete a call.
+
+## Saving and loading
+
+Press Esc and choose **SAVE / LOAD**. Select one of three slots, then SAVE or LOAD; replacing a save or the current paused journey requires a second press. The title menu has **LOAD JOURNEY**, and the death screen offers LOAD JOURNEY (L on keyboard, Y/Triangle on controller). Keyboard arrows/Tab and Enter, mouse, or controller D-pad/stick and confirm navigate the screen.
+
+Saves retain your position (including basements), health, flashlight, inventory, weapon ammo, quests, journal, searched supplies, doors, NPCs, enemies and scripted-event progress. Each overwritten slot keeps a verified backup that is offered if its primary save is damaged. Achievements remain stored separately. Saves are local to this Windows user and remain outside the game install folder. Finish the seated opening and take your backpack before saving; testing-mode sessions and incomplete scripted sequences cannot be saved.

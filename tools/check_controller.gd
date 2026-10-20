@@ -14,6 +14,9 @@ func check():
  await process_frame
  g.hud._process(0)
  press(c,JOY_BUTTON_DPAD_DOWN)
+ press(c,JOY_BUTTON_A);assert(g.saves.opened(),"Title menu reaches Load Journey in visual order")
+ press(c,JOY_BUTTON_B);assert(not g.saves.opened())
+ press(c,JOY_BUTTON_DPAD_DOWN)
  press(c,JOY_BUTTON_A);assert(g.hud.controls_open)
  press(c,JOY_BUTTON_B);assert(not g.hud.controls_open)
  g.crash_site.wake_phase="";g.set_state("play")

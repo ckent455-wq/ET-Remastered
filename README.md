@@ -245,3 +245,5 @@ Enemy gun hits use bone-aligned head spheres and torso/limb capsules sampled fro
 The rear workshop terminal uses three E interactions: open the cabinet, install the workshop fuse, and flip the switch. Fuse installation begins monster pursuit; workshop lights and coil-cabinet power wait for the switch animation. Progress and prompts persist while pausing and reset on a new journey.
 
 Completion now requires cutting the independently powered chapel repeater at its basement MAIN ISOLATOR. This silences its carrier and stops defeated chapel creatures returning. Repair the station, choose GREEN / direct county and hold E to call. AMBER is a dead route after shutdown.
+
+Save/load: three versioned local journey slots, available through the pause menu, title menu and death screen. Snapshots preserve equipment and world/quest state, validate checksums before loading and keep the prior slot as a backup. See PLAYING.md.

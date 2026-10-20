@@ -22,16 +22,18 @@ const AMBER = Color("efc58c")
 func _ready():
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	menu_button("ENTER BLACKWOOD",Vector2(42,269),Vector2(244,35),begin_game)
-	menu_button("CONTROLS",Vector2(42,315),Vector2(116,27),func(): controls_open = true)
-	menu_button("QUIT",Vector2(170,315),Vector2(116,27),func(): get_tree().quit())
+	menu_button("ENTER BLACKWOOD",Vector2(42,253),Vector2(244,30),begin_game)
+	menu_button("CONTROLS",Vector2(42,322),Vector2(116,24),func(): controls_open = true)
+	menu_button("QUIT",Vector2(170,322),Vector2(116,24),func(): get_tree().quit())
 	menu_button("BACK",Vector2(80,331),Vector2(144,30),func(): controls_open = false)
 	menu_button("CHECK FOR UPDATES",Vector2(42,349),Vector2(244,24),func(): game.updater.open())
-	menu_button("RESUME",Vector2(213,204),Vector2(214,36),func(): game.set_state("play"),false)
-	menu_button("RESTART GAME",Vector2(213,246),Vector2(214,36),begin_game,false)
+	menu_button("LOAD JOURNEY",Vector2(42,288),Vector2(244,27),func(): game.saves.open(true))
+	menu_button("RESUME",Vector2(213,184),Vector2(214,30),func(): game.set_state("play"),false)
+	menu_button("RESTART GAME",Vector2(213,220),Vector2(214,30),begin_game,false)
 
 	menu_button("TEST MODE: OFF (F10)",Vector2(213,288),Vector2(214,32),func(): game.testing_mode.toggle(),false)
 	menu_button("MAIN MENU",Vector2(213,330),Vector2(214,32),return_to_main_menu,false)
+	menu_button("SAVE / LOAD",Vector2(213,256),Vector2(214,28),func(): game.saves.open(),false)
 
 func menu_button(label: String, p: Vector2, dimensions: Vector2, action: Callable, title_menu = true):
 	var button = Button.new()
@@ -85,8 +87,8 @@ func _process(_delta):
 	if game.state!="title":
 		controls_open = false
 	for i in range(menu_buttons.size()):
-		menu_buttons[i].visible = game.state=="title" and (controls_open if i==3 else not controls_open) and not (game.updater and game.updater.opened())
-	for button in pause_buttons: button.visible = game.state=="paused"
+		menu_buttons[i].visible = game.state=="title" and (controls_open if i==3 else not controls_open) and not (game.updater and game.updater.opened()) and not (game.saves and game.saves.opened())
+	for button in pause_buttons: button.visible = game.state=="paused" and not (game.saves and game.saves.opened())
 	if game.testing_mode: pause_buttons[2].text = "TEST MODE: "+("ON" if game.testing_mode.enabled else "OFF")+" (F10)"
 	if game.state=="title" and controls_open!=last_controls_open:
 		menu_buttons[3 if controls_open else 0].grab_focus()
@@ -113,6 +115,8 @@ func centered(s: String, y: float, size: int, color = INK):
 func _draw():
 	if game==null:
 		return
+	if game.saves and game.saves.opened():
+		draw_rect(Rect2(0,0,640,400),Color("0b1211"));return
 	if game.state=="backpack":
 		return
 	if game.state=="intro":
@@ -173,10 +177,19 @@ func _draw():
 		return
 	if game.state=="paused":
 		draw_rect(Rect2(0,0,640,400),Color(0.015,0.045,0.065,0.9))
-		centered("PAUSED",149,40)
-		centered("Take a breath. The road can wait.",184,14,DIM)
+		centered("PAUSED",133,36)
+		centered("Take a breath. The road can wait.",160,13,DIM)
 		centered("Restart begins a new journey from the crash site.",394,10,DIM)
 		centered("ESC / RESUME",375,11,DIM)
+		return
+	if game.state=="lost":
+		draw_rect(Rect2(0,0,640,400),Color(0.015,0.025,0.024,0.94))
+		centered("SIGNAL LOST",145,40)
+		centered("Your journey ended. Return to a saved moment.",184,13,DIM)
+		centered((game.controller.label("north") if game.controller and game.controller.using_controller else "L")+" / LOAD JOURNEY",294,11,DIM)
+		draw_rect(Rect2(213,309,214,30),Color("6b857a"),false,1)
+		centered("ENTER / NEW JOURNEY",330,14,AMBER)
+		centered("ESC / MAIN MENU",371,11,DIM)
 		return
 	if game.state!="play":
 		draw_rect(Rect2(0,0,640,400),Color(0.015,0.045,0.065,0.85))

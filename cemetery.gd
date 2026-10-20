@@ -96,6 +96,19 @@ func _ready():
 	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"EVACUATION / TEMPORARY EQUIPMENT CACHE\nJohn's spare antenna coupler and the chapel cellar key are on the shelf inside my family's Whitcomb mausoleum. People have been taking equipment from the station. This vault is dry and its iron door still locks. Nothing has been placed inside a coffin.\n\nBellamy locked the chapel cellar to keep confused residents away from the running rack. He gave me its key before leaving.\n\nAsk me at the ranger office for the family key. These supplies must be recovered once the road is clear.\n- Pat"})
 	town.box(note,Vector3.ZERO,Vector3(0.015,0.35,0.26),town.mats.paper,false)
 
+func fit_cellar_key_target():
+	# Surface dressing offsets the tiny key on its shelf. Fit the actual visible
+	# model, including old saves whose area still has the original transform.
+	var area=town.actions.cemetery_cellar_key.area
+	var bounds=AABB();var first=true
+	for mesh in area.find_children("*","MeshInstance3D",true,false):
+		var part=(area.global_transform.affine_inverse()*mesh.global_transform)*mesh.mesh.get_aabb()
+		bounds=part if first else bounds.merge(part);first=false
+	if first:return
+	var collision=area.get_child(0) as CollisionShape3D
+	collision.position=bounds.get_center()
+	collision.shape.size=Vector3(maxf(bounds.size.x+0.12,0.25),maxf(bounds.size.y+0.12,0.18),maxf(bounds.size.z+0.12,0.30))
+
 func door_prompt() -> String:
 	if not unlocked: return "E / Unlock mausoleum" if town.inventory.mausoleum_key>0 else "E / Locked mausoleum - inspect"
 	return "E / "+("Close mausoleum" if opened else "Open mausoleum")

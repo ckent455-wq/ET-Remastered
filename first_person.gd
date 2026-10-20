@@ -7,6 +7,7 @@ const STANDING_EYE = 1.65
 const CROUCH_EYE = 0.68
 const JUMP_VELOCITY = 5.2
 const GRAVITY = 18.0
+var saves: Node
 var updater: Node
 var testing_mode: Node
 var controller: Node
@@ -247,6 +248,7 @@ func _ready():
 	testing_mode = preload("res://testing_mode.gd").new()
 	testing_mode.game = self
 	add_child(testing_mode)
+	saves=preload("res://save_screen.gd").new();saves.game=self;add_child(saves)
 	updater = preload("res://release_updater.gd").new()
 	updater.game = self
 	add_child(updater)
@@ -358,6 +360,11 @@ func _unhandled_input(event):
 	if event is InputEventKey and event.pressed and not event.echo and (event.keycode==KEY_F11 or (event.keycode==KEY_ENTER and event.alt_pressed)):
 		get_window().mode=Window.MODE_MAXIMIZED if get_window().mode==Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
 		return
+	if saves and saves.opened():return
+	if state=="lost" and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
+		set_state("title");return
+	if state=="lost" and event is InputEventKey and event.pressed and event.keycode==KEY_L:
+		saves.open(true);return
 	if state=="waking":
 		if event is InputEventMouseMotion: crash_site.look_inside(event.relative)
 		if event is InputEventKey and event.pressed and not event.echo:

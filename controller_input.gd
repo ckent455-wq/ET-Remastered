@@ -59,6 +59,13 @@ func direction(button_id:int)->Vector2i:
  return {JOY_BUTTON_DPAD_LEFT:Vector2i.LEFT,JOY_BUTTON_DPAD_RIGHT:Vector2i.RIGHT,JOY_BUTTON_DPAD_UP:Vector2i.UP,JOY_BUTTON_DPAD_DOWN:Vector2i.DOWN}.get(button_id,Vector2i.ZERO)
 func button(id:int):
  var state=game.state
+ if game.saves and game.saves.opened():
+  if id in [JOY_BUTTON_B,JOY_BUTTON_START]:game.saves.close()
+  elif id in [JOY_BUTTON_A,JOY_BUTTON_X]:
+   var focus=get_viewport().gui_get_focus_owner()
+   if focus is Button and focus in game.saves.buttons():focus.pressed.emit()
+  elif direction(id)!=Vector2i.ZERO:menu_move(1 if id in [JOY_BUTTON_DPAD_DOWN,JOY_BUTTON_DPAD_RIGHT] else -1)
+  return
  if state=="title" and game.updater and game.updater.opened():
   if id==JOY_BUTTON_B:game.updater.close()
   elif id in [JOY_BUTTON_A,JOY_BUTTON_X]:
@@ -98,6 +105,8 @@ func button(id:int):
   if id==JOY_BUTTON_X:send_key(KEY_E)
   elif id==JOY_BUTTON_START:send_key(KEY_ESCAPE)
   return
+ if state=="lost" and id==JOY_BUTTON_B:send_key(KEY_ESCAPE);return
+ if state=="lost" and id==JOY_BUTTON_Y:game.saves.open(true);return
  if state in ["intro","won","lost"]:
   if id in [JOY_BUTTON_A,JOY_BUTTON_X,JOY_BUTTON_START]:send_key(KEY_ENTER)
   return
@@ -108,12 +117,16 @@ func button(id:int):
  elif id==JOY_BUTTON_RIGHT_SHOULDER:game.weapons.cycle(1)
 func menu_move(step:int):
  var buttons=[]
- if game.state=="title" and game.updater and game.updater.opened():
+ if game.saves and game.saves.opened():
+  buttons=game.saves.buttons()
+ elif game.state=="title" and game.updater and game.updater.opened():
   buttons=game.updater.buttons()
  elif game.state=="title":
   for b in game.hud.menu_buttons:
    if b.is_visible_in_tree():buttons.append(b)
- elif game.state=="paused":buttons=game.hud.pause_buttons
+  buttons.sort_custom(func(a,b):return a.position.y<b.position.y if a.position.y!=b.position.y else a.position.x<b.position.x)
+ elif game.state=="paused":
+  buttons=game.hud.pause_buttons.duplicate();buttons.sort_custom(func(a,b):return a.position.y<b.position.y)
  if buttons.is_empty():return
  var current=buttons.find(get_viewport().gui_get_focus_owner())
  buttons[wrapi(current+step,0,buttons.size())].grab_focus()

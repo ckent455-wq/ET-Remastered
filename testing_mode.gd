@@ -13,6 +13,7 @@ func _ready():
  badge.modulate=Color("efc58c");badge.mouse_filter=Control.MOUSE_FILTER_IGNORE
  layer.add_child(badge);badge.hide()
 func _input(event):
+ if game.saves and game.saves.opened():return
  if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_F10:
   toggle();get_viewport().set_input_as_handled()
 func toggle():
