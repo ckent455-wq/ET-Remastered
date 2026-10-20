@@ -253,6 +253,19 @@ func _ready():
 	updater.game = self
 	add_child(updater)
 	update_camera()
+	call_deferred("load_requested_slot")
+
+func load_requested_slot():
+	# Optional launcher shortcut; uses the same validated load as the menu.
+	var slot=0
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--load-slot="):slot=argument.trim_prefix("--load-slot=").to_int()
+	if slot<1 or slot>3:return
+	while not surface_details.completed:await get_tree().process_frame
+	if saves.backend.load_slot(slot):print("LOADED JOURNEY / SLOT ",slot)
+	else:
+		print("LOAD JOURNEY FAILED / SLOT ",slot)
+		set_state("title");saves.open(true)
 
 func prepare_flashlight(node: Node):
 	if node is MeshInstance3D:
