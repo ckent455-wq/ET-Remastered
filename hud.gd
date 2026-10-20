@@ -75,7 +75,7 @@ func _process(_delta):
 	passage_fade = maxf(0,passage_fade-_delta*2.2)
 	if game.message!=last_message:
 		last_message = game.message
-		message_seconds = 6.0
+		message_seconds = clampf(game.message.length()/18.0,8.0,16.0)
 	if game.state=="play":
 		game.achievements.update_toast(_delta)
 		message_seconds = maxf(0,message_seconds-_delta)
@@ -101,6 +101,7 @@ func _unhandled_key_input(event):
 		get_viewport().set_input_as_handled()
 
 func text(s: String, p: Vector2, size = 14, color = INK):
+	s=s.replace("E / ","E TO ")
 	if game.controller: s=game.controller.hint(s)
 	draw_string(font,p,s,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
 func centered(s: String, y: float, size: int, color = INK):
@@ -143,19 +144,18 @@ func _draw():
 		if game.flashlight_charge<=0:
 			text("EMPTY / Q BATTERY",Vector2(500,374),10,light_color)
 		if game.crash_site.has_backpack: text("I / BACKPACK",Vector2(20,24),10,DIM)
-		if not game.crash_site.tutorial_complete():
-			draw_rect(Rect2(34,37,572,37),Color(0.02,0.03,0.025,0.88))
-			centered(game.crash_site.tutorial_prompt(),60,11,AMBER)
 		if game.weapons.selected>=0:
 			text(game.weapons.status(),Vector2(20,329),11,AMBER)
 		if game.weapons.hit_feedback>0:
 			draw_line(Vector2(315,195),Vector2(325,205),AMBER,1)
 			draw_line(Vector2(325,195),Vector2(315,205),AMBER,1)
 		draw_circle(Vector2(320,200),1.2,Color(0.8,0.9,0.8,0.8))
-		if message_seconds>0:
-			centered(game.message,395,11)
-		if game.town.prompt()!="":
-			centered(game.town.prompt(),285,15,AMBER)
+		var instruction=game.crash_site.tutorial_prompt() if not game.crash_site.tutorial_complete() else (game.message if message_seconds>0 else "")
+		var instruction_top=draw_instruction(instruction)
+		var tutorial_target="crash_rear_hatch" if not game.crash_site.hatch_open else ("crash_backpack" if not game.crash_site.has_backpack else "crash_flashlight")
+		var duplicate_prompt=not game.crash_site.tutorial_complete() and game.town.focus_action==tutorial_target
+		if game.town.prompt()!="" and not duplicate_prompt:
+			centered(game.town.prompt(),minf(285,instruction_top-12) if instruction_top>0 else 285,18,AMBER)
 		if game.rescue_available() and game.town.focus_action!="radio_bypass":
 			centered("HOLD E / CALL FOR RESCUE",284,19)
 			draw_rect(Rect2(240,296,game.contact_progress*40,3),INK)
@@ -389,6 +389,33 @@ func draw_dialogue():
 	for row in range(3):
 		draw_rect(Rect2(520+row*2,365+row*2,14-row*4,2),ink)
 
+func instruction_lines(value:String)->Array[String]:
+	value=value.replace("E / ","E TO ")
+	if game.controller:value=game.controller.hint(value)
+	value=value.to_upper().replace("’","'").replace("—","-")
+	var lines:Array[String]=[]
+	for paragraph in value.split("\n",false):
+		var line=""
+		for word in paragraph.split(" ",false):
+			var next=word if line=="" else line+" "+word
+			if dialogue_font.get_string_size(next,HORIZONTAL_ALIGNMENT_LEFT,-1,20).x>432 and line!="":
+				lines.append(line);line=word
+			else:line=next
+		if line!="":lines.append(line)
+	return lines
+func draw_instruction(value:String)->float:
+	if value.strip_edges()=="":return -1.0
+	var lines=instruction_lines(value)
+	var height=24+lines.size()*22
+	var top=334-height
+	var bounds=Rect2(80,top,480,height)
+	var ink=Color("e8e2d5")
+	draw_rect(bounds,Color.BLACK)
+	draw_rect(bounds,ink,false,2)
+	for i in range(lines.size()):
+		dialogue_line(lines[i],Vector2(104,top+29+i*22),20,ink)
+	return top
+
 func journal_map_point(p: Vector3) -> Vector2:
 	return Vector2(300+p.x*4,133+(p.z+155)*1.08)
 
@@ -424,5 +451,4 @@ func draw_waking():
 		draw_colored_polygon(top,Color.BLACK)
 		draw_colored_polygon(bottom,Color.BLACK)
 	if game.crash_site.wake_phase=="ground":
-		draw_rect(Rect2(203,312,234,38),Color(0.015,0.02,0.015,0.85))
-		centered("E / STAND UP",337,20,AMBER)
+		draw_instruction("E TO STAND UP")

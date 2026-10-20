@@ -116,9 +116,6 @@ func interact_door():
 			return
 		town.inventory.mausoleum_key-=1
 		unlocked=true
-	if opened and (inside() or crypt.to_local(town.game.player.global_position).distance_to(Vector3(0,0,1.9))<1.2):
-		town.game.message="Step clear of the doorway before closing it."
-		return
 	opened=not opened
 	if door_tween and door_tween.is_valid(): door_tween.kill()
 	door_collision.set_deferred("disabled",opened)

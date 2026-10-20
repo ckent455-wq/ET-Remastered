@@ -23,7 +23,7 @@ Turning testing off restores the equipment, supplies, health and lock access you
 
 - Mouse: look; WASD / arrows: move; Shift: sprint.
 - Space: jump. Hold Ctrl: crouch; release to stand when there is room.
-- E: inspect, search, collect, open doors, and talk.
+- E: inspect, search, collect, open/close doors from either side, and talk. Building doors swing inward.
 - I: backpack (drag items to arrange them). F: flashlight; Tab: journal and map; Escape: pause, with Restart Game and Main Menu options.
 - C inside the journal: case notes and evidence leads.
 - Left mouse: fire, or punch while unarmed; right mouse: aim; R: reload.

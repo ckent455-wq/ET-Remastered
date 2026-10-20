@@ -143,6 +143,7 @@ func label(token:String)->String:
  return values.get(token,token)
 func hint(value:String)->String:
  if not using_controller:return value
+ value=value.replace("E TO ",label("west")+" TO ")
  if game.state=="journal" and "case notes" in value:
   return label("view")+"  Backpack   "+label("north")+"  Case notes   "+label("lb")+" / "+label("rb")+"  Pages   "+label("east")+"  Close"
  var map={"WASD":"LS","ARROWS":"D-PAD","MOUSE":"RS","SPACE":label("south"),"CTRL":label("east"),"SHIFT":"L3","LMB":label("rt"),"RMB":label("lt"),"ENTER":label("south"),"ESC":label("east"),"TAB":"D-PAD UP","E":label("west"),"F":"D-PAD DOWN","I":label("view"),"H":"D-PAD LEFT","Q":"D-PAD RIGHT","R":label("north"),"V":label("rb"),"0":"R3"}

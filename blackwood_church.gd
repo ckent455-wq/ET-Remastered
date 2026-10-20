@@ -229,10 +229,6 @@ func reset_doors():
 	entrance_collision.set_deferred("disabled",false)
 
 func toggle_doors():
-	var local_player = to_local(town.game.player.global_position)
-	if doors_open and (contains(town.game.player.global_position) or Vector2(local_player.x,local_player.z-7).length()<2.4):
-		town.game.message = "Step clear of the entrance before closing the chapel doors."
-		return
 	if door_tween!=null and door_tween.is_valid():
 		door_tween.kill()
 	doors_open = not doors_open
@@ -240,7 +236,7 @@ func toggle_doors():
 	door_tween = create_tween().set_parallel(true)
 	for i in range(door_hinges.size()):
 		var side = -1 if i==0 else 1
-		door_tween.tween_property(door_hinges[i],"rotation:y",side*1.55 if doors_open else 0.0,0.65).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		door_tween.tween_property(door_hinges[i],"rotation:y",-side*1.55 if doors_open else 0.0,0.65).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	town.game.soundscape.door_move(to_global(Vector3(0,1,7)),doors_open)
 
 func decorate_entrance():

@@ -548,7 +548,7 @@ func toggle_flashlight():
 		message="The switch isn't responding."
 		return
 	if not crash_site.has_flashlight:
-		message = "Your flashlight is still in the car. Open the door and collect your gear."
+		message = "Your flashlight is still in the trunk. Open the rear hatch and collect your gear."
 		return
 	if flashlight_charge<=0:
 		flashlight.visible = false

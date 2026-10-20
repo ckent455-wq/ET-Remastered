@@ -250,9 +250,9 @@ func tutorial_complete() -> bool:
 	return has_backpack and has_flashlight
 
 func tutorial_prompt() -> String:
-	if not hatch_open: return "WASD / MOVE   MOUSE / LOOK   E / OPEN THE REAR HATCH"
-	if not has_backpack: return "E / TAKE YOUR BACKPACK FROM THE TRUNK"
-	if not has_flashlight: return "E / TAKE YOUR FLASHLIGHT FROM THE TRUNK"
+	if not hatch_open: return "Walk to the back of the car.\nE TO Open the rear hatch"
+	if not has_backpack: return "E TO TAKE YOUR BACKPACK FROM THE TRUNK"
+	if not has_flashlight: return "E TO TAKE YOUR FLASHLIGHT FROM THE TRUNK"
 	return ""
 
 func interact_tutorial(id: String):

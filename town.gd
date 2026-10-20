@@ -232,7 +232,7 @@ func make_door(root: Node3D, id: String, z: float):
 	root.add_child(hinge)
 	var body = box(hinge,Vector3(0.9,1.35,0),Vector3(1.8,2.7,0.12),mats["wood"])
 	box(body,Vector3(0.65,-0.15,0.1),Vector3(0.12,0.12,0.12),mats["amber"],false)
-	var area = action_area(body,Vector3.ZERO,Vector3(1.85,2.7,0.2),id+"_door",{"kind":"door","building":id,"label":"Open door"})
+	var area = action_area(root,Vector3(0,1.35,z),Vector3(1.85,2.7,0.30),id+"_door",{"kind":"door","building":id,"label":"Open door"})
 	doors[id] = {"hinge":hinge,"body":body,"collision":body.get_child(1),"open":false,"tween":null,"area":area}
 
 func action_area(parent: Node3D, p: Vector3, size: Vector3, id: String, data: Dictionary) -> Area3D:
@@ -431,8 +431,6 @@ func prompt() -> String:
 	if data.kind=="door":
 		if data.building=="radio" and inventory.station_key==0:
 			return "E / Locked - ranger's key needed"
-		if doors[data.building].open and player_inside_building(data.building):
-			return "Door stays open while you are inside"
 		return "E / "+("Close door" if doors[data.building].open else "Open door")
 	if focus_action=="coil" and not powered:
 		return "E / Coil cabinet - restore workshop power"
@@ -530,8 +528,8 @@ func perform(id: String):
 			if data.building=="radio" and inventory.station_key==0:
 				game.message = "Locked. Search the ranger office for the station key."
 				return
-			if not set_building_door(data.building,not door.open):
-				game.message = "The doorway must stay clear. Step outside before closing it."
+			if not set_building_door(data.building,not door.open,false,true):
+				game.message = "The door cannot move right now."
 			else:
 				discovered[data.building] = true
 		"item":
@@ -695,16 +693,16 @@ func doorway_occupied(id: String) -> bool:
 			if offset.length()<1.55: return true
 	return false
 
-func set_building_door(id: String, next_open: bool, shelter_close=false) -> bool:
+func set_building_door(id: String, next_open: bool, shelter_close=false, player_requested=false) -> bool:
 	if not doors.has(id): return false
 	var door=doors[id]
 	if door.open==next_open: return true
 	if next_open and id=="radio" and inventory.station_key==0: return false
-	if not next_open and ((not shelter_close and player_inside_building(id)) or doorway_occupied(id)): return false
+	if not next_open and not player_requested and doorway_occupied(id): return false
 	if door.tween!=null and door.tween.is_valid(): door.tween.kill()
 	door.open=next_open
 	door.collision.set_deferred("disabled",next_open)
 	door.tween=create_tween()
-	door.tween.tween_property(door.hinge,"rotation:y",-1.75 if next_open else 0.0,0.55)
+	door.tween.tween_property(door.hinge,"rotation:y",1.55 if next_open else 0.0,0.55)
 	game.soundscape.door_move(doorway_position(id),next_open)
 	return true
