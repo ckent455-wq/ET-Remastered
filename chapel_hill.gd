@@ -13,6 +13,7 @@ func _ready():
 	build_centerline()
 	build_land()
 	build_road()
+	build_continuous_asphalt()
 	var grass = town.mats.floor.duplicate()
 	grass.albedo_texture = preload("res://assets/forest/ground_ps2.png")
 	grass.albedo_color = Color("65705b")
@@ -158,7 +159,7 @@ func build_road():
 		var v0 = distances[i]/4
 		var v1 = distances[i+1]/4
 		# Adjacent sections share exactly the same cross-section at every bend.
-		strip_quad(top,[road_vertex(i,-w0,0.025),road_vertex(i+1,-w1,0.025),road_vertex(i,w0,0.025),road_vertex(i+1,w1,0.025)],0,1.2,v0,v1)
+		strip_quad(top,[road_vertex(i,-w0,0.035),road_vertex(i+1,-w1,0.035),road_vertex(i,w0,0.035),road_vertex(i+1,w1,0.035)],0,1.2,v0,v1)
 		strip_quad(walking,[road_vertex(i,-w0-0.65),road_vertex(i+1,-w1-0.65),road_vertex(i,w0+0.65),road_vertex(i+1,w1+0.65)],0,1,v0,v1)
 		for edge in [-1,1]:
 			var outer0 = edge*(w0+0.5)
@@ -170,9 +171,9 @@ func build_road():
 			if i%13!=7 and distances[i]<distances[-1]-1.2:
 				var p0 = edge*(w0-0.19)
 				var p1 = edge*(w1-0.19)
-				strip_quad(paint,[road_vertex(i,p0-0.025,0.031),road_vertex(i+1,p1-0.025,0.031),road_vertex(i,p0+0.025,0.031),road_vertex(i+1,p1+0.025,0.031)],0,1,v0,v1)
+				strip_quad(paint,[road_vertex(i,p0-0.025,0.041),road_vertex(i+1,p1-0.025,0.041),road_vertex(i,p0+0.025,0.041),road_vertex(i+1,p1+0.025,0.041)],0,1,v0,v1)
 	var asphalt = town.streetscape.asphalt.duplicate()
-	asphalt.albedo_color = Color("969e96")
+	asphalt.albedo_color = town.streetscape.asphalt.albedo_color
 	make_surface("UphillAsphalt",top,asphalt,false)
 	var gravel = town.streetscape.pavement.duplicate()
 	gravel.albedo_texture = preload("res://assets/forest/ground_ps2.png")
@@ -226,3 +227,39 @@ func roadside_detail():
 			tree.add_child(crown)
 			forest.add_collision(tree,0.25,5.5)
 
+
+func build_continuous_asphalt():
+	# One surface owns the entire route; no flat tiles overlap the incline.
+	for child in town.streetscape.get_children():
+		if child is MeshInstance3D and (child.mesh==town.streetscape.road_mesh or child.mesh==town.streetscape.approach_road_mesh or child.name=="ContinuousTownEntryAsphalt"):
+			child.hide()
+	get_node("UphillAsphalt").hide()
+	var points:Array[Vector3]=[]
+	var widths:Array[float]=[]
+	for z in range(97,-93,-1):
+		points.append(Vector3(0,0,z))
+		widths.append(3.8)
+	for i in range(1,samples.size()):
+		points.append(samples[i])
+		widths.append(road_width(i))
+	var tool=SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var travelled=0.0
+	for i in range(points.size()-1):
+		var before=points[mini(i+1,points.size()-1)]-points[maxi(0,i-1)]
+		var after=points[mini(i+2,points.size()-1)]-points[i]
+		before.y=0;after.y=0
+		var side0=Vector3(-before.z,0,before.x).normalized()
+		var side1=Vector3(-after.z,0,after.x).normalized()
+		var length=points[i].distance_to(points[i+1])
+		var lift=Vector3(0,0.05,0)
+		strip_quad(tool,[points[i]-side0*widths[i]+lift,points[i+1]-side1*widths[i+1]+lift,points[i]+side0*widths[i]+lift,points[i+1]+side1*widths[i+1]+lift],0,1,travelled/11,(travelled+length)/11)
+		travelled+=length
+	var material=StandardMaterial3D.new()
+	material.albedo_texture=preload("res://assets/roads_experiment/asphalt.jpg")
+	material.albedo_color=Color("a6aaa2")
+	material.roughness=1
+	material.metallic_specular=0
+	material.cull_mode=BaseMaterial3D.CULL_DISABLED
+	material.texture_filter=BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	make_surface("ContinuousRouteAsphalt",tool,material,false)

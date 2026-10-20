@@ -1,0 +1,6 @@
+Coffin vocal sting: pitch-lowered Female Scream Horror by NeoPhyTe (Public Domain), layered with the project monster growl.
+Scream source: https://soundbible.com/1627-Female-Scream-Horror.html
+Original recording: assets/audio/tree_scream.mp3; the falling-tree cue is unchanged.
+Monster growl provenance: assets/enemies/audio-sources.json.
+coffin_break.wav: original procedurally synthesized wood impact.
+The previous metallic coffin_sting.wav is no longer used by the encounter.

@@ -111,7 +111,7 @@ func sign_text(parent: Node3D, words: String, p: Vector3, size = 28, color = Col
 	# Keep lettering on the main physical signs and the printed detour sheet.
 	# Small environmental captions and floating nameplates are no longer rendered.
 	var physical_signs=["Blackwood","Population 3","RANGER OFFICE","BLACKWOOD PHARMACY","GENERAL STORE","SAINT GEORGE HOTEL","MILL REPAIR CO.","BLACKWOOD RADIO","ANTIQUES","SEBUS HARDWARE","CHAPEL ROAD\nUP THE HILL"]
-	var keep_text=words in physical_signs or parent.name=="DetourSheetOnSeat"
+	var keep_text=words in physical_signs or parent.name in ["DetourSheetOnSeat","DetourSheetInTrunk"]
 	label.text = words if keep_text else ""
 	if not keep_text: label.set_meta("removed_world_caption",words)
 	label.font = preload("res://assets/font.ttf")
@@ -394,6 +394,11 @@ func refresh_focus():
 	focus_action = ""
 	var start = game.camera.global_position
 	var finish = start-game.camera.global_basis.z*3.2
+	if game.crash_site:
+		var pickup=game.crash_site.pickup_focus(start,finish)
+		if pickup!="":
+			focus_action=pickup
+			return
 	var query = PhysicsRayQueryParameters3D.create(start,finish,3,[game.player.get_rid()])
 	query.collide_with_areas = true
 	var hit = get_world_3d().direct_space_state.intersect_ray(query)
@@ -591,6 +596,9 @@ func use_medkit():
 		game.soundscape.feedback("pickup")
 
 func use_battery():
+	if game.flashlight_fault_active():
+		game.message="The switch isn't responding. It isn't the battery."
+		return
 	if not game.crash_site.has_flashlight:
 		game.message = "Collect your flashlight from the car first."
 		return

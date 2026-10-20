@@ -1,0 +1,4 @@
+Experimental road assets converted from the user-provided Downloads/Roads/Roads/Models/Roads.blend and Textures/T (1).jpg.
+Source objects: road.002 (approach), road.010 (Main Street). Original textures/UVs retained; dimensions fitted to existing route.
+No license document was included with the local download.
+The blend referenced a missing Asphalt010_2K_Color.jpg; material reconnected to the asphalt image supplied as Textures/T (1).jpg.

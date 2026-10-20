@@ -8,7 +8,7 @@ presentation and title screen; choose **Enter Blackwood** or press Enter.
 
 You survived a car accident on Old Mill Road. Follow the road into Blackwood,
 find supplies and weapons, and repair the town radio to call for rescue.
-After the wake-up dialogue, press E to stand. Open the crashed car with E, then collect your backpack, flashlight and detour sheet. You begin without weapons. You can close and reopen the car door.
+After the wake-up dialogue, press E to stand. Open the crashed car's rear hatch with E, then collect your backpack and flashlight from the trunk. The detour sheet is optional. You begin without weapons. The driver's door and rear hatch each open and close independently.
 
 The chapel uphill along Chapel Road from the north end of Main Street is open for exploration and
 marked on the journal map. The dense forest forms a closed boundary around town.
@@ -24,7 +24,7 @@ Turning testing off restores the equipment, supplies, health and lock access you
 - Mouse: look; WASD / arrows: move; Shift: sprint.
 - Space: jump. Hold Ctrl: crouch; release to stand when there is room.
 - E: inspect, search, collect, open doors, and talk.
-- I: backpack (drag items to arrange them). F: flashlight; Tab: journal and map; Escape: pause, with a Restart Game option.
+- I: backpack (drag items to arrange them). F: flashlight; Tab: journal and map; Escape: pause, with Restart Game and Main Menu options.
 - C inside the journal: case notes and evidence leads.
 - Left mouse: fire, or punch while unarmed; right mouse: aim; R: reload.
 - 1 / 2 / 3: switch between guns you have found; 0: holster.

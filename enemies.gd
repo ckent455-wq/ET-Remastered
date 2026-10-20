@@ -2,7 +2,7 @@ extends Node3D
 ## Native animated encounters with real collision and sight rays guarding combat.
 var game
 var creatures = []
-const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2),Vector3(-16.1,-12.99,-96.3),Vector3(30,0,-28),Vector3(25.55,-23.99,-104),Vector3(26.45,-23.99,-96.5),Vector3(29.3,-23.99,-79.1)]
+const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2),Vector3(-16.1,-12.99,-96.3),Vector3(30,0,-28),Vector3(25.55,-23.99,-104),Vector3(26.45,-23.99,-96.5),Vector3(22.3,-23.99,-84.08)]
 const WOOD_ROUTES = [[Vector3(19.8,0,-129.7),Vector3(21.0,0,-131.5),Vector3(24.0,0,-130.2)],[Vector3(38.3,0,-134.5),Vector3(37.8,0,-130.0),Vector3(34.8,0,-127.5)],[Vector3(39.0,0,-139),Vector3(38.3,0,-134.5),Vector3(37.8,0,-130),Vector3(34.8,0,-127.5)]]
 const HEALTH = 85.0
 const RESPAWN_SECONDS = 120.0
@@ -141,6 +141,10 @@ func reset_creature(data):
 	if data.index in TUNNEL_INDICES:
 		data.state="tunnel_wait"
 		data["tunnel_waypoint"]=0
+		data["coffin_release"]=0.0
+		if data.index==TUNNEL_INDICES[2]:
+			data.actor.collision_layer=0
+			data.actor.collision_mask=0
 		play(data,"idle1")
 	if data.index==REAPER_INDEX:
 		data.state="reaper_wait"
@@ -194,6 +198,8 @@ func shoot(index: int, damage: float) -> bool:
 	data.did_hit = true
 	if data.hp<=0:
 		data.state = "dead"
+		if data.index==TUNNEL_INDICES[1] and game.hotel_basement:
+			game.hotel_basement.get_node("CellarCoffinStacks").start_blackout()
 		if data.index==WORKSHOP_INDEX:
 			workshop_defeated=true
 			game.message="The creature collapses. Search the workshop for the signal coil."

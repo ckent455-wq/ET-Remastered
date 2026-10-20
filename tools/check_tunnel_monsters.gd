@@ -60,10 +60,10 @@ func run():
  var third=e.creatures[e.TUNNEL_INDICES[2]]
  g.player.global_position=tunnel.to_global(Vector3(0,0.02,-6))
  await physics_frame;await physics_frame
- assert(third.state=="tunnel_wait" and not e.line_clear(third,g.player.global_position+Vector3.UP),"Cellar monster is concealed behind the storage screen")
+ assert(third.state=="tunnel_wait" and not third.visual.visible and not tunnel.get_node("CellarCoffinStacks").busted,"Cellar monster is concealed inside its closed coffin")
  g.player.global_position=tunnel.to_global(Vector3(0,0.02,-3.3))
  await physics_frame;await physics_frame
- e._physics_process(0.01);assert(third.state=="tunnel_chase","Entering open cellar triggers hidden monster")
+ e._physics_process(0.01);assert(third.state=="coffin_breakout","Entering open cellar triggers coffin breakout")
  g.health=100;g.invincible=0
  for frame in range(720):e._physics_process(1.0/60);await physics_frame
  assert(g.health<100 and third.tunnel_waypoint>=2,"Cellar monster routes around cover and lands a melee hit")

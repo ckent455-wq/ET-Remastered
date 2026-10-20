@@ -27,6 +27,10 @@ var door: Node3D
 var door_closed = Vector3.ZERO
 var bag_visual: Node3D
 var light_visual: Node3D
+var hatch:Node3D
+var hatch_open=false
+var hatch_closed=Vector3.ZERO
+var hatch_tween:Tween
 var door_tween: Tween
 var tutorial_areas: Dictionary = {}
 const WRECK_POSITION = Vector3(3.8,0.01,13)
@@ -38,12 +42,24 @@ func _ready():
 	wreck.position = WRECK_POSITION
 	wreck.rotation = Vector3(0,-0.6,-0.025)
 	add_child(wreck)
-	var model = preload("res://assets/vehicles/crashed_hatchback_openable.glb").instantiate()
+	var model = preload("res://assets/vehicles/crashed_hatchback_rear_hatch.glb").instantiate()
 	wreck.add_child(model)
 	adapt(model)
-	door = model.find_child("DriverDoor",true,false)
+	# Reuse the original door, including its authored hinge and local geometry.
+	# The hatch conversion baked that pivot into the mesh at the car origin.
+	var broken_door=model.find_child("DriverDoor",true,false)
+	broken_door.get_parent().remove_child(broken_door)
+	broken_door.queue_free()
+	var original_car=preload("res://assets/vehicles/crashed_hatchback_openable.glb").instantiate()
+	door=original_car.find_child("DriverDoor",true,false).duplicate()
+	original_car.free()
+	model.add_child(door)
+	adapt(door)
 	door_closed = door.rotation
+	hatch=model.find_child("RearHatch",true,false)
+	hatch_closed=hatch.rotation
 	build_car_interior()
+	build_trunk()
 	build_tutorial_items()
 	var collision = CollisionShape3D.new()
 	var shape = BoxShape3D.new()
@@ -99,6 +115,10 @@ func _process(delta):
 		if game.state=="play" and not door_tween.is_running() and not is_equal_approx(door.rotation.y,door_closed.y-1.15 if door_open else door_closed.y): door_tween.play()
 		elif game.state!="play": door_tween.pause()
 	update_door_target()
+	update_hatch_target()
+	if hatch_tween and hatch_tween.is_valid():
+		if game.state=="play" and not hatch_tween.is_running() and not is_equal_approx(hatch.rotation.x,hatch_closed.x-1.3 if hatch_open else hatch_closed.x):hatch_tween.play()
+		elif game.state!="play":hatch_tween.pause()
 	if game.state!="play":
 		return
 	elapsed += delta
@@ -111,9 +131,9 @@ func _process(delta):
 func build_tutorial_items():
 	var town = game.town
 	bag_visual = Node3D.new()
-	bag_visual.name = "BackpackOnSeat"
+	bag_visual.name = "BackpackInTrunk"
 	wreck.add_child(bag_visual)
-	bag_visual.position = Vector3(-0.47,0.79,0.1)
+	bag_visual.position = Vector3(-0.35,0.80,1.65)
 	var canvas = game.mat(Color("666d4e"))
 	town.box(bag_visual,Vector3.ZERO,Vector3(0.38,0.43,0.22),canvas,false)
 	town.box(bag_visual,Vector3(-0.02,-0.08,0.14),Vector3(0.29,0.18,0.09),canvas,false)
@@ -124,7 +144,7 @@ func build_tutorial_items():
 	light_visual = preload("res://assets/flashlight/flashlight.glb").instantiate()
 	wreck.add_child(light_visual)
 	game.prepare_flashlight(light_visual)
-	light_visual.position = Vector3(-0.65,0.82,-0.34)
+	light_visual.position = Vector3(0.02,0.82,1.72)
 	light_visual.scale = Vector3.ONE*0.65
 	light_visual.rotation.z = PI/2
 	# Seat the lowest point of the rotated flashlight on the cushion.
@@ -132,13 +152,14 @@ func build_tutorial_items():
 	for part in light_visual.find_children("*","MeshInstance3D",true,false):
 		var local_bounds: AABB = (wreck.global_transform.affine_inverse()*part.global_transform)*part.mesh.get_aabb()
 		lowest = minf(lowest,local_bounds.position.y)
-	if lowest<INF: light_visual.position.y += 0.575-lowest
-	# The full-body car collider remains solid; interaction targets sit at the open window.
+	if lowest<INF: light_visual.position.y += 0.588-lowest
+	# The doorway has its own target; pickups are fitted to their visible models.
 	for entry in [
 		["crash_driver_door",Vector3(-1.04,1,0.15),Vector3(0.18,0.65,1.35),"Open driver's door"],
-		["crash_backpack",Vector3(-1.04,0.95,0.1),Vector3(0.18,0.5,0.65),"Take backpack from car"],
-		["crash_flashlight",Vector3(-1.04,0.95,-0.28),Vector3(0.18,0.45,0.42),"Take flashlight from car"]]:
+		["crash_backpack",Vector3(-1.04,0.95,0.1),Vector3(0.18,0.5,0.65),"Take backpack from trunk"],
+		["crash_flashlight",Vector3(-1.04,0.95,-0.28),Vector3(0.18,0.45,0.42),"Take flashlight from trunk"]]:
 		tutorial_areas[entry[0]] = town.action_area(wreck,entry[1],entry[2],entry[0],{"kind":"crash_tutorial","label":entry[3]})
+	fit_pickup_targets()
 	reset()
 
 func reset():
@@ -152,12 +173,19 @@ func reset():
 	has_detour_sheet = false
 	if detour_visual: detour_visual.show()
 	door_open = false
+	hatch_open=false
+	if hatch_tween:hatch_tween.kill()
+	hatch.rotation=hatch_closed
+	if tutorial_areas.has("crash_rear_hatch"):
+		tutorial_areas.crash_rear_hatch.collision_layer=2
+		game.town.actions.crash_rear_hatch.label="Open rear hatch"
+		update_hatch_target()
 	if door_tween: door_tween.kill()
 	door.rotation = door_closed
 	bag_visual.show()
 	light_visual.show()
 	for id in tutorial_areas:
-		tutorial_areas[id].collision_layer = 2 if id=="crash_driver_door" else 0
+		tutorial_areas[id].collision_layer = 2 if id in ["crash_driver_door","crash_rear_hatch"] else 0
 	game.town.actions.crash_driver_door.label="Open driver's door"
 	update_door_target()
 
@@ -176,7 +204,7 @@ func start_opening():
 func show_wake_dialogue():
 	wake_phase="dialogue"
 	game.dialogue_name = ""
-	game.dialogue_text = "My head... I must have blacked out. Something crossed the road. I swerved, and the car hit that stump.\n\nThe engine's dead. No phone signal. My backpack and flashlight are still in the car. I need to get up and collect them before I look for help."
+	game.dialogue_text = "My head... I must have blacked out. Something crossed the road. I swerved, and the car hit that stump.\n\nThe engine's dead. No phone signal. My backpack and flashlight are still in the trunk. I need to get up and collect them before I look for help."
 	game.set_state("dialogue")
 
 func stand_up():
@@ -205,7 +233,7 @@ func update_waking(delta: float):
 		if t>=1:
 			wake_phase=""
 			game.set_state("play")
-			game.message="Find the driver's door. Press E to open it and collect your things."
+			game.message="Go to the rear hatch. Press E to open it and collect your things."
 	game.hud.queue_redraw()
 
 func eye_opening() -> float:
@@ -219,17 +247,25 @@ func eye_opening() -> float:
 	return 1.0
 
 func tutorial_complete() -> bool:
-	return has_backpack and has_flashlight and has_detour_sheet
+	return has_backpack and has_flashlight
 
 func tutorial_prompt() -> String:
-	if not door_open: return "WASD / MOVE   MOUSE / LOOK   E / OPEN THE DRIVER'S DOOR"
-	if not has_backpack: return "E / TAKE YOUR BACKPACK FROM THE OPEN CAR"
-	if not has_flashlight: return "E / TAKE YOUR FLASHLIGHT FROM THE CAR"
-	if not has_detour_sheet: return "E / TAKE THE DETOUR SHEET FROM THE SEAT"
+	if not hatch_open: return "WASD / MOVE   MOUSE / LOOK   E / OPEN THE REAR HATCH"
+	if not has_backpack: return "E / TAKE YOUR BACKPACK FROM THE TRUNK"
+	if not has_flashlight: return "E / TAKE YOUR FLASHLIGHT FROM THE TRUNK"
 	return ""
 
 func interact_tutorial(id: String):
 	if wake_phase!="": return
+	if id=="crash_rear_hatch":
+		hatch_open=not hatch_open
+		if hatch_tween:hatch_tween.kill()
+		hatch_tween=create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		hatch_tween.tween_property(hatch,"rotation:x",hatch_closed.x-1.3 if hatch_open else hatch_closed.x,0.7)
+		game.town.actions.crash_rear_hatch.label="Close rear hatch" if hatch_open else "Open rear hatch"
+		game.soundscape.storage_move(wreck.global_position,false,hatch_open)
+		update_item_targets()
+		return
 	if id=="crash_driver_door":
 		door_open = not door_open
 		if door_tween: door_tween.kill()
@@ -240,22 +276,22 @@ func interact_tutorial(id: String):
 		game.town.actions.crash_driver_door.label="Close driver's door" if door_open else "Open driver's door"
 		update_item_targets()
 		update_door_target()
-		game.message = "The door opens. Look at your belongings and press E." if door_open and not tutorial_complete() else ("Driver's door opened." if door_open else "Driver's door closed.")
-	elif id=="crash_backpack" and door_open and not has_backpack:
+		game.message = "Driver's door opened. Your gear is in the trunk." if door_open else "Driver's door closed."
+	elif id=="crash_backpack" and hatch_open and not has_backpack:
 		has_backpack = true
 		bag_visual.hide()
 		tutorial_areas.crash_backpack.collision_layer = 0
-		tutorial_areas.crash_flashlight.collision_layer = 2
+		update_item_targets()
 		game.soundscape.feedback("pickup")
-		game.message = "Backpack collected. Now take the flashlight beside it."
-	elif id=="crash_flashlight" and door_open and has_backpack and not has_flashlight:
+		game.message = "Backpack collected. Take the flashlight from the trunk if you have not already."
+	elif id=="crash_flashlight" and hatch_open and not has_flashlight:
 		has_flashlight = true
 		light_visual.hide()
 		tutorial_areas.crash_flashlight.collision_layer = 0
 		game.soundscape.feedback("pickup")
-		tutorial_areas.crash_record.collision_layer = 2
-		game.message = "Flashlight collected. F switches it on. Take the detour sheet from the seat before you leave."
-	elif id=="crash_record" and door_open and has_flashlight and not has_detour_sheet:
+		update_item_targets()
+		game.message = "Flashlight collected. F switches it on. The detour sheet in the trunk is optional."
+	elif id=="crash_record" and hatch_open and not has_detour_sheet:
 		has_detour_sheet = true
 		detour_visual.hide()
 		tutorial_areas.crash_record.collision_layer = 0
@@ -278,8 +314,8 @@ func update_door_target():
 func update_item_targets():
 	for id in ["crash_backpack","crash_flashlight","crash_record"]:
 		if not tutorial_areas.has(id): continue
-		var available=not has_backpack if id=="crash_backpack" else (has_backpack and not has_flashlight if id=="crash_flashlight" else has_flashlight and not has_detour_sheet)
-		tutorial_areas[id].collision_layer=2 if door_open and available else 0
+		var available=not has_backpack if id=="crash_backpack" else (not has_flashlight if id=="crash_flashlight" else not has_detour_sheet)
+		tutorial_areas[id].collision_layer=2 if hatch_open and available else 0
 
 func build_car_interior():
 	var cabin = Node3D.new()
@@ -333,10 +369,10 @@ func build_car_interior():
 
 func build_detour_sheet():
 	detour_visual = Node3D.new()
-	detour_visual.name = "DetourSheetOnSeat"
+	detour_visual.name = "DetourSheetInTrunk"
 	wreck.add_child(detour_visual)
-	detour_visual.position = Vector3(-0.43,0.585,-0.3)
-	detour_visual.rotation.y = -0.14
+	detour_visual.position = Vector3(0.37,0.588,1.65)
+	detour_visual.rotation.y = PI/2-0.14
 	var shader = Shader.new()
 	shader.code = "shader_type spatial; render_mode cull_disabled; uniform sampler2D paper_texture : source_color, filter_nearest_mipmap; void fragment(){ ALBEDO=mix(vec3(0.86,0.83,0.74),texture(paper_texture,UV).rgb,0.24); ROUGHNESS=1.0; }"
 	var paper = ShaderMaterial.new()
@@ -368,6 +404,7 @@ func build_detour_sheet():
 		head.rotation.y = -side*0.7
 	tutorial_areas.crash_record = game.town.action_area(wreck,Vector3(-1.04,0.95,-0.28),Vector3(0.18,0.45,0.50),"crash_record",{"kind":"crash_tutorial","label":"Pick up detour sheet"})
 	tutorial_areas.crash_record.collision_layer = 0
+	fit_pickup_targets()
 
 func build_blinking_headlights(model:Node3D):
 	# Copy only the original front lamp faces. The body and cabin stay untouched.
@@ -456,3 +493,56 @@ func update_headlights():
 		tail_material.albedo_color=Color("f33422") if lit else Color("552d26")
 		tail_material.emission_energy_multiplier=1.0 if lit else 0.0
 	for glow in tail_glows:glow.visible=lit
+
+func pickup_bounds(visual:Node3D)->AABB:
+	var bounds=AABB()
+	var first=true
+	for mesh in visual.find_children("*","MeshInstance3D",true,false):
+		var part=(wreck.global_transform.affine_inverse()*mesh.global_transform)*mesh.mesh.get_aabb()
+		bounds=part if first else bounds.merge(part)
+		first=false
+	return bounds
+func fit_pickup_targets():
+	for pair in [["crash_backpack",bag_visual],["crash_flashlight",light_visual],["crash_record",detour_visual]]:
+		if pair[1]==null or not tutorial_areas.has(pair[0]):continue
+		var bounds=pickup_bounds(pair[1])
+		var target=tutorial_areas[pair[0]]
+		target.position=bounds.get_center()
+		# Small padding makes the paper and narrow flashlight comfortable to aim at.
+		target.get_child(0).shape.size=bounds.size+Vector3(0.045,0.06,0.045)
+func pickup_focus(start:Vector3,finish:Vector3)->String:
+	if not hatch_open or wake_phase!="":return ""
+	var a=wreck.to_local(start)
+	var b=wreck.to_local(finish)
+	# Reach only through the open rear hatch, not through the cabin or sides.
+	if a.z<=1.8 or b.z>=a.z:return ""
+	var t=(1.8-a.z)/(b.z-a.z)
+	if t<0 or t>1:return ""
+	var opening=a.lerp(b,t)
+	if opening.y<0.52 or opening.y>1.65 or absf(opening.x)>0.76:return ""
+	var query=PhysicsRayQueryParameters3D.create(start,finish,2)
+	query.collide_with_areas=true
+	query.collide_with_bodies=false
+	query.exclude=[tutorial_areas.crash_driver_door.get_rid(),tutorial_areas.crash_rear_hatch.get_rid()]
+	var hit=get_world_3d().direct_space_state.intersect_ray(query)
+	if hit.is_empty():return ""
+	var id=hit.collider.get_meta("action_id","")
+	if id not in ["crash_backpack","crash_flashlight","crash_record"]:return ""
+	var obstacle=PhysicsRayQueryParameters3D.create(start,hit.position,1,[game.player.get_rid(),wreck.get_rid()])
+	if not get_world_3d().direct_space_state.intersect_ray(obstacle).is_empty():return ""
+	return id
+
+func build_trunk():
+	var liner=game.mat(Color("292d29"))
+	game.town.box(wreck,Vector3(0,0.56,1.32),Vector3(1.28,0.045,1.1),liner,false)
+	for side in [-1,1]:
+		game.town.box(wreck,Vector3(side*0.65,0.73,1.33),Vector3(0.04,0.34,1.05),liner,false)
+	# The dark backing and inner panel prevent seeing through the body.
+	game.town.box(wreck,Vector3(0,0.76,0.83),Vector3(1.3,0.42,0.045),liner,false)
+	game.town.box(hatch,Vector3(0,-0.40,0.58),Vector3(1.22,0.035,0.62),liner,false)
+	tutorial_areas.crash_rear_hatch=game.town.action_area(wreck,Vector3(0,1.03,2.02),Vector3(1.05,0.38,0.28),"crash_rear_hatch",{"kind":"crash_tutorial","label":"Open rear hatch"})
+func update_hatch_target():
+	if not tutorial_areas.has("crash_rear_hatch"):return
+	var target=tutorial_areas.crash_rear_hatch
+	target.collision_layer=2
+	target.global_position=hatch.to_global(Vector3(0,-0.32,0.65)) if hatch_open else wreck.to_global(Vector3(0,1.03,2.02))

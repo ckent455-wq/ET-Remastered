@@ -77,13 +77,11 @@ func build_basement():
  doorway(self,Vector3(0,0,4.82),"UP TO SAINT GEORGE","hotel_basement_exit","hotel_basement_exit",PI)
  # The bolt is clearly visible beside the return door.
  box(Vector3(-0.42,1.18,4.68),Vector3(0.30,0.06,0.07),town.mats.metal,false)
- for p in [Vector3(-3.4,0,-3.4),Vector3(-3.3,0,2.4),Vector3(3.4,0,2.6)]:
-  town.interiors.prop("box",self,p,Vector3(0.85,0.85,0.85),p.z*0.1)
+ var coffins=preload("res://cellar_coffins.gd").new()
+ coffins.cellar=self
+ add_child(coffins)
  town.interiors.prop("shelf",self,Vector3(3.6,0,-3.8),Vector3(0.72,0.85,0.72))
- # A storage screen hides the far-cellar Wrapper; the left side stays walkable.
- var screen=box(Vector3(2.5,1.05,-1.2),Vector3(1.9,2.1,0.15),timber)
- screen.name="CellarStorageScreen"
- for x in [1.62,3.38]:box(Vector3(x,1.05,-1.12),Vector3(0.10,2.1,0.10),timber,false)
+ # The upright coffin now conceals the far-cellar Wrapper.
  # A grounded workbench and a note explain the route without adding a new required item.
  box(Vector3(-2.6,0.76,-2),Vector3(2.1,0.12,0.8),timber)
  for x in [-3.45,-1.75]:box(Vector3(x,0.35,-2),Vector3(0.12,0.70,0.65),timber)
@@ -146,3 +144,4 @@ func move_player(p:Vector3,yaw:float):
 
 func reset():
  hotel_unlocked=false
+ if has_node("CellarCoffinStacks"):get_node("CellarCoffinStacks").reset_burst()

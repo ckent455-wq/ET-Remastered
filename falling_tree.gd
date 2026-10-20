@@ -96,7 +96,7 @@ func _physics_process(delta):
 		previous_z = p.z
 		return
 	# Cross the trigger toward town on the road, rather than firing from the cemetery or a menu.
-	if not triggered and previous_z> -21 and p.z<= -21 and p.z> -26 and absf(p.x)<2.1:
+	if not triggered and previous_z> -21 and p.z<= -21 and p.z> -26 and absf(p.x)<3.8:
 		begin_fall()
 	previous_z = p.z
 	if not triggered: return

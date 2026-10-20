@@ -32,7 +32,9 @@ func begin():
  game.crash_site.wake_phase=""
  game.crash_site.has_backpack=true;game.crash_site.has_flashlight=true;game.crash_site.has_detour_sheet=true
  game.crash_site.bag_visual.hide();game.crash_site.light_visual.hide();game.crash_site.detour_visual.hide()
- for id in game.crash_site.tutorial_areas:game.crash_site.tutorial_areas[id].collision_layer=0
+ for id in game.crash_site.tutorial_areas:
+  game.crash_site.tutorial_areas[id].collision_layer=2 if id in ["crash_driver_door","crash_rear_hatch"] else 0
+ game.crash_site.update_hatch_target()
  for id in game.town.inventory:game.town.inventory[id]=maxi(game.town.inventory[id],1)
  for i in range(3):
   w.owned[i]=true;w.magazines[i]=w.LOADOUT[i].clip;w.reserves[i]=w.LOADOUT[i].max_reserve
@@ -43,7 +45,7 @@ func begin():
   game.camera.position=Vector3(0,game.STANDING_EYE,0);game.camera.rotation=Vector3.ZERO;game.pitch=0
   game.set_state("play")
  w.equip(0)
- game.flashlight.visible=true
+ game.flashlight.visible=not game.flashlight_fault_active()
  replenish()
  game.message="Testing ON. All equipment and keys; unlimited health, ammo and light. F10 turns it off."
 func replenish():
@@ -67,10 +69,11 @@ func finish(restore=true):
  w.selected=saved.selected;w.reload_remaining=0;w.delay=0;w.flash_remaining=0
  w.melee.raised=false;w.melee.cancel();w.update_model(1)
  game.soundscape.weapon_stop_reload()
- game.health=saved.health;game.stamina=saved.stamina;game.flashlight_charge=saved.charge;game.flashlight.visible=saved.light;game.invincible=0
+ game.health=saved.health;game.stamina=saved.stamina;game.flashlight_charge=saved.charge;game.flashlight.visible=saved.light and not game.flashlight_fault_active();game.invincible=0
  game.crash_site.has_backpack=saved.gear[0];game.crash_site.has_flashlight=saved.gear[1];game.crash_site.has_detour_sheet=saved.gear[2]
  game.crash_site.bag_visual.visible=not saved.gear[0];game.crash_site.light_visual.visible=not saved.gear[1];game.crash_site.detour_visual.visible=not saved.gear[2]
  game.crash_site.update_door_target()
+ game.crash_site.update_hatch_target()
  game.crash_site.update_item_targets()
  game.backpack.saved_cells=saved.cells.duplicate(true);game.backpack.dragging=""
  game.town.cemetery.unlocked=saved.locks[0]

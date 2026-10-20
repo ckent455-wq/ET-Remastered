@@ -34,7 +34,7 @@ const RECORDS = {
   ],
   "crash_record": [
     "The detour sheet",
-    "You picked up this photocopied road notice at the fuel stop before turning onto Old Mill Road. You left it on the front seat.\nBRIDGE CLOSED. DIVERT THROUGH BLACKWOOD.\nThe seal is reversed and the sheet has no date. You trusted it.\nA shape crossed the headlights. You swerved into the stump beside the road.\nNo phone service. There are lights in town.",
+    "You picked up this photocopied road notice at the fuel stop before turning onto Old Mill Road. You stowed it in the trunk.\nBRIDGE CLOSED. DIVERT THROUGH BLACKWOOD.\nThe seal is reversed and the sheet has no date. You trusted it.\nA shape crossed the headlights. You swerved into the stump beside the road.\nNo phone service. There are lights in town.",
     "The driver followed an undated detour sheet collected at a fuel stop, then swerved off the road."
   ],
   "workshop_record": [

@@ -15,6 +15,7 @@ var emergency_lenses:Array[StandardMaterial3D]=[]
 var emergency_halos:Array[Sprite3D]=[]
 var material_cache = {}
 var road_mesh: ArrayMesh
+var approach_road_mesh: ArrayMesh
 var church: Node3D
 var chapel_hill: Node3D
 const HEIGHTS = {"ranger":6.8,"clinic":7.4,"store":8.2,"house":10.1,"workshop":6.6,"radio":8.6}
@@ -26,10 +27,11 @@ func _ready():
 	stone = town.mats.plaster.duplicate()
 	stone.albedo_color = Color("a19c87")
 	asphalt = StandardMaterial3D.new()
-	asphalt.albedo_texture = load("res://assets/roads/asphalt.png")
+	asphalt.albedo_texture = load("res://assets/roads_experiment/asphalt.jpg")
 	asphalt.albedo_color = Color("b0b4ae")
 	asphalt.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
-	asphalt.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL
+	asphalt.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	asphalt.cull_mode = BaseMaterial3D.CULL_DISABLED
 	asphalt.roughness = 1
 	asphalt.metallic_specular = 0
 	pavement = town.mats.plaster.duplicate()
@@ -50,23 +52,19 @@ func brick(id: String) -> StandardMaterial3D:
 func build_street():
 	# Flat collision comes from the shared world floor; curb detail is visual.
 	build_downloaded_roads()
-	var flare = SurfaceTool.new()
-	flare.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var corners = [Vector3(-1.6,0.018,-34.92),Vector3(1.6,0.018,-34.92),Vector3(-3.8,0.018,-38.08),Vector3(3.8,0.018,-38.08)]
-	for index in [0,2,1,1,2,3]:
-		flare.set_normal(Vector3.UP)
-		flare.set_uv(Vector2(corners[index].x/3.2,corners[index].z/4))
-		flare.add_vertex(corners[index])
+	# Use the same kit mesh, material and height across the old transition gap.
 	var entry = MeshInstance3D.new()
 	entry.name = "ContinuousTownEntryAsphalt"
-	entry.mesh = flare.commit()
+	entry.mesh = road_mesh
 	entry.material_override = asphalt
+	entry.position = Vector3(0,0.035,-36.5)
+	entry.scale.z = 3.0/11.0
 	add_child(entry)
 	var paint = town.color_material(Color("87835d"))
 	town.box(self,Vector3(0,0.027,-36.5),Vector3(0.06,0.008,1.15),paint,false)
 	for side in [-1,1]:
-		var edge = town.box(self,Vector3(side*2.7,0.028,-36.5),Vector3(0.045,0.008,3.72),stone,false)
-		edge.rotation.y = -side*atan2(2.2,3.0)
+		var edge = town.box(self,Vector3(side*3.8,0.028,-36.5),Vector3(0.045,0.008,3.16),stone,false)
+		edge.rotation.y = 0
 	for side in [-1,1]:
 		town.box(self,Vector3(side*5.15,0.012,-64),Vector3(2.7,0.016,56),pavement,false)
 		town.box(self,Vector3(side*3.87,0.04,-64),Vector3(0.11,0.07,56),stone,false)
@@ -108,20 +106,20 @@ func build_street():
 	# Main Street now opens onto the climb to the chapel.
 
 func build_downloaded_roads():
-	# Reuse the asset's original asphalt geometry, UVs and painted markings.
-	# Omit its raised sidewalk surface and automatic -col collision so the
-	# existing level's flat floor and accessible entrances remain authoritative.
-	var source = load("res://assets/roads/road_straight.glb").instantiate()
-	road_mesh = ArrayMesh.new()
-	extract_road_mesh(source)
-	source.free()
-	assert(road_mesh.get_surface_count()>0,"Downloaded road mesh is available")
+	# User-downloaded Roads kit, baked to the existing route dimensions.
+	for kind in ["approach","main_street"]:
+		var source=load("res://assets/roads_experiment/"+kind+".glb").instantiate()
+		road_mesh=ArrayMesh.new()
+		extract_road_mesh(source)
+		source.free()
+		assert(road_mesh.get_surface_count()>0,"New road mesh is available")
+		if kind=="approach":approach_road_mesh=road_mesh
 	for i in range(5):
-		road_segment(Vector3(0,-0.232,14.5-i*11),3.2)
+		road_segment(Vector3(0,-0.232,14.5-i*11),7.6)
 		road_segment(Vector3(0,-0.232,-43.5-i*11),7.6)
 	# Scenic continuation behind the crash, beyond the invisible travel limit.
 	for i in range(7):
-		road_segment(Vector3(0,-0.232,25.5+i*11),3.2)
+		road_segment(Vector3(0,-0.232,25.5+i*11),7.6)
 
 func extract_road_mesh(node: Node):
 	if node is MeshInstance3D:
@@ -129,9 +127,15 @@ func extract_road_mesh(node: Node):
 			var original = node.mesh.surface_get_material(surface)
 			if original and original.resource_name=="concrete":
 				continue
-			road_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,node.mesh.surface_get_arrays(surface))
-			var material = original.duplicate() as StandardMaterial3D
-			material.albedo_color = Color("b0b4ae")
+			var arrays=node.mesh.surface_get_arrays(surface)
+			var normals=PackedVector3Array()
+			normals.resize(arrays[Mesh.ARRAY_VERTEX].size())
+			normals.fill(Vector3.UP)
+			arrays[Mesh.ARRAY_NORMAL]=normals
+			road_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+			var material = asphalt.duplicate() as StandardMaterial3D
+			material.albedo_color = Color("c4c3b9")
+			material.cull_mode = BaseMaterial3D.CULL_DISABLED
 			material.roughness = 1
 			material.metallic_specular = 0
 			material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL
@@ -143,11 +147,14 @@ func extract_road_mesh(node: Node):
 func road_segment(p: Vector3, width: float):
 	var segment = MeshInstance3D.new()
 	segment.name = "DownloadedRoadSegment"
-	segment.mesh = road_mesh
+	segment.mesh = approach_road_mesh if width<4 else road_mesh
+	segment.material_override = asphalt
 	add_child(segment)
-	segment.position = p
-	segment.rotation.y = PI/2
-	segment.scale = Vector3(1.1,1,width/6.166667)
+	segment.position = Vector3(p.x,0.035,p.z)
+	# End exactly where the chapel incline starts; overlapping slopes flash pale.
+	if is_equal_approx(p.z,-87.5):
+		segment.position.z=-87.0
+		segment.scale.z=10.0/11.0
 
 func street_lamp(p: Vector3):
 	var pole = Node3D.new()

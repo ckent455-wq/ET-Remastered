@@ -24,10 +24,11 @@ func _ready():
 	menu_button("QUIT",Vector2(170,315),Vector2(116,27),func(): get_tree().quit())
 	menu_button("BACK",Vector2(80,331),Vector2(144,30),func(): controls_open = false)
 	menu_button("CHECK FOR UPDATES",Vector2(42,349),Vector2(244,24),func(): game.updater.open())
-	menu_button("RESUME",Vector2(213,222),Vector2(214,36),func(): game.set_state("play"),false)
-	menu_button("RESTART GAME",Vector2(213,272),Vector2(214,36),begin_game,false)
+	menu_button("RESUME",Vector2(213,204),Vector2(214,36),func(): game.set_state("play"),false)
+	menu_button("RESTART GAME",Vector2(213,246),Vector2(214,36),begin_game,false)
 
-	menu_button("TEST MODE: OFF (F10)",Vector2(213,322),Vector2(214,32),func(): game.testing_mode.toggle(),false)
+	menu_button("TEST MODE: OFF (F10)",Vector2(213,288),Vector2(214,32),func(): game.testing_mode.toggle(),false)
+	menu_button("MAIN MENU",Vector2(213,330),Vector2(214,32),return_to_main_menu,false)
 
 func menu_button(label: String, p: Vector2, dimensions: Vector2, action: Callable, title_menu = true):
 	var button = Button.new()
@@ -50,6 +51,11 @@ func menu_button(label: String, p: Vector2, dimensions: Vector2, action: Callabl
 	if title_menu: menu_buttons.append(button)
 	else: pause_buttons.append(button)
 	button.visible = false
+
+func return_to_main_menu():
+	controls_open = false
+	game.reset_game()
+	game.set_state("title")
 
 func begin_game():
 	controls_open = false

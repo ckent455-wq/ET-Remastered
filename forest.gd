@@ -109,13 +109,13 @@ func can_place(p: Vector3, path_clearance: float, clearing: float) -> bool:
 	# Reserve the cemetery, its sightlines, and its road connection.
 	if p.x>3 and p.x<28 and p.z> -29 and p.z< -1: return false
 	# Clear the accident scene and the continuous walking lane into town.
-	if Vector2(p.x-3.8,p.z-13).length()<6.0 or (p.z<21 and p.z> -56 and absf(p.x)<2.6):
+	if Vector2(p.x-3.8,p.z-13).length()<6.0 or (p.z<21 and p.z> -56 and absf(p.x)<5.2):
 		return false
 	# Keep the roadside sign and its sightline free of trunks and branches.
 	if Vector2(p.x-4.4,p.z+35).length()<6.0:
 		return false
 	# Reserve the town footprint and its approach road before scattering vegetation.
-	if (p.z< -36 and absf(p.x)<40) or (p.z<0 and absf(p.x)<2.2):
+	if (p.z< -36 and absf(p.x)<40) or (p.z<0 and absf(p.x)<5.2):
 		return false
 	if absf(p.x)>46 or absf(p.z)>46 or p.length()<clearing:
 		return false

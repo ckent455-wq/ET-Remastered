@@ -71,8 +71,8 @@ func build_ridge(layer: int, radii: Vector3, color: Color):
 	ridges.append(ridge)
 
 func add_ridge_triangle(tool: SurfaceTool, vertices: Array[Vector3]):
-	# Backdrop scenery must stay outside the Victorian house and its approach.
-	var cutout = PackedVector2Array([Vector2(-22,-109),Vector2(-2,-109),Vector2(-2,-87),Vector2(-22,-87)])
+	# Backdrop scenery must stay outside the house, road and entire chapel approach.
+	var cutout = PackedVector2Array([Vector2(-24,-154),Vector2(44,-154),Vector2(44,-84),Vector2(-24,-84)])
 	var projected = PackedVector2Array()
 	for vertex in vertices: projected.append(Vector2(vertex.x,vertex.z))
 	var pieces = Geometry2D.clip_polygons(projected,cutout)

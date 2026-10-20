@@ -50,6 +50,7 @@ var distant_landscape: Node3D
 var falling_tree: Node3D
 var surface_details: Node
 var grave_dig: Node3D
+var hotel_window_figure: Node3D
 var cemetery_shadow: Node3D
 var hotel_basement: Node3D
 var victorian_house: Node3D
@@ -224,6 +225,9 @@ func _ready():
 	hotel_basement=preload("res://hotel_basement.gd").new()
 	hotel_basement.game=self
 	add_child(hotel_basement)
+	hotel_window_figure=preload("res://hotel_window_figure.gd").new()
+	hotel_window_figure.game=self
+	add_child(hotel_window_figure)
 	cemetery_shadow=preload("res://cemetery_shadow.gd").new()
 	cemetery_shadow.game=self
 	add_child(cemetery_shadow)
@@ -299,7 +303,7 @@ func reset_game():
 		backpack.dragging = ""
 		backpack.discard_pending = ""
 		backpack.notice = "Select an item to equip, use or examine."
-	message = "Find the driver's door. Look at it and press E to retrieve your gear."
+	message = "Find the rear hatch. Look at it and press E to retrieve your gear."
 	soundscape.reset()
 	town.reset()
 	weapons.reset()
@@ -309,6 +313,7 @@ func reset_game():
 	if crash_site: crash_site.reset()
 	if hotel_basement: hotel_basement.reset()
 	if cemetery_shadow: cemetery_shadow.reset()
+	if hotel_window_figure: hotel_window_figure.reset()
 	if grave_dig: grave_dig.reset()
 
 func set_state(next: String):
@@ -534,7 +539,14 @@ func update_flashlight_visual(delta: float):
 	flashlight_model.rotation = Vector3(-0.28,0,0.06)*(1.0-eased)
 	flashlight_model.visible = flashlight_raise>0.001
 
+func flashlight_fault_active()->bool:
+	return hotel_basement and hotel_basement.has_node("CellarCoffinStacks") and hotel_basement.get_node("CellarCoffinStacks").blackout_active
+
 func toggle_flashlight():
+	if flashlight_fault_active():
+		flashlight.hide()
+		message="The switch isn't responding."
+		return
 	if not crash_site.has_flashlight:
 		message = "Your flashlight is still in the car. Open the door and collect your gear."
 		return
@@ -561,6 +573,6 @@ func advance_dialogue():
 
 func open_backpack():
 	if not crash_site.has_backpack:
-		message = "Your backpack is still in the car. Open the driver's door and collect it."
+		message = "Your backpack is still in the trunk. Open the rear hatch and collect it."
 		return
 	set_state("backpack")
