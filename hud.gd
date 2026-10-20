@@ -305,7 +305,7 @@ func draw_journal():
 			var found = game.story.evidence.has(id)
 			text(("[+] " if found else "[ ] ")+labels[i],Vector2(78,210+i*42),11,AMBER if found else DIM)
 			paragraph(game.story.RECORDS[id][2] if found else "Not yet read. Search the room for a document.",78,227+i*42,478,11)
-		text("Set the station's desk bypass to GREEN before transmitting.",Vector2(78,348),11,DIM)
+		text("Cut the chapel repeater; set station BYPASS GREEN; call.",Vector2(78,348),11,DIM)
 		centered("I  backpack   C  case notes     LEFT / RIGHT  pages     TAB / ESC  close",379,11,DIM)
 		return
 	if game.journal_page==0:
@@ -326,10 +326,11 @@ func draw_journal():
 			[game.town.inventory.coil>0 or game.town.radio_ready,"Recover workshop signal coil"],
 			[game.town.streetscape.church.basement.unlocked,"Find mausoleum key; unlock the chapel cellar"],
 			[game.town.inventory.tuner>0 or game.town.radio_ready,"Recover the chapel cellar tuning unit"],
+			[game.story.repeater_is_off(),"Shut down the chapel basement repeater"],
 			[game.town.radio_ready,"Repair the receiver with all three radio parts"],
 			[game.contact_progress>=4,"Hold E at the repaired radio to call for rescue"]]
 		for i in range(tasks.size()):
-			text(("[+] " if tasks[i][0] else "[ ] ")+tasks[i][1],Vector2(78,230+i*12),11,DIM if tasks[i][0] else INK)
+			text(("[+] " if tasks[i][0] else "[ ] ")+tasks[i][1],Vector2(78,230+i*11),10,DIM if tasks[i][0] else INK)
 		var earned = game.achievements.unlocked
 		text("ACHIEVEMENTS / "+(game.achievements.CROW_TITLE if earned.has(game.achievements.CROW_ID) else "0 unlocked"),Vector2(78,346),10,AMBER if not earned.is_empty() else DIM)
 	elif game.journal_page==1:
@@ -397,19 +398,19 @@ func draw_dialogue():
 	for row in range(3):
 		draw_rect(Rect2(520+row*2,365+row*2,14-row*4,2),ink)
 	if conversation.active:
-		var hint="PAT / "+("E CONTINUE / ESC QUESTIONS" if game.dialogue_page+1<game.dialogue_pages.size() else "E FOR MORE QUESTIONS")
+		var hint=conversation.speaker_name().to_upper()+" / "+("E CONTINUE / ESC QUESTIONS" if game.dialogue_page+1<game.dialogue_pages.size() else "E FOR MORE QUESTIONS")
 		text(game.controller.hint(hint),Vector2(82,257),11,INK)
 
 func draw_pat_questions(conversation):
 	draw_rect(conversation.BOX,Color(0.015,0.02,0.017,0.97))
 	draw_rect(conversation.BOX,INK,false,2)
-	text("PAT / ASK A QUESTION",Vector2(80,144),16,INK)
+	text(conversation.speaker_name().to_upper()+" / ASK A QUESTION",Vector2(80,144),16,INK)
 	for i in range(conversation.TOPICS.size()+1):
 		var bounds=conversation.row(i)
 		if i==conversation.selected:draw_rect(bounds,Color("354039"))
 		var label="I should get going." if i==conversation.TOPICS.size() else conversation.TOPICS[i].question
 		text(label,Vector2(94,bounds.position.y+18),14,INK)
-		if i<conversation.TOPICS.size() and conversation.asked.has(conversation.TOPICS[i].id):draw_circle(Vector2(84,bounds.position.y+13),2,AMBER)
+		if i<conversation.TOPICS.size() and conversation.asked.has(conversation.entry_id(conversation.TOPICS[i].id)):draw_circle(Vector2(84,bounds.position.y+13),2,AMBER)
 	var hint="UP/DOWN  Choose   E or ENTER  Ask   ESC  Leave"
 	if game.controller.using_controller:hint="D-PAD / LS  Choose   "+game.controller.label("south")+"  Ask   "+game.controller.label("east")+"  Leave"
 	text(hint,Vector2(80,376),11,DIM)

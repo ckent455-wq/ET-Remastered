@@ -61,6 +61,10 @@ func make_surface(label: String, tool: SurfaceTool, material: Material, solid: b
 	var mesh = tool.commit()
 	var visual = MeshInstance3D.new()
 	visual.name = label
+	var foot_kind="grass"
+	if label in ["CurvedChapelFootpath","UphillWalkingSurface","UphillAsphalt","ContinuousRouteAsphalt"]:foot_kind="concrete"
+	elif label=="SoftGravelShoulders":foot_kind="gravel"
+	if label not in ["FadedRoadEdges","WoodedChapelHill"]:preload("res://footstep_surfaces.gd").visual(visual,foot_kind)
 	visual.mesh = mesh
 	visual.material_override = material
 	visual.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

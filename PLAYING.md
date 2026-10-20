@@ -16,7 +16,7 @@ The crash leaves you at **25% health**. Your backpack already contains one banda
 The chapel uphill along Chapel Road from the north end of Main Street is open for exploration and
 marked on the journal map. The dense forest forms a closed boundary around town.
 
-Talk to **Pat** to ask about Blackwood, the old house, the church, the signal, and the people who stayed. After his introduction, use Up/Down and E/Enter, click a question, or use the controller's D-pad/left stick and confirm button. Answers return to the question list; Esc/back returns to the list or ends the conversation. Pat's answers are summarized in the journal. His advice changes with your progress, and he still offers the mausoleum key when it is needed.
+Talk to **Pat** about Blackwood and the old house, **Aubrey** about the signal and her missing patients, and **John** about the church equipment and Ada. Each offers two lore questions and current advice. After each NPC's introduction, use Up/Down and E/Enter, click a question, or use the controller's D-pad/left stick and confirm button. Answers return to the question list; Esc/back returns to the list or leaves. Answers are summarized under the speaker's name in the journal. Pat still offers the mausoleum key when needed.
 
 ## Testing mode
 
@@ -135,3 +135,11 @@ Choose **Check for Updates** on the main menu. The game checks the ET-Remastered
 The updater backs up the current build in a `.ffh-update-backup-*` folder beside the EXE. If copying fails, it restores the old files. Achievements remain in the game's user-data folder. The complete portable game folder must be writable; the updater never requests administrator access. Update logs are in `%APPDATA%/Godot/app_userdata/Far From Home/updates/install.log`.
 
 Running the project in Godot supports checking releases; installation is available in exported Windows builds. The updater does not overwrite the source checkout. Updates are installed only when selected, and a failed or cancelled download leaves the installed game untouched.
+
+Optional side quest: ask John about Ada, collect her letter from Saint George Hotel (one backpack cell), and interact with John to give it to him. The journal records the task and completion; you keep a readable transcript after handing it over.
+
+John rewards delivery of Ada's letter with **12 pistol rounds**. If your backpack or reserve is full, he holds the remainder; talk to him again after making room.
+
+Footsteps now follow the surface beneath you: concrete paving, wooden floors, forest grass, loose gravel, dirt, stone, metal and stairs. Sprinting is louder; crouching is quieter.
+
+To finish: collect the radio parts, **shut down the chapel basement repeater at MAIN ISOLATOR**, repair the station receiver, select **GREEN / DIRECT COUNTY**, and hold E at the receiver. The chapel has independent power; repairing or switching off the station alone does not silence it. Once the chapel rack is off, its amber relay route cannot complete a call.

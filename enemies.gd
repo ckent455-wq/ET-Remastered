@@ -288,6 +288,7 @@ func _physics_process(delta):
 			update_workshop_creature(data,delta)
 			continue
 		if data.state=="dead":
+			if game.story.repeater_is_off():continue
 			data.respawn_remaining = maxf(0,data.respawn_remaining-delta)
 			if data.respawn_remaining<=0: reset_creature(data)
 			continue
@@ -476,7 +477,7 @@ func start_workshop_encounter():
 	if workshop_spawned or workshop_defeated:return
 	workshop_spawned=true
 	workshop_armed=false
-	game.message="The power comes on. Something on Main Street starts walking toward you."
+	game.message="The fuse clicks into place. Something on Main Street starts walking toward you. Flip the power switch."
 	var data=creatures[WORKSHOP_INDEX]
 	data.actor.show()
 	data.actor.collision_layer=1

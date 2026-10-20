@@ -50,9 +50,11 @@ def main():
    tri=[(positions[indices[i+k][0]],normals[indices[i+k][0]],uvs[indices[i+k][0]]) for k in range(3)]
    # This source includes separate opaque reverse faces behind the blue glass.
    # Both faces must be transparent and belong to the same moving assembly.
-   is_glass=(marker(tri,(0.149841,0.467916)) or marker(tri,(0.092421,0.547191))) and sum(v[0][1] for v in tri)/3>0.8
-   assigned=glass_id if is_glass else mat
    window=all(v[0][0]<-0.55 and v[0][1]>=0.835 and -0.54<=v[0][2]<=0.205 for v in tri)
+   # Atlas colors are also used by painted hood/trunk panels. Only the
+   # geometrically bounded driver window may become transparent.
+   is_glass=window and (marker(tri,(0.149841,0.467916)) or marker(tri,(0.092421,0.547191)))
+   assigned=glass_id if is_glass else mat
    if window and (is_glass or marker(tri,(0.092421,0.039223))):add(door,assigned,tri);continue
    # Only the outward-facing lower side skin, never the windshield or roof.
    if not all(v[0][0]<-0.67 for v in tri):
@@ -63,6 +65,9 @@ def main():
     add(body,assigned,remainder)
    add(door,assigned,candidate)
    if mat==0 and len(candidate)>=3:lower.extend(triangles(candidate))
+ # No fixed body panel may inherit the window's transparent material.
+ assert glass_id not in body, 'Transparency leaked onto the fixed car body'
+ assert glass_id in door, 'Driver window glass must remain in the moving door'
  # A fitted lining and edge caps follow the exact outer skin, inset 5.5 cm.
  def inner(vertex):return ((vertex[0][0]+0.055,vertex[0][1],vertex[0][2]),tuple(-n for n in vertex[1]),(0,0))
  edges={}

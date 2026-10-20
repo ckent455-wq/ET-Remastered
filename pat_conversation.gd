@@ -8,26 +8,33 @@ var selected=0
 var current_topic=""
 var asked={}
 const BOX=Rect2(60,120,520,264)
-const TOPICS=[
- {"id":"town","question":"What happened to Blackwood?","title":"Pat / Blackwood's decline"},
- {"id":"house","question":"What's with the house at the end of the street?","title":"Pat / The old house"},
- {"id":"church","question":"What's the history of the church?","title":"Pat / The hilltop church"},
- {"id":"signal","question":"What are those voices? And the things in the woods?","title":"Pat / Voices in the carrier"},
- {"id":"stayed","question":"Why did you, Aubrey and John stay?","title":"Pat / The three who stayed"},
- {"id":"help","question":"What should I do next?","title":"Pat / Getting help"}
-]
+var speaker="ranger"
+var greetings={}
+var TOPICS=[]
+const QUESTIONS={
+ "ranger":[["town","What happened to Blackwood?","Blackwood's decline"],["house","What's with the house at the end of the street?","The old house"]],
+ "nurse":[["signal","What is the signal doing to people?","The chapel tone"],["patients","What happened to your patients?","The missing patients"]],
+ "mechanic":[["church","Why is there radio equipment beneath the church?","The hilltop church"],["stayed","Why didn't you leave with Ada?","The promise to Ada"]]
+}
+func speaker_name()->String:
+ return {"ranger":"Pat","nurse":"Aubrey","mechanic":"John"}[speaker]
+func entry_id(topic:String)->String:
+ return speaker_name().to_lower()+"_"+topic
 
 func reset():
- cancel();greeted=false;selected=0;asked.clear()
+ cancel();greeted=false;selected=0;asked.clear();greetings.clear()
 func cancel():
  active=false;choosing=false;current_topic=""
-func begin(intro:String,force_intro=false):
+func begin(intro:String,force_intro=false,person="ranger"):
+ speaker=person;TOPICS=[]
+ for item in QUESTIONS[speaker]:TOPICS.append({"id":item[0],"question":item[1],"title":speaker_name()+" / "+item[2]})
+ TOPICS.append({"id":"help","question":"What should I do next?","title":speaker_name()+" / Getting help"})
  active=true;selected=0;current_topic=""
- game.dialogue_name="Pat / Ranger"
+ game.dialogue_name=game.town.townspeople.characters[speaker].name
  game.dialogue_text=intro
  game.set_state("dialogue")
- if not greeted or force_intro:
-  greeted=true;choosing=false
+ if not greetings.has(speaker) or force_intro:
+  greeted=true;greetings[speaker]=true;choosing=false
  else:show_topics()
 func show_topics():
  choosing=true;current_topic=""
@@ -44,12 +51,12 @@ func choose(index:int):
  game.dialogue_pages=preload("res://dialogue_style.gd").pages(game.dialogue_text)
  game.dialogue_page=0
  game.hud.dialogue_last_page=-1
- var entry_id="pat_"+current_topic
+ var note_id=entry_id(current_topic)
  var found=false
  for entry in game.town.journal_entries:
-  if entry.id==entry_id:entry.text=summary(current_topic);found=true;break
- if not found:game.town.journal_entries.append({"id":entry_id,"title":TOPICS[index].title,"text":summary(current_topic)})
- asked[current_topic]=true
+  if entry.id==note_id:entry.text=summary(current_topic);found=true;break
+ if not found:game.town.journal_entries.append({"id":note_id,"title":TOPICS[index].title,"text":summary(current_topic)})
+ asked[entry_id(current_topic)]=true
 func advance():
  if choosing:choose(selected)
  elif game.dialogue_page+1<game.dialogue_pages.size():game.dialogue_page+=1
@@ -78,31 +85,41 @@ func handle(event):
 func answer(topic:String)->String:
  match topic:
   "town":
-   return "Blackwood grew around the mill. Shift whistles, school buses, the church bell on Sunday. You used to hear people before you saw the town.\n\nThe mill closed twelve years ago. Families sold up, shops boarded their windows. That old damage wasn't done in a night.\n\nThe last families left three nights ago, after weeks of trouble with the signal. The bus really did leave. The horn I heard afterward came from the chapel speaker. I opened the road for a recording."
+   return "Blackwood grew around the mill. Shift whistles, school buses, the church bell on Sunday. You used to hear people before you saw the town.\n\nThe mill closed twelve years ago. Families sold up, shops boarded their windows. That old damage wasn't done in a night.\n\nThe last families left three nights ago, after weeks of trouble with the signal. The bus really did leave. The horn I heard afterward came from the chapel speaker. I opened the road for a recording.\n\nI knew it wasn't a bus. Then the horn played again and I was waiting for the driver. Every time I started back to close the barrier, I'd lose hours and find myself in the office. I kept thinking I would shut it after the bus passed.\n\nTonight Aubrey put three dated pages in front of me. I thought it had been one long night. Three days. That's why the road was still open when you came through. I keep writing it down now so I won't forget again."
   "house":
-   var line="The big timber house beyond the shops? That was the mill superintendent's place. The people there held on for three years after the mill closed. Their clearance notice is still downstairs. Nine years, and nobody ever came back for the furniture.\n\nAfter last month's storm I checked it for squatters. Dry cellar, thick walls. I thought it might shelter anyone who missed the evacuation.\n\nThen I found fresh mud on the cellar steps. Bare footprints going down. None coming back up. I shut the door. That doesn't mean it's empty."
+   var line="The big timber house beyond the shops? That was the mill superintendent's place. The people there held on for three years after the mill closed. Their clearance notice is still downstairs. Nine years, and nobody ever came back for the furniture.\n\nAfter last month's storm I checked it for squatters. Dry cellar, thick walls. I thought it might shelter anyone who missed the evacuation.\n\nThen I found fresh mud on the cellar steps. Bare footprints going down. None coming back up. There was a fresh hole through the foundation. Soil pushed into the room, burial cloth snagged on the brick. Something had dug in from outside. The burrow was choked with fallen earth; I couldn't get through it. I shut the cellar door. That doesn't mean it's empty."
    if game.town.journal_entries.any(func(entry):return entry.id=="victorian_letter"):
     line+="\n\nYou found the notice? Then you know they left years before this signal. Whatever is in there now moved in afterward."
    return line
   "church":
-   return "The church went up in 1891. Mill families paid for it a little out of each wage packet. They built above the flood line; when the creek rose, the nave became a shelter. That hill used to mean safety.\n\nDecades later the county put a civil-defense repeater in the cellar. High ground, a buried line to the station, a speaker to warn the whole street. Bellamy kept the old system working after the town ran out of money.\n\nLast month's storm damaged it. Jonah, the caretaker, stayed beside the running rack. The maintenance book inside tells what happened to him. We thought the warning speaker was helping people."
+   return "The church went up in 1891. Mill families paid for it a little out of each wage packet. They built above the flood line; when the creek rose, the nave became a shelter. That hill used to mean safety.\n\nDecades later the county put a civil-defense repeater in the cellar. High ground, a buried line to the station, a speaker to warn the whole street. Bellamy kept the old system working after the town ran out of money.\n\nLast month's storm damaged it. Jonah, the caretaker, stayed beside the running rack. The maintenance book inside tells what happened to him. I inspected the cellar equipment three weeks before the evacuation, before the creatures reached the grounds. The station still worked, so I left the spare tuner and rifle there. I tried to return after Ada left. The creatures drove me back down the hill. My inspection sheet is still on the cellar bench. We thought the warning speaker was helping people."
   "signal":
-   var line="Ordinary radio didn't do this. There's a low tone underneath the chapel's repeated messages. It started after the storm. First people stopped sleeping. Then they'd answer voices nobody else could hear.\n\nJohn pulled the station coil after the evacuation. That stopped the town broadcasts. The hill equipment has its own power, so its speaker kept going.\n\nAubrey has records in the clinic. She saw what happened to the people who stayed near it. Ask her, and read Bellamy's book. I won't pretend I know where the tone came from."
+   var line="Ordinary radio didn't do this. There's a low tone underneath the chapel's repeated messages. It started after the storm. First people stopped sleeping. Then they'd answer voices nobody else could hear.\n\nJohn pulled the station coil after the evacuation. That stopped the town broadcasts. The hill equipment has its own power, so its speaker kept going.\n\nI kept records here in the clinic. The patients who spent the longest near the chapel declined first. Read the sheet on the back shelf, and Bellamy's book in the church. Tonight I had to put three dated log pages in front of Pat. He thought he was still waiting for the evacuation bus. That's what I mean by missing time. I don't know where the tone came from."
    if game.story.evidence.has("clinic_note") or game.story.evidence.has("cellar_record"):
-    line+="\n\nThose names in the records were our neighbors. If Aubrey recognized them, I believe her. Whatever you hear in the woods, don't mistake a familiar voice for someone safe."
+    line+="\n\nThose names in the records were our neighbors. I recognized Edith's bracelet and Silas's splinted hand. Whatever you hear in the woods, don't mistake a familiar voice for someone safe."
+   return line
+  "patients":
+   var line="Edith wouldn't leave without Silas. He could barely walk with that splint. I kept two beds ready after the last bus left. By dawn, both beds were empty. Their tracks led uphill.\n\nI went looking. One of those things still wore Edith's bracelet. The other dragged a hand wrapped in the splint I'd fitted. I knew them before I could make myself believe it.\n\nJonah, the chapel caretaker, changed first. It happened over weeks, not all at once. If you reach the county, tell them to come without sirens. The things follow sound."
+   if game.story.evidence.has("clinic_note"):line+="\n\nYou've read my chart. Those weren't isolated symptoms. It was the same progression in every patient exposed to that tone."
+   line+="\n\nBut the shrouded things beneath the cemetery are different. Those bodies were already dead before the signal began. I found coffins forced open from inside. The tone seems able to move them again. I don't know whether they remember anything. The cloth on them is burial wrapping, not bandages I put there."
    return line
   "stayed":
-   return "Aubrey stayed for the patients who refused the bus. John promised Ada he'd follow once he secured the radio equipment. She left him a letter at Saint George Hotel.\n\nI closed the barrier, then opened it again when I heard that horn. I told dispatch there were three still here. Nobody answered.\n\nI keep counting windows when I walk the street. Looking for a light we missed. I wrote three on the sign so the next person wouldn't waste time searching empty rooms. Didn't do you much good, did it?"
+   game.story.request_ada_letter()
+   if game.story.ada_letter_delivered:return "I keep her letter in my coat now. You brought back something I was afraid I had lost. Once the radio is safe, I am going after her."
+   return "Ada took the last bus. I promised I'd follow after securing the radio equipment. Her letter is still in our room at Saint George Hotel. I haven't had the courage to go back for it. If you get inside, would you bring it to me?\n\nBefore she left, I was losing hours. She said I repeated things she'd never told me. I blamed the wiring, the storm, anything except the set I kept running.\n\nPulling the station coil stopped the town broadcasts. Away from the receiver, my head began to clear. The hill speaker kept going on its own power. I stayed because I'd helped keep that thing talking. I need to leave this town quiet before I go."
   "help":
-   return game.town.townspeople.words("ranger")
+   return game.town.townspeople.words(speaker)
  return "Take care out there."
 
 func summary(topic:String)->String:
  match topic:
-  "town":return "Pat says the mill closed twelve years ago. Most of the decay predates the signal. The final families evacuated three nights ago. A recorded bus horn from the chapel fooled him into reopening Old Mill Road."
-  "house":return "The old Victorian house belonged to the mill superintendent. Its occupants left nine years ago; their clearance notice is downstairs. Pat found fresh bare footprints leading into the cellar after the storm. He could not confirm who was using it."
-  "church":return "Mill families funded the hilltop church in 1891. It sheltered people above the flood line. The county later installed the cellar repeater. Bellamy kept the warning system running; its storm damage and Jonah's decline are recorded in the vestry book."
-  "signal":return "Pat distinguishes ordinary radio from the unidentified tone beneath the chapel messages. John disconnected the town station, but the hill equipment has separate power. The clinic records and vestry book explain the symptoms. Pat does not know the carrier's origin."
-  "stayed":return "Aubrey stayed to search for her patients. John promised Ada he would secure the equipment and follow her. Pat stayed to search and contact dispatch. Ada's letter is at Saint George Hotel. The three on the sign are the surviving townspeople."
-  "help":return "Pat's current advice:\n"+game.town.objective()
+  "town":return "Pat says the mill closed twelve years ago. Most of the decay predates the signal. The final families evacuated three nights ago. A recorded chapel horn fooled him into reopening Old Mill Road. Repeated exposure disrupted his memory: he kept waiting for the bus, lost hours and failed to close the barrier for three days. Aubrey confronted him with the dated log tonight."
+  "house":return "The old Victorian house belonged to the mill superintendent. Its occupants left nine years ago; their clearance notice is downstairs. Pat found fresh bare footprints leading into the cellar after the storm. He also found a freshly dug breach, soil pushed inward and burial cloth caught on the masonry. Its short burrow was blocked by collapsed earth. He could not identify what came through."
+  "church":return "John says mill families funded the hilltop church in 1891. It sheltered people above the flood line. The county later installed the cellar repeater. Bellamy kept the warning system running; its storm damage and Jonah's decline are recorded in the vestry book. John inspected the cellar three weeks before evacuation, left the spare equipment while the station still worked, and was driven back when he tried to return afterward."
+  "signal":return "Aubrey distinguishes ordinary radio from the unidentified tone beneath the chapel messages. John disconnected the town station, but the hill equipment has separate power. Her clinic records and the vestry book explain the symptoms. She does not know the carrier's origin."
+  "patients":return "Aubrey stayed for Edith and Silas after they refused the final bus. Their tracks led toward the chapel; she recognized their bracelet and splint on the changed creatures. Jonah changed first. The creatures follow sound, so rescuers must come without sirens. The shrouded tunnel creatures were already dead before the signal; Aubrey found their coffins broken open from within. She cannot say whether any consciousness remains."
+  "stayed":
+   if game.story.ada_letter_delivered:return "You brought Ada's letter to John. He keeps it in his coat and intends to find her after the radio equipment is safe."
+   return "John promised Ada he would secure the equipment and follow her. Her letter is at Saint George Hotel. He lost time while working near the receiver and improved after disconnecting its coil. He stayed to stop the broadcasts he had helped maintain."
+  "help":return speaker_name()+"'s current advice:\n"+game.town.townspeople.words(speaker)
  return ""

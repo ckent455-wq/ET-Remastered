@@ -43,6 +43,7 @@ func _ready():
 		var z=-12.0-sin(t*PI)*0.6
 		var slab=town.game.mesh_at(self,town.game.cylinder(0.32,0.36,0.035,7),Vector3(x,0.018,z),dark_stone)
 		slab.scale=Vector3(1.0,1,1.3)
+		preload("res://footstep_surfaces.gd").visual(slab,"stone")
 		slab.rotation.y=i*1.71
 	# Loose family groups, with varied spacing and silhouettes; keep the central walk clear.
 	var plots = [Vector3(9.4,0,-8.1),Vector3(10.7,0,-7.7),Vector3(13.0,0,-8.2),Vector3(16.0,0,-7.7),Vector3(17.4,0,-8.1),Vector3(20.1,0,-7.8),Vector3(21.7,0,-8.6),Vector3(9.2,0,-16.7),Vector3(10.6,0,-17.4),Vector3(12.7,0,-16.6),Vector3(16.6,0,-16.2),Vector3(18.2,0,-17.1),Vector3(21.2,0,-16.5),Vector3(9.7,0,-21.6),Vector3(11.2,0,-21.9),Vector3(14.0,0,-21.4),Vector3(16.4,0,-21.9)]
@@ -92,7 +93,7 @@ func _ready():
 	cellar_key.add_child(key_model)
 	key_model.rotation.x=PI/2
 	key_model.position.y=-0.04
-	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"The radio coupling and chapel cellar key have been locked in the Whitcomb mausoleum.\n\nThe Whitcomb family key is held by Pat at the ranger office. Ask him before entering the vault.\n\nThe station needs the aerial coupling, John's signal coil, and the county tuning unit before it can transmit."})
+	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"EVACUATION / TEMPORARY EQUIPMENT CACHE\nJohn's spare antenna coupler and the chapel cellar key are on the shelf inside my family's Whitcomb mausoleum. People have been taking equipment from the station. This vault is dry and its iron door still locks. Nothing has been placed inside a coffin.\n\nBellamy locked the chapel cellar to keep confused residents away from the running rack. He gave me its key before leaving.\n\nAsk me at the ranger office for the family key. These supplies must be recovered once the road is clear.\n- Pat"})
 	town.box(note,Vector3.ZERO,Vector3(0.015,0.35,0.26),town.mats.paper,false)
 
 func door_prompt() -> String:

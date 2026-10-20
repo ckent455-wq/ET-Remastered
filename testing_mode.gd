@@ -36,7 +36,8 @@ func begin():
  for id in game.crash_site.tutorial_areas:
   game.crash_site.tutorial_areas[id].collision_layer=2 if id in ["crash_driver_door","crash_rear_hatch"] else 0
  game.crash_site.update_hatch_target()
- for id in game.town.inventory:game.town.inventory[id]=maxi(game.town.inventory[id],1)
+ for id in game.town.inventory:
+  if id!="ada_letter":game.town.inventory[id]=maxi(game.town.inventory[id],1)
  for i in range(3):
   w.owned[i]=true;w.magazines[i]=w.LOADOUT[i].clip;w.reserves[i]=w.LOADOUT[i].max_reserve
  game.town.cemetery.unlocked=true

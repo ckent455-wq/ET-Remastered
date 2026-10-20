@@ -11,7 +11,7 @@ var game
 var buildings = {}
 var doors = {}
 var actions = {}
-var inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
+var inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
@@ -92,12 +92,17 @@ func box(parent: Node3D, p: Vector3, size: Vector3, material: Material, solid = 
 	var node: Node3D = StaticBody3D.new() if solid else Node3D.new()
 	parent.add_child(node)
 	node.position = p
+	if solid:node.set_meta("footstep_surface",preload("res://footstep_surfaces.gd").material_kind(material))
 	var mesh = BoxMesh.new()
 	mesh.size = size
 	var visual = MeshInstance3D.new()
 	visual.mesh = mesh
 	visual.material_override = material
 	node.add_child(visual)
+	if not solid and size.y<0.35 and size.x>1 and size.z>1 and material==mats.floor:
+		preload("res://footstep_surfaces.gd").visual(visual,"wood")
+	elif not solid and size.y<0.15 and size.x>1 and size.z>1 and streetscape and material==streetscape.pavement:
+		preload("res://footstep_surfaces.gd").visual(visual,"concrete")
 	if solid:
 		var collision = CollisionShape3D.new()
 		var shape = BoxShape3D.new()
@@ -358,7 +363,7 @@ func furnish():
 	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the last families have gone. Most buildings have stood empty since the mill closed twelve years ago.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
-	inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0}
+	inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0}
 	journal_entries.clear()
 	discovered.clear()
 	powered = false
@@ -419,6 +424,7 @@ func prompt() -> String:
 	if data.kind=="mausoleum_door": return cemetery.door_prompt()
 	if data.kind=="ammo":
 		return "E / Take %d %s" % [data.amount,["pistol rounds","rifle rounds","shotgun shells"][data.weapon_index]]
+	if data.kind=="chapel_repeater":return "E / Repeater OFF" if game.story.repeater_is_off() else "E / Shut down chapel repeater"
 	if data.kind=="radio_bypass":
 		return "E / Set bypass to "+("AMBER - chapel repeater" if game.story.county_bypass else "GREEN - direct county")
 	if data.kind=="cellar_door":
@@ -429,6 +435,8 @@ func prompt() -> String:
 		return game.weapons.lockbox.prompt()
 	if data.kind=="container":
 		return interiors.prompt(data.container)
+	if data.kind=="npc" and data.npc=="mechanic" and inventory.ada_letter>0 and not game.story.ada_letter_delivered:
+		return "E / Give Ada's letter to John"
 	if data.kind=="npc":
 		return "E / Talk to "+data.label
 	if data.kind=="door":
@@ -483,6 +491,8 @@ func perform(id: String):
 			game.soundscape.feedback("pickup")
 		"shotgun_lockbox":
 			game.weapons.lockbox.interact()
+		"chapel_repeater":
+			game.story.repeater.shutdown()
 		"radio_bypass":
 			game.story.toggle_bypass()
 		"crash":
@@ -564,6 +574,15 @@ func perform(id: String):
 			if data.item=="bandage":game.message="Bandage collected. H to dress your wound (+10 health), or use it from your backpack."
 			game.soundscape.feedback("pickup")
 		"note":
+			if id=="house_note":
+				if not game.crash_site.has_backpack:
+					game.message="Get your backpack from the wreck before taking Ada's letter.";return
+				if not game.backpack.room_for("ada_letter"):
+					game.message="Make one space in your backpack for Ada's letter. It stays here.";return
+				inventory.ada_letter=1;data.taken=true;data.area.hide();data.area.collision_layer=0
+				game.story.request_ada_letter()
+				game.message="Collected Ada's letter. Bring it to John at the workshop."
+				game.soundscape.feedback("pickup")
 			if game.story: game.story.read_evidence(id)
 			var seen = journal_entries.any(func(entry): return entry.id==id)
 			if not seen:
@@ -638,6 +657,7 @@ func use_battery():
 func objective() -> String:
 	if game.enemies and game.enemies.workshop_danger(): return "Kill the creature near the workshop, then recover the signal coil." if powered else "The creature is approaching. Flip the workshop switch, or fight it off."
 	if game.crash_site and not game.crash_site.tutorial_complete(): return "Open the car door and collect your backpack, flashlight, and detour sheet."
+	if radio_ready and not game.story.repeater_is_off():return "Shut down the repeater in the chapel basement."
 	if radio_ready:
 		return "Warn county at radio. Hold E; no sirens." if game.story.direct_channel_selected() else "Set the desk bypass to GREEN / direct county."
 	if not reached_town: return "Reach Blackwood. Find a way to call for help."
@@ -651,10 +671,13 @@ func objective() -> String:
 			return "Speak to Pat about his family's mausoleum key." if not townspeople.characters.ranger.dead else "Search the ranger's desk for the spare mausoleum key."
 		return "Search the mausoleum for the radio coupler and chapel cellar key."
 	if inventory.tuner==0: return "Unlock the church basement and recover its tuning unit."
+	if not game.story.repeater_is_off():return "Cut the chapel basement repeater at MAIN ISOLATOR."
 	return "Bring all three radio parts to the station receiver."
 
 func navigation_target() -> Vector3:
 	if game.crash_site and not game.crash_site.tutorial_complete(): return game.crash_site.wreck.to_global(Vector3(-1.5,0,0.1))
+	if (radio_ready or inventory.tuner>0) and not game.story.repeater_is_off():
+		return actions.chapel_repeater.area.global_position if streetscape.church.basement.contains(game.player.global_position) else actions.cellar_door.area.global_position
 	if radio_ready: return actions.receiver.area.global_position
 	if not reached_town: return Vector3(0,0,-42)
 	if inventory.station_key==0: return buildings.ranger.to_global(Vector3(0,0,7))

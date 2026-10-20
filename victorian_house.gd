@@ -235,6 +235,7 @@ func ramp(a: Vector3,b: Vector3,ya: float,yb: float,width: float, show_surface=t
 	visual.visible=show_surface
 	add_child(visual)
 	var body=StaticBody3D.new()
+	body.set_meta("footstep_surface","stairs" if not show_surface else "stone")
 	add_child(body)
 	var shape=ConcavePolygonShape3D.new()
 	shape.set_faces(visual.mesh.get_faces())
@@ -435,11 +436,13 @@ func build_cellar():
 	town.box(cellar,Vector3(0,-0.12,0),Vector3(7.4,0.24,8.6),stone)
 	town.box(cellar,Vector3(0,3.1,0),Vector3(7.4,0.2,8.6),timber)
 	for x in [-3.6,3.6]: town.box(cellar,Vector3(x,1.5,0),Vector3(0.2,3,8.6),stone)
-	for z in [-4.2,4.2]: town.box(cellar,Vector3(0,1.5,z),Vector3(7.4,3,0.2),stone)
+	town.box(cellar,Vector3(0,1.5,4.2),Vector3(7.4,3,0.2),stone)
+	preload("res://victorian_breach.gd").build(self,cellar,stone)
 	for z in [-3,0,3]: town.box(cellar,Vector3(0,2.85,z),Vector3(7.1,0.22,0.20),timber,false)
 	for i in range(5): town.box(cellar,Vector3(0,(i+1)*0.08,2+i*0.4),Vector3(1.6,(i+1)*0.16,0.4),timber,false)
 	# Same smooth collision ramp and separate return portal used by the chapel.
 	var stairs=StaticBody3D.new()
+	stairs.set_meta("footstep_surface","stairs")
 	cellar.add_child(stairs)
 	var stair_shape=ConvexPolygonShape3D.new()
 	stair_shape.points=PackedVector3Array([Vector3(-0.8,0,1.8),Vector3(0.8,0,1.8),Vector3(-0.8,0,3.8),Vector3(0.8,0,3.8),Vector3(-0.8,0.8,3.8),Vector3(0.8,0.8,3.8)])

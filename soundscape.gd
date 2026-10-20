@@ -12,6 +12,9 @@ var thunder: AudioStreamPlayer
 var steps: Array[AudioStreamPlayer] = []
 var animals: Array[AudioStreamPlayer3D] = []
 var step_streams: Array[AudioStream] = []
+var step_banks={}
+var last_surface_steps={}
+var last_step_surface="grass"
 var animal_streams: Array[AudioStream] = []
 var step_distance = 0.0
 var next_step = 0
@@ -89,8 +92,11 @@ func _ready():
 	hurt_voice = voice(hurt_streams[0],-5)
 	wind.play()
 	leaves.play(3.0)
-	for i in range(5):
-		step_streams.append(stream("step_%d" % i))
+	for kind in {"concrete":5,"dirt":5,"grass":6,"gravel":5,"metal":5,"stairs":5,"stone":4,"wood":5}:
+		step_banks[kind]=[]
+		for i in {"concrete":5,"dirt":5,"grass":6,"gravel":5,"metal":5,"stairs":5,"stone":4,"wood":5}[kind]:
+			step_banks[kind].append(load("res://assets/audio/footsteps/%s_%d.ogg" % [kind,i]))
+	step_streams.assign(step_banks.grass)
 	for i in range(3):
 		steps.append(voice(step_streams[0],-8))
 	for name in ["owl","night_bird","insects"]:
@@ -114,6 +120,7 @@ func reset():
 		atmosphere.reset()
 	thunder.stop()
 	step_distance = 0
+	last_surface_steps.clear();last_step=-1;last_step_surface="grass"
 	animal_timer = rng.randf_range(7,13)
 	for node in steps:
 		node.stop()
@@ -188,14 +195,18 @@ func moved(distance: float, sprinting: bool, grounded: bool):
 	if step_distance<stride:
 		return
 	step_distance = fmod(step_distance,stride)
+	last_step_surface=preload("res://footstep_surfaces.gd").sample(game)
+	step_streams.assign(step_banks.get(last_step_surface,step_banks.grass))
+	last_step=last_surface_steps.get(last_step_surface,-1)
 	var variation = rng.randi_range(0,step_streams.size()-2)
 	if variation>=last_step:
 		variation += 1
 	last_step = variation
+	last_surface_steps[last_step_surface]=variation
 	var node = steps[next_step]
 	next_step = (next_step+1)%steps.size()
 	node.stream = step_streams[variation]
-	node.pitch_scale = rng.randf_range(0.90,1.09)*(1.09 if sprinting else 1.0)
+	node.pitch_scale = rng.randf_range(0.96,1.04)*(1.04 if sprinting else 1.0)
 	node.volume_db = -14 if game.crouching else (-5 if sprinting else -9)
 	node.play()
 

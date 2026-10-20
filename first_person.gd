@@ -522,10 +522,12 @@ func update_contact(delta: float, held: bool):
 		if contact_progress>=4:
 			set_state("won")
 	else:
+		if held and town.radio_ready and town.player_inside_building("radio") and camera.global_position.distance_to(town.actions.receiver.area.global_position)<3.2:
+			message="Shut down the chapel basement repeater before calling for rescue." if not story.repeater_is_off() else "The chapel repeater is off. Set BYPASS to GREEN / direct county; the amber route is dead."
 		contact_progress = maxf(0,contact_progress-delta*0.5)
 
 func rescue_available() -> bool:
-	return town.radio_ready and town.focus_action!="radio_bypass" and town.player_inside_building("radio") and camera.global_position.distance_to(town.actions.receiver.area.global_position)<3.2
+	return town.radio_ready and story.repeater_is_off() and story.direct_channel_selected() and town.focus_action!="radio_bypass" and town.player_inside_building("radio") and camera.global_position.distance_to(town.actions.receiver.area.global_position)<3.2
 
 func _process(delta):
 	update_camera()

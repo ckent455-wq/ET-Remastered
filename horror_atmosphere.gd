@@ -61,7 +61,7 @@ func update_sound(delta: float):
 	var active = game.state=="play"
 	var title = game.state=="title"
 	bed.stream_paused = not (active or title)
-	radio.stream_paused = not active
+	radio.stream_paused = not active or (game.story!=null and game.story.repeater_is_off())
 	if not active:
 		accent.stop()
 		if title:

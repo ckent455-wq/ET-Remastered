@@ -55,6 +55,7 @@ func build_street():
 	# Use the same kit mesh, material and height across the old transition gap.
 	var entry = MeshInstance3D.new()
 	entry.name = "ContinuousTownEntryAsphalt"
+	preload("res://footstep_surfaces.gd").visual(entry,"concrete")
 	entry.mesh = road_mesh
 	entry.material_override = asphalt
 	entry.position = Vector3(0,0.035,-36.5)
@@ -66,7 +67,8 @@ func build_street():
 		var edge = town.box(self,Vector3(side*3.8,0.028,-36.5),Vector3(0.045,0.008,3.16),stone,false)
 		edge.rotation.y = 0
 	for side in [-1,1]:
-		town.box(self,Vector3(side*5.15,0.012,-64),Vector3(2.7,0.016,56),pavement,false)
+		var sidewalk=town.box(self,Vector3(side*5.15,0.012,-64),Vector3(2.7,0.016,56),pavement,false)
+		preload("res://footstep_surfaces.gd").visual(sidewalk.get_child(0),"concrete")
 		town.box(self,Vector3(side*3.87,0.04,-64),Vector3(0.11,0.07,56),stone,false)
 		for z in range(-39,-91,-3):
 			town.box(self,Vector3(side*5.15,0.024,z),Vector3(2.6,0.008,0.025),town.mats.dark,false)
@@ -147,6 +149,7 @@ func extract_road_mesh(node: Node):
 func road_segment(p: Vector3, width: float):
 	var segment = MeshInstance3D.new()
 	segment.name = "DownloadedRoadSegment"
+	preload("res://footstep_surfaces.gd").visual(segment,"concrete")
 	segment.mesh = approach_road_mesh if width<4 else road_mesh
 	segment.material_override = asphalt
 	add_child(segment)
@@ -200,6 +203,7 @@ func parked_car(p: Vector3, yaw: float, index: int, model_path = "res://assets/v
 	body.position = p
 	body.rotation.y = yaw
 	body.set_meta("vehicle_model",model_path)
+	body.set_meta("footstep_surface","metal")
 	var model = load(model_path).instantiate()
 	body.add_child(model)
 	adapt_car(model,index)

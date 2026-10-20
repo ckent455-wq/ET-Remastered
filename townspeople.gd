@@ -9,7 +9,7 @@ var grave_key_given = false
 var grave_intro_shown = false
 var grave_approaching = false
 var conversation
-const GRAVE_KEY_LINE = "Hey! I've got the key to my grandpappy's grave. The Whitcomb mausoleum, back in the cemetery. They locked the radio spare in there. The chapel cellar key is with it.\n\nHere. Take it. I haven't been back since the evacuation.\n\nIf you hear somebody talking in there... just get the part and leave."
+const GRAVE_KEY_LINE = "I've got the key to my grandpappy's vault. The Whitcomb mausoleum, back in the cemetery.\n\nDuring the evacuation, confused people were wandering into the station and taking equipment. John asked me to secure the spare antenna coupler. Bellamy locked the chapel cellar to keep people away from the running rack and handed me its key before boarding the bus.\n\nMy family's vault was dry, with a sound iron door and a lock I controlled. I put both on its shelf. A temporary lockup, not a burial. I meant to fetch them once the bus was clear.\n\nThen the noises started beneath the cemetery. I haven't been back since the evacuation.\n\nHere. Take the family key. Get the coupler and cellar key. If you hear somebody talking in there... just get them and leave."
 
 const DEATH_DURATION = 1.7
 const PEOPLE = [
@@ -278,6 +278,7 @@ func shoot(id: String) -> bool:
 		storage.pending_loot=true
 		grave_approaching=false
 	data.dead = true
+	if id=="mechanic" and town.game.story.ada_letter_requested:town.game.story.update_ada_quest()
 	data.death_time = 0.0
 	data.actor.velocity = Vector3.ZERO
 	data.actor.collision_layer = 0
@@ -329,7 +330,7 @@ func offer_grave_key():
 	grave_approaching=false
 	var line=GRAVE_KEY_LINE
 	if town.game.backpack and not town.game.backpack.room_for("mausoleum_key"):
-		line="Hey! I've got the key to my grandpappy's grave. The Whitcomb mausoleum. That's where they locked the radio spare.\n\nYour bag's full. Make a little room, then come talk to me. I'll keep the key safe."
+		line="I put the spare antenna coupler and chapel cellar key in my family's Whitcomb mausoleum during the evacuation. It was a temporary dry lockup, away from people wandering into the station. I've got the vault key here.\n\nYour bag's full. Make a little room, then come talk to me. I'll keep the key safe."
 	else:
 		town.inventory.mausoleum_key+=1
 		grave_key_given=true
@@ -340,45 +341,84 @@ func offer_grave_key():
 func talk(id: String):
 	if characters[id].dead:
 		return
+	if id=="mechanic" and town.game.story.deliver_ada_letter():
+		conversation.begin("That's her handwriting... You went back for it?\n\nShe packed for two nights. I kept telling myself I'd find her when the work was done. I'd forgotten she asked me to leave the set off. She was right there, and I listened to her voice on the radio instead.\n\nThank you. I'm keeping this in my coat. When we get out, I want to hear her say it herself.\n\n"+town.game.story.ada_reward_line(),true,"mechanic")
+		return
+	if id=="mechanic" and town.game.story.ada_letter_delivered and town.game.story.ada_ammo_pending>0:
+		var added=town.game.story.claim_ada_ammo()
+		var line="Here are the %d pistol rounds I could fit in your pack." % added if added>0 else "Your pack or pistol-ammo reserve is still full."
+		if town.game.story.ada_ammo_pending>0:line+=" I'll hold the remaining %d rounds. Come back when you have room." % town.game.story.ada_ammo_pending
+		conversation.begin(line,true,"mechanic")
+		return
 	if town.powered and town.inventory.coil>0 and id=="ranger" and not grave_key_given and not town.cemetery.unlocked:
 		offer_grave_key()
 		return
-	if id=="ranger":
-		conversation.begin(words(id))
-		return
-	conversation.cancel()
-	town.game.dialogue_name = characters[id].name
-	town.game.dialogue_text = words(id)
-	town.game.set_state("dialogue")
+	conversation.begin(words(id),false,id)
 
 func words(id: String) -> String:
-	if town.powered and town.inventory.coil>0 and not town.radio_ready and town.inventory.antenna==0:
-		return "The radio aerial coupling is broken. There is a brass spare in the locked Whitcomb mausoleum at Old Mill Cemetery, off the road between town and your wreck. Follow the cemetery footpath on the east side. Bring it back with the workshop coil and chapel tuning unit."
-	if town.radio_ready:
-		if town.game.story.direct_channel_selected():
-			return "The bypass is green. That is the direct county channel. Tell them our location and ask for no sirens.\n\nHold E at the main receiver to transmit, then switch it off. We need a real person on the road, not another recording."
-		return "Repairing the radio restores its power, not its routing. Set the small BYPASS switch on the left of the station desk to GREEN before you call.\n\nAmber still feeds the chapel repeater. The operator's note explains it. Aubrey's records tell you why the rescue team should come without sirens."
+	if town.radio_ready and not town.game.story.repeater_is_off():return radio_advice(id,"shutdown")
+	if town.powered and town.inventory.coil>0 and not town.radio_ready and town.inventory.antenna==0:return radio_advice(id,"coupler")
+	if town.radio_ready:return radio_advice(id,"call" if town.game.story.direct_channel_selected() else "route")
+	if town.inventory.coil>0 and town.inventory.antenna>0:
+		if town.inventory.tuner==0:return radio_advice(id,"tuner")
+		return radio_advice(id,"repair" if town.game.story.repeater_is_off() else "shutdown")
 	match id:
 		"ranger":
 			if town.game.story.evidence.has("ranger_note"):
 				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store fuse to the workshop panel. Its powered cabinet holds the coil. Then ask me about my family mausoleum."
-				return "That was three nights ago. The horn came from the chapel speaker. I should have locked the barrier again. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
+				return "That was three nights ago. The horn came from the chapel speaker. I knew it was a recording, then it played again and I was waiting for the bus. I kept setting out to close the barrier and losing hours. Tonight Aubrey made me compare three dates in my log. I thought it was still the same night. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
 			if town.inventory.station_key==0:
-				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker.\n\nI'm Pat. Only Aubrey, John and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's in the abandoned police car on Main Street. Open the driver's door and check the seat. Read my log."
+				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker. I tried to go back and close the barrier. Each time the horn played, I'd lose track and start waiting for the driver again. Aubrey showed me three dated entries tonight. I thought it had been one long night.\n\nI'm Pat. Only Aubrey, John and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's in the abandoned police car on Main Street. Open the driver's door and check the seat. Read my log."
 			return "You have the station key. The store counter drawer has a workshop fuse; the workshop's rear terminal takes it. Its powered cabinet holds the coil. I can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
-				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a first-aid kit. Q fits a battery."
-			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a kit; Q fits a battery."
+				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a bandage first, then a medpack. Q fits a battery."
+			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a bandage first, then a medpack; Q fits a battery."
 		"mechanic":
 			if not town.powered:
 				return "John. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop fuse is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
 			if town.inventory.coil==0:
-				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil from this cabinet. Ask Pat about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I tried to reach them; the creatures drove me back."
+				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil from this cabinet. Ask Pat about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I inspected them three weeks before the evacuation, before the creatures reached the chapel grounds. The station still worked then, so I left the spare tuner disconnected and the rifle with the emergency supplies. When I tried to go back after Ada left, the creatures drove me down the hill. I can't reach that equipment now."
 			if town.inventory.tuner==0:
-				return "Ada left on the last bus. Her letter is in our room at Saint George Hotel. I told her I'd catch up after securing the equipment.\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle. The bench instructions explain the station's bypass switch."
-			return "You have the coil, tuner and cemetery antenna coupler. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nNo sirens. Tell them there are people missing in the woods, and that the chapel repeater must be disconnected. Don't let another team mistake its old messages for us."
+				return ("Ada left on the last bus. I keep her letter in my coat now. Thank you for bringing it back." if town.game.story.ada_letter_delivered else "Ada left on the last bus. Her letter is in our room at Saint George Hotel. I told her I'd catch up after securing the equipment.")+"\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle, then cut the rack at MAIN ISOLATOR. The bench instructions explain the station's bypass switch."
+			return "You have the coil, tuner and cemetery antenna coupler. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nCut the chapel rack at MAIN ISOLATOR before you transmit. No sirens. Tell them there are people missing in the woods, and the repeater is disconnected. Don't let another team mistake its old messages for us."
 	return "Stay safe out there."
+
+
+func radio_advice(id:String,stage:String)->String:
+	var lines={
+	 "coupler":{
+	  "ranger":"I used my family's Whitcomb mausoleum as a temporary lockup during the evacuation. People were wandering into the station and taking equipment, so John asked me to secure the spare antenna coupler. Bellamy gave me the chapel cellar key after locking people away from its running rack. Both are on the vault shelf. Dry stone, a sound iron door, a lock I controlled. I meant to fetch them afterward.\n\nOld Mill Cemetery is east of the road between town and your wreck. Take the cemetery footpath. You'll need the vault key from me. I haven't been back since I heard those noises below it.",
+	  "nurse":"You're still missing the antenna coupler. Pat keeps the family key to the Whitcomb mausoleum in Old Mill Cemetery, east of the road back to your wreck. He put the spare and chapel cellar key there for safekeeping during the evacuation, before we knew what was moving below it. Keep your light on in that passage. I found burial cloth dragged out of the coffins.",
+	  "mechanic":"The coil won't fix a broken aerial coupling. Get the brass antenna coupler from the Whitcomb mausoleum in Old Mill Cemetery, east of Old Mill Road. I asked Pat to secure the spare during the evacuation. He used his family's dry, locked vault. Bellamy's chapel cellar key is on the same shelf. Pat has the vault key. Pick up the cellar key while you're in there; the isolated county tuner is your next part."
+	 },
+	 "tuner":{
+	  "ranger":"You've got the coil and cemetery coupler. Now take the cellar key up Chapel Road. The basement door is at the back right inside the church. Recover the tuning unit, then shut down the rack at MAIN ISOLATOR before coming back to the station.",
+	  "nurse":"The spare tuner is below the chapel. Use the cellar key at the back-right door inside the church. Take a charged flashlight. Once you have the unit, cut the rack at MAIN ISOLATOR. My patients got worse the longer that tone kept running; don't leave it playing behind you.",
+	  "mechanic":"Use the chapel cellar key at the back-right door inside the church. I left the spare county tuner disconnected on the bench before the creatures arrived. Take it, then cut the rack at MAIN ISOLATOR. Turning off the station won't cut that independent supply."
+	 },
+	 "shutdown":{
+	  "ranger":"That speaker is still running on the hill. I'm not letting another rescue crew follow a recording. Cut the repeater at MAIN ISOLATOR in the chapel basement. Then head back to the station, set BYPASS GREEN and call county. Tell them no sirens.",
+	  "nurse":"I've seen what that tone does to people. The chapel rack is still running. Shut it down at MAIN ISOLATOR in the chapel basement, then return to the station and set BYPASS GREEN. When you call county, ask them to come without sirens. Those things follow sound.",
+	  "mechanic":"The chapel rack has its own power supply. Cut it at MAIN ISOLATOR in the chapel basement; the station switch won't do it. Then return to the station and set BYPASS GREEN for direct county. Call without sirens. I need that carrier silent before we leave."
+	 },
+	 "repair":{
+	  "ranger":"Bring the coil, tuning unit and cemetery antenna coupler to the station receiver. Once it's working, set the desk BYPASS GREEN. Give county Old Mill Road and Blackwood, and ask for a quiet approach. I want someone real answering this time.",
+	  "nurse":"The chapel is finally quiet. Take all three parts to the station receiver: coil, tuner and antenna coupler. Use the GREEN bypass when it's repaired. Tell county we have survivors who need medical help, and ask them to approach without sirens.",
+	  "mechanic":"The chapel supply is isolated. Fit the signal coil, county tuner and antenna coupler at the station receiver. Then set its desk BYPASS GREEN / DIRECT COUNTY. Amber leads through the rack you just shut down. It can't carry your call."
+	 },
+	 "route":{
+	  "ranger":"The receiver's working and the hill is quiet. Now set that desk BYPASS GREEN. Amber leads back to a repeater with no power. Give county our location, not another looped message. Ask them to come without sirens.",
+	  "nurse":"The carrier is silent, but you still need a direct line. Set the desk BYPASS GREEN, then call county. My records show how the symptoms progressed; tell them we need medical help. No sirens. I don't want those things following the rescue team.",
+	  "mechanic":"The receiver has power, but the desk bypass is still on the dead chapel route. Set BYPASS GREEN / DIRECT COUNTY before transmitting. Amber cannot reach county with that rack off. Hold E at the main receiver to call; ask for no sirens."
+	 },
+	 "call":{
+	  "ranger":"Green. A direct county line, and that speaker can't interrupt us now. Hold E at the main receiver. Give them Blackwood and Old Mill Road, tell them who's still here, and ask for no sirens. Then switch the set off.",
+	  "nurse":"The chapel is silent and the GREEN direct line is ready. Hold E at the receiver. Tell county about the survivors and the people missing in the woods. We need medical help, but no sirens; the creatures follow sound. Switch the set off after they answer.",
+	  "mechanic":"Carrier isolated. GREEN bypass selected. You're connected directly to county. Hold E at the main receiver to transmit: Blackwood, Old Mill Road, no sirens. Once a real dispatcher confirms the call, switch the set off. We're done keeping that thing talking."
+	 }
+	}
+	return lines.get(stage,{}).get(id,"Check the station instructions before calling county.")
 
 
 func set_sheltering(next:bool):

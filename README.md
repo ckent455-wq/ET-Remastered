@@ -122,6 +122,8 @@ Drawers and cabinets use a short positional slide-and-clunk cue, also controlled
 
 ## Local assets
 
+- assets/audio/footsteps/: all 40 original OGG recordings from the user-supplied 40 Free PSX Footsteps pack, covering concrete, dirt, grass, gravel, metal, stairs, stone and wood. Source paths and SHA256 hashes are in sources.json. Footsteps sample floor collisions and the actual triangles of road/path overlays.
+
 - assets/healing/healing_items.glb: supplied 3Dexter Healing Items DEMO medkit, retaining its five parts and compact original atlas. Source details are in assets/healing/CREDITS.txt.
 - assets/ui/blood/: supplied Bloody Screen Effects pack, used for health-dependent transparent screen overlays. Source details are in assets/ui/blood/CREDITS.txt.
 - assets/vehicles/abandoned_police_openable.glb: adapted local police car with a separate hinged driver door and both native window faces; tools/prepare_police_door.py preserves the original download.
@@ -241,3 +243,5 @@ Ammunition is scavenged from nine low-poly cartons using the local Bullets and B
 Enemy gun hits use bone-aligned head spheres and torso/limb capsules sampled from the current animated pose, separate from the movement collider. The nearest solid scenery still blocks bullets. tools/check_enemy_shot_hitboxes.gd verifies actual pistol, rifle and shotgun hits, animated poses, cover, dead/hidden guards and reset.
 
 The rear workshop terminal uses three E interactions: open the cabinet, install the workshop fuse, and flip the switch. Fuse installation begins monster pursuit; workshop lights and coil-cabinet power wait for the switch animation. Progress and prompts persist while pausing and reset on a new journey.
+
+Completion now requires cutting the independently powered chapel repeater at its basement MAIN ISOLATOR. This silences its carrier and stops defeated chapel creatures returning. Repair the station, choose GREEN / direct county and hold E to call. AMBER is a dead route after shutdown.

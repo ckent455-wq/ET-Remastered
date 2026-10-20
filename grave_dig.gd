@@ -37,6 +37,7 @@ func _ready():
  # Before digging, a removable cap fills the opening in the shared world ground.
  ground_cover=town.box(self,GRAVE+Vector3(0,-0.055,0),Vector3(1.5,0.11,2.1),soil)
  ground_cover.name="UndugSoilCap"
+ ground_cover.set_meta("footstep_surface","dirt")
  cover_collision=ground_cover.get_child(1)
  exposed=Node3D.new();add_child(exposed);exposed.position=GRAVE+Vector3(0,-0.67,0)
  build_pit(soil)

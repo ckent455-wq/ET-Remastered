@@ -3,14 +3,19 @@ extends Node
 ## Reading never blocks rescue or requires keeping a particular NPC alive.
 var game
 var evidence = {}
+var ada_letter_requested=false
+var ada_letter_delivered=false
+const ADA_AMMO_REWARD=12
+var ada_ammo_pending=0
 var county_bypass = false
+var repeater
 var bypass_lamp: MeshInstance3D
 const PROTOCOL = ["clinic_note","workshop_record","cellar_record"]
 const RECORDS = {
   "ranger_note": [
     "Road closure log",
-    "EVACUATION NIGHT / THREE NIGHTS AGO\nThe mill closed twelve years ago. Most families left over the next few years; the empty shops were boarded long before this emergency.\n01:40. The final bus took the last families still living here. I closed the road behind it.\n02:17. A bus horn sounded from the chapel loudspeaker. I reopened the barrier for the returning driver. No vehicle came.\n02:20. I radioed: \"Three still here. Road open.\" No reply.\nAt dawn only Aubrey, John and I remained. Station key is in my desk drawer. Ada left the shotgun-box key on the Saint George Hotel bedroom dresser.\n- Pat",
-    "Pat reopened the barrier after a recorded bus horn. His last message was never acknowledged."
+    "EVACUATION / THREE NIGHTS AGO\nThe mill closed twelve years ago. Most buildings were empty before this.\n01:40. Last bus departed. Barrier closed.\n02:17. Horn from chapel speaker. Opened road for returning bus. No vehicle.\n02:20. Sent: Three still here. Road open. No reply.\nLATER / THREE DATES IN THIS LOG\nI recognized the recording, then heard it again and went back to waiting for the bus. Each time I set out to close the barrier, I lost hours and returned to the office. I kept writing that I would close it after the bus passed.\nTonight Aubrey made me compare the dates. Three days, not one long night. The barrier is still open. Writing this down before I forget again.\nStation key: my drawer. Shotgun-box key: hotel dresser.\n- Pat",
+    "The chapel horn kept drawing Pat into a confused waiting loop. He lost three days before Aubrey made him compare the dates. The road was never secured again."
   ],
   "clinic_note": [
     "Clinic observations",
@@ -29,7 +34,7 @@ const RECORDS = {
   ],
   "radio_note": [
     "County radio / bypass switch",
-    "The coil powers this transmitter. The spare tuning unit provides the direct county channel. Fit both and the spare antenna coupler from Old Mill Cemetery.\nThen use the small BYPASS switch on the left of this desk. AMBER routes through the chapel repeater; GREEN goes directly to county dispatch.\nHold E at the main receiver to transmit. Identify Old Mill Road and request NO SIRENS.\nAubrey, John and the cellar log explain why.",
+    "The coil powers this transmitter. The spare tuning unit provides the direct county channel. Fit both and the spare antenna coupler from Old Mill Cemetery.\nFirst shut down the chapel basement rack at MAIN ISOLATOR. Then set this desk's BYPASS to GREEN for direct county. AMBER goes through the now-silent repeater and cannot reach county.\nHold E at the main receiver to transmit. Identify Old Mill Road and request NO SIRENS.\nAubrey, John and the cellar log explain why.",
     "Radio routing is a physical switch: amber repeats through the chapel; green reaches county directly."
   ],
   "crash_record": [
@@ -39,8 +44,8 @@ const RECORDS = {
   ],
   "workshop_record": [
     "John's disconnection log",
-    "AFTER THE EVACUATION\nThe chapel carrier rode every relayed broadcast. Days near a speaker brought confusion; weeks brought changes. Ordinary radio is not the cause. That repeating tone is.\nBefore the bus left, it used Ada's voice while she stood beside me. I removed the station coil after she left. The separately powered hill rack still runs.\nMy cabinet holds the coil. The mausoleum holds the cellar key. The isolated county tuner and rifle are below the chapel. Collect the antenna coupler from the locked cemetery mausoleum as well. Fit all three parts; set the desk bypass GREEN.\n- John",
-    "John stopped town broadcasts. The separately powered chapel carrier persists; direct county bypass avoids it."
+    "AFTER THE EVACUATION\nI inspected the chapel cellar three weeks before the bus, before the creatures reached the grounds. The station still worked. I left the spare county tuner disconnected on the bench and the service rifle in the emergency supplies.\nI removed the station coil after Ada left. Town broadcasts stopped; the separately powered hill rack did not. When I tried to return for the spare equipment, creatures drove me back down the hill.\nJonah's coat. Edith's bracelet. Silas's splint. Those three were living residents changed by exposure. A shot stops them, but they move again about two minutes later while the carrier runs. Aubrey found older dead moving beneath the cemetery too.\nMy cabinet holds the coil. Pat cached the cellar key and spare antenna coupler in his locked family vault during the evacuation. Get the tuner and rifle from the chapel. Cut its rack at MAIN ISOLATOR. Fit all three radio parts at the station; set BYPASS GREEN and call.\n- John",
+    "John inspected the cellar before the creatures arrived. His later return failed. The chapel remains powered; cut its independent supply before calling on the green bypass."
   ],
   "chapel_record": [
     "Vestry maintenance book",
@@ -49,8 +54,8 @@ const RECORDS = {
   ],
   "cellar_record": [
     "Carrier test / direct-channel procedure",
-    "JOHN / CELLAR TEST\nThree shapes circle the hill: Jonah in his work coat; Edith with her clinic bracelet; Silas with the splinted hand. The missing did not bring monsters here. They became them.\nA shot stops them, but the carrier starts their bodies moving again about two minutes later. It is not a cure.\nTake the spare tuner and rifle. Fit tuner, coil and cemetery antenna coupler at the station; set BYPASS GREEN / DIRECT COUNTY. Call Old Mill Road, NO SIRENS, then switch off. Amber feeds this rack.",
-    "Three transformed residents remain tethered to the active carrier. Gunfire stops them temporarily; green bypass avoids relaying it."
+    "JOHN / EQUIPMENT CHECK\nTHREE WEEKS BEFORE EVACUATION\nThe station still works. Leave the spare county tuning unit disconnected on this bench. Keep the service rifle with the emergency supplies. Bellamy can lock the cellar after the inspection.\nThe hill rack has its own supply. Removing the station coil will not shut this equipment down.\nIf the town receiver needs rebuilding: fit its coil, this spare tuner and the cemetery antenna coupler. Set the station desk BYPASS GREEN for DIRECT COUNTY. Amber routes through this rack.\nBefore transmitting, cut this rack's independent supply at MAIN ISOLATOR. Then return to the station, select GREEN and call. Switching off the station alone cannot silence the chapel.\n- John",
+    "John's earlier inspection left the spare tuner and rifle in the cellar. Cut the chapel rack at MAIN ISOLATOR before transmitting from the station on GREEN."
   ]
 }
 
@@ -61,6 +66,7 @@ func _ready():
 			game.town.actions[id].title = RECORDS[id][0]
 			game.town.actions[id].text = RECORDS[id][1]
 	var town = game.town
+	town.actions.house_note.label="Take Ada's letter"
 	game.crash_site.build_detour_sheet()
 	document(town.buildings.workshop,Vector3(-3.15,0.94,-2.4),"workshop_record")
 	var chapel = town.streetscape.church
@@ -74,6 +80,7 @@ func _ready():
 	document(basement,Vector3(-1.72,0.94,-3.02),"cellar_record")
 	basement.prepare_cellar_lighting(basement)
 	build_bypass()
+	repeater=preload("res://chapel_repeater.gd").new();repeater.game=game;basement.add_child(repeater)
 
 func build_bypass():
 	var town = game.town
@@ -102,13 +109,18 @@ func document(parent: Node3D, p: Vector3, id: String):
 	area.add_to_group("StoryEvidence")
 
 func reset():
+	ada_letter_requested=false;ada_letter_delivered=false;ada_ammo_pending=0
 	evidence.clear()
 	county_bypass = false
+	if repeater:repeater.reset()
 	if bypass_lamp: bypass_lamp.material_override = game.town.mats.amber
 	game.journal_casefile = false
 
 func read_evidence(id: String):
 	if RECORDS.has(id): evidence[id] = true
+
+func repeater_is_off()->bool:
+	return repeater!=null and repeater.shutdown_done
 
 func direct_channel_selected() -> bool:
 	return county_bypass
@@ -116,7 +128,7 @@ func direct_channel_selected() -> bool:
 func rescue_line(progress: float) -> String:
 	if direct_channel_selected():
 		if progress<1.4: return "[YOU] Blackwood relay compromised. Send help without sirens."
-		if progress<2.8: return "[COUNTY] Copy. Approach on foot from Old Mill Road."
+		if progress<2.8: return "[COUNTY] Copy. Carrier is silent. Approach on foot from Old Mill Road."
 		return "[COUNTY] Shut the transmitter down. Don't answer the other voice."
 	if progress<1.4: return "[YOU] Car accident outside Blackwood. Is anyone receiving?"
 	if progress<2.8: return "[RADIO] Three still here. Road open."
@@ -128,15 +140,16 @@ func ending_title() -> String:
 func ending_text() -> String:
 	if direct_channel_selected():
 		var living = game.town.townspeople.characters.values().filter(func(data): return not data.dead).size()
-		return "County dispatch confirms your location and the silent approach.\nYou report %d surviving residents and switch the set off.\nA rescue team will meet you on Old Mill Road.\nFor now, nothing else answers." % living
+		return "The chapel repeater is off. County dispatch confirms your location and the silent approach.\nYou report %d surviving residents and switch the set off.\nA rescue team will meet you on Old Mill Road.\nFor now, nothing else answers." % living
 	return "The repeater plays Pat's three-night-old message again.\nNo dispatcher identifies themselves or confirms your location.\nYou release the transmit switch. The recording continues.\nThe repaired set was still connected to the chapel."
 
 func question() -> String:
-	if direct_channel_selected(): return "Direct county channel selected. Transmit from the main receiver."
+	if game.town.radio_ready and not repeater_is_off():return "Shut down the chapel basement repeater before calling for rescue."
+	if direct_channel_selected(): return "Silence the chapel repeater, then transmit on the direct county channel." if not repeater_is_off() else "Carrier silent. Transmit on the direct county channel."
 	if evidence.has("cellar_record"): return "Repair the radio, then set the desk bypass to green before transmitting."
-	if evidence.has("workshop_record"): return "John disabled relayed transmissions. The cellar holds a direct-channel unit."
+	if evidence.has("workshop_record"): return "John disabled town broadcasts. The chapel still has its own power: take the spare tuner and cut its MAIN ISOLATOR."
 	if evidence.has("clinic_note"): return "Can the carrier be bypassed before it changes anyone else?"
-	if evidence.has("ranger_note"): return "Why did Pat reopen an evacuated road?"
+	if evidence.has("ranger_note"): return "Pat lost three days to the repeated horn. Can the chapel carrier be silenced?"
 	return "The detour sheet was undated. Why was the road into Blackwood still open?"
 
 func collect_detour_sheet():
@@ -148,3 +161,35 @@ func collect_detour_sheet():
 		if game.town.journal_entries[i].id==id: game.journal_page=i+2
 	game.journal_casefile=false
 	game.set_state("journal")
+
+func request_ada_letter():
+	ada_letter_requested=true
+	update_ada_quest()
+func update_ada_quest():
+	var text="Find Ada's letter in her room at Saint George Hotel and bring it to John at the workshop."
+	if ada_letter_delivered:text="COMPLETED: You brought Ada's letter to John. He read her words and put it safely in his coat."
+	elif game.town.townspeople.characters.mechanic.dead:text="John is dead. Ada's letter can no longer be delivered this journey."
+	elif game.town.inventory.ada_letter>0:text="Ada's letter is in your backpack. Give it to John at the workshop."
+	if ada_letter_delivered:text+=" Reward: 12 pistol rounds."+(" John is holding %d rounds until you have room." % ada_ammo_pending if ada_ammo_pending>0 else " Collected.")
+	for entry in game.town.journal_entries:
+		if entry.id=="ada_letter_quest":entry.text=text;return
+	game.town.journal_entries.append({"id":"ada_letter_quest","title":"Side quest / Ada's letter","text":text})
+func deliver_ada_letter()->bool:
+	if ada_letter_delivered or game.town.inventory.ada_letter<=0 or game.town.townspeople.characters.mechanic.dead:return false
+	game.town.inventory.ada_letter-=1;ada_letter_delivered=true;ada_letter_requested=true
+	ada_ammo_pending=ADA_AMMO_REWARD
+	claim_ada_ammo()
+	update_ada_quest()
+	game.message="Side quest completed: Ada's letter delivered. Reward: 12 pistol rounds."
+	game.soundscape.feedback("pickup")
+	return true
+
+func claim_ada_ammo()->int:
+	if not ada_letter_delivered or ada_ammo_pending<=0 or game.town.townspeople.characters.mechanic.dead:return 0
+	var added=game.weapons.add_ammo(0,ada_ammo_pending)
+	ada_ammo_pending-=added
+	update_ada_quest()
+	return added
+func ada_reward_line()->String:
+	if ada_ammo_pending>0:return "I've set aside twelve pistol rounds for you. I'm holding the remaining %d until you've used some ammo or made room in your pack. Come talk to me then." % ada_ammo_pending
+	return "Here. Twelve pistol rounds. It's what I can spare. You brought something back that matters to me. Take care of yourself out there."

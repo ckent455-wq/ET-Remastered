@@ -21,6 +21,25 @@ func run():
   var faces=mesh.mesh.get_faces();var ray_start=mesh.to_local(view_start);var ray_end=mesh.to_local(view_end)
   for i in range(0,faces.size(),3):
    assert(Geometry3D.segment_intersects_triangle(ray_start,ray_end,faces[i],faces[i+1],faces[i+2])==null,"No window backing or body panel remains across the open driver's doorway")
+ # Painted hood and trunk use the same atlas colors as glass; they must stay opaque.
+ for panel_z in [-1.4,1.5]:
+  var panel_hit=false
+  for mesh in police.car.get_child(0).find_children("*","MeshInstance3D",true,false):
+   if police.door.is_ancestor_of(mesh):continue
+   var a=mesh.to_local(police.car.to_global(Vector3(0,1.5,panel_z)))
+   var b=mesh.to_local(police.car.to_global(Vector3(0,0.65,panel_z)))
+   for surface in range(mesh.mesh.get_surface_count()):
+    var material=mesh.get_active_material(surface)
+    var vertices=mesh.mesh.surface_get_arrays(surface)[Mesh.ARRAY_VERTEX]
+    var indices=mesh.mesh.surface_get_arrays(surface)[Mesh.ARRAY_INDEX]
+    var count=indices.size() if indices!=null and indices.size()>0 else vertices.size()
+    for i in range(0,count,3):
+     var triangle=[]
+     for j in range(3):triangle.append(vertices[indices[i+j] if indices!=null and indices.size()>0 else i+j])
+     if Geometry3D.segment_intersects_triangle(a,b,triangle[0],triangle[1],triangle[2])!=null:
+      assert(material is StandardMaterial3D and material.transparency==BaseMaterial3D.TRANSPARENCY_DISABLED,"Hood and trunk panels must remain opaque")
+      panel_hit=true
+  assert(panel_hit,"Original hood and trunk geometry must still cover the car")
  var model=police.pickup.get_child(1);var lowest=INF
  for mesh in model.find_children("*","MeshInstance3D",true,false):
   var box=(police.car.global_transform.affine_inverse()*mesh.global_transform)*mesh.get_aabb()
