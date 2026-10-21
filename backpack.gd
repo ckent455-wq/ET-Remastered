@@ -5,6 +5,8 @@ var selected = 0
 var notice = "Select an item to equip, use or examine."
 var discard_pending = ""
 var saved_cells: Dictionary = {}
+var saved_rotations: Dictionary = {}
+var drag_rotated = false
 var dragging = ""
 var drag_offset = Vector2.ZERO
 var drag_mouse = Vector2.ZERO
@@ -59,7 +61,9 @@ func pack(values: Dictionary) -> Array:
 		if id.begins_with("ammo"): limit = STACKS[int(id.right(1))]
 		var stack = 0
 		while amount>0:
-			requested.append({"id":id,"key":id+":"+str(stack),"amount":mini(amount,limit),"cell":Vector2i(-1,-1),"size":dims})
+			var key=id+":"+str(stack)
+			var rotated=bool(saved_rotations.get(key,false))
+			requested.append({"id":id,"key":key,"amount":mini(amount,limit),"cell":Vector2i(-1,-1),"size":Vector2i(dims.y,dims.x) if rotated else dims,"rotated":rotated})
 			amount-=limit
 			stack+=1
 	var placed: Array = []
@@ -131,7 +135,7 @@ func _draw():
 		var box = rect(item)
 		draw_rect(box,Color("48523a") if i==selected else Color("323d30"))
 		draw_rect(box,GOLD if i==selected else DIM,false,1)
-		if item.key!=dragging: draw_icon(item.id,box)
+		if item.key!=dragging: draw_icon(item.id,box,item.rotated)
 		if item.amount>1: write("x%d" % item.amount,box.end-Vector2(23,5),11,GOLD)
 	write("%d / 24 OCCUPIED" % used,Vector2(38,295),11,GOLD)
 	write("OBJECTIVE ITEMS SHARE BACKPACK SPACE",Vector2(38,321),11,DIM)
@@ -155,20 +159,21 @@ func _draw():
 			if game.controller.using_controller: actions=[game.controller.label("south")+"  USE",game.controller.label("north")+"  EXAMINE",game.controller.label("lb")+"  COMBINE",game.controller.label("rb")+"  DISCARD"]
 			write(actions[i],box.position+Vector2(6,17),11)
 	paragraph(notice,Vector2(330,286),270)
-	var footer="DRAG  Move items     ARROWS  Select     I / ESC  Close"
-	if game.controller.using_controller:footer=game.controller.label("west")+"  Move / place    D-PAD / LS  Select    "+game.controller.label("east")+"  Back"
+	var footer="DRAG  Move    R  Rotate    ARROWS  Select    I / ESC  Close"
+	if game.controller.using_controller:footer=game.controller.label("west")+" Move/place   "+game.controller.label("north")+" Rotate held item   "+game.controller.label("east")+" Back"
 	write(footer,Vector2(38,383),11,DIM)
 
 	if dragging!="":
 		for entry in entries:
 			if entry.key!=dragging: continue
 			var target = drop_cell()
-			var valid = fits(target,entry.size,entries,dragging)
-			var target_box = Rect2(ORIGIN+Vector2(target)*CELL,Vector2(entry.size)*CELL)
+			var size=held_size(entry)
+			var valid = fits(target,size,entries,dragging)
+			var target_box = Rect2(ORIGIN+Vector2(target)*CELL,Vector2(size)*CELL)
 			draw_rect(target_box,Color(0.4,0.7,0.4,0.35) if valid else Color(0.8,0.2,0.15,0.4))
-			var ghost = Rect2(drag_mouse-drag_offset,Vector2(entry.size)*CELL-Vector2(4,4))
+			var ghost = Rect2(drag_mouse-drag_offset,Vector2(size)*CELL-Vector2(4,4))
 			draw_rect(ghost,Color(0.12,0.17,0.12,0.9))
-			draw_icon(entry.id,ghost)
+			draw_icon(entry.id,ghost,drag_rotated)
 			draw_rect(ghost,GOLD,false,1)
 
 func paragraph(value: String, start: Vector2, width: float):
@@ -198,7 +203,7 @@ func copy_meshes(source: Node, parent: Node3D, accumulated = Transform3D.IDENTIT
 func build_icons():
 	for id in ["gun0","gun1","gun2","ammo0","ammo1","ammo2","flashlight","medkit","bandage","battery"]+OBJECTIVES:
 		var viewport = SubViewport.new()
-		viewport.size=Vector2i(256,128) if id.begins_with("gun") or id=="medkit" else Vector2i(128,384) if id=="shovel" else Vector2i(128,192) if id=="flashlight" else Vector2i(128,128)
+		viewport.size=Vector2i(768,192) if id in ["gun1","gun2"] else Vector2i(256,128) if id.begins_with("gun") or id=="medkit" else Vector2i(128,384) if id=="shovel" else Vector2i(128,192) if id=="flashlight" else Vector2i(128,128)
 		viewport.transparent_bg=true
 		viewport.own_world_3d=true
 		viewport.render_target_update_mode=SubViewport.UPDATE_ONCE
@@ -266,15 +271,30 @@ func build_icons():
 		viewport.add_child(camera)
 		camera.look_at(Vector3.ZERO)
 		icons[id]=viewport.get_texture()
+	# Crop transparent camera margins so long guns fill their four-slot footprint.
+	await RenderingServer.frame_post_draw
+	for id in ["gun1","gun2"]:
+		var image:Image=icons[id].get_image()
+		var used=image.get_used_rect()
+		if used.has_area():
+			used=used.grow(3).intersection(Rect2i(Vector2i.ZERO,image.get_size()))
+			icons[id]=ImageTexture.create_from_image(image.get_region(used))
+	queue_redraw()
 
-func draw_icon(id: String, box: Rect2):
+func draw_icon(id: String, box: Rect2, rotated=false):
 	if not icons.has(id): return
 	var texture: Texture2D = icons[id]
 	var available = box.size-Vector2(8,8)
 	var dimensions = texture.get_size()
+	if rotated:dimensions=Vector2(dimensions.y,dimensions.x)
 	var scale_factor = minf(available.x/dimensions.x,available.y/dimensions.y)
 	var drawn_size = dimensions*scale_factor
-	draw_texture_rect(texture,Rect2(box.get_center()-drawn_size/2,drawn_size),false)
+	if rotated:
+		draw_set_transform(box.get_center(),PI/2)
+		var original_size=Vector2(drawn_size.y,drawn_size.x)
+		draw_texture_rect(texture,Rect2(-original_size/2,original_size),false)
+		draw_set_transform(Vector2.ZERO)
+	else:draw_texture_rect(texture,Rect2(box.get_center()-drawn_size/2,drawn_size),false)
 
 func handle(event):
 	if game.testing_mode and game.testing_mode.enabled:
@@ -295,8 +315,9 @@ func handle(event):
 		for entry in entries:
 			if entry.key!=dragging: continue
 			var target=drop_cell()
-			if fits(target,entry.size,entries,dragging):
+			if fits(target,held_size(entry),entries,dragging):
 				saved_cells[entry.key]=target
+				saved_rotations[entry.key]=drag_rotated
 				notice="Item moved."
 			else: notice="That space is blocked. Item returned to its original slot."
 		dragging=""
@@ -308,6 +329,7 @@ func handle(event):
 			KEY_M: game.journal_page=1; game.journal_casefile=false; game.set_state("journal")
 			KEY_LEFT,KEY_UP: selected=wrapi(selected-1,0,maxi(1,entries.size())); discard_pending=""
 			KEY_RIGHT,KEY_DOWN: selected=wrapi(selected+1,0,maxi(1,entries.size())); discard_pending=""
+			KEY_R: rotate_item()
 			KEY_ENTER: act("use")
 			KEY_X: act("examine")
 			KEY_C: act("combine")
@@ -326,9 +348,10 @@ func handle(event):
 				selected=i
 				discard_pending=""
 				dragging=entries[i].key
+				drag_rotated=entries[i].rotated
 				drag_offset=p-(ORIGIN+Vector2(entries[i].cell)*CELL)
 				drag_mouse=p
-				notice="Drag to a free space. Release to place."
+				notice="Drag to a free space. R rotates. Release to place."
 				return
 		for i in range(4):
 			if Rect2(330+(i%2)*139,207+(i/2)*31,130,25).has_point(p): act(["use","examine","combine","discard"][i])
@@ -383,8 +406,8 @@ func controller_move(direction: Vector2i):
 	if dragging!="":
 		var item=entries[selected]
 		var target=drop_cell()+direction
-		target.x=clampi(target.x,0,6-item.size.x)
-		target.y=clampi(target.y,0,4-item.size.y)
+		target.x=clampi(target.x,0,6-held_size(item).x)
+		target.y=clampi(target.y,0,4-held_size(item).y)
 		drag_mouse=ORIGIN+Vector2(target)*CELL
 	else:
 		selected=wrapi(selected+(-1 if direction.x<0 or direction.y<0 else 1),0,entries.size())
@@ -400,16 +423,20 @@ func controller_button(id:int):
 	var entries=pack(counts())
 	if entries.is_empty():return
 	selected=clampi(selected,0,entries.size()-1)
+	if id==JOY_BUTTON_Y and dragging!="":
+		rotate_item();return
 	if id==JOY_BUTTON_X:
 		var item=entries[selected]
 		if dragging=="":
 			remember(entries)
 			dragging=item.key
+			drag_rotated=item.rotated
 			drag_offset=Vector2.ZERO
 			drag_mouse=ORIGIN+Vector2(item.cell)*CELL
-			notice="D-pad / left stick to move. Press "+game.controller.label("west")+" to place."
-		elif fits(drop_cell(),item.size,entries,dragging):
+			notice="Move with D-pad / left stick. "+game.controller.label("north")+" rotates. "+game.controller.label("west")+" places."
+		elif fits(drop_cell(),held_size(item),entries,dragging):
 			saved_cells[dragging]=drop_cell()
+			saved_rotations[dragging]=drag_rotated
 			dragging=""
 			notice="Item moved."
 		else:notice="That space is blocked. Choose a free space."
@@ -435,3 +462,29 @@ func draw_testing_inventory():
 		row+=1
 	write("1-3 Equip guns    0 Holster / Fists",Vector2(38,360),12,DIM)
 	write("I / ESC Close    TAB Journal    F10 Disable testing",Vector2(38,382),12,GOLD)
+
+func held_size(entry:Dictionary)->Vector2i:
+	return Vector2i(entry.size.y,entry.size.x) if drag_rotated!=entry.rotated else entry.size
+
+func rotate_item():
+	var entries=pack(counts())
+	if entries.is_empty():return
+	selected=clampi(selected,0,entries.size()-1)
+	var item=entries[selected]
+	if dragging!="":
+		for entry in entries:
+			if entry.key==dragging:item=entry;break
+	if item.size.x==item.size.y:
+		notice="This item already has a square footprint."
+		return
+	if dragging!="":
+		drag_rotated=not drag_rotated
+		# Keep the top-left corner under the cursor when switching orientations.
+		drag_offset=Vector2.ZERO
+		notice="Item rotated. Place it in a free space."
+	else:
+		var size=Vector2i(item.size.y,item.size.x)
+		if fits(item.cell,size,entries,item.key):
+			saved_rotations[item.key]=not item.rotated
+			notice="Item rotated."
+		else:notice="Not enough room to rotate here. Pick it up and rotate over a free space."

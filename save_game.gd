@@ -74,13 +74,13 @@ func blocked_reason()->String:
  return ""
 func capture()->Dictionary:
  var town=game.town
- var data={"schema":SCHEMA,"version":str(ProjectSettings.get_setting("application/config/version")),"date":Time.get_datetime_string_from_system(false,true),"location":town.location_name(),"health":game.health,"position":game.player.global_transform,"pitch":game.pitch,"crouching":game.crouching,"stamina":game.stamina,"charge":game.flashlight_charge,"light":game.flashlight.visible,"clock":game.clock,"town":{},"story":variables(game.story),"owned":game.weapons.owned.duplicate(),"magazines":game.weapons.magazines.duplicate(),"reserves":game.weapons.reserves.duplicate(),"selected":game.weapons.selected,"cells":game.backpack.saved_cells.duplicate(true),"actions":{},"storage":{},"doors":{},"roots":{},"enemies":[],"people":{},"conversation":variables(town.townspeople.conversation)}
+ var data={"schema":SCHEMA,"version":str(ProjectSettings.get_setting("application/config/version")),"date":Time.get_datetime_string_from_system(false,true),"location":town.location_name(),"health":game.health,"position":game.player.global_transform,"pitch":game.pitch,"crouching":game.crouching,"stamina":game.stamina,"charge":game.flashlight_charge,"light":game.flashlight.visible,"clock":game.clock,"town":{},"story":variables(game.story),"owned":game.weapons.owned.duplicate(),"magazines":game.weapons.magazines.duplicate(),"reserves":game.weapons.reserves.duplicate(),"selected":game.weapons.selected,"cells":game.backpack.saved_cells.duplicate(true),"rotations":game.backpack.saved_rotations.duplicate(true),"actions":{},"storage":{},"doors":{},"roots":{},"enemies":[],"people":{},"conversation":variables(town.townspeople.conversation)}
  for key in ["inventory","journal_entries","discovered","powered","radio_ready","reached_town"]:data.town[key]=town.get(key).duplicate(true) if town.get(key) is Dictionary or town.get(key) is Array else town.get(key)
  for id in town.actions:
   var action=town.actions[id]
   data.actions[id]={"taken":action.taken,"visible":action.area.visible,"layer":action.area.collision_layer,"disabled":action.area.get_child(0).disabled,"amount":action.get("amount",-1)}
  for id in town.interiors.containers:data.storage[id]=plain(town.interiors.containers[id])
- for id in town.doors:data.doors[id]={"open":town.doors[id].open,"rotation":town.doors[id].hinge.rotation,"disabled":town.doors[id].collision.disabled}
+ for id in town.doors:data.doors[id]={"open":town.doors[id].open,"rotation":town.doors[id].hinge.rotation,"disabled":town.doors[id].collision.disabled,"unlocked":town.doors[id].unlocked}
  for key in roots():data.roots[key]=tree(roots()[key])
  for enemy in game.enemies.creatures:data.enemies.append(plain(enemy))
  for id in town.townspeople.characters:data.people[id]=plain(town.townspeople.characters[id])
@@ -98,6 +98,10 @@ func valid(data)->bool:
  for key in ["inventory","journal_entries","discovered","powered","radio_ready","reached_town"]:
   if not data.town.has(key):return false
  if not data.town.inventory is Dictionary or not data.town.journal_entries is Array:return false
+ if data.has("rotations"):
+  if not data.rotations is Dictionary:return false
+  for key in data.rotations:
+   if not key is String or not data.rotations[key] is bool:return false
  for key in game.town.inventory:
   if not data.town.inventory.get(key) is int or data.town.inventory[key]<0:return false
  for id in game.town.actions:
@@ -124,7 +128,7 @@ func apply(data:Dictionary):
    if container.mode=="drawer":part.position.z=0.48 if container.open else 0.0
    else:part.rotation.y=float(part.get_meta("side"))*1.65 if container.open else 0.0
  for id in data.doors:
-  var door=game.town.doors[id];door.open=data.doors[id].open;door.hinge.rotation=data.doors[id].rotation;door.collision.set_deferred("disabled",data.doors[id].disabled)
+  var door=game.town.doors[id];door.unlocked=data.doors[id].get("unlocked",id!="radio" or game.town.inventory.station_key>0);door.open=data.doors[id].open;door.hinge.rotation=data.doors[id].rotation;door.collision.set_deferred("disabled",data.doors[id].disabled)
  for id in data.actions:
   var action=game.town.actions[id];var old=data.actions[id]
   action.taken=old.taken;action.area.visible=old.visible;action.area.collision_layer=old.layer;action.area.get_child(0).set_deferred("disabled",old.disabled)
@@ -144,6 +148,7 @@ func apply(data:Dictionary):
  game.weapons.owned.assign(data.owned);game.weapons.magazines.assign(data.magazines);game.weapons.reserves.assign(data.reserves)
  game.weapons.selected=data.selected;game.weapons.update_model(1);game.weapons.melee.raised=false;game.weapons.reload_remaining=0
  game.backpack.saved_cells=data.cells.duplicate(true)
+ game.backpack.saved_rotations=data.get("rotations",{}).duplicate(true)
  game.crash_site.leave_seat_for_testing();game.crash_site.wake_phase="";game.crash_site.update_door_target();game.crash_site.update_hatch_target();game.crash_site.update_item_targets()
  game.player.global_transform=data.position;game.player.velocity=Vector3.ZERO;game.pitch=data.pitch
  game.crouching=data.crouching

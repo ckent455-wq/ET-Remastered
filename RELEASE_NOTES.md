@@ -1,22 +1,20 @@
-# Far From Home v1.7.0 - Beneath Saint George
+# Far From Home v1.8.0 - Nowhere to Hide
 
-Windows x64 release build, exported with Godot 4.7.2. This download uses the release template, not the debug template.
+Windows x64 release build exported with Godot 4.7.2 using the release template, not the debug template.
 
-## Changes since v1.6.0
+## Changes since v1.7.0
 
-- Added John's original BeepBox music to the studio presentation, title screen and Escape pause menu. The music loops with instrument tails wrapped across the seam and fades out into gameplay.
-- Hotel windows on the front and sides light up at random in the main menu, beginning with one lit window. Unlit windows retain their original appearance.
-- The title-screen crow stays perched, moves and occasionally caws; approaching it during gameplay still makes it fly away.
-- Moved dialogue and tutorial boxes toward the top of the screen. Ambient audio and ongoing sound effects continue during dialogue.
-- Reworked the background wind to reduce its ocean-like rumble and lowered the outdoor ambience.
-- Moved the chapel cellar key to the workbench at the far end of the mausoleum passage. Existing saves repair the key's old placement.
-- Picking up the mausoleum radio coupler slams the entrance door with a stronger impact sound. The unlocked entrance can be reopened and the tunnel remains accessible while it is shut.
-- The flashlight sputters on when entering the tunnel. The later coffin blackout still takes priority.
-- Tunnel mummies detect the player farther away, run, strike faster and continue pursuit into the larger cellar room.
-- Moved the grave-digging shovel into the Victorian house basement.
+- Rotate backpack items with R. On a controller, pick an item up with Square/X, rotate with Triangle/Y, and place with Square/X or cancel with Circle/B.
+- Rotated footprints obey backpack boundaries and occupied slots. Invalid drops preserve the original layout. Item orientation is saved and restored; older saves default to unrotated items.
+- R still reloads during gameplay; rotation only applies while the backpack is open.
+- Rifle and shotgun inventory icons now fill their slots, with transparent margins removed and clearer rendering in either orientation.
+- Pursuing town monsters pound loudly on unlocked building doors for several seconds before forcing them open and entering.
+- Mummies take longer and push unlocked hinged doors inward slowly. Locked doors and bolted passages remain barriers.
+- Heavy spatial pounding comes from the actual door and repeats during the attempt. Menus pause it appropriately; gameplay dialogue preserves ongoing audio.
+- Players can manually close forced doors. NPC routines cannot immediately cancel an active breach.
 
 ## Play
 
-Download **FarFromHome-v1.7.0-Windows-x64.zip**, extract the entire ZIP and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
+Download **FarFromHome-v1.8.0-Windows-x64.zip**, extract the entire ZIP and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
 
-The release includes controls, asset credits, engine licenses, exact source commit and SHA256 checksums. Source code is included as a separate ZIP and in the repository.
+Includes controls, credits, asset and engine licenses, source commit and SHA256 checksums. All current source is also available in the repository and the separate source ZIP.

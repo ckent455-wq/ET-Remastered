@@ -316,6 +316,7 @@ func reset_game():
 	if backpack:
 		backpack.selected = 0
 		backpack.saved_cells.clear()
+		backpack.saved_rotations.clear()
 		backpack.dragging = ""
 		backpack.discard_pending = ""
 		backpack.notice = "Select an item to equip, use or examine."

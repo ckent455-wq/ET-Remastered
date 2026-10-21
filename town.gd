@@ -238,7 +238,7 @@ func make_door(root: Node3D, id: String, z: float):
 	var body = box(hinge,Vector3(0.9,1.35,0),Vector3(1.8,2.7,0.12),mats["wood"])
 	box(body,Vector3(0.65,-0.15,0.1),Vector3(0.12,0.12,0.12),mats["amber"],false)
 	var area = action_area(root,Vector3(0,1.35,z),Vector3(1.85,2.7,0.30),id+"_door",{"kind":"door","building":id,"label":"Open door"})
-	doors[id] = {"hinge":hinge,"body":body,"collision":body.get_child(1),"open":false,"tween":null,"area":area}
+	doors[id] = {"hinge":hinge,"body":body,"collision":body.get_child(1),"open":false,"unlocked":id!="radio","tween":null,"area":area}
 
 func action_area(parent: Node3D, p: Vector3, size: Vector3, id: String, data: Dictionary) -> Area3D:
 	var area = Area3D.new()
@@ -384,6 +384,7 @@ func reset():
 			door.tween.kill()
 		door.hinge.rotation.y = 0
 		door.open = false
+		door.unlocked = door!=doors.get("radio")
 		door.collision.set_deferred("disabled",false)
 	for light in powered_lights:
 		light.visible = false
@@ -751,8 +752,10 @@ func set_building_door(id: String, next_open: bool, shelter_close=false, player_
 	if door.open==next_open: return true
 	if next_open and id=="radio" and inventory.station_key==0: return false
 	if not next_open and not player_requested and doorway_occupied(id): return false
+	if not next_open and not player_requested and game.enemies and game.enemies.door_encounter.holding_open(id,game.clock):return false
 	if door.tween!=null and door.tween.is_valid(): door.tween.kill()
 	door.open=next_open
+	if next_open:door.unlocked=true
 	door.collision.set_deferred("disabled",next_open)
 	door.tween=create_tween()
 	door.tween.tween_property(door.hinge,"rotation:y",1.55 if next_open else 0.0,0.55)

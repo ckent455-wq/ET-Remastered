@@ -29,7 +29,7 @@ Turning testing off restores the equipment, supplies, health and lock access you
 - Mouse: look; WASD / arrows: move; Shift: sprint.
 - Space: jump. Hold Ctrl: crouch; release to stand when there is room.
 - E: inspect, search, collect, open/close doors from either side, and talk. Building doors swing inward.
-- I: backpack (drag items to arrange them). F: flashlight; Tab: journal and map; Escape: pause, with Restart Game and Main Menu options.
+- I: backpack (drag items to arrange them; R rotates the selected or held item). F: flashlight; Tab: journal and map; Escape: pause, with Restart Game and Main Menu options.
 - C inside the journal: case notes and evidence leads.
 - Left mouse: fire, or punch while unarmed; right mouse: aim; R: reload.
 - 1 / 2 / 3: switch between guns you have found; 0: holster.
@@ -149,3 +149,7 @@ To finish: collect the radio parts, **shut down the chapel basement repeater at 
 Press Esc and choose **SAVE / LOAD**. Select one of three slots, then SAVE or LOAD; replacing a save or the current paused journey requires a second press. The title menu has **LOAD JOURNEY**, and the death screen offers LOAD JOURNEY (L on keyboard, Y/Triangle on controller). Keyboard arrows/Tab and Enter, mouse, or controller D-pad/stick and confirm navigate the screen.
 
 Saves retain your position (including basements), health, flashlight, inventory, weapon ammo, quests, journal, searched supplies, doors, NPCs, enemies and scripted-event progress. Each overwritten slot keeps a verified backup that is offered if its primary save is damaged. Achievements remain stored separately. Saves are local to this Windows user and remain outside the game install folder. Finish the seated opening and take your backpack before saving; testing-mode sessions and incomplete scripted sequences cannot be saved.
+
+Backpack rotation: press R on keyboard. On a controller, pick up an item with Square/X, press Triangle/Y to rotate, then Square/X to place or Circle/B to cancel. Rotations obey the grid boundaries and occupied spaces and are saved with your layout.
+
+Pursuing town creatures can pound on an unlocked building door for several seconds before forcing it open. Mummies push unlocked hinged doors open more slowly. Locked or bolted passage doors remain secure. You can still close a forced door manually.

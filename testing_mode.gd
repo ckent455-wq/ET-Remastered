@@ -23,7 +23,7 @@ func begin():
  if enabled:return
  if game.state in ["won","lost"]:game.reset_game()
  var w=game.weapons
- saved={"inventory":game.town.inventory.duplicate(true),"owned":w.owned.duplicate(),"magazines":w.magazines.duplicate(),"reserves":w.reserves.duplicate(),"selected":w.selected,"health":game.health,"stamina":game.stamina,"charge":game.flashlight_charge,"light":game.flashlight.visible,"gear":[game.crash_site.has_backpack,game.crash_site.has_flashlight,game.crash_site.has_detour_sheet],"cells":game.backpack.saved_cells.duplicate(true),"locks":[game.town.cemetery.unlocked,game.town.streetscape.church.basement.unlocked,w.lockbox.unlocked,game.hotel_basement.hotel_unlocked],"actions":{},"containers":{}}
+ saved={"inventory":game.town.inventory.duplicate(true),"owned":w.owned.duplicate(),"magazines":w.magazines.duplicate(),"reserves":w.reserves.duplicate(),"selected":w.selected,"health":game.health,"stamina":game.stamina,"charge":game.flashlight_charge,"light":game.flashlight.visible,"gear":[game.crash_site.has_backpack,game.crash_site.has_flashlight,game.crash_site.has_detour_sheet],"cells":game.backpack.saved_cells.duplicate(true),"rotations":game.backpack.saved_rotations.duplicate(true),"locks":[game.town.cemetery.unlocked,game.town.streetscape.church.basement.unlocked,w.lockbox.unlocked,game.hotel_basement.hotel_unlocked],"actions":{},"containers":{}}
  for id in game.town.actions:
   var data=game.town.actions[id]
   if data.kind in ["item","weapon","ammo","cellar_part"]:
@@ -78,6 +78,7 @@ func finish(restore=true):
  game.crash_site.update_door_target()
  game.crash_site.update_hatch_target()
  game.crash_site.update_item_targets()
+ game.backpack.saved_rotations=saved.rotations.duplicate(true)
  game.backpack.saved_cells=saved.cells.duplicate(true);game.backpack.dragging=""
  game.town.cemetery.unlocked=saved.locks[0]
  game.town.streetscape.church.basement.unlocked=saved.locks[1];game.town.streetscape.church.basement.padlock.visible=not saved.locks[1]
