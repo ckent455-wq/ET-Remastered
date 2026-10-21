@@ -36,7 +36,7 @@ func check():
 		game._unhandled_input(key)
 		assert(game.state=="dialogue" and game.dialogue_name==data.name and game.dialogue_text.length()>40,"NPC conversation")
 		game.soundscape.update_sound(0.1)
-		assert(game.soundscape.wind.stream_paused,"Dialogue pauses ambience")
+		assert(not game.soundscape.wind.stream_paused,"Dialogue keeps ambience playing")
 		game._unhandled_input(key)
 		assert(game.state=="play","E closes conversation without reopening it")
 	# Inside protection works for both north-facing and south-facing buildings.

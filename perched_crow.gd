@@ -8,7 +8,7 @@ var calls: Array[AudioStream] = []
 var rng = RandomNumberGenerator.new()
 var greeted = false
 var call_timer = 0.0
-var idle_timer = 8.0
+var idle_timer = 5.0
 var calls_played = 0
 var dead = false
 var death_time = 0.0
@@ -96,7 +96,7 @@ func reset():
 	greeted = false
 	calls_played = 0
 	call_timer = 0
-	idle_timer = 8
+	idle_timer = 5
 	voice.stop()
 	voice.stream_paused = false
 	animation.speed_scale = 1
@@ -104,24 +104,25 @@ func reset():
 	animation.seek(0,true)
 
 func caw():
-	if game.state!="play" or dead or flight_state!="perched" or voice.playing:
+	if game.state not in ["play","title","intro"] or dead or flight_state!="perched" or voice.playing:
 		return
 	voice.stream = calls[calls_played%calls.size()]
 	voice.pitch_scale = rng.randf_range(0.94,1.02)
 	voice.play()
 	calls_played += 1
 	animation.play("call",0.12)
-	call_timer = rng.randf_range(14,24)
-	idle_timer = rng.randf_range(10,18)
+	call_timer = rng.randf_range(18,30)
+	idle_timer = rng.randf_range(5,9)
 
 func animation_finished(clip: StringName):
 	if not dead and flight_state=="perched" and clip!="watch":
 		animation.play("watch",0.18)
 
 func _process(delta):
-	var active = game.state=="play"
+	var menu = game.state in ["title","intro"]
+	var active = game.state=="play" or menu
 	animation.speed_scale = 1 if active else 0
-	voice.stream_paused = not active
+	voice.stream_paused = game.state not in ["play","dialogue","title","intro"]
 	if dead:
 		if active:
 			death_time = minf(death_time+delta,1.2)
@@ -130,9 +131,16 @@ func _process(delta):
 		return
 	if not active:
 		return
-	if update_flight(delta):
+	if menu:
+		# The title crow stays on the sign even if an old play session left it flying.
+		if flight_state!="perched":
+			flight_state="perched";flight_time=0;away_timer=0
+			position=PERCH_POSITION;rotation=Vector3(0,-0.65,0)
+			model.show();hit_shape.set_deferred("disabled",false)
+			animation.play("watch",0.18)
+	elif update_flight(delta):
 		return
-	var distance = game.player.global_position.distance_to(global_position)
+	var distance = 8.0 if menu else game.player.global_position.distance_to(global_position)
 	if distance>36:
 		return
 	call_timer = maxf(0,call_timer-delta)
@@ -142,7 +150,7 @@ func _process(delta):
 		caw()
 	elif idle_timer<=0 and animation.current_animation=="watch":
 		animation.play("ruffle",0.15)
-		idle_timer = rng.randf_range(12,21)
+		idle_timer = rng.randf_range(6,11)
 
 func shoot() -> bool:
 	if dead or flight_state=="away" or game.state!="play":

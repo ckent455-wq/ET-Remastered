@@ -5,6 +5,7 @@ var muted = false
 var bus_index = -1
 var owns_bus = false
 var rng = RandomNumberGenerator.new()
+var menu_music: AudioStreamPlayer
 var wind: AudioStreamPlayer
 var leaves: AudioStreamPlayer
 var click: AudioStreamPlayer
@@ -72,8 +73,10 @@ func _ready():
 		AudioServer.set_bus_name(bus_index,BUS)
 		AudioServer.set_bus_send(bus_index,"Master")
 		owns_bus = true
-	wind = voice(stream("wind",true),-12)
-	leaves = voice(stream("leaves",true),-17)
+	menu_music = voice(stream("horror_intro",true),-12)
+	menu_music.play()
+	wind = voice(stream("wind_soft",true),-20)
+	leaves = voice(stream("leaves",true),-23)
 	flashlight_streams = {true:stream("horror/flashlight_on"),false:stream("horror/flashlight_off")}
 	click = voice(flashlight_streams[true],-12)
 	thunder = voice(stream("thunder"),-23)
@@ -227,16 +230,25 @@ func _process(delta):
 	update_sound(delta)
 
 func update_sound(delta: float):
+	var in_menu = game.state in ["intro","title","paused"]
+	if in_menu:
+		if not menu_music.playing:
+			menu_music.volume_db = -12
+			menu_music.play()
+		menu_music.volume_db = move_toward(menu_music.volume_db,-12,48*delta)
+	elif menu_music.playing:
+		menu_music.volume_db = move_toward(menu_music.volume_db,-60,64*delta)
+		if menu_music.volume_db<=-60:menu_music.stop()
 	atmosphere.update_sound(delta)
-	var active = game.state=="play"
-	var paused = game.state in ["paused","journal","dialogue","intro"]
+	var active = game.state in ["play","dialogue"]
+	var paused = game.state in ["paused","journal","intro"]
 	hurt_voice.stream_paused = paused
 	if game.state in ["intro","title","won"]: hurt_voice.stop()
 	wind.stream_paused = paused
 	leaves.stream_paused = paused
 	var indoors = active and not atmosphere.current_interior.is_empty()
-	wind.volume_db = -24 if indoors else (-12 if active else -19)
-	leaves.volume_db = -29 if indoors else (-17 if active else -24)
+	wind.volume_db = -31 if indoors else (-20 if active else -26)
+	leaves.volume_db = -34 if indoors else (-23 if active else -29)
 	if previous_state!=game.state:
 		step_distance = 0
 		if not active:

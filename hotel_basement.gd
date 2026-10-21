@@ -3,6 +3,7 @@ extends Node3D
 var game
 var town
 var hotel_unlocked=false
+var entry_flicker_time=0.0
 var hotel_entry: Node3D
 var tunnel_entry: Node3D
 var stone: StandardMaterial3D
@@ -20,6 +21,7 @@ func _ready():
  build_mausoleum_entry()
  build_basement()
  build_tunnel()
+ place_chapel_key()
  town.streetscape.church.basement.prepare_cellar_lighting(self)
  reset()
 
@@ -120,10 +122,11 @@ func prompt(kind:String)->String:
 
 func interact(kind:String):
  if kind=="mausoleum_tunnel":
-  if not town.cemetery.can_take():
+  if not town.cemetery.unlocked or not town.cemetery.inside():
    game.message="The passage is inside the locked Whitcomb mausoleum."
    return
   move_player(to_global(Vector3(0,0.02,-28.5)),PI)
+  start_entry_flicker()
   game.message="A tunnel beneath the mausoleum. A faded sign points toward Saint George."
  elif kind=="hotel_basement_door":
   if not hotel_unlocked:
@@ -143,5 +146,41 @@ func move_player(p:Vector3,yaw:float):
  town.streetscape.church.basement.move_player(p,yaw)
 
 func reset():
+ entry_flicker_time=0.0
+ game.flashlight.light_energy=2.5
  hotel_unlocked=false
  if has_node("CellarCoffinStacks"):get_node("CellarCoffinStacks").reset_burst()
+
+func place_chapel_key():
+ var data=town.actions.cemetery_cellar_key
+ data.authored_placement=true
+ var area=data.area
+ var model=area.get_child(1) as Node3D
+ model.position=Vector3.ZERO
+ area.global_position=to_global(Vector3(-1.95,0.84,-2.0))
+ var lowest=INF
+ for mesh in model.find_children("*","MeshInstance3D",true,false):
+  var bounds=mesh.global_transform*mesh.get_aabb()
+  lowest=minf(lowest,bounds.position.y)
+ if lowest<INF:area.global_position.y+=global_position.y+0.828-lowest
+ town.streetscape.church.basement.prepare_cellar_lighting(area)
+ town.cemetery.fit_cellar_key_target()
+
+func start_entry_flicker():
+ if not game.crash_site.has_flashlight or game.flashlight_charge<=0:return
+ if get_node("CellarCoffinStacks").blackout_active:return
+ entry_flicker_time=1.35
+ game.flashlight.hide()
+
+func _process(delta:float):
+ if entry_flicker_time<=0 or game.state not in ["play","dialogue"]:return
+ if get_node("CellarCoffinStacks").blackout_active or not contains(game.player.global_position):
+  entry_flicker_time=0.0
+  game.flashlight.light_energy=2.5
+  game.flashlight.hide()
+  return
+ entry_flicker_time=maxf(0.0,entry_flicker_time-delta)
+ var elapsed=1.35-entry_flicker_time
+ var lit=(elapsed>=0.12 and elapsed<0.19) or (elapsed>=0.31 and elapsed<0.42) or (elapsed>=0.48 and elapsed<0.53) or (elapsed>=0.74 and elapsed<0.96) or elapsed>=1.12
+ game.flashlight.visible=lit and game.flashlight_charge>0
+ game.flashlight.light_energy=2.5 if entry_flicker_time<=0 else (1.3 if elapsed<0.7 else 2.1)

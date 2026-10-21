@@ -2,6 +2,9 @@ extends Node3D
 ## A roadside burial ground with a clear, ungated walking route to the maintenance box.
 var town
 var crypt: Node3D
+var slam_triggered=false
+var slamming=false
+var slam_voice:AudioStreamPlayer
 var door_hinge: Node3D
 var door_collision: CollisionShape3D
 var unlocked = false
@@ -93,7 +96,7 @@ func _ready():
 	cellar_key.add_child(key_model)
 	key_model.rotation.x=PI/2
 	key_model.position.y=-0.04
-	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"EVACUATION / TEMPORARY EQUIPMENT CACHE\nJohn's spare antenna coupler and the chapel cellar key are on the shelf inside my family's Whitcomb mausoleum. People have been taking equipment from the station. This vault is dry and its iron door still locks. Nothing has been placed inside a coffin.\n\nBellamy locked the chapel cellar to keep confused residents away from the running rack. He gave me its key before leaving.\n\nAsk me at the ranger office for the family key. These supplies must be recovered once the road is clear.\n- Pat"})
+	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"EVACUATION / TEMPORARY EQUIPMENT CACHE\nJohn's spare antenna coupler is on the shelf inside my family's Whitcomb mausoleum. The chapel cellar key is on the workbench at the far end of the passage beneath the vault, in the old Saint George cellar. People have been taking equipment from the station. This vault is dry and its iron door still locks. Nothing has been placed inside a coffin.\n\nBellamy locked the chapel cellar to keep confused residents away from the running rack. He gave me its key before leaving.\n\nAsk me at the ranger office for the family key. These supplies must be recovered once the road is clear.\n- Pat"})
 	town.box(note,Vector3.ZERO,Vector3(0.015,0.35,0.26),town.mats.paper,false)
 
 func fit_cellar_key_target():
@@ -121,6 +124,7 @@ func can_take() -> bool:
 	return unlocked and opened and inside()
 
 func interact_door():
+	if slamming:return
 	if not unlocked and (not town.powered or town.inventory.coil<=0):
 		town.game.message="The family vault is locked. Head into town and speak with the ranger and mechanic."
 		return
@@ -139,6 +143,8 @@ func interact_door():
 	town.game.message="The iron key turns. The mausoleum door opens." if opened else "Mausoleum door closed."
 
 func reset():
+	slam_triggered=false;slamming=false
+	if slam_voice:slam_voice.stop()
 	if door_tween and door_tween.is_valid(): door_tween.kill()
 	unlocked=TEST_UNLOCK_MAUSOLEUM
 	opened=false
@@ -243,3 +249,29 @@ func wall(p: Vector3, dimensions: Vector3, stone: Material, iron: Material):
 
 func contains(p: Vector3) -> bool:
 	return p.x>6.5 and p.x<23.5 and p.z> -24.5 and p.z< -5.5
+
+func slam_shut():
+	if slam_triggered:return
+	slam_triggered=true
+	slamming=true
+	opened=false
+	if door_tween and door_tween.is_valid():door_tween.kill()
+	# Even if the player shut it first, the latch still kicks and bangs once.
+	door_hinge.rotation.y=maxf(door_hinge.rotation.y,0.16)
+	door_collision.set_deferred("disabled",true)
+	if not slam_voice:
+		slam_voice=town.game.soundscape.voice(preload("res://assets/audio/mausoleum_slam.wav"),3.0)
+	door_tween=create_tween()
+	door_tween.tween_property(door_hinge,"rotation:y",0.0,0.16).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	door_tween.tween_callback(finish_slam)
+func finish_slam():
+	door_collision.set_deferred("disabled",false)
+	slamming=false
+	slam_voice.volume_db=3.0
+	slam_voice.play()
+func _process(_delta):
+	var active=town.game.state in ["play","dialogue"]
+	if slam_voice:slam_voice.stream_paused=not active
+	if slamming and door_tween and door_tween.is_valid():
+		if active and not door_tween.is_running():door_tween.play()
+		elif not active:door_tween.pause()

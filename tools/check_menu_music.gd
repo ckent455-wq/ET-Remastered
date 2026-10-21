@@ -1,0 +1,25 @@
+extends SceneTree
+func _initialize():call_deferred("run")
+func run():
+ var g=load("res://main.tscn").instantiate();root.add_child(g)
+ g.set_physics_process(false)
+ var s=g.soundscape;s.set_process(false)
+ g.state="intro";s.update_sound(0.1)
+ assert(s.menu_music.playing and s.menu_music.stream.loop_mode==AudioStreamWAV.LOOP_FORWARD)
+ assert(is_equal_approx(s.menu_music.stream.get_length(),12.8))
+ s.menu_music.play(s.menu_music.stream.get_length()-0.08)
+ await create_timer(0.25).timeout
+ assert(s.menu_music.playing and s.menu_music.stream.loop_end==int(s.menu_music.stream.get_length()*s.menu_music.stream.mix_rate),"Playback wraps around end of track")
+ await create_timer(0.15).timeout
+ var position=s.menu_music.get_playback_position()
+ g.state="title";s.update_sound(0.01)
+ assert(s.menu_music.playing and s.menu_music.get_playback_position()>=position,"Studio to menu keeps same track playing")
+ g.state="paused";s.update_sound(0.1)
+ assert(s.menu_music.playing,"Escape pause menu plays music")
+ g.state="play";s.update_sound(0.4)
+ assert(s.menu_music.playing and s.menu_music.volume_db< -12,"Fade into gameplay")
+ s.update_sound(0.4);assert(not s.menu_music.playing)
+ g.state="title";s.update_sound(0.1)
+ assert(s.menu_music.playing and s.menu_music.bus==s.BUS,"Returning to menu restores music through game mute bus")
+ print("PASS: Trimmed looping intro/menu track, continuous transition, gameplay fade, return to menu")
+ g.queue_free();await process_frame;quit()

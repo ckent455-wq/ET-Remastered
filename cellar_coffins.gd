@@ -106,16 +106,17 @@ func _process(delta):
  if blackout_active:
   if not cellar.contains(cellar.game.player.global_position):finish_blackout(false)
   else:cellar.game.flashlight.hide()
- if crack:crack.stream_paused=not active
- if sting:sting.stream_paused=not active
- if throat:throat.stream_paused=not active
- if not active or not busted:return
+ if crack:crack.stream_paused=cellar.game.state not in ["play","dialogue"]
+ if sting:sting.stream_paused=cellar.game.state not in ["play","dialogue"]
+ if throat:throat.stream_paused=cellar.game.state not in ["play","dialogue"]
+ if cellar.game.state not in ["play","dialogue"] or not busted:return
  scream_elapsed+=delta
  if scream_elapsed>1.4:
   var tail=clampf(1.0-(scream_elapsed-1.4)/0.25,0,1)
   sting.volume_db=linear_to_db(maxf(0.0001,tail))-1.0
   throat.volume_db=linear_to_db(maxf(0.0001,tail))-3.0
   if tail<=0:sting.stop();throat.stop()
+ if not active:return
  burst_time=minf(1,burst_time+delta/0.55)
  var t=burst_time
  var forward:Vector3=upright.global_basis*Vector3.UP;forward.y=0;forward=forward.normalized()

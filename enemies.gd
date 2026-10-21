@@ -264,7 +264,7 @@ func _physics_process(delta):
 			animation_rate = data.animation.get_animation(data.clips[data.clip]).length/(1.45 if data.state=="attack" else 1.1)
 		elif data.state=="chase": animation_rate = 1.5
 		data.animation.speed_scale = animation_rate if active else 0
-		data.voice.stream_paused = not active
+		data.voice.stream_paused = game.state not in ["play","dialogue"]
 		if not active: continue
 		if (data.index in [HOUSE_INDEX,CELLAR_INDEX] or data.index in TUNNEL_INDICES) and data.state=="dead":
 			data.fall_time = minf(1,data.fall_time+delta/0.7)

@@ -71,7 +71,6 @@ func decorate():
 	room("bucket","workshop",Vector3(5.2,0.04,-1.6))
 	room("sheet_metal","workshop",Vector3(-4.85,0.045,1.5),0.25)
 	room("slate","workshop",Vector3(-4.45,0.045,1.75),-0.3)
-	room("shovel","workshop",Vector3(-4.3,0.04,-3.3),0.2)
 	room("scythe","workshop",Vector3(-1.7,0.04,-3.3),PI/2)
 	room("knife","workshop",Vector3(-3.35,0.89,-3.15),PI/2)
 	room("table","radio",Vector3(3.9,0.04,-0.2),0,Vector3(0.85,0.5,0.62),true)

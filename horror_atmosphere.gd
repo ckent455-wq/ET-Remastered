@@ -58,7 +58,7 @@ func play_accent(cue: String, p: Vector3, volume: float):
 	events_played += 1
 
 func update_sound(delta: float):
-	var active = game.state=="play"
+	var active = game.state in ["play","dialogue"]
 	var title = game.state=="title"
 	bed.stream_paused = not (active or title)
 	radio.stream_paused = not active or (game.story!=null and game.story.repeater_is_off())

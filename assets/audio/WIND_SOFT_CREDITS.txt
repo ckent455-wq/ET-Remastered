@@ -1,0 +1,1 @@
+Softer breeze derived locally from the existing project wind.wav. Low-frequency rumble removed, slow amplitude surges levelled, high-frequency hiss softened, loop boundary blended. Original wind.wav retained unchanged.

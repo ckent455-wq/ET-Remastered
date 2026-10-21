@@ -308,7 +308,7 @@ func furnish():
 	desk(buildings.ranger,Vector3(-2.6,0,0))
 	shelf(buildings.ranger,Vector3(2.5,0,-3.9))
 	item("ranger",Vector3(-2.7,1.04,0),"station_key","station_key","Take radio-station key",Color("e4c479"))
-	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nworkshop fuse. Fit it at the workshop's rear terminal, then search\nthe powered cabinet for a signal coil. After recovering the coil, ask Pat about the mausoleum. Its shelf holds the cellar key. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
+	note("ranger",Vector3(-1.9,0.91,0),"ranger_note","Ranger's log","The radio station is locked. Search my desk drawer for\nthe brass key. The store's counter drawer holds a spare\nworkshop fuse. Fit it at the workshop's rear terminal, then search\nthe powered cabinet for a signal coil. After recovering the coil, ask Pat about the mausoleum. The cellar key is on a workbench at the far end of the passage beneath it. Follow Chapel\nRoad uphill and unlock the chapel cellar for a spare\ntuning unit. Bring all three parts to the radio receiver. Stay near the radio\nand hold E to call emergency services. E searches storage.")
 	for x in [-3.3,3.3]:
 		var old_bed = box(buildings.clinic,Vector3(x,0.6,0),Vector3(1.3,0.4,2.5),mats["plaster"])
 		old_bed.add_to_group("LegacyClinicBeds")
@@ -551,8 +551,11 @@ func perform(id: String):
 			else:
 				discovered[data.building] = true
 		"item":
-			if id in ["cemetery_coupler","cemetery_cellar_key"] and not cemetery.can_take():
+			if id=="cemetery_coupler" and not cemetery.can_take():
 				game.message="The item is inside the locked mausoleum."
+				return
+			if id=="cemetery_cellar_key" and (not game.hotel_basement.contains(game.player.global_position) or game.player.global_position.distance_to(data.area.global_position)>3.2):
+				game.message="The chapel cellar key is at the far end of the mausoleum passage."
 				return
 			if data.has("container_id") and not interiors.containers[data.container_id].searched:
 				game.message = "Search the "+interiors.containers[data.container_id].label+" first."
@@ -573,6 +576,7 @@ func perform(id: String):
 			game.message = data.label.replace("Take ","Collected: ").replace("Recover ","Recovered: ")
 			if data.item=="bandage":game.message="Bandage collected. H to dress your wound (+10 health), or use it from your backpack."
 			game.soundscape.feedback("pickup")
+			if id=="cemetery_coupler":cemetery.slam_shut()
 		"note":
 			if id=="house_note":
 				if not game.crash_site.has_backpack:
@@ -669,7 +673,7 @@ func objective() -> String:
 	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):
 		if not cemetery.unlocked and inventory.mausoleum_key==0:
 			return "Speak to Pat about his family's mausoleum key." if not townspeople.characters.ranger.dead else "Search the ranger's desk for the spare mausoleum key."
-		return "Search the mausoleum for the radio coupler and chapel cellar key."
+		return "Take the coupler from the mausoleum, then follow its tunnel to the chapel cellar key."
 	if inventory.tuner==0: return "Unlock the church basement and recover its tuning unit."
 	if not game.story.repeater_is_off():return "Cut the chapel basement repeater at MAIN ISOLATOR."
 	return "Bring all three radio parts to the station receiver."

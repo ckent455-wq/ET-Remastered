@@ -67,6 +67,7 @@ func blocked_reason()->String:
  if game.testing_mode.enabled:return "Turn testing mode off before saving a normal journey."
  if game.health<=0 or game.state not in ["play","paused"]:return "Start or resume a journey before saving."
  if game.crash_site.wake_phase!="" or not game.crash_site.has_backpack:return "Finish the car opening and collect your backpack before saving."
+ if game.town.cemetery.slamming:return "Let the mausoleum door finish moving before saving."
  if game.grave_dig.digging:return "Finish digging before saving."
  if game.falling_tree.triggered and not game.falling_tree.reaction_shown:return "Let the falling-tree sequence finish before saving."
  if game.hotel_basement.get_node("CellarCoffinStacks").blackout_active:return "Let the coffin encounter finish before saving."
@@ -128,7 +129,8 @@ func apply(data:Dictionary):
   var action=game.town.actions[id];var old=data.actions[id]
   action.taken=old.taken;action.area.visible=old.visible;action.area.collision_layer=old.layer;action.area.get_child(0).set_deferred("disabled",old.disabled)
   if old.amount>=0:action.amount=old.amount
- game.town.cemetery.fit_cellar_key_target()
+ game.hotel_basement.place_chapel_key()
+ game.town.cemetery.slam_triggered=game.town.cemetery.slam_triggered or game.town.actions.cemetery_coupler.taken
  var panel=roots().panel;panel.set_fuse_power(panel.energized);panel.refresh_prompt()
  game.town.actions.battery_panel.area.get_node("InstalledFuse").visible=panel.installed
  for light in game.town.powered_lights:light.visible=game.town.powered

@@ -1,0 +1,1 @@
+Heavy door slam: edited from the existing user-provided Horror SFX Free cabinet_close.wav, layered with the project-original coffin_break.wav and original short bass/noise impact. See the existing horror asset source records for the cabinet-close recording. Edit generated locally for ET Remastered.

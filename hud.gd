@@ -159,11 +159,11 @@ func _draw():
 			draw_line(Vector2(325,195),Vector2(315,205),AMBER,1)
 		draw_circle(Vector2(320,200),1.2,Color(0.8,0.9,0.8,0.8))
 		var instruction=game.crash_site.tutorial_prompt() if not game.crash_site.tutorial_complete() else (game.message if message_seconds>0 else "")
-		var instruction_top=draw_instruction(instruction)
+		draw_instruction(instruction)
 		var tutorial_target="crash_rear_hatch" if not game.crash_site.hatch_open else ("crash_backpack" if not game.crash_site.has_backpack else "crash_flashlight")
 		var duplicate_prompt=not game.crash_site.tutorial_complete() and game.town.focus_action==tutorial_target
 		if game.town.prompt()!="" and not duplicate_prompt:
-			centered(game.town.prompt(),minf(285,instruction_top-12) if instruction_top>0 else 285,18,AMBER)
+			centered(game.town.prompt(),285,18,AMBER)
 		if game.rescue_available() and game.town.focus_action!="radio_bypass":
 			centered("HOLD E / CALL FOR RESCUE",284,19)
 			draw_rect(Rect2(240,296,game.contact_progress*40,3),INK)
@@ -226,7 +226,7 @@ func draw_title():
 	# The real low-poly town remains visible beneath a dark, weathered CRT treatment.
 	draw_rect(Rect2(0,0,640,400),Color(0.015,0.020,0.021,0.22))
 	for x in range(0,640,4):
-		var alpha = lerpf(0.94,0.12,smoothstep(190,620,float(x)))
+		var alpha = lerpf(0.94,0.12,smoothstep(175,440,float(x)))
 		draw_rect(Rect2(x,0,4,400),Color(0.018,0.023,0.025,alpha))
 	for i in range(32):
 		draw_rect(Rect2(0,i*2,640,2),Color(0,0,0,0.30*(1.0-i/32.0)))
@@ -406,13 +406,13 @@ func draw_dialogue():
 	var spoken: String = game.dialogue_pages[game.dialogue_page] if not game.dialogue_pages.is_empty() else ""
 	var lines = spoken.split("\n")
 	for i in range(lines.size()):
-		dialogue_line(lines[i],Vector2(106,300+i*20),20,ink)
+		dialogue_line(lines[i],Vector2(bounds.position.x+26,bounds.position.y+34+i*20),20,ink)
 	# The small stepped arrow replaces the previous buttons and speaker header.
 	for row in range(3):
-		draw_rect(Rect2(520+row*2,365+row*2,14-row*4,2),ink)
+		draw_rect(Rect2(bounds.end.x-40+row*2,bounds.end.y-19+row*2,14-row*4,2),ink)
 	if conversation.active:
 		var hint=conversation.speaker_name().to_upper()+" / "+("E CONTINUE / ESC QUESTIONS" if game.dialogue_page+1<game.dialogue_pages.size() else "E FOR MORE QUESTIONS")
-		text(game.controller.hint(hint),Vector2(82,257),11,INK)
+		text(game.controller.hint(hint),Vector2(bounds.position.x+2,bounds.position.y-9),11,INK)
 
 func draw_pat_questions(conversation):
 	draw_rect(conversation.BOX,Color(0.015,0.02,0.017,0.97))
@@ -446,7 +446,7 @@ func draw_instruction(value:String,top_override:float=-1.0)->float:
 	if value.strip_edges()=="":return -1.0
 	var lines=instruction_lines(value)
 	var height=24+lines.size()*22
-	var top=top_override if top_override>=0 else 334-height
+	var top=top_override if top_override>=0 else 42.0
 	var bounds=Rect2(80,top,480,height)
 	var ink=Color("e8e2d5")
 	draw_rect(bounds,Color.BLACK)

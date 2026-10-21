@@ -120,7 +120,7 @@ func prepare_cellar_lighting(node: Node):
 func interact():
 	if not unlocked:
 		if town.inventory.chapel_key==0:
-			town.game.message = "Cellar locked. The key is in the Whitcomb mausoleum. Ask Pat after restoring workshop power."
+			town.game.message = "Cellar locked. The key is at the far end of the passage beneath the Whitcomb mausoleum. Ask Pat after restoring workshop power."
 			return
 		unlocked = true
 		padlock.hide()

@@ -1,6 +1,6 @@
 extends RefCounted
 ## Shared layout keeps page breaks identical to the bitmap text on screen.
-const BOX = Rect2(80,266,480,118)
+const BOX = Rect2(80,42,480,118)
 const FONT = preload("res://assets/dialogue_pixels.fnt")
 const SIZE = 20
 const WIDTH = 432

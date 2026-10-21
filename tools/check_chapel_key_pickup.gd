@@ -15,8 +15,8 @@ func run():
  g.town.powered=true;g.town.inventory.coil=1;g.town.townspeople.talk("ranger")
  assert(g.town.inventory.mausoleum_key==1,"Pat still hands over the vault key")
  g.set_state("play");g.town.cemetery.interact_door();await create_timer(0.8).timeout
- for point in [Vector3(0,0.02,0),Vector3(0.4,0.02,0),Vector3(-0.2,0.02,-0.2)]:
-  g.player.global_position=g.town.cemetery.crypt.to_global(point)
+ for point in [Vector3(-1.95,0.02,-0.8),Vector3(-1.45,0.02,-1.1),Vector3(-2.25,0.02,-0.7)]:
+  g.player.global_position=g.hotel_basement.to_global(point)
   await aim_key(g)
  g.town.interact()
  assert(g.town.inventory.chapel_key==1 and g.town.actions.cemetery_cellar_key.taken and not g.town.actions.cemetery_cellar_key.area.visible,"Real aimed interaction collects the key")
@@ -24,7 +24,8 @@ func run():
  g.town.perform("cellar_door");assert(g.town.streetscape.church.basement.unlocked,"Collected key unlocks the chapel basement")
  # Simulate a pre-fix save restoring the old misplaced target.
  g.reset_game();g.crash_site.wake_phase="";g.crash_site.has_backpack=true;g.state="play";g.town.cemetery.unlocked=true;g.town.cemetery.opened=true
- g.player.global_position=g.town.cemetery.crypt.to_global(Vector3(0,0.02,0))
+ g.player.global_position=g.hotel_basement.to_global(Vector3(-1.95,0.02,-0.8))
+ g.town.actions.cemetery_cellar_key.area.position=Vector3(-0.25,1.03,-1.25)
  var collision=g.town.actions.cemetery_cellar_key.area.get_child(0)
  collision.position=Vector3.ZERO;collision.shape.size=Vector3(0.35,0.25,0.35)
  g.saves.backend.directory="user://chapel-key-check-"+str(Time.get_ticks_usec());assert(g.saves.backend.save_slot(1))

@@ -26,7 +26,7 @@ func _ready():
  reset()
 func reset():
  shutdown_done=false;lever.rotation.z=0;lamp.material_override=game.town.mats.amber
- if hum:hum.play();hum.stream_paused=game.state!="play"
+ if hum:hum.play();hum.stream_paused=game.state not in ["play","dialogue"]
 func shutdown()->bool:
  var cellar=game.town.streetscape.church.basement
  if shutdown_done or game.state!="play":return false
@@ -40,4 +40,4 @@ func shutdown()->bool:
  if not game.town.journal_entries.any(func(e):return e.id==id):game.town.journal_entries.append({"id":id,"title":"Chapel repeater / shut down","text":"You cut the chapel rack's independent power. Its carrier is silent. Repair the town receiver, select GREEN / direct county, and call for rescue without sirens."})
  return true
 func _process(_delta):
- hum.stream_paused=game.state!="play"
+ hum.stream_paused=game.state not in ["play","dialogue"]

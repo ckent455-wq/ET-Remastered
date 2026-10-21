@@ -91,8 +91,8 @@ func _physics_process(delta):
 	var previous_p = last_player_position
 	last_player_position = p
 	var active: bool = game.state=="play"
-	sound.stream_paused = not active
-	scream.stream_paused = not active
+	sound.stream_paused = game.state not in ["play","dialogue"]
+	scream.stream_paused = game.state not in ["play","dialogue"]
 	if not active:
 		game.camera.h_offset = 0
 		game.camera.v_offset = 0

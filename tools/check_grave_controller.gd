@@ -6,7 +6,8 @@ func check():
  g.town.townspeople.set_physics_process(false)
  g.crash_site.wake_phase="";g.state="play";g.crash_site.has_backpack=true
  await create_timer(0.1).timeout
- g.player.global_position=g.town.buildings.workshop.to_global(Vector3(3.1,0.01,1.5))
+ assert(g.grave_dig.shovel.get_parent()==g.victorian_house.cellar,"Shovel spawns in Victorian basement")
+ g.player.global_position=g.victorian_house.cellar.to_global(Vector3(-1.7,0.01,1.4))
  g.camera.position=Vector3(0,g.STANDING_EYE,0)
  g.camera.look_at(g.grave_dig.shovel.global_position)
  await physics_frame
@@ -31,5 +32,5 @@ func check():
  g.controller.family="playstation";assert("Hold SQUARE" in g.controller.hint(g.grave_dig.prompt()))
  e.pressed=false;g.controller._input(e);g.grave_dig._process(0.1)
  assert(not g.grave_dig.digging)
- print("PASS: workshop and grave raycast access, controller pickup/hold/release digging, Xbox/PlayStation prompts")
+ print("PASS: Victorian basement and grave raycast access, controller pickup/hold/release digging, Xbox/PlayStation prompts")
  quit()

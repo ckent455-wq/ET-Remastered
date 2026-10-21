@@ -9,11 +9,11 @@ func update(enemies,data,delta:float):
  var tunnel=game.hotel_basement
  var room_monster=data.index==enemies.TUNNEL_INDICES[2]
  var local_player:Vector3=tunnel.to_local(game.player.global_position)
- var active=tunnel.contains(game.player.global_position) if room_monster else inside(tunnel,game.player.global_position)
+ var active=tunnel.contains(game.player.global_position)
  var distance:float=data.actor.global_position.distance_to(game.player.global_position)
  if data.state=="tunnel_wait":
   var wake_room=room_monster and active and local_player.z> -3.6
-  var wake_passage=not room_monster and active and local_player.z> -27.2 and distance<6.5 and enemies.line_clear(data,game.player.global_position+Vector3.UP)
+  var wake_passage=not room_monster and active and local_player.z> -27.2 and distance<9.0 and enemies.line_clear(data,game.player.global_position+Vector3.UP)
   if wake_room:
    tunnel.get_node("CellarCoffinStacks").burst()
    data.visual.show()
@@ -42,16 +42,17 @@ func update(enemies,data,delta:float):
   if data.timer<=0:data.state="tunnel_chase"
   return
  if data.state=="attack":
-  if not data.did_hit and data.timer<0.55:
+  data.animation.speed_scale=data.animation.get_animation(data.clips.punch).length/0.75
+  if not data.did_hit and data.timer<0.48:
    data.did_hit=true
    if active and distance<1.8 and enemies.line_clear(data,game.player.global_position+Vector3.UP):game.take_damage(16)
-  if data.timer<=0:data.state="tunnel_chase";data.cooldown=1.3
+  if data.timer<=0:data.state="tunnel_chase";data.cooldown=0.45
   return
  if not active:
   enemies.play(data,"idle1");enemies.house_encounter.move(data,Vector3.ZERO,delta)
   return
- if distance<1.5 and data.cooldown<=0 and enemies.line_clear(data,game.player.global_position+Vector3.UP):
-  data.state="attack";data.timer=1.15;data.did_hit=false
+ if distance<1.65 and data.cooldown<=0 and enemies.line_clear(data,game.player.global_position+Vector3.UP):
+  data.state="attack";data.timer=0.75;data.did_hit=false
   enemies.play(data,"punch")
   data.voice.stream=enemies.streams.attack;data.voice.volume_db=-14;data.voice.play()
   return
@@ -63,11 +64,11 @@ func update(enemies,data,delta:float):
    if data.actor.global_position.distance_to(tunnel.to_global(target))<0.3:data.tunnel_waypoint+=1
   else:
    target=Vector3(clampf(target.x,-3.65,3.65) if target.z> -5 else clampf(target.x,-0.7,0.7),0.01,clampf(target.z,-28.6,4.0))
- else:target=Vector3(clampf(target.x,-0.7,0.7),0.01,clampf(target.z,-28.6,-5.8))
+ else:target=Vector3(clampf(target.x,-3.65,3.65) if target.z> -5 else clampf(target.x,-0.7,0.7),0.01,clampf(target.z,-28.6,4.0))
  var direction:Vector3=tunnel.to_global(target)-data.actor.global_position;direction.y=0
  var rush=room_monster and data.tunnel_waypoint<2
- var desired=direction.normalized()*(2.4 if rush else 1.2) if direction.length()>(0.15 if room_monster and data.tunnel_waypoint<3 else 1.15) else Vector3.ZERO
- if room_monster and desired.length()>0.1:
+ var desired=direction.normalized()*(4.8 if rush else 4.4) if direction.length()>(0.15 if room_monster and data.tunnel_waypoint<3 else 0.85) else Vector3.ZERO
+ if local_player.z> -5 and desired.length()>0.1:
   var steered=Vector3.ZERO
   for angle in [0.0,0.65,-0.65,1.15,-1.15,1.6,-1.6]:
    var trial=desired.rotated(Vector3.UP,angle)
@@ -80,6 +81,6 @@ func update(enemies,data,delta:float):
   if index==data.index or other.hp<=0:continue
   var offset:Vector3=other.actor.global_position-data.actor.global_position;offset.y=0
   if offset.length()<1.0 and desired.dot(offset.normalized())>0.4:desired=Vector3.ZERO
- enemies.play(data,"walk1" if desired.length()>0.1 else "idle1")
- data.animation.speed_scale=(1.5 if rush else 0.9) if desired.length()>0.1 else 1.0
+ enemies.play(data,"run_frantic" if desired.length()>0.1 else "idle1")
+ data.animation.speed_scale=(1.25 if rush else 1.15) if desired.length()>0.1 else 1.0
  enemies.house_encounter.move(data,desired,delta)

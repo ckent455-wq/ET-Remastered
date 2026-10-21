@@ -15,7 +15,12 @@ func run():
 	game.set_state("title")
 	game.player.position = crow.global_position+Vector3(0,-2,8)
 	crow._process(2)
-	assert(crow.calls_played==0,"No calls over title")
+	assert(crow.calls_played==1 and crow.flight_state=="perched","Title crow caws while staying perched")
+	crow.voice.stop();crow.greeted=true;crow.call_timer=30;crow.idle_timer=0
+	crow.animation.play("watch")
+	crow._process(0.1)
+	assert(crow.animation.current_animation=="ruffle" and crow.position.is_equal_approx(crow.PERCH_POSITION),"Menu crow ruffles on sign")
+	crow.reset()
 	game.set_state("play")
 	crow._process(0.1)
 	assert(crow.greeted and crow.calls_played==1,"First approach triggers sign call")
