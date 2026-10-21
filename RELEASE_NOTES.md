@@ -1,20 +1,22 @@
-# Far From Home v1.8.0 - Nowhere to Hide
+# Far From Home v1.9.0 - Relentless
 
-Windows x64 release build exported with Godot 4.7.2 using the release template, not the debug template.
+A playable Windows x64 survival-horror preview, exported with the Godot 4.7.2 release template.
 
-## Changes since v1.7.0
+## Changes since v1.8.0
 
-- Rotate backpack items with R. On a controller, pick an item up with Square/X, rotate with Triangle/Y, and place with Square/X or cancel with Circle/B.
-- Rotated footprints obey backpack boundaries and occupied slots. Invalid drops preserve the original layout. Item orientation is saved and restored; older saves default to unrotated items.
-- R still reloads during gameplay; rotation only applies while the backpack is open.
-- Rifle and shotgun inventory icons now fill their slots, with transparent margins removed and clearer rendering in either orientation.
-- Pursuing town monsters pound loudly on unlocked building doors for several seconds before forcing them open and entering.
-- Mummies take longer and push unlocked hinged doors inward slowly. Locked doors and bolted passages remain barriers.
-- Heavy spatial pounding comes from the actual door and repeats during the attempt. Menus pause it appropriately; gameplay dialogue preserves ongoing audio.
-- Players can manually close forced doors. NPC routines cannot immediately cancel an active breach.
+- Monsters retain pursuit after spotting the player instead of forgetting them after a short timeout. They can force unlocked town, chapel and mausoleum doors, follow the Victorian staircase and use opened basement passages. Locked progression routes and untriggered reveals stay protected. Pursuit survives saving and loading.
+- Stronger combat: ordinary creatures have 132 health, mummies 144 and the cemetery reaper 180. Headshots deal 1.5x damage. Stagger requires accumulated impact and has a recovery resistance period; ordinary hits no longer automatically cancel attacks. Monsters hit harder.
+- Shotgun pellets are processed as one impact per creature per blast. Damage is full through five meters and falls to 25% at fifteen meters. The rifle remains more powerful than the pistol.
+- Earlier enemy-health values in compatible saves scale proportionally to the new maximum, preserving wounds and deaths.
+- Reworked the Victorian cellar using PSX Modular House Interior Pack assets: brick bays and an arch, concrete ceiling, utility shelving, pallets and abandoned laundry/storage clutter. Corrected foundation corners and brick tiling, removed a clipping decorative shovel, and moved the collectible shovel against the rear wall beside the pallets.
+- Corrected cellar atmosphere so outdoor fog does not wash out its interior lighting.
+- Cleaner controls screen with grouped actions, aligned bindings and input-aware controller labels.
+- Starts in a resizable window with minimize and maximize controls. F11 or Alt+Enter toggles fullscreen.
 
 ## Play
 
-Download **FarFromHome-v1.8.0-Windows-x64.zip**, extract the entire ZIP and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
+Download **FarFromHome-v1.9.0-Windows-x64.zip**, extract the entire archive and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
 
-Includes controls, credits, asset and engine licenses, source commit and SHA256 checksums. All current source is also available in the repository and the separate source ZIP.
+Testing mode is OFF by default. F10 enables unlimited supplies and health for exploration; leave it off when judging combat difficulty.
+
+Includes player instructions, asset and engine credits, source commit information and SHA256 checksums.

@@ -13,6 +13,10 @@ func run():
  ray.to=cellar.to_global(Vector3(0,0.72,-5.8))
  var hit=g.get_world_3d().direct_space_state.intersect_ray(ray)
  assert(not hit.is_empty() and hit.collider.name=="CollapsedBurrowBlocker","Visible collapse seals the passage")
+ for x in [-3.3,3.3]:
+  var corner_ray=PhysicsRayQueryParameters3D.create(cellar.to_global(Vector3(x,2.85,-3.8)),cellar.to_global(Vector3(x,2.85,-4.4)),1)
+  var corner_hit=g.get_world_3d().direct_space_state.intersect_ray(corner_ray)
+  assert(not corner_hit.is_empty() and corner_hit.collider.name=="BrokenFoundationCollision","Upper foundation corners must be closed")
  for height in [g.STANDING_HEIGHT,g.CROUCH_HEIGHT]:
   g.player_collider.shape.height=height;g.player_collider.position.y=height/2
   g.player.global_position=cellar.to_global(Vector3(0,0.02,-3.2))

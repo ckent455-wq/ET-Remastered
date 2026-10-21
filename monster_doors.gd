@@ -28,21 +28,22 @@ func pound(enemies,data,point:Vector3,mummy:bool):
  data.clip=""
  enemies.play(data,"punch")
  data.animation.speed_scale=1.0
-func update(enemies,data,delta:float)->bool:
+func update(enemies,data,delta:float,goal:Variant=null)->bool:
  var game=enemies.game
- if data.hp<=0 or data.index==enemies.REAPER_INDEX or data.state not in ["chase","investigate","tunnel_chase","house_rush","cellar_rush"]:
+ if data.hp<=0 or data.state not in ["chase","investigate","tunnel_chase","house_rush","cellar_rush","reaper_chase"]:
   clear_attempt(data);return false
  var town=game.town
  for id in town.doors:
   var building=town.buildings[id]
   var local_actor:Vector3=building.to_local(data.actor.global_position)
-  var player:Vector3=building.to_local(game.player.global_position)
+  var player:Vector3=building.to_local(goal if goal is Vector3 else game.player.global_position)
   var door=town.doors[id]
   var door_z:float=door.hinge.position.z
   if absf(local_actor.y-player.y)>1.6 or absf(local_actor.y)>1.3:continue
   # Only react to a door separating the pursuing creature and player.
-  if (local_actor.z-door_z)*(player.z-door_z)>=0:continue
-  if absf(player.x)>5.4 or player.z< -5.2 or player.z>10.0:continue
+  var actor_inside=absf(local_actor.x)<5.4 and local_actor.z> -5.2 and local_actor.z<door_z
+  var target_inside=absf(player.x)<5.4 and player.z> -5.2 and player.z<door_z
+  if actor_inside==target_inside:continue
   var side=1.0 if local_actor.z>door_z else -1.0
   var approach=building.to_global(Vector3(0,local_actor.y,door_z+side*1.25))
   if data.actor.global_position.distance_to(approach)>9.0:continue

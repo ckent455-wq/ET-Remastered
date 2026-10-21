@@ -19,11 +19,12 @@ const GRAVE=Vector3(12.7,0,-15.45)
 func _ready():
  name="DisturbedGrave"
  var town=game.town
- shovel=town.action_area(game.victorian_house.cellar,Vector3(-3.1,0.68,1.2),Vector3(0.55,1.4,0.5),"workshop_shovel",{"kind":"grave_shovel","label":"Take rusted shovel"})
+ shovel=town.action_area(game.victorian_house.cellar,Vector3(-1.5,0.68,-3.75),Vector3(0.55,1.4,0.5),"workshop_shovel",{"kind":"grave_shovel","label":"Take rusted shovel"})
  var model=preload("res://spade_model.gd").build()
  shovel.add_child(model)
  model.position=Vector3(0,-0.66,0)
- model.rotation.z=-0.12
+ model.rotation.x=-0.20
+ model.rotation.z=-0.06
  town.streetscape.church.basement.prepare_cellar_lighting(shovel)
  grave=town.action_area(self,GRAVE+Vector3(0,0.22,0),Vector3(1.25,0.5,2.0),"cemetery_disturbed_grave",{"kind":"dig_grave","label":"Inspect disturbed soil"})
  var soil=town.mats.floor.duplicate()

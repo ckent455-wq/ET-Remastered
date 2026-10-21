@@ -29,7 +29,7 @@ func run():
 				assert(not ray.is_empty() and ray.collider==d.actor,"Visible animated head has shootable volume")
 				var hp=d.hp
 				w.magazines[0]=8;w.delay=0;w.aiming=true
-				assert(w.fire() and d.hp==maxf(0,hp-24),"Actual aimed headshot damages "+str(index)+" / "+pose)
+				assert(w.fire() and d.hp==maxf(0,hp-36),"Actual aimed headshot damages "+str(index)+" / "+pose)
 			d.actor.hide();d.actor.collision_layer=0
 	for gun in [1,2]:
 		var target=e.creatures[e.REAPER_INDEX]
@@ -40,7 +40,7 @@ func run():
 		g.camera.look_at(boxes.head_center(target))
 		w.owned[gun]=true;w.equip(gun);w.magazines[gun]=w.LOADOUT[gun].clip;w.delay=0;w.aiming=true
 		await physics_frame
-		assert(w.fire() and target.hp<e.HEALTH,"Rifle and shotgun use the animated hitboxes too")
+		assert(w.fire() and target.hp<target.max_hp,"Rifle and shotgun use the animated hitboxes too")
 		target.actor.hide();target.actor.collision_layer=0
 	w.equip(0)
 	# Cover still wins the closest intersection; no shooting heads through walls.
@@ -57,7 +57,7 @@ func run():
 	wall.queue_free();await physics_frame;await physics_frame
 	var empty=boxes.trace(g.camera.global_position,Vector3.UP,65)
 	assert(empty.is_empty(),"Empty air around enemy is a miss")
-	e.shoot(e.REAPER_INDEX,100)
+	e.shoot(e.REAPER_INDEX,9999)
 	assert(boxes.trace(g.camera.global_position,(head-g.camera.global_position).normalized(),65).is_empty(),"Dead enemy has no bullet hitbox")
 	g.reset_game()
 	assert(e.creatures[e.REAPER_INDEX].state=="reaper_wait","Reset keeps hidden creatures unhittable")

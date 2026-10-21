@@ -2,12 +2,12 @@ extends SceneTree
 func _initialize():call_deferred("check")
 func check():
  var g=load("res://main.tscn").instantiate();root.add_child(g)
- g.set_process(false);g.set_physics_process(false);g.grave_dig.set_process(false);g.cemetery_shadow.set_physics_process(false)
+ g.set_process(false);g.set_physics_process(false);g.enemies.set_physics_process(false);g.grave_dig.set_process(false);g.cemetery_shadow.set_physics_process(false)
  g.town.townspeople.set_physics_process(false)
  g.crash_site.wake_phase="";g.state="play";g.crash_site.has_backpack=true
  await create_timer(0.1).timeout
  assert(g.grave_dig.shovel.get_parent()==g.victorian_house.cellar,"Shovel spawns in Victorian basement")
- g.player.global_position=g.victorian_house.cellar.to_global(Vector3(-1.7,0.01,1.4))
+ g.player.global_position=g.victorian_house.cellar.to_global(Vector3(0,0.01,-2.2))
  g.camera.position=Vector3(0,g.STANDING_EYE,0)
  g.camera.look_at(g.grave_dig.shovel.global_position)
  await physics_frame

@@ -45,8 +45,8 @@ func update(enemies,data,delta:float):
   data.animation.speed_scale=data.animation.get_animation(data.clips.punch).length/0.75
   if not data.did_hit and data.timer<0.48:
    data.did_hit=true
-   if active and distance<1.8 and enemies.line_clear(data,game.player.global_position+Vector3.UP):game.take_damage(16)
-  if data.timer<=0:data.state="tunnel_chase";data.cooldown=0.45
+   if active and distance<1.8 and enemies.line_clear(data,game.player.global_position+Vector3.UP):game.take_damage(25)
+  if data.timer<=0:data.state="tunnel_chase";data.cooldown=0.75
   return
  if not active:
   enemies.play(data,"idle1");enemies.house_encounter.move(data,Vector3.ZERO,delta)

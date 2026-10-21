@@ -226,6 +226,7 @@ func fire() -> bool:
 	flash_remaining = 0.065
 	game.soundscape.weapon_sound(LOADOUT[selected].id)
 	if game.enemies: game.enemies.alert_shot(game.camera.global_position)
+	var enemy_hits={}
 	for pellet in range(LOADOUT[selected].pellets):
 		var spread: float = LOADOUT[selected].spread*(0.25 if aiming else 1.0)
 		var direction = -game.camera.global_basis.z
@@ -234,8 +235,19 @@ func fire() -> bool:
 		var start: Vector3 = game.camera.global_position
 		var hit = trace_shot(start,direction.normalized(),65)
 		if not hit.is_empty():
-			impact(hit)
+			if hit.collider.is_in_group("HostileEnemies"):
+				var index=int(hit.collider.get_meta("enemy_index"))
+				if not enemy_hits.has(index):enemy_hits[index]={"hit":hit,"damage":0.0}
+				enemy_hits[index].damage+=shot_damage(selected,str(hit.get("zone","body")),start.distance_to(hit.position))
+			else:impact(hit)
+	# A blast is one impact per creature; pellets cannot each reset its reaction.
+	for entry in enemy_hits.values():impact(entry.hit,entry.damage)
 	return true
+
+func shot_damage(weapon:int,zone:String,distance:float)->float:
+	var amount:float=LOADOUT[weapon].damage
+	if weapon==2:amount*=lerpf(1.0,0.25,clampf((distance-5.0)/10.0,0,1))
+	return amount*(1.5 if zone=="head" else 1.0)
 
 func trace_shot(origin:Vector3,direction:Vector3,reach:float)->Dictionary:
 	if not enemy_hitboxes: enemy_hitboxes=preload("res://enemy_shot_hitboxes.gd").new(game.enemies)
@@ -247,10 +259,11 @@ func trace_shot(origin:Vector3,direction:Vector3,reach:float)->Dictionary:
 	var enemy=enemy_hitboxes.trace(origin,direction,distance)
 	return enemy if not enemy.is_empty() else wall
 
-func impact(hit: Dictionary):
+func impact(hit: Dictionary, damage_override: float = -1.0):
 	var body = hit.collider as Node3D
 	if body.is_in_group("HostileEnemies"):
-		if game.enemies.shoot(int(body.get_meta("enemy_index")),LOADOUT[selected].damage):
+		var amount=damage_override if damage_override>=0 else shot_damage(selected,str(hit.get("zone","body")),game.camera.global_position.distance_to(hit.position))
+		if game.enemies.shoot(int(body.get_meta("enemy_index")),amount):
 			hit_feedback = 0.18
 		return
 	if body.is_in_group("CrowTargets"):

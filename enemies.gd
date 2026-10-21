@@ -2,10 +2,11 @@ extends Node3D
 ## Native animated encounters with real collision and sight rays guarding combat.
 var game
 var door_encounter=preload("res://monster_doors.gd").new()
+var pursuit=preload("res://monster_pursuit.gd").new()
 var creatures = []
 const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2),Vector3(-16.1,-12.99,-96.3),Vector3(30,0,-28),Vector3(25.55,-23.99,-104),Vector3(26.45,-23.99,-96.5),Vector3(22.3,-23.99,-84.08)]
 const WOOD_ROUTES = [[Vector3(19.8,0,-129.7),Vector3(21.0,0,-131.5),Vector3(24.0,0,-130.2)],[Vector3(38.3,0,-134.5),Vector3(37.8,0,-130.0),Vector3(34.8,0,-127.5)],[Vector3(39.0,0,-139),Vector3(38.3,0,-134.5),Vector3(37.8,0,-130),Vector3(34.8,0,-127.5)]]
-const HEALTH = 85.0
+const HEALTH = 132.0
 const RESPAWN_SECONDS = 120.0
 var sense_clock = 0.0
 var streams = {}
@@ -25,7 +26,9 @@ var reaper_navigation
 var house_encounter=preload("res://house_monster.gd").new()
 var cellar_encounter=preload("res://house_cellar_monster.gd").new()
 const WORKSHOP_INDEX=3
-const WORKSHOP_HEALTH=60.0
+const WORKSHOP_HEALTH=132.0
+const MUMMY_HEALTH=144.0
+const REAPER_HEALTH=180.0
 var navigation
 
 func _ready():
@@ -106,7 +109,17 @@ func reset_creature(data):
 	data.actor.velocity = Vector3.ZERO
 	data.actor.collision_layer = 1
 	data.actor.collision_mask = 1
-	data.hp = WORKSHOP_HEALTH if data.index in [WORKSHOP_INDEX,HOUSE_INDEX,CELLAR_INDEX] or data.index in TUNNEL_INDICES else HEALTH
+	data.hp = health_for(data.index)
+	data["pursuing"]=false
+	data["portal_wait"]=0.0
+	data["special_effort"]=0.0
+	data["special_beat"]=0.0
+	data["special_door"]=""
+	data["stair_step"]=0
+	data["stair_direction"]=""
+	data["poise"]=0.0
+	data["stagger_lock"]=0.0
+	data["poise_age"]=0.0
 	data["fall_time"] = 0.0
 	data.visual.rotation = Vector3.ZERO
 	data.visual.position = Vector3.ZERO
@@ -187,7 +200,18 @@ func alert_shot(p: Vector3):
 			data.state = "investigate"
 			data.timer = 0
 
-func shoot(index: int, damage: float) -> bool:
+func is_mummy(index:int)->bool:
+	return index in [HOUSE_INDEX,CELLAR_INDEX] or index in TUNNEL_INDICES
+
+func health_for(index:int)->float:
+	return REAPER_HEALTH if index==REAPER_INDEX else MUMMY_HEALTH if is_mummy(index) else HEALTH
+
+func tick_poise(data,delta:float):
+	data["stagger_lock"]=maxf(0,data.get("stagger_lock",0.0)-delta)
+	data["poise_age"]=data.get("poise_age",0.0)+delta
+	if data.poise_age>2.0:data["poise"]=maxf(0,data.get("poise",0.0)-36.0*delta)
+
+func shoot(index: int, damage: float, force: float = -1.0) -> bool:
 	if game.state!="play" or index<0 or index>=creatures.size(): return false
 	var data = creatures[index]
 	if data.hp<=0 or data.state in ["dormant","reaper_wait","reaper_warning"]: return false
@@ -195,10 +219,9 @@ func shoot(index: int, damage: float) -> bool:
 		workshop_spawned=true
 		workshop_armed=false
 	data.hp = maxf(0,data.hp-damage)
+	data["pursuing"]=true
 	data.target = game.player.global_position
 	data.memory = 10.0
-	data.timer = 0.38
-	data.did_hit = true
 	if data.hp<=0:
 		data.state = "dead"
 		if data.index==TUNNEL_INDICES[1] and game.hotel_basement:
@@ -214,8 +237,18 @@ func shoot(index: int, damage: float) -> bool:
 		if data.index==REAPER_INDEX: data["death_base"]=data.visual.position
 		play(data,"death")
 	else:
-		data.state = "stagger"
-		play(data,"roar")
+		var mummy=is_mummy(index)
+		data["poise_age"]=0.0
+		if data.get("stagger_lock",0.0)<=0:
+			data["poise"]=data.get("poise",0.0)+(damage if force<0 else force)
+			if data.poise>=(72.0 if mummy else 48.0):
+				data.poise=0.0
+				data["stagger_lock"]=1.65 if mummy else 1.25
+				data.state="stagger";data.timer=0.34 if mummy else 0.42
+				data.did_hit=true
+				play(data,"roar")
+		if data.state in ["lurking","stalking","returning","investigate","alert","house_wait","cellar_wait","tunnel_wait","ambush_wait"]:
+			data.state="tunnel_chase" if index in TUNNEL_INDICES else "cellar_rush" if index==CELLAR_INDEX else "chase"
 	return true
 
 func sense(data):
@@ -224,6 +257,7 @@ func sense(data):
 	var lit = game.flashlight.visible and game.flashlight_charge>0
 	data.seen = distance<(24.0 if lit else 15.0) and line_clear(data,p+Vector3(0,1.0,0))
 	var heard = distance<8.0 and game.player.velocity.length()>4.0 and line_clear(data,p+Vector3(0,0.8,0))
+	if data.seen:data["pursuing"]=true
 	if data.seen or heard:
 		data.target = p
 		data.memory = 7.0
@@ -270,10 +304,14 @@ func _physics_process(delta):
 		data.animation.speed_scale = animation_rate if active else 0
 		data.voice.stream_paused = game.state not in ["play","dialogue"]
 		if not active: continue
+		if data.hp>0:tick_poise(data,delta)
 		if (data.index in [HOUSE_INDEX,CELLAR_INDEX] or data.index in TUNNEL_INDICES) and data.state=="dead":
 			data.fall_time = minf(1,data.fall_time+delta/0.7)
 			data.animation.speed_scale = 0
 			data.visual.rotation.x = -smoothstep(0,1,data.fall_time)*PI/2
+			continue
+		if pursuit.update(self,data,delta):
+			if data.index==REAPER_INDEX:reaper_encounter.animate(self,data,delta)
 			continue
 		if door_encounter.update(self,data,delta):continue
 		if data.index==HOUSE_INDEX:
@@ -357,7 +395,7 @@ func _physics_process(delta):
 			if not data.did_hit and data.timer<0.65:
 				data.did_hit = true
 				if data.actor.global_position.distance_to(game.player.global_position)<1.9 and line_clear(data,game.player.global_position+Vector3(0,1,0)):
-					if game.take_damage(22):
+					if game.take_damage(28):
 						game.message = "Claws tear into you. Run or fight. H uses a first-aid kit."
 			if data.timer<=0:
 				data.state = "chase"
@@ -422,15 +460,16 @@ func move_creature(data, desired: Vector3, delta: float):
 
 func path_direction(data, target: Vector3, delta: float) -> Vector3:
 	var from: Vector3 = data.actor.global_position
-	if navigation!=null and from.z< -117 and from.x>13 and target.z< -117 and target.x>13:
-		data.path_timer -= delta
-		if data.path_timer<=0 or data.path_target.distance_to(target)>1.5:
-			data.path = navigation.path(from,target)
-			data.path_target = target
-			data.path_timer = 0.8+data.index*0.15
-		while data.path.size()>0 and Vector2(from.x,from.z).distance_to(Vector2(data.path[0].x,data.path[0].z))<0.65:
-			data.path.remove_at(0)
-		if data.path.size()>0: target = data.path[0]
+	var nav=navigation if from.z< -117 and from.x>13 else reaper_navigation if from.x>24 and from.x<44 and from.z> -35 and from.z< -1 else workshop_navigation if from.x> -4 and from.x<21 and from.z> -77 and from.z< -38 else null
+	var region=1 if nav==navigation else 2 if nav==reaper_navigation else 3 if nav==workshop_navigation else 0
+	if nav!=null:
+		data.path_timer-=delta
+		if data.get("nav_region",-1)!=region or data.path_timer<=0 or data.path_target.distance_to(target)>1.5:
+			data.path=nav.path(from,target)
+			data.path_target=target;data.path_timer=0.8+data.index*0.15;data["nav_region"]=region
+		while data.path.size()>0 and Vector2(from.x,from.z).distance_to(Vector2(data.path[0].x,data.path[0].z))<0.65:data.path.remove_at(0)
+		if data.path.size()>0:target=data.path[0]
+
 	var direction = target-from
 	direction.y = 0
 	return direction.normalized() if direction.length()>0.1 else Vector3.ZERO
@@ -516,7 +555,7 @@ func update_workshop_creature(data,delta:float):
 	if data.state=="attack":
 		if not data.did_hit and data.timer<0.65:
 			data.did_hit=true
-			if data.actor.global_position.distance_to(target)<1.9 and line_clear(data,target+Vector3.UP):game.take_damage(14)
+			if data.actor.global_position.distance_to(target)<1.9 and line_clear(data,target+Vector3.UP):game.take_damage(24)
 		if data.timer<=0:
 			data.state="chase"
 			data.cooldown=1.0

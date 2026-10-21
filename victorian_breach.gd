@@ -9,20 +9,27 @@ static func build(house,cellar:Node3D,stone:Material):
  var tool=SurfaceTool.new();tool.begin(Mesh.PRIMITIVE_TRIANGLES)
  var rim=[];var outer=[]
  var center=Vector2(0,0.72)
- for i in range(16):
-  var angle=TAU*i/16
+ var angles=[]
+ for i in range(16):angles.append(TAU*i/16)
+ # Include exact rectangle corners; radial samples alone cut off triangular wedges.
+ for corner in [Vector2(-3.7,0),Vector2(3.7,0),Vector2(-3.7,3),Vector2(3.7,3)]:
+  angles.append(fposmod((corner-center).angle(),TAU))
+ angles.sort()
+ var count=angles.size()
+ for i in range(count):
+  var angle=angles[i]
   var direction=Vector2(cos(angle),sin(angle))
   var radius=1.0+0.085*sin(i*7.3)
   rim.append(center+direction*Vector2(1.02,0.68)*radius)
   var extent=minf(3.7/maxf(absf(direction.x),0.0001),(3.0-center.y if direction.y>=0 else center.y)/maxf(absf(direction.y),0.0001))
   outer.append(center+direction*extent)
- for i in range(16):
-  var j=(i+1)%16
+ for i in range(count):
+  var j=(i+1)%count
   for z in [-4.1,-4.3]:
    for p in [outer[i],rim[i],outer[j],outer[j],rim[i],rim[j]]:
-    tool.set_uv(p*0.8);tool.add_vertex(Vector3(p.x,p.y,z))
+    tool.set_uv(Vector2(0.5-p.x/3.55,1.0-p.y/3.0));tool.add_vertex(Vector3(p.x,p.y,z))
   for p in [Vector3(rim[i].x,rim[i].y,-4.1),Vector3(rim[j].x,rim[j].y,-4.1),Vector3(rim[i].x,rim[i].y,-4.3),Vector3(rim[j].x,rim[j].y,-4.1),Vector3(rim[j].x,rim[j].y,-4.3),Vector3(rim[i].x,rim[i].y,-4.3)]:
-   tool.set_uv(Vector2(p.x,p.y));tool.add_vertex(p)
+   tool.set_uv(Vector2(0.5-p.x/3.55,1.0-p.y/3.0));tool.add_vertex(p)
  tool.generate_normals()
  var material=stone.duplicate();material.cull_mode=BaseMaterial3D.CULL_DISABLED
  var wall=MeshInstance3D.new();wall.name="JaggedFoundationOpening";wall.mesh=tool.commit();wall.material_override=material;root.add_child(wall)
@@ -32,8 +39,8 @@ static func build(house,cellar:Node3D,stone:Material):
  # Irregular earthen tube extends beyond the foundation, never a flat black decal.
  var tube=SurfaceTool.new();tube.begin(Mesh.PRIMITIVE_TRIANGLES)
  for depth in range(3):
-  for i in range(16):
-   var j=(i+1)%16
+  for i in range(count):
+   var j=(i+1)%count
    var points=[]
    for pair in [Vector2i(i,depth),Vector2i(j,depth),Vector2i(i,depth+1),Vector2i(j,depth+1)]:
     var p:Vector2=center+(rim[pair.x]-center)*(1.0-0.10*pair.y)

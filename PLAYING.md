@@ -5,7 +5,7 @@ Windows 10/11, 64-bit. Godot is not required to play.
 Extract the complete ZIP to a folder, then double-click **FarFromHome.exe**.
 Keep FarFromHome.exe and FarFromHome.pck together. The game starts at the studio
 presentation and title screen; choose **Enter Blackwood** or press Enter.
-The game opens full screen. **F11** or **Alt+Enter** switches between full screen and a maximized window. The internal retro resolution is scaled to fit the display.
+The game opens in a resizable window with minimize and maximize controls. **F11** or **Alt+Enter** switches between full screen and a window. The internal retro resolution is scaled to fit the display.
 
 You survived a car accident on Old Mill Road. Follow the road into Blackwood,
 find supplies and weapons, and repair the town radio to call for rescue.
@@ -153,3 +153,7 @@ Saves retain your position (including basements), health, flashlight, inventory,
 Backpack rotation: press R on keyboard. On a controller, pick up an item with Square/X, press Triangle/Y to rotate, then Square/X to place or Circle/B to cancel. Rotations obey the grid boundaries and occupied spaces and are saved with your layout.
 
 Pursuing town creatures can pound on an unlocked building door for several seconds before forcing it open. Mummies push unlocked hinged doors open more slowly. Locked or bolted passage doors remain secure. You can still close a forced door manually.
+
+## Combat and pursuit
+
+Monsters keep pursuing once alerted and can force unlocked doors, follow stairs and use opened underground passages. Locked routes remain barriers. Standard creatures take about six pistol body hits, three rifle hits or two close shotgun blasts. Headshots do 1.5x damage. Mummies resist staggering more strongly, and shotgun damage falls off beyond five meters. Use normal mode to judge difficulty; testing mode grants unlimited health and ammunition.

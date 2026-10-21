@@ -116,7 +116,14 @@ func apply(data:Dictionary):
   else:game.town.set(key,data.town[key])
  set_variables(game.story,data.story)
  for key in roots():restore_tree(roots()[key],data.roots[key])
- for i in range(data.enemies.size()):game.enemies.creatures[i].merge(data.enemies[i],true)
+ for i in range(data.enemies.size()):
+  var enemy=game.enemies.creatures[i]
+  enemy.merge(data.enemies[i],true)
+  var maximum=game.enemies.health_for(i)
+  var previous=float(enemy.get("max_hp",85.0))
+  if previous!=maximum:
+   enemy.hp=clampf(enemy.hp/maxf(1,previous),0,1)*maximum
+  enemy.max_hp=maximum
  for id in data.people:
   game.town.townspeople.characters[id].merge(data.people[id],true)
   var person=game.town.townspeople.characters[id]

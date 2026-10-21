@@ -1,0 +1,6 @@
+PSX modular house interior pack by DissonantVoid
+https://dissonantvoid.itch.io/psx-retro-interior-pack
+Source: user-provided local download.
+Models used for the Victorian cellar, adapted with nearest filtering and subdued materials.
+The pack demo cellar was inspected as a visual reference for brick bays, concrete ceilings, shelving and utility clutter; no demo gameplay code is included.
+Creator permits commercial and non-commercial projects and modification; forbids standalone asset redistribution/resale and the other uses listed on the linked pack page.

@@ -122,6 +122,8 @@ Drawers and cabinets use a short positional slide-and-clunk cue, also controlled
 
 ## Local assets
 
+- assets/psx_house: selected PSX modular house interior pack models by DissonantVoid (https://dissonantvoid.itch.io/psx-retro-interior-pack), used for Victorian cellar masonry and storage. Source and terms are recorded in assets/psx_house/CREDITS.txt.
+
 - assets/audio/footsteps/: all 40 original OGG recordings from the user-supplied 40 Free PSX Footsteps pack, covering concrete, dirt, grass, gravel, metal, stairs, stone and wood. Source paths and SHA256 hashes are in sources.json. Footsteps sample floor collisions and the actual triangles of road/path overlays.
 
 - assets/healing/healing_items.glb: supplied 3Dexter Healing Items DEMO medkit, retaining its five parts and compact original atlas. Source details are in assets/healing/CREDITS.txt.
@@ -247,3 +249,9 @@ The rear workshop terminal uses three E interactions: open the cabinet, install 
 Completion now requires cutting the independently powered chapel repeater at its basement MAIN ISOLATOR. This silences its carrier and stops defeated chapel creatures returning. Repair the station, choose GREEN / direct county and hold E to call. AMBER is a dead route after shutdown.
 
 Save/load: three versioned local journey slots, available through the pause menu, title menu and death screen. Snapshots preserve equipment and world/quest state, validate checksums before loading and keep the prior slot as a backup. See PLAYING.md.
+
+Victorian cellar dressing uses selected user-provided PSX modular house interior pack models: worn stone flooring and brick, laundry equipment, utility shelves, pallets and stored household clutter. Source details are in assets/psx_house/CREDITS.txt. Central movement and enemy approach paths remain clear.
+
+Combat tuning: standard creatures have 132 HP, house/tunnel mummies 144 HP, and the cemetery reaper 180 HP. Firearm headshots deal 1.5x damage. Shotgun pellets are accumulated per creature per blast, with full damage through 5 m falling to 25% at 15 m. Stagger requires accumulated impact (48 standard / 72 mummy), followed by 1.25 / 1.65 seconds of resistance. Ordinary damage does not reset attacks. Older saves retain each monster?s remaining-health percentage at the new maximum.
+
+Spotted monsters now retain pursuit until defeated or reset. Pursuers can force unlocked building, chapel and mausoleum doors, leave buildings after the player, use the Victorian staircase, and follow through already unlocked underground passages. Untriggered reveals and locked progression routes remain protected; pursuit and route progress survive saving.

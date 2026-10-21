@@ -431,14 +431,17 @@ func build_cellar():
 	cellar.name="VictorianCellar"
 	add_child(cellar)
 	cellar.position=Vector3(0,-13,0)
-	var stone=town.mats.brick.duplicate()
-	stone.albedo_color=Color("a8a394")
-	town.box(cellar,Vector3(0,-0.12,0),Vector3(7.4,0.24,8.6),stone)
-	town.box(cellar,Vector3(0,3.1,0),Vector3(7.4,0.2,8.6),timber)
-	for x in [-3.6,3.6]: town.box(cellar,Vector3(x,1.5,0),Vector3(0.2,3,8.6),stone)
-	town.box(cellar,Vector3(0,1.5,4.2),Vector3(7.4,3,0.2),stone)
+	var stone=preload("res://victorian_cellar_dressing.gd").surface_material("wallBrick")
+	var floor_body=town.box(cellar,Vector3(0,-0.12,0),Vector3(7.4,0.24,8.6),stone)
+	floor_body.get_child(0).hide()
+	var ceiling_body=town.box(cellar,Vector3(0,3.1,0),Vector3(7.4,0.2,8.6),timber)
+	ceiling_body.get_child(0).hide()
+	for x in [-3.6,3.6]:
+		var cellar_side=town.box(cellar,Vector3(x,1.5,0),Vector3(0.2,3,8.6),stone)
+		cellar_side.get_child(0).hide()
+	var front_wall=town.box(cellar,Vector3(0,1.5,4.2),Vector3(7.4,3,0.2),stone)
+	front_wall.get_child(0).hide()
 	preload("res://victorian_breach.gd").build(self,cellar,stone)
-	for z in [-3,0,3]: town.box(cellar,Vector3(0,2.85,z),Vector3(7.1,0.22,0.20),timber,false)
 	for i in range(5): town.box(cellar,Vector3(0,(i+1)*0.08,2+i*0.4),Vector3(1.6,(i+1)*0.16,0.4),timber,false)
 	# Same smooth collision ramp and separate return portal used by the chapel.
 	var stairs=StaticBody3D.new()
@@ -453,10 +456,8 @@ func build_cellar():
 	var sign=town.sign_text(cellar,"UP TO HOUSE",Vector3(0,2.9,3.98),22,Color("d0c8af"))
 	sign.rotation.y=PI
 	town.action_area(cellar,Vector3(0,1.8,3.9),Vector3(1.5,2.2,0.3),"house_cellar_exit",{"kind":"house_cellar_exit","label":"Return upstairs to house"})
-	for p in [Vector3(-2.5,0,-3),Vector3(2.5,0,-2.9),Vector3(-2.6,0,0)]:
-		town.interiors.prop("box",cellar,p,Vector3(0.85,0.85,0.85),0.2)
-	town.interiors.prop("shelf",cellar,Vector3(2.6,0,-3.6),Vector3(0.65,0.8,0.65))
-	var light=town.lamp(cellar,Vector3(0,2.6,2.2),Color("c5ac86"),0.15,5)
+	preload("res://victorian_cellar_dressing.gd").build(self,cellar)
+	var light=town.lamp(cellar,Vector3(0,2.6,2.2),Color("c5ac86"),0.08,2.8)
 	light.light_cull_mask=2
 	town.streetscape.church.basement.prepare_cellar_lighting(cellar)
 

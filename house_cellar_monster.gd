@@ -21,7 +21,7 @@ func update(enemies,data,delta: float):
 	if data.state=="attack":
 		if not data.did_hit and data.timer<0.55:
 			data.did_hit=true
-			if inside and data.actor.global_position.distance_to(game.player.global_position)<1.8 and enemies.line_clear(data,game.player.global_position+Vector3.UP): game.take_damage(18)
+			if inside and data.actor.global_position.distance_to(game.player.global_position)<1.8 and enemies.line_clear(data,game.player.global_position+Vector3.UP): game.take_damage(25)
 		if data.timer<=0:
 			data.state="cellar_rush"
 			data.cooldown=1.1

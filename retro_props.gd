@@ -85,6 +85,5 @@ func decorate_house(house):
 	place("table",house,Vector3(-1.4,house.UPPER,3.9),0,Vector3(0.8,0.5,0.6),true)
 	place("tv",house,Vector3(-1.4,house.UPPER+0.5,3.9),PI)
 	place("bucket",house.cellar,Vector3(2.9,0.01,1.1))
-	place("shovel",house.cellar,Vector3(3.1,0.01,-1.7),-0.3)
 	place("sheet_metal",house.cellar,Vector3(-2.4,0.01,1.1),0.1)
 	place("locker",house.cellar,Vector3(2.6,0.01,0),PI,Vector3.ZERO,true)

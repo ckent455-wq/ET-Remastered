@@ -372,7 +372,7 @@ func update_camera():
 
 func _unhandled_input(event):
 	if event is InputEventKey and event.pressed and not event.echo and (event.keycode==KEY_F11 or (event.keycode==KEY_ENTER and event.alt_pressed)):
-		get_window().mode=Window.MODE_MAXIMIZED if get_window().mode==Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
+		get_window().mode=Window.MODE_WINDOWED if get_window().mode==Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
 		return
 	if saves and saves.opened():return
 	if state=="lost" and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:

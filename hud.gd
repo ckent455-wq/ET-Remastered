@@ -25,7 +25,7 @@ func _ready():
 	menu_button("ENTER BLACKWOOD",Vector2(42,253),Vector2(244,30),begin_game)
 	menu_button("CONTROLS",Vector2(42,322),Vector2(116,24),func(): controls_open = true)
 	menu_button("QUIT",Vector2(170,322),Vector2(116,24),func(): get_tree().quit())
-	menu_button("BACK",Vector2(80,331),Vector2(144,30),func(): controls_open = false)
+	menu_button("BACK",Vector2(44,346),Vector2(110,28),func(): controls_open = false)
 	menu_button("CHECK FOR UPDATES",Vector2(42,349),Vector2(244,24),func(): game.updater.open())
 	menu_button("LOAD JOURNEY",Vector2(42,288),Vector2(244,27),func(): game.saves.open(true))
 	menu_button("RESUME",Vector2(213,184),Vector2(214,30),func(): game.set_state("play"),false)
@@ -267,14 +267,31 @@ func draw_title():
 	text("M / SOUND "+("OFF" if game.soundscape.muted else "ON"),Vector2(181,393),10,Color("969b8c"))
 
 func draw_title_controls():
-	draw_rect(Rect2(62,54,516,310),Color(0.025,0.035,0.037,0.97))
-	draw_rect(Rect2(62,54,516,310),Color("6d6051"),false,1)
-	text("SURVIVING BLACKWOOD",Vector2(80,91),24,Color("dfd8c1"))
-	var rows = ["WASD / ARROWS     Move     SHIFT     Sprint", "SPACE     Jump     CTRL (hold)     Crouch", "MOUSE     Look     F     Flashlight", "E     Search storage / talk / interact", "LMB Fire / Punch    RMB Aim    R Reload", "WHEEL / V     Cycle guns     1-3 Select     0 Holster / Fists", "H     First aid     Q     Flashlight battery", "I  Backpack    TAB  Journal / map    ESC  Pause"]
-	if game.controller and game.controller.using_controller: rows=game.controller.control_rows()
+	draw_rect(Rect2(28,18,584,364),Color(0.025,0.035,0.037,0.98))
+	draw_rect(Rect2(28,18,584,364),Color("6d6051"),false,1)
+	text("CONTROLS",Vector2(44,48),24,Color("dfd8c1"))
+	var pad = game.controller and game.controller.using_controller
+	text("CONTROLLER" if pad else "KEYBOARD & MOUSE",Vector2(390,46),12,Color("a5a598"))
+	var c = game.controller
+	var movement = [["Move","Left stick"],["Look","Right stick"],["Sprint","L3"],["Jump",c.label("south")],["Crouch (hold)",c.label("east")]] if pad else [["Move","WASD / Arrows"],["Look","Mouse"],["Sprint (hold)","Shift"],["Jump","Space"],["Crouch (hold)","Ctrl"]]
+	var combat = [["Fire / punch",c.label("rt")],["Aim (hold)",c.label("lt")],["Reload",c.label("north")],["Cycle weapons",c.label("lb")+" / "+c.label("rb")],["Holster / fists","R3"]] if pad else [["Fire / punch","Left mouse"],["Aim (hold)","Right mouse"],["Reload","R"],["Cycle weapons","Wheel / V"],["Select weapon","1 / 2 / 3"],["Holster / fists","0"]]
+	var survival = [["Interact / search",c.label("west")],["Flashlight","D-pad down"],["First aid","D-pad left"],["Replace battery","D-pad right"]] if pad else [["Interact / search","E"],["Flashlight","F"],["First aid","H"],["Replace battery","Q"]]
+	var menus = [["Backpack",c.label("view")],["Journal / map","D-pad up"],["Pause / save",c.label("start")],["Rotate item",c.label("north")]] if pad else [["Backpack","I"],["Journal / map","Tab"],["Pause / save","Esc"],["Rotate backpack item","R"],["Window / fullscreen","F11"]]
+	controls_group("MOVEMENT",Vector2(44,76),movement)
+	controls_group("COMBAT",Vector2(334,76),combat)
+	controls_group("SURVIVAL",Vector2(44,220),survival)
+	controls_group("INVENTORY & MENUS",Vector2(334,220),menus)
+	draw_line(Vector2(44,333),Vector2(596,333),Color("6d6051"),1)
+	text("Testing mode: Pause menu / F10",Vector2(183,364),12,Color("a5a598"))
+
+func controls_group(title: String, origin: Vector2, rows: Array):
+	text(title,origin,12,Color("bd725b"))
 	for i in range(rows.size()):
-		text(rows[i],Vector2(80,124+i*23),13,Color("b6b6a5"))
-	text("F10 / Toggle testing mode (also in Pause)",Vector2(80,310),12,Color("bd725b"))
+		var y = origin.y+22+i*18
+		text(rows[i][0],Vector2(origin.x,y),12,Color("b6b6a5"))
+		var key = str(rows[i][1])
+		var width = font.get_string_size(key,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x
+		text(key,Vector2(origin.x+262-width,y),12,Color("dfd8c1"))
 
 func paragraph(content: String, x: float, y: float, width: float, size: int, color = INK) -> float:
 	for line in content.split("\n"):

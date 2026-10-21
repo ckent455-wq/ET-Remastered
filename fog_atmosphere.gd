@@ -75,7 +75,7 @@ func make_emitter(p: Vector3, extents: Vector3, count: int):
 	emitters.append(particles)
 
 func update_fog(delta: float):
-	var in_cellar = game.state not in ["intro","title"] and (game.town.streetscape.church.basement.contains(game.player.global_position) or (game.hotel_basement and game.hotel_basement.contains(game.player.global_position)))
+	var in_cellar = game.state not in ["intro","title"] and ((game.victorian_house and game.victorian_house.cellar_contains(game.player.global_position)) or game.town.streetscape.church.basement.contains(game.player.global_position) or (game.hotel_basement and game.hotel_basement.contains(game.player.global_position)))
 	for light in surface_directionals:
 		light.visible = not in_cellar
 	game.camera.environment = cellar_environment if in_cellar else null
