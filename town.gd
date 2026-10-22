@@ -344,11 +344,12 @@ func furnish():
 	powered_lights.append(lamp(buildings.workshop,Vector3(0,2.7,-0.5),Color("d4be85"),1.8,9))
 	desk(buildings.radio,Vector3(-2.7,0,-3.4),3.2)
 	var receiver = action_area(buildings.radio,Vector3(-2.7,1.20,-3.4),Vector3(1.2,0.7,0.65),"receiver",{"kind":"receiver","label":"Repair emergency radio"})
-	box(receiver,Vector3.ZERO,Vector3(1.05,0.65,0.55),mats["metal"],false)
-	box(receiver,Vector3(0,0.09,0.3),Vector3(0.55,0.23,0.03),mats["green"],false)
-	receiver_light = lamp(receiver,Vector3(0,0.15,0.5),Color("8ed6b4"),0.4,3)
-	for x in [-0.36,0.35]:
-		box(receiver,Vector3(x,-0.16,0.31),Vector3(0.12,0.12,0.06),mats["amber"],false)
+	var radio_model = preload("res://station_radio.gd").build()
+	receiver.add_child(radio_model)
+	radio_model.position = Vector3(0,-0.275,0)
+	radio_model.rotation.y = -PI/2
+	radio_model.scale = Vector3.ONE*0.44
+	receiver_light = lamp(receiver,Vector3(0,0.03,0.39),Color("d2ae72"),0.4,2)
 	note("radio",Vector3(-1.5,0.91,-3.4),"radio_note","Operator's instructions","EMERGENCY RADIO\nFit a SIGNAL COIL from the mill workshop to this receiver.\nThe workshop cabinet requires restored power.\nAfter repairs, stay here and hold E for four seconds\nto call emergency services. Report a car accident\non Old Mill Road, outside Blackwood.")
 	# A low-poly antenna rises over the radio station.
 	box(buildings.radio,Vector3(2.6,7.5,-2),Vector3(0.18,8.3,0.18),mats["metal"],false)
@@ -625,6 +626,7 @@ func use_bandage():
 	elif game.health>=100:
 		game.message="Health is full. Bandage saved."
 	else:
+		if game.clinic_rescue:game.clinic_rescue.treat_wound()
 		inventory.bandage-=1
 		var restored=minf(10,100-game.health)
 		game.health+=restored
@@ -637,6 +639,7 @@ func use_medkit():
 	elif game.health>=100:
 		game.message = "Vitality is full. First-aid kit saved."
 	else:
+		if game.clinic_rescue:game.clinic_rescue.treat_wound()
 		inventory.medkit -= 1
 		game.health = minf(100,game.health+50)
 		game.message = "Used first-aid kit. Vitality restored."
@@ -661,7 +664,10 @@ func use_battery():
 
 func objective() -> String:
 	if game.enemies and game.enemies.workshop_danger(): return "Kill the creature near the workshop, then recover the signal coil." if powered else "The creature is approaching. Flip the workshop switch, or fight it off."
-	if game.crash_site and not game.crash_site.tutorial_complete(): return "Open the car door and collect your backpack, flashlight, and detour sheet."
+	if game.crash_site and not game.crash_site.tutorial_complete():
+		if game.story.clinic_rescue_done:return game.clinic_rescue.missing_gear_prompt()
+		return "Open the car door and collect your backpack, flashlight, and detour sheet."
+	if reached_town and game.story.needs_aubrey_introduction():return "Meet Aubrey at Blackwood Pharmacy. Ask what happened to the town."
 	if radio_ready and not game.story.repeater_is_off():return "Shut down the repeater in the chapel basement."
 	if radio_ready:
 		return "Warn county at radio. Hold E; no sirens." if game.story.direct_channel_selected() else "Set the desk bypass to GREEN / direct county."
@@ -681,6 +687,7 @@ func objective() -> String:
 
 func navigation_target() -> Vector3:
 	if game.crash_site and not game.crash_site.tutorial_complete(): return game.crash_site.wreck.to_global(Vector3(-1.5,0,0.1))
+	if reached_town and game.story.needs_aubrey_introduction():return buildings.clinic.to_global(Vector3(0,0,6.5))
 	if (radio_ready or inventory.tuner>0) and not game.story.repeater_is_off():
 		return actions.chapel_repeater.area.global_position if streetscape.church.basement.contains(game.player.global_position) else actions.cellar_door.area.global_position
 	if radio_ready: return actions.receiver.area.global_position
@@ -719,7 +726,7 @@ func location_name() -> String:
 func update_arrival():
 	if not reached_town and game.player.position.z< -37 and absf(game.player.position.x)<40:
 		reached_town = true
-		game.message = "Blackwood. Find supplies and a working radio. TAB opens your journal."
+		game.message = "Find Aubrey at Blackwood Pharmacy, on the left past the ranger office. She can explain what happened here. TAB opens your journal." if game.story.needs_aubrey_introduction() else "Blackwood. Find supplies and a working radio. TAB opens your journal."
 
 func player_inside_building(id: String) -> bool:
 	if id=="victorian": return game.victorian_house.contains(game.player.global_position)

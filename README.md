@@ -255,3 +255,7 @@ Victorian cellar dressing uses selected user-provided PSX modular house interior
 Combat tuning: standard creatures have 132 HP, house/tunnel mummies 144 HP, and the cemetery reaper 180 HP. Firearm headshots deal 1.5x damage. Shotgun pellets are accumulated per creature per blast, with full damage through 5 m falling to 25% at 15 m. Stagger requires accumulated impact (48 standard / 72 mummy), followed by 1.25 / 1.65 seconds of resistance. Ordinary damage does not reset attacks. Older saves retain each monster?s remaining-health percentage at the new maximum.
 
 Spotted monsters now retain pursuit until defeated or reset. Pursuers can force unlocked building, chapel and mausoleum doors, leave buildings after the player, use the Victorian staircase, and follow through already unlocked underground passages. Untriggered reveals and locked progression routes remain protected; pursuit and route progress survive saving.
+
+## v2.0.0 opening and broadcast story
+
+Normal journeys now lead from the crash through progressive staggering and blackout to Aubrey in the pharmacy bed. Retrieve missing gear afterward. See PLAYING.md and RELEASE_NOTES.md for the current flow. The custom station radio uses positional static and garbled voices. The revised evidence trail distinguishes the station source, chapel amplification and clean county bypass.

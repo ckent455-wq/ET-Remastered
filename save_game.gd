@@ -66,7 +66,7 @@ func blocked_reason()->String:
  if not game.surface_details.completed:return "The world is still preparing. Wait a moment before saving."
  if game.testing_mode.enabled:return "Turn testing mode off before saving a normal journey."
  if game.health<=0 or game.state not in ["play","paused"]:return "Start or resume a journey before saving."
- if game.crash_site.wake_phase!="" or not game.crash_site.has_backpack:return "Finish the car opening and collect your backpack before saving."
+ if game.crash_site.wake_phase!="" or (not game.crash_site.has_backpack and not game.story.clinic_rescue_done):return "Finish the car opening and collect your backpack before saving."
  if game.town.cemetery.slamming:return "Let the mausoleum door finish moving before saving."
  if game.grave_dig.digging:return "Finish digging before saving."
  if game.falling_tree.triggered and not game.falling_tree.reaction_shown:return "Let the falling-tree sequence finish before saving."
@@ -115,6 +115,8 @@ func apply(data:Dictionary):
   if game.town.get(key) is Array:game.town.get(key).assign(data.town[key])
   else:game.town.set(key,data.town[key])
  set_variables(game.story,data.story)
+ # Saves made before the injury event keep their existing journey unchanged.
+ if not data.story.has("crash_wound_treated"):game.story.crash_wound_treated=true;game.story.clinic_rescue_done=true
  for key in roots():restore_tree(roots()[key],data.roots[key])
  for i in range(data.enemies.size()):
   var enemy=game.enemies.creatures[i]
@@ -163,6 +165,7 @@ func apply(data:Dictionary):
  game.camera.position=Vector3(0,game.CROUCH_EYE if game.crouching else game.STANDING_EYE,0);game.camera.rotation=Vector3(data.pitch,0,0)
  game.health=data.health;game.stamina=data.stamina;game.flashlight_charge=data.charge;game.flashlight.visible=data.light;game.clock=data.clock
  game.contact_progress=0;game.invincible=0;game.jump_queued=false;game.town.focus_action=""
+ game.story.refresh_collected_notes()
  game.message="Journey loaded. "+game.town.objective()
  game.set_state("play")
 func path(slot:int)->String:return directory+"/slot_%d.sav" % slot

@@ -1,0 +1,3 @@
+Original base model by John, finished for Far From Home in Blender 5.0.
+Game export: combined mesh with reduced geometry; original editable model preserved separately.
+Vintage design references: https://www.sfomuseum.org/exhibitions/radio/gallery and https://www.nationaltrustcollections.org.uk/object/203038

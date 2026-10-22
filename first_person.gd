@@ -43,6 +43,7 @@ var soundscape: Node
 var arm_visual: Node3D
 var weapons: Node3D
 var enemies: Node3D
+var clinic_rescue: Node
 var story: Node
 var backpack
 var journal_casefile = false
@@ -190,6 +191,9 @@ func _ready():
 	falling_tree = preload("res://falling_tree.gd").new()
 	falling_tree.game = self
 	add_child(falling_tree)
+	clinic_rescue = preload("res://clinic_rescue.gd").new()
+	clinic_rescue.game = self
+	add_child(clinic_rescue)
 	reset_game()
 	title_camera = Camera3D.new()
 	title_camera.name = "BlackwoodTitleCamera"
@@ -290,6 +294,7 @@ func make_audio():
 	add_child(soundscape)
 
 func reset_game():
+	if clinic_rescue: clinic_rescue.reset()
 	if testing_mode: testing_mode.finish(false)
 	achievements.clear_toast()
 	player.position = START_POSITION
@@ -359,6 +364,7 @@ func set_state(next: String):
 		camera.fov=dialogue_view.fov
 		dialogue_view.clear()
 	state = next
+	if clinic_rescue and clinic_rescue.phase=="bed" and next=="play":clinic_rescue.leave_bed()
 	if state!="play": jump_queued = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state in ["play","waking"] else Input.MOUSE_MODE_VISIBLE
 	update_camera()
@@ -374,6 +380,7 @@ func _unhandled_input(event):
 	if event is InputEventKey and event.pressed and not event.echo and (event.keycode==KEY_F11 or (event.keycode==KEY_ENTER and event.alt_pressed)):
 		get_window().mode=Window.MODE_WINDOWED if get_window().mode==Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
 		return
+	if state=="clinic_faint":return
 	if saves and saves.opened():return
 	if state=="lost" and event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 		set_state("title");return
@@ -471,16 +478,21 @@ func _physics_process(delta):
 		jump_queued = false
 		hud.queue_redraw()
 		return
+	if clinic_rescue:
+		clinic_rescue.update_approach(delta)
+		if state!="play":return
 	var movement = Vector2(float(Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT))-float(Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT)),float(Input.is_physical_key_pressed(KEY_S) or Input.is_physical_key_pressed(KEY_DOWN))-float(Input.is_physical_key_pressed(KEY_W) or Input.is_physical_key_pressed(KEY_UP))).normalized()
 	if controller: movement=(movement+controller.movement()).limit_length(1.0)
 	if grave_dig and grave_dig.digging: movement=Vector2.ZERO; jump_queued=false
+	if clinic_rescue and clinic_rescue.phase=="dimming":jump_queued=false
 	update_stance(delta)
-	var sprint = not crouching and (Input.is_physical_key_pressed(KEY_SHIFT) or (controller and controller.down(JOY_BUTTON_LEFT_STICK))) and stamina>1 and movement.length()>0
+	var sprint = not (clinic_rescue and clinic_rescue.phase=="dimming") and not crouching and (Input.is_physical_key_pressed(KEY_SHIFT) or (controller and controller.down(JOY_BUTTON_LEFT_STICK))) and stamina>1 and movement.length()>0
 	stamina = clampf(stamina+(-24 if sprint else 17)*delta,0,100)
 	var vertical_speed = 0.0 if player.is_on_floor() else player.velocity.y-GRAVITY*delta
 	if jump_queued and player.is_on_floor(): vertical_speed = JUMP_VELOCITY
 	jump_queued = false
 	var speed = 2.1 if crouching else (8.0 if sprint else 4.6)
+	if clinic_rescue:speed*=clinic_rescue.movement_scale()
 	player.velocity = player.basis*Vector3(movement.x,0,movement.y)*speed
 	# Floor snapping maintains contact without forcing the capsule into the floor.
 	player.velocity.y = vertical_speed

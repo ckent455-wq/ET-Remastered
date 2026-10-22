@@ -171,6 +171,10 @@ func _physics_process(delta):
 				data.death_time=minf(DEATH_DURATION,data.death_time+delta)
 				animate_death(data)
 			continue
+		if game_clinic_bedside(data):
+			actor.velocity=Vector3.ZERO
+			animate_walk(data,false)
+			continue
 		if sheltering and playing:
 			run_to_shelter(data,delta)
 			continue
@@ -341,6 +345,11 @@ func offer_grave_key():
 func talk(id: String):
 	if characters[id].dead:
 		return
+	if id=="nurse" and not town.game.story.clinic_rescue_done and not conversation.greetings.has("nurse"):
+		var intro="I'm Aubrey. This is Blackwood's pharmacy clinic. You came in from Old Mill Road? That dressing on your head was a good idea. Sit down if you feel unsteady.\n\n" if town.game.story.crash_wound_treated else "I'm Aubrey. This is Blackwood's pharmacy clinic. You look hurt. There are supplies in the rear cabinet.\n\n"
+		conversation.begin(intro+town.game.story.AUBREY_BRIEFING,false,"nurse")
+		town.game.story.record_aubrey_briefing()
+		return
 	if id=="mechanic" and town.game.story.deliver_ada_letter():
 		conversation.begin("That's her handwriting... You went back for it?\n\nShe packed for two nights. I kept telling myself I'd find her when the work was done. I'd forgotten she asked me to leave the set off. She was right there, and I listened to her voice on the radio instead.\n\nThank you. I'm keeping this in my coat. When we get out, I want to hear her say it herself.\n\n"+town.game.story.ada_reward_line(),true,"mechanic")
 		return
@@ -373,12 +382,12 @@ func words(id: String) -> String:
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
 				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a bandage first, then a medpack. Q fits a battery."
-			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The chapel tone was in every case. One voice used my mother's name; they never knew her.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a bandage first, then a medpack; Q fits a battery."
+			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The station voices spread through the chapel speaker. One used my dead mother's name. Read the station operator's log to learn how it began.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a bandage first, then a medpack; Q fits a battery."
 		"mechanic":
 			if not town.powered:
 				return "John. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop fuse is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
 			if town.inventory.coil==0:
-				return "I pulled the station coil to stop the repeater sending voices through town. It stopped those broadcasts; not the speaker on the hill.\n\nTake the coil from this cabinet. Ask Pat about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I inspected them three weeks before the evacuation, before the creatures reached the chapel grounds. The station still worked then, so I left the spare tuner disconnected and the rifle with the emergency supplies. When I tried to go back after Ada left, the creatures drove me down the hill. I can't reach that equipment now."
+				return "The station radio started speaking by itself. Bellamy amplified it through the chapel. I pulled the transmitter coil, but the powered chapel return line kept the voices alive. Ask me where the broadcast began; read the operator's station log and my workshop notes.\n\nTake the coil from this cabinet. Ask Pat about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I inspected them three weeks before the evacuation, before the creatures reached the chapel grounds. The station still worked then, so I left the spare tuner disconnected and the rifle with the emergency supplies. When I tried to go back after Ada left, the creatures drove me down the hill. I can't reach that equipment now."
 			if town.inventory.tuner==0:
 				return ("Ada left on the last bus. I keep her letter in my coat now. Thank you for bringing it back." if town.game.story.ada_letter_delivered else "Ada left on the last bus. Her letter is in our room at Saint George Hotel. I told her I'd catch up after securing the equipment.")+"\n\nUse the cellar key at the back right inside the church. Take the spare tuner and service rifle, then cut the rack at MAIN ISOLATOR. The bench instructions explain the station's bypass switch."
 			return "You have the coil, tuner and cemetery antenna coupler. Repair the station receiver, then set its small desk bypass to GREEN / DIRECT COUNTY. Hold E at the main set to call.\n\nCut the chapel rack at MAIN ISOLATOR before you transmit. No sirens. Tell them there are people missing in the woods, and the repeater is disconnected. Don't let another team mistake its old messages for us."
@@ -400,17 +409,17 @@ func radio_advice(id:String,stage:String)->String:
 	 "shutdown":{
 	  "ranger":"That speaker is still running on the hill. I'm not letting another rescue crew follow a recording. Cut the repeater at MAIN ISOLATOR in the chapel basement. Then head back to the station, set BYPASS GREEN and call county. Tell them no sirens.",
 	  "nurse":"I've seen what that tone does to people. The chapel rack is still running. Shut it down at MAIN ISOLATOR in the chapel basement, then return to the station and set BYPASS GREEN. When you call county, ask them to come without sirens. Those things follow sound.",
-	  "mechanic":"The chapel rack has its own power supply. Cut it at MAIN ISOLATOR in the chapel basement; the station switch won't do it. Then return to the station and set BYPASS GREEN for direct county. Call without sirens. I need that carrier silent before we leave."
+	  "mechanic":"The chapel rack feeds a powered return loop into the station radio. Cut MAIN ISOLATOR in the chapel basement to silence both ends; the station switch won't do it. Then return to the station and set BYPASS GREEN for direct county. Call without sirens. I need that carrier silent before we leave."
 	 },
 	 "repair":{
 	  "ranger":"Bring the coil, tuning unit and cemetery antenna coupler to the station receiver. Once it's working, set the desk BYPASS GREEN. Give county Old Mill Road and Blackwood, and ask for a quiet approach. I want someone real answering this time.",
 	  "nurse":"The chapel is finally quiet. Take all three parts to the station receiver: coil, tuner and antenna coupler. Use the GREEN bypass when it's repaired. Tell county we have survivors who need medical help, and ask them to approach without sirens.",
-	  "mechanic":"The chapel supply is isolated. Fit the signal coil, county tuner and antenna coupler at the station receiver. Then set its desk BYPASS GREEN / DIRECT COUNTY. Amber leads through the rack you just shut down. It can't carry your call."
+	  "mechanic":"The chapel supply is isolated. Fit the signal coil, county tuner and antenna coupler at the station receiver. Then set its desk BYPASS GREEN / DIRECT COUNTY. GREEN isolates the contaminated chapel line and uses the spare county tuner. Leave AMBER disconnected."
 	 },
 	 "route":{
-	  "ranger":"The receiver's working and the hill is quiet. Now set that desk BYPASS GREEN. Amber leads back to a repeater with no power. Give county our location, not another looped message. Ask them to come without sirens.",
+	  "ranger":"The receiver's working and the hill is quiet. Now set that desk BYPASS GREEN. Amber reconnects the chapel line. Leave it disconnected. Give county our location, not another looped message. Ask them to come without sirens.",
 	  "nurse":"The carrier is silent, but you still need a direct line. Set the desk BYPASS GREEN, then call county. My records show how the symptoms progressed; tell them we need medical help. No sirens. I don't want those things following the rescue team.",
-	  "mechanic":"The receiver has power, but the desk bypass is still on the dead chapel route. Set BYPASS GREEN / DIRECT COUNTY before transmitting. Amber cannot reach county with that rack off. Hold E at the main receiver to call; ask for no sirens."
+	  "mechanic":"The receiver has power, but the desk bypass is still on the dead chapel route. Set BYPASS GREEN / DIRECT COUNTY before transmitting. Green keeps the contaminated chapel line isolated. Hold E at the main receiver to call; ask for no sirens."
 	 },
 	 "call":{
 	  "ranger":"Green. A direct county line, and that speaker can't interrupt us now. Hold E at the main receiver. Give them Blackwood and Old Mill Road, tell them who's still here, and ask for no sirens. Then switch the set off.",
@@ -505,3 +514,7 @@ func all_sheltered()->bool:
 	for door in town.doors.values():
 		if door.open or absf(door.hinge.rotation.y)>0.05:return false
 	return true
+
+func game_clinic_bedside(data:Dictionary)->bool:
+	var rescue=town.game.clinic_rescue
+	return data.actor.name=="NPC_nurse" and rescue!=null and rescue.phase in ["blackout","wake","bed"]

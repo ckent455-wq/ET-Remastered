@@ -1,0 +1,4 @@
+Radio building static
+User-provided download: creepy radio static.mp3
+Added October 21, 2026. Original file preserved.
+Loops from the station receiver; proximity increases volume, brightness and playback intensity.

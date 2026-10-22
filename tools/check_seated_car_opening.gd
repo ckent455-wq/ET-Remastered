@@ -53,7 +53,7 @@ func run():
  assert(car.ignition_attempts==2 and car.wake_phase=="cranking","Controller makes second attempt")
  step(car,1.8)
  assert(g.state=="dialogue" and car.wake_phase=="dialogue" and g.camera.top_level)
- assert("engine's dead" in g.dialogue_text and "no phone signal" in g.dialogue_text and "trunk" in g.dialogue_text)
+ assert("engine's dead" in g.dialogue_text and "no phone signal" in g.dialogue_text and "reach town" in g.dialogue_text)
  for i in range(g.dialogue_pages.size()):key(g,KEY_E)
  assert(g.state=="waking" and car.wake_phase=="door_ready" and not car.door_open)
  assert("DRIVER'S DOOR" in car.waking_prompt())

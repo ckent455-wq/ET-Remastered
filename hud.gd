@@ -125,6 +125,10 @@ func _draw():
 	if game.state=="title":
 		draw_title()
 		return
+	if game.state=="clinic_faint":
+		draw_injury()
+		if game.clinic_rescue.phase=="wake":draw_eyelids(game.clinic_rescue.eye_opening())
+		return
 	if game.state=="waking":
 		draw_waking()
 		return
@@ -161,7 +165,7 @@ func _draw():
 		var instruction=game.crash_site.tutorial_prompt() if not game.crash_site.tutorial_complete() else (game.message if message_seconds>0 else "")
 		draw_instruction(instruction)
 		var tutorial_target="crash_rear_hatch" if not game.crash_site.hatch_open else ("crash_backpack" if not game.crash_site.has_backpack else "crash_flashlight")
-		var duplicate_prompt=not game.crash_site.tutorial_complete() and game.town.focus_action==tutorial_target
+		var duplicate_prompt=not game.crash_site.tutorial_complete() and not instruction.is_empty() and game.town.focus_action==tutorial_target
 		if game.town.prompt()!="" and not duplicate_prompt:
 			centered(game.town.prompt(),285,18,AMBER)
 		if game.rescue_available() and game.town.focus_action!="radio_bypass":
@@ -329,7 +333,7 @@ func draw_journal():
 		text("WHAT HAPPENED HERE?",Vector2(78,110),18,AMBER)
 		paragraph(game.story.question(),78,140,478,14)
 		text("EVIDENCE / %d of %d records found" % [game.story.evidence.size(),game.story.RECORDS.size()],Vector2(78,187),11,DIM)
-		var labels = ["CLINIC OBSERVATIONS","JOHN'S WORKSHOP LOG","CELLAR ISOLATION PROCEDURE"]
+		var labels = ["STATION / THE FIRST BROADCAST","CLINIC / WHAT IT DID TO PEOPLE","CELLAR / HOW TO STOP IT"]
 		for i in range(3):
 			var id = game.story.PROTOCOL[i]
 			var found = game.story.evidence.has(id)
@@ -514,6 +518,11 @@ func draw_waking():
 		return
 	draw_injury()
 	var opening=game.crash_site.eye_opening()
+	draw_eyelids(opening)
+	var prompt=game.crash_site.waking_prompt()
+	if prompt!="":draw_instruction(prompt,18.0)
+
+func draw_eyelids(opening:float):
 	if opening<0.999:
 		var top=PackedVector2Array([Vector2(0,0),Vector2(640,0)])
 		var bottom=PackedVector2Array([Vector2(0,400),Vector2(640,400)])
@@ -524,5 +533,3 @@ func draw_waking():
 			bottom.append(Vector2(x,400-edge))
 		draw_colored_polygon(top,Color.BLACK)
 		draw_colored_polygon(bottom,Color.BLACK)
-	var prompt=game.crash_site.waking_prompt()
-	if prompt!="":draw_instruction(prompt,18.0)

@@ -100,6 +100,11 @@ func _physics_process(delta):
 		return
 	# Cross the trigger toward town on the road, rather than firing from the cemetery or a menu.
 	if not triggered and previous_z> -21 and p.z<= -21 and p.z> -26 and absf(p.x)<3.8:
+		# An untreated crash wound takes priority over the road scare.
+		if game.clinic_rescue and game.clinic_rescue.road_collapse_pending():
+			game.clinic_rescue.begin_collapse()
+			previous_z = p.z
+			return
 		begin_fall()
 	previous_z = p.z
 	if not triggered: return

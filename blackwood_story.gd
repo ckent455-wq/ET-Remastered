@@ -2,7 +2,10 @@ extends Node
 ## An original, optional evidence trail around the existing survival quest.
 ## Reading never blocks rescue or requires keeping a particular NPC alive.
 var game
+const AUBREY_BRIEFING = "Four weeks ago, the walnut radio at the station began speaking by itself. Bellamy put its voices through the chapel amplifier, hoping someone would identify them. That spread the signal across Blackwood.\n\nFirst people stopped sleeping. Then they lost time, heard familiar voices and began to change. Those creatures outside the chapel were our neighbors. The wrapped bodies beneath the cemetery were already dead. The signal is waking them too.\n\nThe last families evacuated three nights ago. Pat, John and I stayed. We need a real county dispatcher. John knows the equipment; Pat has the station key in his office drawer. Read my clinic chart, the operator's station log and Bellamy's chapel book. They show what we missed.\n\nDon't follow a familiar voice into the woods. Even if it's mine..."
 var evidence = {}
+var crash_wound_treated=false
+var clinic_rescue_done=false
 var ada_letter_requested=false
 var ada_letter_delivered=false
 const ADA_AMMO_REWARD=12
@@ -10,7 +13,7 @@ var ada_ammo_pending=0
 var county_bypass = false
 var repeater
 var bypass_lamp: MeshInstance3D
-const PROTOCOL = ["clinic_note","workshop_record","cellar_record"]
+const PROTOCOL = ["radio_note","clinic_note","cellar_record"]
 const RECORDS = {
   "ranger_note": [
     "Road closure log",
@@ -18,9 +21,9 @@ const RECORDS = {
     "The chapel horn kept drawing Pat into a confused waiting loop. He lost three days before Aubrey made him compare the dates. The road was never secured again."
   ],
   "clinic_note": [
-    "Clinic observations",
-    "THREE WEEKS OF EXPOSURE\nFirst: sleeplessness and ringing ears. Then missing hours, violent confusion and voices from unplugged sets. Late cases developed locked jaws and lengthening fingers. No fever or bites.\nThe two who refused the 01:40 bus, Edith and Silas, walked uphill at 02:10. I found Edith's bracelet on a changing wrist. They were my patients.\nPat and I stayed to search. Stop the chapel carrier. Tell rescue: NO SIRENS.\n- Aubrey",
-    "Aubrey documented gradual mental and physical changes after prolonged exposure. Two creatures were her patients."
+    "Clinic / exposure and transformation",
+    "THREE WEEKS BEFORE EVACUATION\nFirst: ringing ears and lost sleep. Then familiar voices, paranoia, missing hours and violent confusion. Finally locked jaws, lengthening fingers and altered bodies. No bites. No fever.\nJonah slept beside the chapel amplifier. He changed first. After the final bus, Edith and Silas followed voices uphill. I recognized her bracelet and his splint on the creatures outside the chapel. Those were living townspeople.\nBENEATH THE CEMETERY\nOlder coffins forced open from inside. The wrapped bodies were dead before this began. The broadcast is waking the deceased as well as changing the living.\nTell rescue: NO SIRENS. The creatures follow sound.\n- Aubrey",
+    "Exposure changed the living and woke the dead. The chapel creatures were townspeople."
   ],
   "store_note": [
     "Last departure / 01:40",
@@ -29,13 +32,13 @@ const RECORDS = {
   ],
   "house_note": [
     "Ada's letter",
-    "John,\nI am taking the final 01:40 bus. I packed for two nights in case they let us return.\nMost of the rooms at Saint George Hotel have been shut for years. We kept ours warm and dry. Please do not spend another winter here alone.\nFirst it was the ringing. Then you forgot our address. You slept when we unplugged the set and stayed away from the hill. Please keep it off.\nYou heard my voice on the radio while I stood beside you. I believe you. You do not owe that repeater another night.\nCome after you secure the equipment. Aubrey still needs a seat. The shotgun-box key is on our dresser.\nI left dinner. I thought we had more time.\n- Ada",
-    "Ada describes John's early symptoms easing away from the signal. She left on the last bus."
+    "John,\nI am taking the final 01:40 bus. Our room at Saint George Hotel will be waiting when this is over.\nFirst the ringing. Then you forgot our address. You slept better away from the station, but you kept going back when the walnut set called.\nYou heard my voice inside it while I stood beside you. Yesterday it used your mother's voice. Please remember she has been dead for eleven years.\nIt keeps promising to bring someone home if you leave it broadcasting. That is why Bellamy will not turn the chapel amplifier off. That is why you must.\nCome after you secure the equipment. Aubrey still needs a seat. The shotgun-box key is on our dresser.\nI left dinner. I thought we had more time.\n- Ada",
+    "Ada heard the radio imitate her while she stood beside John. Its promises kept him listening; distance eased his symptoms."
   ],
   "radio_note": [
-    "County radio / bypass switch",
-    "The coil powers this transmitter. The spare tuning unit provides the direct county channel. Fit both and the spare antenna coupler from Old Mill Cemetery.\nFirst shut down the chapel basement rack at MAIN ISOLATOR. Then set this desk's BYPASS to GREEN for direct county. AMBER goes through the now-silent repeater and cannot reach county.\nHold E at the main receiver to transmit. Identify Old Mill Road and request NO SIRENS.\nAubrey, John and the cellar log explain why.",
-    "Radio routing is a physical switch: amber repeats through the chapel; green reaches county directly."
+    "Station operator / first broadcast",
+    "FOUR WEEKS BEFORE EVACUATION / 02:17\nThe walnut radio began speaking with its switch OFF. No scheduled broadcast. No station identification. I unplugged it and removed the antenna. The voices continued.\nIt used my father's voice. He died in 1986. It said: \"Keep us on. Let them hear us.\"\nBellamy agreed to put its output through the chapel warning system so someone could identify it. After we connected the buried line, the voices reached every street.\nNo incoming frequency on the meter. It begins inside this set. We do not know what is speaking.\nJOHN'S WARNING: Do not reconnect the amber chapel route. Read my workshop log before repairing the transmitter.",
+    "An unplugged station radio spoke. Bellamy spread its voices through the chapel."
   ],
   "crash_record": [
     "The detour sheet",
@@ -43,19 +46,19 @@ const RECORDS = {
     "The driver followed an undated detour sheet collected at a fuel stop, then swerved off the road."
   ],
   "workshop_record": [
-    "John's disconnection log",
-    "AFTER THE EVACUATION\nI inspected the chapel cellar three weeks before the bus, before the creatures reached the grounds. The station still worked. I left the spare county tuner disconnected on the bench and the service rifle in the emergency supplies.\nI removed the station coil after Ada left. Town broadcasts stopped; the separately powered hill rack did not. When I tried to return for the spare equipment, creatures drove me back down the hill.\nJonah's coat. Edith's bracelet. Silas's splint. Those three were living residents changed by exposure. A shot stops them, but they move again about two minutes later while the carrier runs. Aubrey found older dead moving beneath the cemetery too.\nMy cabinet holds the coil. Pat cached the cellar key and spare antenna coupler in his locked family vault during the evacuation. Get the tuner and rifle from the chapel. Cut its rack at MAIN ISOLATOR. Fit all three radio parts at the station; set BYPASS GREEN and call.\n- John",
-    "John inspected the cellar before the creatures arrived. His later return failed. The chapel remains powered; cut its independent supply before calling on the green bypass."
+    "John / why pulling the coil failed",
+    "AFTER THE EVACUATION\nThe walnut radio was the first source. Bellamy's chapel rack amplified it. We kept both connected because the voices sounded like people we had lost.\nI pulled the station's transmitter coil after Ada left. Normal town broadcasts stopped. The voices did not. The chapel's independent supply kept feeding the buried return line back into the set.\nAt my earlier inspection, cutting the rack's MAIN ISOLATOR broke that loop: the unplugged set fell silent. Bellamy turned it back on when it called his sister's name. We should have left it off.\nMy cabinet holds the coil. Pat secured the antenna coupler and cellar key in his mausoleum. Take the spare county tuner from the chapel and cut MAIN ISOLATOR. Then rebuild the station and select BYPASS GREEN.\n- John",
+    "John traced a powered feedback loop. The chapel isolator silences it; the spare tuner and GREEN bypass allow a clean county call."
   ],
   "chapel_record": [
-    "Vestry maintenance book",
-    "PARISH HISTORY / 1891\nMill families built above the flood line. The nave sheltered neighbors. The county added the cellar repeater decades later.\nONE MONTH BEFORE EVACUATION\nThe storm damaged the old repeater. A low tone began beneath recordings. Its buried line feeds the station and porch speaker. Nobody transmitted it.\nCaretaker Jonah slept by the rack. He forgot prayers, then his name. His hands changed. He crawled into the woods a week before the bus.\nWe kept the warning speaker running. We were spreading it.\nThese entries cover the last month. Tonight I leave on the final bus.\n- Father Bellamy",
-    "The storm-damaged chapel repeater spread an unidentified carrier. Caretaker Jonah was the first to change."
+    "Vestry / the broadcast we spread",
+    "PARISH HISTORY / 1891\nMill families built this chapel above the flood line. The county added the warning repeater decades later.\nFOUR WEEKS BEFORE EVACUATION\nThe station operator brought a recording: voices from the walnut radio, even unplugged. We connected its output to our buried warning line, hoping someone would identify the speaker.\nThe voices asked us to keep broadcasting. I heard my dead sister. Jonah heard his mother. We left the amplifier on for them.\nWithin days Jonah forgot prayers, then his name. His hands changed. The worst cases lived nearest our speaker.\nThe storm damaged roofs, not the beginning of this signal. We mistook an invitation for a call for help.\n- Father Bellamy",
+    "Bellamy amplified the station voices to identify them. Familiar voices kept him broadcasting; exposure was worst near the chapel."
   ],
   "cellar_record": [
-    "Carrier test / direct-channel procedure",
-    "JOHN / EQUIPMENT CHECK\nTHREE WEEKS BEFORE EVACUATION\nThe station still works. Leave the spare county tuning unit disconnected on this bench. Keep the service rifle with the emergency supplies. Bellamy can lock the cellar after the inspection.\nThe hill rack has its own supply. Removing the station coil will not shut this equipment down.\nIf the town receiver needs rebuilding: fit its coil, this spare tuner and the cemetery antenna coupler. Set the station desk BYPASS GREEN for DIRECT COUNTY. Amber routes through this rack.\nBefore transmitting, cut this rack's independent supply at MAIN ISOLATOR. Then return to the station, select GREEN and call. Switching off the station alone cannot silence the chapel.\n- John",
-    "John's earlier inspection left the spare tuner and rifle in the cellar. Cut the chapel rack at MAIN ISOLATOR before transmitting from the station on GREEN."
+    "John / isolate the signal, then call",
+    "EQUIPMENT TEST / THREE WEEKS BEFORE EVACUATION\nSOURCE: station walnut radio. No incoming station found.\nAMPLIFIER: this chapel rack. Its own supply feeds the warning speaker AND a buried return line to the station. Pulling the station coil alone cannot stop that loop.\nTEST: MAIN ISOLATOR OFF cuts power and the return line. Both the rack and the unplugged station set fall silent. What started the voices remains unknown.\nSAFE CALL:\n1. Leave MAIN ISOLATOR OFF.\n2. Fit the station coil, this spare county tuner and the cemetery antenna coupler.\n3. Set the station desk BYPASS GREEN: direct county, isolated from the contaminated chapel line. AMBER reconnects that line.\n4. Hold E at the receiver. Confirm a real dispatcher and request NO SIRENS. Switch the set off afterward.\n- John",
+    "Cut MAIN ISOLATOR. Fit all three parts; select GREEN and call county without sirens."
   ]
 }
 
@@ -109,6 +112,7 @@ func document(parent: Node3D, p: Vector3, id: String):
 	area.add_to_group("StoryEvidence")
 
 func reset():
+	crash_wound_treated=false;clinic_rescue_done=false
 	ada_letter_requested=false;ada_letter_delivered=false;ada_ammo_pending=0
 	evidence.clear()
 	county_bypass = false
@@ -140,17 +144,19 @@ func ending_title() -> String:
 func ending_text() -> String:
 	if direct_channel_selected():
 		var living = game.town.townspeople.characters.values().filter(func(data): return not data.dead).size()
-		return "The chapel repeater is off. County dispatch confirms your location and the silent approach.\nYou report %d surviving residents and switch the set off.\nA rescue team will meet you on Old Mill Road.\nFor now, nothing else answers." % living
+		return "The chapel repeater is off. The station voices stopped when you broke its return loop. County dispatch confirms your location and the silent approach.\nYou report %d surviving residents and switch the set off.\nA rescue team will meet you on Old Mill Road.\nYou know how the signal spread, but not what first spoke through the set. For now, nothing else answers." % living
 	return "The repeater plays Pat's three-night-old message again.\nNo dispatcher identifies themselves or confirms your location.\nYou release the transmit switch. The recording continues.\nThe repaired set was still connected to the chapel."
 
 func question() -> String:
 	if game.town.radio_ready and not repeater_is_off():return "Shut down the chapel basement repeater before calling for rescue."
 	if direct_channel_selected(): return "Silence the chapel repeater, then transmit on the direct county channel." if not repeater_is_off() else "Carrier silent. Transmit on the direct county channel."
-	if evidence.has("cellar_record"): return "Repair the radio, then set the desk bypass to green before transmitting."
-	if evidence.has("workshop_record"): return "John disabled town broadcasts. The chapel still has its own power: take the spare tuner and cut its MAIN ISOLATOR."
-	if evidence.has("clinic_note"): return "Can the carrier be bypassed before it changes anyone else?"
+	if evidence.has("cellar_record"): return "The chapel feeds a return loop to the station. Cut MAIN ISOLATOR; repair the radio and use GREEN to call county."
+	if evidence.has("workshop_record"): return "Pulling the station coil did not stop the voices. John tested a way to break the chapel feedback loop: MAIN ISOLATOR."
+	if evidence.has("clinic_note"): return "The signal changes living people and wakes the dead. Where did it begin, and how can it be silenced?"
+	if evidence.has("chapel_record"): return "Bellamy spread the station voices through the chapel amplifier. Find John's isolation test in the cellar."
+	if evidence.has("radio_note"): return "The station radio spoke with no power or incoming station. Why did the voices ask to be broadcast?"
 	if evidence.has("ranger_note"): return "Pat lost three days to the repeated horn. Can the chapel carrier be silenced?"
-	return "The detour sheet was undated. Why was the road into Blackwood still open?"
+	return "Why was Blackwood abandoned? Ask the survivors and look for records at the station, clinic and chapel."
 
 func collect_detour_sheet():
 	var id = "crash_record"
@@ -193,3 +199,29 @@ func claim_ada_ammo()->int:
 func ada_reward_line()->String:
 	if ada_ammo_pending>0:return "I've set aside twelve pistol rounds for you. I'm holding the remaining %d until you've used some ammo or made room in your pack. Come talk to me then." % ada_ammo_pending
 	return "Here. Twelve pistol rounds. It's what I can spare. You brought something back that matters to me. Take care of yourself out there."
+
+func refresh_collected_notes():
+	# Refresh only entries already earned, including journals loaded from older builds.
+	var conversation = game.town.townspeople.conversation
+	var previous_speaker = conversation.speaker
+	for entry in game.town.journal_entries:
+		var id = entry.get("id","")
+		if RECORDS.has(id):
+			entry.title = RECORDS[id][0]
+			entry.text = RECORDS[id][1]
+		elif id=="repeater_shutdown":
+			entry.text = "You cut the chapel rack's power and buried return line. The station voices stopped. Repair the receiver, select GREEN to isolate the chapel line and call county without sirens."
+		else:
+			for person in [{"prefix":"john_","speaker":"mechanic"},{"prefix":"aubrey_","speaker":"nurse"},{"prefix":"pat_","speaker":"ranger"}]:
+				if id.begins_with(person.prefix):
+					conversation.speaker = person.speaker
+					var updated = conversation.summary(id.trim_prefix(person.prefix))
+					if not updated.is_empty():entry.text = updated
+	conversation.speaker = previous_speaker
+
+func needs_aubrey_introduction()->bool:
+	return crash_wound_treated and not clinic_rescue_done and not game.town.townspeople.characters.nurse.dead and not game.town.townspeople.conversation.greetings.has("nurse")
+
+func record_aubrey_briefing():
+	if not game.town.journal_entries.any(func(e):return e.id=="aubrey_briefing"):
+		game.town.journal_entries.append({"id":"aubrey_briefing","title":"Aubrey / What happened to Blackwood","text":"Aubrey says the station radio began speaking on its own. Bellamy amplified it through the chapel, spreading a signal that caused sleeplessness, missing time and transformation. The chapel creatures were townspeople; the wrapped cemetery bodies were already dead. The last families evacuated three nights ago. Read the clinic chart, station operator's log and chapel book. Speak to John at the workshop about the equipment. Pat's office drawer holds the station key. Familiar voices may be imitations, even Aubrey's."})

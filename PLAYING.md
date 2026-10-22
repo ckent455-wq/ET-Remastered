@@ -9,14 +9,16 @@ The game opens in a resizable window with minimize and maximize controls. **F11*
 
 You survived a car accident on Old Mill Road. Follow the road into Blackwood,
 find supplies and weapons, and repair the town radio to call for rescue.
-You wake in the driver's seat. Press E to try the ignition, then press E again after the first failed attempt. After the second failure and the no-signal dialogue, press E to open your door and get out. Walk around to the rear hatch and press E to open it, then collect your backpack and flashlight from the trunk. The detour sheet is optional. You begin without weapons. The driver's door and rear hatch each open and close independently.
+You wake in the driver's seat. Press E to try the ignition twice, then advance the dialogue and press E to open the door and get out. Head down Old Mill Road toward town for help. There is no automatic gear reminder on your first exit.
 
-The crash leaves you at **25% health**. Your backpack already contains one bandage: collect the backpack from the trunk, then press **H** to heal 10 health, or use it from the backpack. More bandages are in the clinic's bedside drawer. H uses bandages first, then medpacks (50 health). Healing supplies are saved if health is full. Screen blood follows the health bar: lower health adds heavier borders and droplets; healing reduces them, and full health clears them.
+The crash leaves you at **25% health**. Just beyond the cemetery gate, your vision dims, movement staggers and footsteps slow. You drop to your knees and black out before the tree scare. Your eyes blink open in the pharmacy's medical bed, where Aubrey treats your head wound and explains Blackwood's broadcast. This rescue is the required normal opening; testing mode skips it.
+
+After leaving the bed, retrieve any missing backpack and flashlight from the car trunk. The prompt names what you still need. Your belongings remain where you left them. The first spare bandage becomes available after Aubrey's treatment: in your backpack if you already collected it, or when you retrieve it afterward. H uses bandages first (+10 health), then medpacks (+50 health); full health preserves supplies. More bandages are in the clinic's bedside drawer. The rescue happens once per journey and persists through saves. Aubrey remembers the bedside introduction.
 
 The chapel uphill along Chapel Road from the north end of Main Street is open for exploration and
 marked on the journal map. The dense forest forms a closed boundary around town.
 
-Talk to **Pat** about Blackwood and the old house, **Aubrey** about the signal and her missing patients, and **John** about the church equipment and Ada. Each offers two lore questions and current advice. After each NPC's introduction, use Up/Down and E/Enter, click a question, or use the controller's D-pad/left stick and confirm button. Answers return to the question list; Esc/back returns to the list or leaves. Answers are summarized under the speaker's name in the journal. Pat still offers the mausoleum key when needed.
+Talk to **Pat** about Blackwood and the old house, **Aubrey** about the signal and her missing patients, and **John** about the church equipment and Ada. Pat and Aubrey offer two lore questions and current advice. John also explains where the broadcast began. After each NPC's introduction, use Up/Down and E/Enter, click a question, or use the controller's D-pad/left stick and confirm button. Answers return to the question list; Esc/back returns to the list or leaves. Answers are summarized under the speaker's name in the journal. Pat still offers the mausoleum key when needed.
 
 ## Testing mode
 
@@ -41,7 +43,7 @@ a keyed box at the back of the ranger office. The box key is on the Saint George
 
 This is an early playable preview. It includes the crash opening, town exploration,
 searchable interiors, weapon pickups, NPC patrols and death animations, and the
-radio-rescue quest. There are currently no drones. Progress resets for each new journey.
+radio-rescue quest. There are currently no drones. Use Save / Load from the pause menu to keep progress; Restart Game begins a new journey.
 
 The image intentionally uses PS2-style low-poly assets, low-resolution textures,
 fog, and a 640 Ã— 400 viewport. The Windows build uses ANGLE/Direct3D11 and a 60 FPS cap.
@@ -57,8 +59,7 @@ Press E to unlock the door and descend. Recover the tuning unit from the cellar 
 then use the stairs to return. The radio needs the tuning unit, signal coil, and antenna coupler.
 
 Inspect your wreck for the detour notice. Read documents and speak to Pat,
-Aubrey and John to investigate the evacuation. The operator's instructions at the
-radio station point to three records that explain a safer transmission procedure.
+Aubrey and John to investigate the evacuation. The operator's log at the radio station describes the first unexplained broadcast. Clinic observations link exposure to transformations and the dead waking. Chapel and cellar records explain how the signal spread and how to isolate it.
 Set the small BYPASS switch on the station desk to GREEN for direct county
 dispatch; AMBER still routes through the chapel repeater. Reading does not flip
 the switch for you. Evidence is optional for completing a journey. The case-notes page tracks what you have learned without revealing unread
@@ -77,7 +78,7 @@ away or fight; H uses a collected bandage or first-aid kit. Menus and the journa
 
 Visible active enemies have health bars. The service rifle hits twice as hard as
 the pistol. Find it on the county lockup rack in the chapel basement; the cellar
-key is still in the powered workshop coil cabinet.
+key is on the workbench at the far end of the passage beneath the Whitcomb mausoleum.
 
 Defeated woodland monsters return to their hiding places after two minutes of active play. Menus pause this countdown. There are three monsters around the chapel woods.
 

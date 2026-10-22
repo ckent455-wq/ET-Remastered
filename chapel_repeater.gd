@@ -35,9 +35,9 @@ func shutdown()->bool:
  shutdown_done=true;lever.rotation.z=-PI/2;lamp.material_override=game.town.mats.dark;hum.stop()
  game.contact_progress=0
  game.soundscape.feedback("power")
- game.message="Chapel repeater shut down. The carrier is silent. Use the station's GREEN / direct county channel to call for rescue."
+ game.message="Chapel repeater shut down. Return loop broken; the station voices fall silent. Use the station's GREEN / direct county channel to call for rescue."
  var id="repeater_shutdown"
- if not game.town.journal_entries.any(func(e):return e.id==id):game.town.journal_entries.append({"id":id,"title":"Chapel repeater / shut down","text":"You cut the chapel rack's independent power. Its carrier is silent. Repair the town receiver, select GREEN / direct county, and call for rescue without sirens."})
+ if not game.town.journal_entries.any(func(e):return e.id==id):game.town.journal_entries.append({"id":id,"title":"Chapel repeater / shut down","text":"You cut the chapel rack's power and buried return line. The station radio's voices stopped too: the loop is broken. Repair the town receiver, select GREEN / direct county, and call for rescue without sirens."})
  return true
 func _process(_delta):
  hum.stream_paused=game.state not in ["play","dialogue"]

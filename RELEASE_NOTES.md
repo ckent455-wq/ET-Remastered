@@ -1,22 +1,24 @@
-# Far From Home v1.9.0 - Relentless
+# Far From Home v2.0.0 - Voices in Blackwood
 
-A playable Windows x64 survival-horror preview, exported with the Godot 4.7.2 release template.
+Windows x64 release build exported with Godot 4.7.2 using the release template, not the debug template. Published as a stable release.
 
-## Changes since v1.8.0
+## Changes since v1.9.0
 
-- Monsters retain pursuit after spotting the player instead of forgetting them after a short timeout. They can force unlocked town, chapel and mausoleum doors, follow the Victorian staircase and use opened basement passages. Locked progression routes and untriggered reveals stay protected. Pursuit survives saving and loading.
-- Stronger combat: ordinary creatures have 132 health, mummies 144 and the cemetery reaper 180. Headshots deal 1.5x damage. Stagger requires accumulated impact and has a recovery resistance period; ordinary hits no longer automatically cancel attacks. Monsters hit harder.
-- Shotgun pellets are processed as one impact per creature per blast. Damage is full through five meters and falls to 25% at fifteen meters. The rifle remains more powerful than the pistol.
-- Earlier enemy-health values in compatible saves scale proportionally to the new maximum, preserving wounds and deaths.
-- Reworked the Victorian cellar using PSX Modular House Interior Pack assets: brick bays and an arch, concrete ceiling, utility shelving, pallets and abandoned laundry/storage clutter. Corrected foundation corners and brick tiling, removed a clipping decorative shovel, and moved the collectible shovel against the rear wall beside the pallets.
-- Corrected cellar atmosphere so outdoor fog does not wash out its interior lighting.
-- Cleaner controls screen with grouped actions, aligned bindings and input-aware controller labels.
-- Starts in a resizable window with minimize and maximize controls. F11 or Alt+Enter toggles fullscreen.
+- New required opening progression: leave the crash and head toward Blackwood. Past the cemetery gate, vision dims, movement staggers, walking and footsteps slow, and the player drops to their knees before blacking out. The collapse takes priority over the tree scare.
+- Seamless transition from darkness to blinking eyes in the pharmacy medical bed. Aubrey treats the player's head wound and introduces herself. No restart screen or title card interrupts the rescue; the injury border and bedside camera stay consistent into dialogue.
+- Gear can remain in the car. After treatment, a persistent prompt identifies the missing backpack and/or flashlight and directs the player to the trunk. Collecting one updates the prompt. Early pickup does not avoid the rescue; the first spare bandage is available after treatment.
+- Aubrey remembers the bedside introduction, including in existing rescue saves. Later conversations show her questions. Rescue state, belongings and journal notes persist through saving and loading.
+- Rewritten notes and dialogue trace the outbreak to the station radio speaking by itself. The chapel amplifier spread its voices, driving residents mad, transforming townspeople and waking the dead. Familiar voices persuaded listeners to keep broadcasting.
+- New conversation with John about the first broadcast; revised operator log, clinic observations, chapel book, workshop log, Ada's letter, cellar procedure, journal evidence leads and ending. Older collected journal entries refresh when loaded.
+- Clear isolation procedure: cut the chapel MAIN ISOLATOR to break the powered return loop, repair the station, select BYPASS GREEN for direct county, and request rescue without sirens.
+- Replaced the station placeholder with John's custom vintage radio, finished in Blender and adapted to the game's matte PS2-style materials and texture filtering.
+- Downloaded static and distorted voices play from the receiver. Proximity increases volume and intensity. Voices use irregular dropouts, pitch drift and phrase jumps; both layers respect pause and story shutdown.
+- Includes v1.9.0's persistent monster pursuit, revised combat balance, Victorian cellar, grouped controls screen and resizable window.
 
 ## Play
 
-Download **FarFromHome-v1.9.0-Windows-x64.zip**, extract the entire archive and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
+Download **FarFromHome-v2.0.0-Windows-x64.zip**, extract the entire archive and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
 
-Testing mode is OFF by default. F10 enables unlimited supplies and health for exploration; leave it off when judging combat difficulty.
+Start a **new journey** to experience the revised opening. Existing saves retain their progress; the rescue will not replay once completed. Testing mode is OFF by default. F10 skips the normal opening and provides exploration supplies; leave it OFF when testing the opening or combat.
 
-Includes player instructions, asset and engine credits, source commit information and SHA256 checksums.
+Includes player instructions, release notes, credits, engine and supplied asset license records, source commit information and SHA256 checksums. The separate source ZIP contains the matching game source.

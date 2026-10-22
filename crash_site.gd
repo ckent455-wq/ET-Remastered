@@ -364,7 +364,7 @@ func interact_waking():
 func show_wake_dialogue():
 	wake_phase="dialogue"
 	game.dialogue_name=""
-	game.dialogue_text="Come on... no. The engine's dead. And there's no phone signal.\n\nMy head... I'm bleeding. Something crossed the road. I swerved and hit that stump.\n\nI have a bandage in my backpack. I need to grab it and stop this bleeding. My backpack and flashlight are in the trunk."
+	game.dialogue_text="Come on... no. The engine's dead. And there's no phone signal.\n\nMy head... I'm bleeding. Something crossed the road. I swerved and hit that stump.\n\nThere are lights down the road. I need to reach town and find someone who can help."
 	game.set_state("dialogue")
 
 func set_cabin_view(_inside:bool):
@@ -420,7 +420,7 @@ func update_waking(delta:float):
 			game.player.rotation=Vector3(0,wreck.rotation.y+PI,0)
 			release_seated_camera();dashboard_light.hide()
 			wake_phase="";game.set_state("play")
-			game.message="Walk to the back of the car. E TO OPEN the trunk and collect your backpack and flashlight."
+			game.message=""
 	if game.camera.top_level and wake_phase!="exiting":update_seated_camera()
 	game.hud.queue_redraw()
 
@@ -438,6 +438,10 @@ func tutorial_complete() -> bool:
 	return has_backpack and has_flashlight
 
 func tutorial_prompt() -> String:
+	# The opening dialogue already explains the gear. Remind only after rescue.
+	if not game.story.clinic_rescue_done:return ""
+	if game.story.clinic_rescue_done and not tutorial_complete() and game.player.global_position.distance_to(wreck.global_position)>5:
+		return game.clinic_rescue.missing_gear_prompt()
 	if not hatch_open: return "Walk to the back of the car.\nE TO Open the rear hatch"
 	if not has_backpack: return "E TO TAKE YOUR BACKPACK FROM THE TRUNK"
 	if not has_flashlight: return "E TO TAKE YOUR FLASHLIGHT FROM THE TRUNK"
@@ -467,19 +471,19 @@ func interact_tutorial(id: String):
 		game.message = "Driver's door opened. Your gear is in the trunk." if door_open else "Driver's door closed."
 	elif id=="crash_backpack" and hatch_open and not has_backpack:
 		has_backpack = true
-		game.town.inventory.bandage+=1
+		if game.story.clinic_rescue_done:game.town.inventory.bandage+=1
 		bag_visual.hide()
 		tutorial_areas.crash_backpack.collision_layer = 0
 		update_item_targets()
 		game.soundscape.feedback("pickup")
-		game.message = "Backpack collected. There's a bandage inside. H to use it (+10 health), or I to open your backpack."
+		game.message = "Backpack collected. H uses the spare bandage, or I opens your backpack." if game.story.clinic_rescue_done else "Backpack collected."
 	elif id=="crash_flashlight" and hatch_open and not has_flashlight:
 		has_flashlight = true
 		light_visual.hide()
 		tutorial_areas.crash_flashlight.collision_layer = 0
 		game.soundscape.feedback("pickup")
 		update_item_targets()
-		game.message = "Flashlight collected. F switches it on. H uses the bandage in your backpack to dress your wound."
+		game.message = "Flashlight collected. F switches it on."
 	elif id=="crash_record" and hatch_open and not has_detour_sheet:
 		has_detour_sheet = true
 		detour_visual.hide()

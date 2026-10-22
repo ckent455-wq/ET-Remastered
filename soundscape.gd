@@ -210,6 +210,7 @@ func moved(distance: float, sprinting: bool, grounded: bool):
 	next_step = (next_step+1)%steps.size()
 	node.stream = step_streams[variation]
 	node.pitch_scale = rng.randf_range(0.96,1.04)*(1.04 if sprinting else 1.0)
+	if game.clinic_rescue and game.clinic_rescue.phase=="dimming":node.pitch_scale*=lerpf(0.88,1.0,game.clinic_rescue.movement_scale())
 	node.volume_db = -14 if game.crouching else (-5 if sprinting else -9)
 	node.play()
 

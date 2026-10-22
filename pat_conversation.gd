@@ -13,8 +13,8 @@ var greetings={}
 var TOPICS=[]
 const QUESTIONS={
  "ranger":[["town","What happened to Blackwood?","Blackwood's decline"],["house","What's with the house at the end of the street?","The old house"]],
- "nurse":[["signal","What is the signal doing to people?","The chapel tone"],["patients","What happened to your patients?","The missing patients"]],
- "mechanic":[["church","Why is there radio equipment beneath the church?","The hilltop church"],["stayed","Why didn't you leave with Ada?","The promise to Ada"]]
+ "nurse":[["signal","What is the signal doing to people?","The broadcast and its victims"],["patients","What happened to your patients?","The missing patients"]],
+ "mechanic":[["origin","Where did the broadcast begin?","The radio that spoke alone"],["church","Why is there radio equipment beneath the church?","The hilltop church"],["stayed","Why didn't you leave with Ada?","The promise to Ada"]]
 }
 func speaker_name()->String:
  return {"ranger":"Pat","nurse":"Aubrey","mechanic":"John"}[speaker]
@@ -26,6 +26,8 @@ func reset():
 func cancel():
  active=false;choosing=false;current_topic=""
 func begin(intro:String,force_intro=false,person="ranger"):
+ # The bedside introduction also counts in journeys saved before this fix.
+ if person=="nurse" and game.story.clinic_rescue_done:greetings["nurse"]=true
  speaker=person;TOPICS=[]
  for item in QUESTIONS[speaker]:TOPICS.append({"id":item[0],"question":item[1],"title":speaker_name()+" / "+item[2]})
  TOPICS.append({"id":"help","question":"What should I do next?","title":speaker_name()+" / Getting help"})
@@ -84,6 +86,8 @@ func handle(event):
 
 func answer(topic:String)->String:
  match topic:
+  "origin":
+   return "It started in that walnut radio at the station, four weeks before the evacuation. No operator. No incoming station. The switch was off. We pulled the plug and antenna, and it kept speaking. The operator wrote it all down beside the set.\n\nIt used dead people's voices. Then Ada's voice, while she was standing beside me. It wasn't just a recording. It wanted us to connect it to the chapel so everyone could hear.\n\nWe thought someone needed help. Bellamy connected the buried line and left the hill amplifier running. Then the sleeplessness began. The missing hours. Jonah changed first.\n\nI can trace the circuit. I cannot tell you what got inside that set. The voices know things they shouldn't. That doesn't make them the people they sound like."
   "town":
    return "Blackwood grew around the mill. Shift whistles, school buses, the church bell on Sunday. You used to hear people before you saw the town.\n\nThe mill closed twelve years ago. Families sold up, shops boarded their windows. That old damage wasn't done in a night.\n\nThe last families left three nights ago, after weeks of trouble with the signal. The bus really did leave. The horn I heard afterward came from the chapel speaker. I opened the road for a recording.\n\nI knew it wasn't a bus. Then the horn played again and I was waiting for the driver. Every time I started back to close the barrier, I'd lose hours and find myself in the office. I kept thinking I would shut it after the bus passed.\n\nTonight Aubrey put three dated pages in front of me. I thought it had been one long night. Three days. That's why the road was still open when you came through. I keep writing it down now so I won't forget again."
   "house":
@@ -92,9 +96,9 @@ func answer(topic:String)->String:
     line+="\n\nYou found the notice? Then you know they left years before this signal. Whatever is in there now moved in afterward."
    return line
   "church":
-   return "The church went up in 1891. Mill families paid for it a little out of each wage packet. They built above the flood line; when the creek rose, the nave became a shelter. That hill used to mean safety.\n\nDecades later the county put a civil-defense repeater in the cellar. High ground, a buried line to the station, a speaker to warn the whole street. Bellamy kept the old system working after the town ran out of money.\n\nLast month's storm damaged it. Jonah, the caretaker, stayed beside the running rack. The maintenance book inside tells what happened to him. I inspected the cellar equipment three weeks before the evacuation, before the creatures reached the grounds. The station still worked, so I left the spare tuner and rifle there. I tried to return after Ada left. The creatures drove me back down the hill. My inspection sheet is still on the cellar bench. We thought the warning speaker was helping people."
+   return "The chapel was built in 1891 as a refuge above the flood line. The county later put a warning amplifier in its cellar: high ground, a buried line to the station, and a speaker that reaches the street.\n\nThe signal began at the station radio. Bellamy connected it to the chapel to identify the voices. When it spoke as his dead sister, he wouldn't shut it off. The neighbors closest to that speaker got the worst exposure. Jonah slept beside the rack. Read Bellamy's maintenance book inside.\n\nI tested the system three weeks before evacuation. The rack's independent supply feeds a return line into the station set. Pulling the transmitter coil stops ordinary broadcasts, but that loop keeps the voices alive.\n\nMAIN ISOLATOR breaks both power and the return line. I heard both ends fall silent. Bellamy switched it back on. I left the spare county tuner and service rifle in the cellar; when I tried to return after Ada left, the creatures drove me down the hill. Cut that isolator, then use GREEN at the station. Never reconnect AMBER."
   "signal":
-   var line="Ordinary radio didn't do this. There's a low tone underneath the chapel's repeated messages. It started after the storm. First people stopped sleeping. Then they'd answer voices nobody else could hear.\n\nJohn pulled the station coil after the evacuation. That stopped the town broadcasts. The hill equipment has its own power, so its speaker kept going.\n\nI kept records here in the clinic. The patients who spent the longest near the chapel declined first. Read the sheet on the back shelf, and Bellamy's book in the church. Tonight I had to put three dated log pages in front of Pat. He thought he was still waiting for the evacuation bus. That's what I mean by missing time. I don't know where the tone came from."
+   var line="First they stopped sleeping. Then they heard familiar voices, became frightened of their families and lost hours they couldn't account for. Finally their bodies changed. No fever. No bites. This wasn't an infection spreading between people.\n\nThe first voices came from the walnut radio at the station. Bellamy sent them through the chapel amplifier. The longest exposure was around that speaker; that's where the worst cases gathered.\n\nRead my observations in the clinic and the operator's log by the radio. John's cellar test explains how to stop it. He removed the station coil, but the chapel kept feeding a return line into the set. Cutting MAIN ISOLATOR stops both.\n\nPat's memory is failing too. Tonight I showed him three dated pages; he thought the last three days were one night. We need a real county dispatcher, not another voice promising to bring someone back."
    if game.story.evidence.has("clinic_note") or game.story.evidence.has("cellar_record"):
     line+="\n\nThose names in the records were our neighbors. I recognized Edith's bracelet and Silas's splinted hand. Whatever you hear in the woods, don't mistake a familiar voice for someone safe."
    return line
@@ -106,17 +110,18 @@ func answer(topic:String)->String:
   "stayed":
    game.story.request_ada_letter()
    if game.story.ada_letter_delivered:return "I keep her letter in my coat now. You brought back something I was afraid I had lost. Once the radio is safe, I am going after her."
-   return "Ada took the last bus. I promised I'd follow after securing the radio equipment. Her letter is still in our room at Saint George Hotel. I haven't had the courage to go back for it. If you get inside, would you bring it to me?\n\nBefore she left, I was losing hours. She said I repeated things she'd never told me. I blamed the wiring, the storm, anything except the set I kept running.\n\nPulling the station coil stopped the town broadcasts. Away from the receiver, my head began to clear. The hill speaker kept going on its own power. I stayed because I'd helped keep that thing talking. I need to leave this town quiet before I go."
+   return "Ada took the last bus. I promised I'd follow after securing the radio equipment. Her letter is still in our room at Saint George Hotel. I haven't had the courage to go back for it. If you get inside, would you bring it to me?\n\nBefore she left, I was losing hours. She said I repeated things she'd never told me. I blamed the wiring, exhaustion, anything except the set I kept running.\n\nPulling the station coil stopped ordinary broadcasts, but the voices continued through the chapel return loop. Away from the receiver, my head began to clear. The hill speaker kept going on its own power. I stayed because I'd helped keep that thing talking. I need to leave this town quiet before I go."
   "help":
    return game.town.townspeople.words(speaker)
  return "Take care out there."
 
 func summary(topic:String)->String:
  match topic:
+  "origin":return "John says the station radio began speaking while switched off and unplugged. It imitated dead relatives and Ada while she was present, asking to be broadcast. Bellamy connected it to the chapel amplifier. The original speaker remains unidentified."
   "town":return "Pat says the mill closed twelve years ago. Most of the decay predates the signal. The final families evacuated three nights ago. A recorded chapel horn fooled him into reopening Old Mill Road. Repeated exposure disrupted his memory: he kept waiting for the bus, lost hours and failed to close the barrier for three days. Aubrey confronted him with the dated log tonight."
   "house":return "The old Victorian house belonged to the mill superintendent. Its occupants left nine years ago; their clearance notice is downstairs. Pat found fresh bare footprints leading into the cellar after the storm. He also found a freshly dug breach, soil pushed inward and burial cloth caught on the masonry. Its short burrow was blocked by collapsed earth. He could not identify what came through."
-  "church":return "John says mill families funded the hilltop church in 1891. It sheltered people above the flood line. The county later installed the cellar repeater. Bellamy kept the warning system running; its storm damage and Jonah's decline are recorded in the vestry book. John inspected the cellar three weeks before evacuation, left the spare equipment while the station still worked, and was driven back when he tried to return afterward."
-  "signal":return "Aubrey distinguishes ordinary radio from the unidentified tone beneath the chapel messages. John disconnected the town station, but the hill equipment has separate power. Her clinic records and the vestry book explain the symptoms. She does not know the carrier's origin."
+  "church":return "The chapel amplified the station signal, exposing the neighborhood. John tested its independent supply and buried return line: MAIN ISOLATOR silences both ends. Use the spare county tuner and station GREEN bypass to make a clean rescue call."
+  "signal":return "Aubrey traces sleeplessness, paranoia, missing time and physical transformation to exposure. The station broadcast began first; the chapel amplified it. John found how to break the feedback loop. Familiar voices are not proof the missing people are speaking."
   "patients":return "Aubrey stayed for Edith and Silas after they refused the final bus. Their tracks led toward the chapel; she recognized their bracelet and splint on the changed creatures. Jonah changed first. The creatures follow sound, so rescuers must come without sirens. The shrouded tunnel creatures were already dead before the signal; Aubrey found their coffins broken open from within. She cannot say whether any consciousness remains."
   "stayed":
    if game.story.ada_letter_delivered:return "You brought Ada's letter to John. He keeps it in his coat and intends to find her after the radio equipment is safe."
