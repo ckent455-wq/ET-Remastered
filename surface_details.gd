@@ -88,6 +88,9 @@ func apply_details():
 	for object in get_tree().get_nodes_in_group("RetroInteriorProps"):
 		if object.get_meta("retro_asset") in ["cutting_board","knife","plate","burner"]:
 			rest_on_surface(object,"retro clutter",0.12)
+	# The furnished desk replaces the original blockout and has a higher tabletop.
+	var microphone=game.town.buildings.radio.get_node_or_null("RadioDeskMicrophone")
+	if microphone:rest_on_surface(microphone,"radio microphone",0.12)
 	for id in game.town.actions:
 		var data=game.town.actions[id]
 		if data.kind=="note" and id!="cemetery_note":

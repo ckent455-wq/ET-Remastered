@@ -71,6 +71,15 @@ func retro_materials(node: Node):
 		for i in range(node.mesh.get_surface_count()):
 			var material = node.mesh.surface_get_material(i).duplicate() as StandardMaterial3D
 			material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+			if material.resource_name == "Owen_John_Face" and material.albedo_texture:
+				# Keep the portrait recognizable without photographic detail at close range.
+				var face_image = material.albedo_texture.get_image()
+				if face_image.is_compressed():face_image.decompress()
+				var ratio = 96.0 / maxf(face_image.get_width(),face_image.get_height())
+				face_image.resize(maxi(1,roundi(face_image.get_width()*ratio)),maxi(1,roundi(face_image.get_height()*ratio)),Image.INTERPOLATE_LANCZOS)
+				face_image.generate_mipmaps()
+				material.albedo_texture = ImageTexture.create_from_image(face_image)
+				material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			material.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
 			material.roughness = 1
 			material.metallic_specular = 0

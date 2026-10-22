@@ -61,7 +61,7 @@ func restore_tree(node:Node,data:Dictionary):
  if node is AnimationPlayer and data.animation!="" and node.has_animation(data.animation):
   node.play(data.animation);node.seek(data.time,true);node.advance(0);node.speed_scale=data.speed
 func roots()->Dictionary:
- return {"crash":game.crash_site,"tree":game.falling_tree,"crow":game.town.sign_crow,"church":game.town.streetscape.church,"cemetery":game.town.cemetery,"hotel":game.hotel_basement,"window":game.hotel_window_figure,"shadow":game.cemetery_shadow,"grave":game.grave_dig,"police":game.weapons.police_car,"lockbox":game.weapons.lockbox,"panel":game.town.actions.battery_panel.area.get_node("HighVoltageTerminal"),"enemies":game.enemies,"people":game.town.townspeople}
+ return {"crash":game.crash_site,"tree":game.falling_tree,"crow":game.town.sign_crow,"church":game.town.streetscape.church,"cemetery":game.town.cemetery,"hotel":game.hotel_basement,"window":game.hotel_window_figure,"shadow":game.cemetery_shadow,"grave":game.grave_dig,"police":game.weapons.police_car,"lockbox":game.weapons.lockbox,"panel":game.town.actions.battery_panel.area.get_node("HighVoltageTerminal"),"enemies":game.enemies,"people":game.town.townspeople,"hollow":game.enemies.creatures[game.enemies.HOLLOW_INDEX].actor}
 func blocked_reason()->String:
  if not game.surface_details.completed:return "The world is still preparing. Wait a moment before saving."
  if game.testing_mode.enabled:return "Turn testing mode off before saving a normal journey."
@@ -91,7 +91,9 @@ func valid(data)->bool:
   if not data.get(key) is Dictionary:return false
  for key in ["owned","magazines","reserves"]:
   if not data.get(key) is Array or data[key].size()!=3:return false
- if not data.get("enemies") is Array or data.enemies.size()!=game.enemies.creatures.size():return false
+ if not data.get("enemies") is Array:return false
+ var legacy_hollow=data.enemies.size()==game.enemies.HOLLOW_INDEX and not data.roots.has("hollow")
+ if data.enemies.size()!=game.enemies.creatures.size() and not legacy_hollow:return false
  if not data.get("position") is Transform3D or not data.position.is_finite():return false
  if not data.get("health") is float and not data.get("health") is int:return false
  if data.health<=0 or data.health>100:return false
@@ -107,6 +109,7 @@ func valid(data)->bool:
  for id in game.town.actions:
   if not data.actions.get(id) is Dictionary:return false
  for key in roots():
+  if key=="hollow" and legacy_hollow:continue
   if not valid_tree(roots()[key],data.roots.get(key)):return false
  return true
 func apply(data:Dictionary):
@@ -117,7 +120,8 @@ func apply(data:Dictionary):
  set_variables(game.story,data.story)
  # Saves made before the injury event keep their existing journey unchanged.
  if not data.story.has("crash_wound_treated"):game.story.crash_wound_treated=true;game.story.clinic_rescue_done=true
- for key in roots():restore_tree(roots()[key],data.roots[key])
+ for key in roots():
+  if data.roots.has(key):restore_tree(roots()[key],data.roots[key])
  for i in range(data.enemies.size()):
   var enemy=game.enemies.creatures[i]
   enemy.merge(data.enemies[i],true)

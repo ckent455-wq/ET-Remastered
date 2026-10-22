@@ -19,6 +19,8 @@ var workshop_defeated=false
 const HOUSE_INDEX=4
 const CELLAR_INDEX=5
 const REAPER_INDEX=6
+const HOLLOW_INDEX=10
+var hollow_encounter=preload("res://hollow_monster.gd").new()
 const TUNNEL_INDICES=[7,8,9]
 var tunnel_encounter=preload("res://mausoleum_tunnel_monsters.gd").new()
 var reaper_encounter=preload("res://cemetery_reaper.gd").new()
@@ -36,28 +38,36 @@ func _ready():
 	for sound in ["breath","growl","attack"]:
 		streams[sound] = load("res://assets/enemies/"+sound+".wav")
 	build_woodland_cover()
-	for i in range(SPAWNS.size()):
+	for i in range(SPAWNS.size()+1):
 		var actor = CharacterBody3D.new()
 		actor.name = "Creep%d" % i
 		actor.add_to_group("HostileEnemies")
 		actor.set_meta("enemy_index",i)
 		actor.floor_snap_length = 0.3
-		add_child(actor)
+		# Keep the original saved enemy hierarchy stable for existing journeys.
+		if i==HOLLOW_INDEX:game.add_child(actor)
+		else:add_child(actor)
 		var collision = CollisionShape3D.new()
 		var capsule = CapsuleShape3D.new()
 		capsule.radius = 0.40
 		capsule.height = 1.8
+		if i==HOLLOW_INDEX:capsule.height=2.20
 		collision.shape = capsule
 		collision.position.y = 0.91
+		if i==HOLLOW_INDEX:collision.position.y=1.11
 		actor.add_child(collision)
 		var is_wrapper = i in [HOUSE_INDEX,CELLAR_INDEX] or i in TUNNEL_INDICES
 		var scene_path = "res://assets/enemies/wrapper/wrapper.glb" if is_wrapper else "res://assets/enemies/creep.glb"
 		if i==REAPER_INDEX: scene_path="res://assets/enemies/reaper/reaper.glb"
+		if i==HOLLOW_INDEX:scene_path="res://assets/enemies/hollow/hollow.glb"
 		var visual = load(scene_path).instantiate()
 		actor.add_child(visual)
 		game.town.apartment_interiors.adapt(visual)
 		if i==CELLAR_INDEX or i in TUNNEL_INDICES: game.town.streetscape.church.basement.prepare_cellar_lighting(visual)
 		var animation = visual.find_child("AnimationPlayer",true,false) as AnimationPlayer
+		if i==HOLLOW_INDEX:
+			animation=hollow_encounter.configure(visual)
+			game.town.streetscape.church.basement.prepare_cellar_lighting(visual)
 		var clips = {}
 		for clip in animation.get_animation_list():
 			var short = str(clip).split("/")[-1].to_lower()
@@ -77,8 +87,9 @@ func _ready():
 		voice.pitch_scale = 0.92+i*0.06
 		voice.unit_size = 5
 		var route: Array[Vector3] = []
-		for point in (WOOD_ROUTES[i] if i<3 else [SPAWNS[i]]): route.append(ground(point))
-		var spawn = SPAWNS[i] if is_wrapper else ground(SPAWNS[i])
+		var source=SPAWNS[i] if i<HOLLOW_INDEX else game.town.streetscape.church.basement.to_global(Vector3(1.4,0.02,-3.7))
+		for point in (WOOD_ROUTES[i] if i<3 else [source]): route.append(ground(point))
+		var spawn = source if is_wrapper or i==HOLLOW_INDEX else ground(source)
 		creatures.append({"actor":actor,"visual":visual,"animation":animation,"clips":clips,"clip":"","hp":HEALTH,"state":"lurking","timer":0.0,"cooldown":0.0,"seen":false,"memory":0.0,"target":spawn,"spawn":spawn,"route":route,"waypoint":0,"voice":voice,"voice_timer":5.0+i*4,"blocked":0.0,"previous":spawn,"did_hit":false,"suspicion":0.0,"stalk_time":0.0,"index":i})
 	reset()
 	call_deferred("build_navigation")
@@ -170,6 +181,10 @@ func reset_creature(data):
 		data["path"]=PackedVector3Array()
 		data["path_timer"]=0.0
 		play(data,"idle1")
+	if data.index==HOLLOW_INDEX:
+		data.state="chapel_wait"
+		play(data,"idle1")
+		data.animation.advance(0)
 	if data.index==WORKSHOP_INDEX:
 		data.state="dormant"
 		data.actor.hide()
@@ -189,6 +204,10 @@ func line_clear(data, target: Vector3) -> bool:
 func alert_shot(p: Vector3):
 	if game.state!="play": return
 	for data in creatures:
+		if data.index==HOLLOW_INDEX:
+			if data.hp>0 and game.town.streetscape.church.basement.contains(p):
+				data.state="chase";data.pursuing=true;data.target=p
+			continue
 		if data.hp<=0 or data.index in [HOUSE_INDEX,CELLAR_INDEX,REAPER_INDEX] or data.index in TUNNEL_INDICES or data.actor.global_position.distance_to(p)>32: continue
 		data.target = p
 		data.memory = 9.0
@@ -204,6 +223,7 @@ func is_mummy(index:int)->bool:
 	return index in [HOUSE_INDEX,CELLAR_INDEX] or index in TUNNEL_INDICES
 
 func health_for(index:int)->float:
+	if index==HOLLOW_INDEX:return hollow_encounter.HEALTH
 	return REAPER_HEALTH if index==REAPER_INDEX else MUMMY_HEALTH if is_mummy(index) else HEALTH
 
 func tick_poise(data,delta:float):
@@ -280,9 +300,9 @@ func health_bar_targets() -> Array:
 	var targets = []
 	if game.state!="play": return targets
 	for data in creatures:
-		if data.hp<=0 or data.state in ["lurking","house_wait","tunnel_wait"] or not data.actor.is_visible_in_tree(): continue
+		if data.hp<=0 or data.state in ["lurking","house_wait","tunnel_wait","chapel_wait"] or not data.actor.is_visible_in_tree(): continue
 		if data.actor.global_position.distance_to(game.camera.global_position)>18: continue
-		var point: Vector3 = data.actor.global_position+Vector3(0,2.25,0)
+		var point: Vector3 = data.actor.global_position+Vector3(0,2.55 if data.index==HOLLOW_INDEX else 2.25,0)
 		if game.camera.is_position_behind(point) or not line_clear(data,game.camera.global_position): continue
 		var screen = game.camera.unproject_position(point)
 		if screen.x<26 or screen.x>614 or screen.y>315: continue
@@ -304,6 +324,13 @@ func _physics_process(delta):
 		data.animation.speed_scale = animation_rate if active else 0
 		data.voice.stream_paused = game.state not in ["play","dialogue"]
 		if not active: continue
+		if data.index==HOLLOW_INDEX:
+			hollow_encounter.animate(data,delta)
+			if data.state=="dead":
+				if not game.story.repeater_is_off():
+					data.respawn_remaining=maxf(0,data.respawn_remaining-delta)
+					if data.respawn_remaining<=0:reset_creature(data)
+				continue
 		if data.hp>0:tick_poise(data,delta)
 		if (data.index in [HOUSE_INDEX,CELLAR_INDEX] or data.index in TUNNEL_INDICES) and data.state=="dead":
 			data.fall_time = minf(1,data.fall_time+delta/0.7)
@@ -314,6 +341,9 @@ func _physics_process(delta):
 			if data.index==REAPER_INDEX:reaper_encounter.animate(self,data,delta)
 			continue
 		if door_encounter.update(self,data,delta):continue
+		if data.index==HOLLOW_INDEX:
+			hollow_encounter.update(self,data,delta)
+			continue
 		if data.index==HOUSE_INDEX:
 			house_encounter.update(self,data,delta)
 			continue

@@ -349,6 +349,13 @@ func furnish():
 	radio_model.position = Vector3(0,-0.275,0)
 	radio_model.rotation.y = -PI/2
 	radio_model.scale = Vector3.ONE*0.44
+	var desk_microphone = preload("res://assets/microphone/desk_microphone.glb").instantiate()
+	desk_microphone.name = "RadioDeskMicrophone"
+	buildings.radio.add_child(desk_microphone)
+	# The base rests on the desktop, beside the receiver and clear of its controls.
+	desk_microphone.position = Vector3(-3.55,0.88,-3.30)
+	desk_microphone.rotation.y = 0.16
+	preload("res://station_radio.gd").adapt(desk_microphone,{})
 	receiver_light = lamp(receiver,Vector3(0,0.03,0.39),Color("d2ae72"),0.4,2)
 	note("radio",Vector3(-1.5,0.91,-3.4),"radio_note","Operator's instructions","EMERGENCY RADIO\nFit a SIGNAL COIL from the mill workshop to this receiver.\nThe workshop cabinet requires restored power.\nAfter repairs, stay here and hold E for four seconds\nto call emergency services. Report a car accident\non Old Mill Road, outside Blackwood.")
 	# A low-poly antenna rises over the radio station.

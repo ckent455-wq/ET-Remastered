@@ -14,7 +14,13 @@ func rig(data)->Dictionary:
 	var head="head"
 	var neck="neck"
 	var links=[]
-	if bones.has("mixamorig_head"):
+	if data.index==enemies.HOLLOW_INDEX:
+		neck="chest"
+		links=[["pelvis","chest",0.25],["chest","head",0.24]]
+		for side in ["l","r"]:
+			for pair in [["upper_arm_","forearm_",0.16],["forearm_","hand_",0.15],["thigh_","shin_",0.15],["shin_","foot_",0.12]]:
+				links.append([pair[0]+side,pair[1]+side,pair[2]])
+	elif bones.has("mixamorig_head"):
 		head="mixamorig_head";neck="mixamorig_neck"
 		links=[["mixamorig_hips","mixamorig_spine2",0.26],["mixamorig_spine2",neck,0.20]]
 		for side in ["left","right"]:
@@ -42,6 +48,9 @@ func point(r,name:String)->Vector3:
 func head_center(data)->Vector3:
 	var r=rig(data)
 	r.skeleton.force_update_all_bone_transforms()
+	if data.index==enemies.HOLLOW_INDEX:
+		var transform=r.skeleton.global_transform*r.skeleton.get_bone_global_pose(r.bones.head)
+		return transform*Vector3(0,0.38,0)
 	var head=point(r,r.head)
 	return head+(head-point(r,r.neck)).normalized()*0.09
 
@@ -78,6 +87,9 @@ func trace(origin:Vector3,direction:Vector3,limit:float)->Dictionary:
 		var r=rig(data)
 		r.skeleton.force_update_all_bone_transforms()
 		var distance=sphere(origin,direction,head_center(data),0.25)
+		if data.index==enemies.HOLLOW_INDEX:
+			var transform=r.skeleton.global_transform*r.skeleton.get_bone_global_pose(r.bones.head)
+			distance=capsule(origin,direction,transform*Vector3(0,0.04,0),transform*Vector3(0,0.69,0),0.24)
 		var zone="head"
 		for pair in r.links:
 			if not r.bones.has(pair[0]) or not r.bones.has(pair[1]):continue

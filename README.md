@@ -1,6 +1,6 @@
 # Far From Home â€” first-person edition
 
-Open project.godot in Godot 4.5 and press F5.
+Open project.godot in Godot 4.7.2 and press F5.
 
 For the playable Windows build, download the ZIP from [GitHub Releases](https://github.com/ckent455-wq/ET-Remastered/releases). Extract it and run FarFromHome.exe. See [PLAYING.md](PLAYING.md) for controls and the opening scenario.
 
@@ -17,6 +17,10 @@ On Windows, this project uses the ANGLE/Direct3D11 compatibility driver and caps
 After a car accident on Old Mill Road outside Blackwood, you must reach town, search for supplies and weapons, and repair the emergency radio to call for rescue. You start beside the wreck without equipment. Open the car and collect the backpack, flashlight and detour sheet before heading into town. The damaged hatchback comes from the downloaded FreeCarPack.blend.
 
 A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest-filtered ground texture, low-poly trees, blue-green distance fog, and simple moonlight and flashlight lighting.
+
+## Version 2.1.0
+
+The Hollow waits inside the chapel basement, with animated pursuit, melee attacks, headshot hit detection, death and respawn. Existing saves remain compatible. This version also adds an original desk microphone beside the emergency radio and refines John's portrait texture.
 
 ## Controls
 - Enter: begin / resume / restart
@@ -121,6 +125,9 @@ Town doors use a local creak recording positioned at the doorway. Pickups, resto
 Drawers and cabinets use a short positional slide-and-clunk cue, also controlled by M and pause.
 
 ## Local assets
+
+The Hollow monster and radio desk microphone are original models created for this project from user-provided references. Game exports and texture assets are included under `assets/enemies/hollow` and `assets/microphone`; the Hollow animations are authored in `hollow_monster.gd`.
+
 
 - assets/psx_house: selected PSX modular house interior pack models by DissonantVoid (https://dissonantvoid.itch.io/psx-retro-interior-pack), used for Victorian cellar masonry and storage. Source and terms are recorded in assets/psx_house/CREDITS.txt.
 
