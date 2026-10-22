@@ -463,9 +463,6 @@ func perform(id: String):
 	if data.kind=="crash_tutorial":
 		game.crash_site.interact_tutorial(id)
 		return
-	if not game.crash_site.has_backpack and data.kind not in ["crash","note"]:
-		game.message = "Get your backpack and flashlight from the crashed car first."
-		return
 	if data.taken:
 		return
 	if data.kind!="crash" and not id.begins_with("crash_") and not id.begins_with("cemetery_"):
@@ -581,8 +578,6 @@ func perform(id: String):
 			if id=="cemetery_coupler":cemetery.slam_shut()
 		"note":
 			if id=="house_note":
-				if not game.crash_site.has_backpack:
-					game.message="Get your backpack from the wreck before taking Ada's letter.";return
 				if not game.backpack.room_for("ada_letter"):
 					game.message="Make one space in your backpack for Ada's letter. It stays here.";return
 				inventory.ada_letter=1;data.taken=true;data.area.hide();data.area.collision_layer=0

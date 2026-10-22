@@ -11,7 +11,7 @@ You survived a car accident on Old Mill Road. Follow the road into Blackwood,
 find supplies and weapons, and repair the town radio to call for rescue.
 You wake in the driver's seat. Press E to try the ignition twice, then advance the dialogue and press E to open the door and get out. Head down Old Mill Road toward town for help. There is no automatic gear reminder on your first exit.
 
-The crash leaves you at **25% health**. Just beyond the cemetery gate, your vision dims, movement staggers and footsteps slow. You drop to your knees and black out before the tree scare. Your eyes blink open in the pharmacy's medical bed, where Aubrey treats your head wound and explains Blackwood's broadcast. This rescue is the required normal opening; testing mode skips it.
+The crash leaves you at **25% health**. Just beyond the cemetery gate, your vision dims, movement staggers and footsteps slow. You drop to your knees and black out before the tree scare. The player's light-headed dialogue clears after two seconds. A 5.5-second blackout ends with a three-dot countdown, then your eyes blink open in the pharmacy's medical bed, where Aubrey treats your head wound and explains Blackwood's broadcast. This rescue is the required normal opening; testing mode skips it.
 
 After leaving the bed, retrieve any missing backpack and flashlight from the car trunk. The prompt names what you still need. Your belongings remain where you left them. The first spare bandage becomes available after Aubrey's treatment: in your backpack if you already collected it, or when you retrieve it afterward. H uses bandages first (+10 health), then medpacks (+50 health); full health preserves supplies. More bandages are in the clinic's bedside drawer. The rescue happens once per journey and persists through saves. Aubrey remembers the bedside introduction.
 
@@ -158,3 +158,5 @@ Pursuing town creatures can pound on an unlocked building door for several secon
 ## Combat and pursuit
 
 Monsters keep pursuing once alerted and can force unlocked doors, follow stairs and use opened underground passages. Locked routes remain barriers. Standard creatures take about six pistol body hits, three rifle hits or two close shotgun blasts. Headshots do 1.5x damage. Mummies resist staggering more strongly, and shotgun damage falls off beyond five meters. Use normal mode to judge difficulty; testing mode grants unlimited health and ammunition.
+
+Doors, conversations, searchable storage and item interactions work before you retrieve your backpack. The backpack screen and flashlight require their corresponding gear; key-locked routes still require their keys.

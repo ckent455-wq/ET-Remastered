@@ -13,18 +13,23 @@ func run():
  assert(g.crash_site.tutorial_prompt()=="" and g.town.inventory.bandage==0)
  g.crash_site.hatch_open=true;g.crash_site.interact_tutorial("crash_backpack");assert(g.town.inventory.bandage==0)
  g.story.crash_wound_treated=true;g.player.position.z=-16;r.update_approach(1)
- assert(r.phase=="dimming","The new opening always leads to Aubrey, regardless of earlier treatment flags")
- var initial=r.movement_scale();step(r,2);var middle=r.movement_scale();assert(middle<initial and absf(g.camera.rotation.z)>0)
+ assert(r.caption_visible() and r.phase=="dimming","The new opening always leads to Aubrey, regardless of earlier treatment flags")
+ var initial=r.movement_scale();step(r,0.8);assert(r.caption_visible());step(r,1.2);assert(not r.caption_visible());var middle=r.movement_scale();assert(middle<initial and absf(g.camera.rotation.z)>0)
  var before=r.elapsed;g.state="paused";step(r,1);assert(r.elapsed==before);g.state="play"
  step(r,2);assert(r.movement_scale()<middle and r.veil.color.a>0.5)
  g.player.position.z=-22;g.falling_tree.previous_z=-20;g.falling_tree._physics_process(0.1)
  assert(r.phase=="faint" and not g.falling_tree.triggered)
  step(r,0.8);assert(g.camera.position.y<g.STANDING_EYE)
  step(r,1.1);assert(r.phase=="blackout" and r.veil.color.a==1)
- step(r,1.3);assert(r.phase=="wake" and g.town.player_inside_building("clinic"))
+ step(r,2.0);assert(r.phase=="blackout" and r.veil.color.a==1 and not r.caption_visible(),"Opening thought clears after two seconds")
+ var previous_elapsed=r.elapsed
+ for moment in [[2.6,3],[3.6,2],[4.6,1]]:
+  r.elapsed=moment[0];assert(r.blackout_dots()==moment[1])
+ r.elapsed=previous_elapsed
+ step(r,r.BLACKOUT_SECONDS-1.9);assert(r.phase=="wake" and g.town.player_inside_building("clinic"))
  assert(g.story.clinic_rescue_done and g.town.inventory.bandage==1)
- r.elapsed=0;assert(r.eye_opening()==0);step(r,0.7);var opening=r.eye_opening();step(r,0.3);assert(r.eye_opening()<opening)
- step(r,2.2);assert(g.state=="dialogue" and r.phase=="bed" and g.story.AUBREY_BRIEFING in g.dialogue_text)
+ r.elapsed=0;assert(r.eye_opening()==0 and not r.caption_visible());step(r,0.7);var opening=r.eye_opening();step(r,0.3);assert(r.eye_opening()<opening)
+ step(r,2.2);assert(not r.caption_visible() and g.state=="dialogue" and r.phase=="bed" and g.story.AUBREY_BRIEFING in g.dialogue_text)
  assert("head wound you sustained" in g.dialogue_text)
  g.set_state("play");assert(r.phase=="" and r.movement_scale()==1)
  g.town.townspeople.talk("nurse");assert(g.town.townspeople.conversation.choosing);g.set_state("play")

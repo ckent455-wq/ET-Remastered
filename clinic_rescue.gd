@@ -3,8 +3,12 @@ extends Node
 var game
 var phase = ""
 var elapsed = 0.0
+var caption_elapsed = 0.0
 var start_roll = 0.0
 var veil: ColorRect
+var faint_caption: Control
+const FAINT_LINE = "Oh fuck, im light headed..."
+const BLACKOUT_SECONDS = 5.5
 var start_eye_height = 1.65
 var start_pitch = 0.0
 const TOWN_APPROACH_Z = -15.0
@@ -14,9 +18,11 @@ func _ready():
  name="ClinicRescue"
  var layer=CanvasLayer.new();layer.layer=90;add_child(layer)
  veil=ColorRect.new();veil.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT);veil.color=Color(0,0,0,0);veil.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(veil)
+ faint_caption=preload("res://clinic_faint_caption.gd").new();faint_caption.rescue=self;faint_caption.mouse_filter=Control.MOUSE_FILTER_IGNORE;layer.add_child(faint_caption)
 
 func reset():
- phase="";elapsed=0
+ phase="";elapsed=0;caption_elapsed=0
+ if faint_caption:faint_caption.queue_redraw()
  if veil:veil.color.a=0
  if game.camera:game.camera.rotation.z=0;game.camera.h_offset=0;game.camera.v_offset=0
 
@@ -30,7 +36,8 @@ func update_approach(_delta:float):
  if game.crash_site.wake_phase!="":return
  if game.player.global_position.z>TOWN_APPROACH_Z or absf(game.player.global_position.x)>4.5:return
  if game.town.townspeople.characters.nurse.dead:return
- phase="dimming";elapsed=0
+ phase="dimming";elapsed=0;caption_elapsed=0
+ faint_caption.queue_redraw()
  game.message="My head is spinning... I need to find help."
 
 func road_collapse_pending()->bool:
@@ -49,6 +56,8 @@ func begin_collapse():
  game.hud.queue_redraw()
 
 func _process(delta):
+ if phase in ["dimming","faint","blackout","wake"] and game.state in ["play","clinic_faint"]:caption_elapsed+=minf(delta,0.1)
+ faint_caption.queue_redraw()
  if phase=="" or phase=="bed":return
  if phase=="dimming":
   if game.state!="play":return
@@ -71,7 +80,7 @@ func _process(delta):
   veil.color.a=lerpf(0.72,1.0,amount)
   if elapsed>=1.8:phase="blackout";elapsed=0
  elif phase=="blackout":
-  if elapsed>=1.2:place_in_bed();phase="wake";elapsed=0;veil.color.a=0
+  if elapsed>=BLACKOUT_SECONDS:place_in_bed();phase="wake";elapsed=0;veil.color.a=0
  elif phase=="wake":
   if elapsed>=3.0:begin_explanation()
  game.hud.queue_redraw()
@@ -108,6 +117,7 @@ func place_in_bed():
 func begin_explanation():
  game.town.townspeople.conversation.greetings["nurse"]=true
  phase="bed";veil.color.a=0
+ faint_caption.queue_redraw()
  game.story.record_aubrey_briefing()
  game.dialogue_name="Aubrey / Nurse";game.dialogue_text=AUBREY_LINE
  var warning="The voices are another danger. People here stopped sleeping, lost time, then began to change. Don't follow a familiar voice into the woods. Even if it's mine..."
@@ -124,7 +134,7 @@ func begin_explanation():
 
 func leave_bed():
  if phase!="bed":return
- phase="";elapsed=0;veil.color.a=0
+ phase="";elapsed=0;caption_elapsed=0;veil.color.a=0
  game.player.global_position=game.town.buildings.clinic.to_global(Vector3(-2.0,0.02,0.65))
  game.player.velocity=Vector3.ZERO;game.crouching=false
  game.player_collider.shape.height=game.STANDING_HEIGHT;game.player_collider.position.y=game.STANDING_HEIGHT/2
@@ -145,3 +155,11 @@ func movement_scale()->float:
  var weakness=smoothstep(0,5.0,elapsed)
  var uneven=lerpf(1.0,0.65+0.35*absf(sin(elapsed*3.7)),weakness)
  return lerpf(1.0,0.18,weakness)*uneven
+
+func caption_visible()->bool:
+ return caption_elapsed<2.0 and phase in ["dimming","faint","blackout","wake"] and game.state in ["play","clinic_faint"]
+
+func blackout_dots()->int:
+ if phase!="blackout" or game.state!="clinic_faint":return 0
+ var remaining=BLACKOUT_SECONDS-elapsed
+ return clampi(ceili(remaining),1,3) if remaining>0 and remaining<=3.0 else 0
