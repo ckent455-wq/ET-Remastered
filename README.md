@@ -18,6 +18,10 @@ After a car accident on Old Mill Road outside Blackwood, you must reach town, se
 
 A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest-filtered ground texture, low-poly trees, blue-green distance fog, and simple moonlight and flashlight lighting.
 
+## Version 2.2.0
+
+Search downed enemies for occasional ammunition and personal notes. Updated weapon models, sounds, reloads and monster reactions; clearer NPC dialogue layout, smoother roadside banks, and chapel basement encounter removed. See RELEASE_NOTES.md.
+
 ## Version 2.1.1
 
 Updates the radio desk microphone from the revised Blender model, retaining its desk placement and access to the receiver controls.

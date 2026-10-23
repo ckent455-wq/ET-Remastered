@@ -7,7 +7,7 @@ var greeted=false
 var selected=0
 var current_topic=""
 var asked={}
-const BOX=Rect2(60,120,520,264)
+const BOX=Rect2(60,246,520,148)
 var speaker="ranger"
 var greetings={}
 var TOPICS=[]
@@ -41,7 +41,7 @@ func begin(intro:String,force_intro=false,person="ranger"):
 func show_topics():
  choosing=true;current_topic=""
 func row(index:int)->Rect2:
- return Rect2(76,156+index*28,488,26)
+ return Rect2(76,272+index*22,488,21)
 func move_selection(amount:int):
  if choosing:selected=wrapi(selected+amount,0,TOPICS.size()+1)
 func choose(index:int):

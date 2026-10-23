@@ -1,0 +1,4 @@
+Rifle firing sound: 450853__kyles__gun-lee-enfield-303-rifle-clean-shot.wav
+Creator indicated by supplied filename: kyles.
+User-supplied download, used at user request.
+Converted to 16-bit PCM, peak set to 0.95, leading silence trimmed; full blast tail retained.

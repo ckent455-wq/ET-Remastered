@@ -4,9 +4,9 @@ var game
 var melee: Node3D
 var enemy_hitboxes
 const LOADOUT = [
-	{"id":"pistol","label":"COVERT PISTOL","clip":8,"max_reserve":64,"pickup_rounds":3,"delay":0.38,"reload":1.35,"pellets":1,"spread":0.006,"damage":24.0},
+	{"id":"pistol","label":"SERVICE PISTOL","clip":8,"max_reserve":64,"pickup_rounds":3,"delay":0.22,"reload":2.246,"pellets":1,"spread":0.006,"damage":24.0},
 	{"id":"rifle","label":"SERVICE RIFLE","clip":20,"max_reserve":120,"pickup_rounds":20,"delay":0.15,"reload":1.8,"pellets":1,"spread":0.012,"damage":48.0},
-	{"id":"shotgun","label":"DOUBLE BARREL","clip":2,"max_reserve":32,"pickup_rounds":2,"delay":0.65,"reload":2.1,"pellets":8,"spread":0.055,"damage":12.0}]
+	{"id":"shotgun","label":"DOUBLE BARREL","clip":2,"max_reserve":32,"pickup_rounds":2,"delay":0.65,"reload":3.15,"pellets":8,"spread":0.055,"damage":12.0}]
 var ammo_pickups: Node3D
 var lockbox: Node3D
 var police_car: Node3D
@@ -206,9 +206,10 @@ func equip(index: int):
 func reload():
 	if game.state!="play" or selected<0 or reload_remaining>0:
 		return
-	if magazines[selected]>=LOADOUT[selected].clip or reserves[selected]<=0:
+	var testing_reload = game.testing_mode and game.testing_mode.enabled
+	if not testing_reload and (magazines[selected]>=LOADOUT[selected].clip or reserves[selected]<=0):
 		return
-	reload_remaining = LOADOUT[selected].reload
+	reload_remaining = game.soundscape.rifle_reload_stream.get_length() if selected==1 else LOADOUT[selected].reload
 	game.soundscape.weapon_sound("reload")
 
 func fire() -> bool:
@@ -252,6 +253,8 @@ func shot_damage(weapon:int,zone:String,distance:float)->float:
 func trace_shot(origin:Vector3,direction:Vector3,reach:float)->Dictionary:
 	if not enemy_hitboxes: enemy_hitboxes=preload("res://enemy_shot_hitboxes.gd").new(game.enemies)
 	var excludes:Array[RID]=[game.player.get_rid()]
+	var road_limit=game.forest_boundary.get_node_or_null("InvisibleSouthRoadLimit")
+	if road_limit:excludes.append(road_limit.get_rid())
 	for data in game.enemies.creatures: excludes.append(data.actor.get_rid())
 	var ray=PhysicsRayQueryParameters3D.create(origin,origin+direction*reach,1,excludes)
 	var wall=game.get_world_3d().direct_space_state.intersect_ray(ray)
@@ -263,7 +266,14 @@ func impact(hit: Dictionary, damage_override: float = -1.0):
 	var body = hit.collider as Node3D
 	if body.is_in_group("HostileEnemies"):
 		var amount=damage_override if damage_override>=0 else shot_damage(selected,str(hit.get("zone","body")),game.camera.global_position.distance_to(hit.position))
-		if game.enemies.shoot(int(body.get_meta("enemy_index")),amount):
+		var distance=game.camera.global_position.distance_to(hit.position)
+		var head=str(hit.get("zone","body"))=="head"
+		var force=[18.0,52.0,90.0][selected]
+		if head:force*=1.5
+		if selected==2:force*=lerpf(1.0,0.25,clampf((distance-5.0)/10.0,0,1))
+		var index=int(body.get_meta("enemy_index"))
+		if game.enemies.shoot(index,amount,force):
+			game.enemies.shot_reaction(index,selected,hit.position,head,distance)
 			hit_feedback = 0.18
 		return
 	if body.is_in_group("CrowTargets"):
@@ -326,5 +336,8 @@ func _physics_process(delta):
 			var amount = mini(LOADOUT[selected].clip-magazines[selected],reserves[selected])
 			magazines[selected] += amount
 			reserves[selected] -= amount
+	# Holding fire repeats pistol/rifle shots through the same cooldown and reload gates.
+	if selected in [0,1] and Input.mouse_mode==Input.MOUSE_MODE_CAPTURED and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		fire()
 	aiming = selected>=0 and reload_remaining<=0 and (Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or (game.controller and game.controller.aiming()))
 	update_model(delta)

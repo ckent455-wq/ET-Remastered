@@ -33,10 +33,11 @@ func _ready():
 			build_section(OUTLINE[i],Vector3(-7,0,42),100)
 			build_section(Vector3(7,0,42),OUTLINE[1],101)
 		else: build_section(OUTLINE[i],OUTLINE[(i+1)%OUTLINE.size()],i)
+	# Keep the playable road close to the crash, aligned with the roadside rock.
 	var road_limit=StaticBody3D.new()
 	road_limit.name="InvisibleSouthRoadLimit"
 	add_child(road_limit)
-	road_limit.position=Vector3(0,6,19.77) # Aligned with the roadside rock.
+	road_limit.position=Vector3(0,6,19.77)
 	var limit_shape=BoxShape3D.new()
 	limit_shape.size=Vector3(18,12,0.4)
 	var limit_collision=CollisionShape3D.new()
@@ -82,6 +83,12 @@ func outward_for(a: Vector3, b: Vector3) -> Vector3:
 func rise(depth: float, distance_along: float) -> float:
 	return maxf(0,depth)*0.29*(1.0+0.25*sin(distance_along*0.16))
 
+func bank_height(a:Vector3,b:Vector3,p:Vector3,depth:float,t:float)->float:
+	var edge=minf(t,1.0-t)*a.distance_to(b)
+	var taper=smoothstep(0.0,5.0,edge)
+	var blend=smoothstep(0.0,6.0,maxf(0,depth))
+	return game.town.streetscape.chapel_hill.terrain_height_at(p)+rise(depth,p.x+p.z)*blend*taper
+
 func build_section(a: Vector3, b: Vector3, index: int):
 	var outward = outward_for(a,b)
 	var rng = RandomNumberGenerator.new()
@@ -93,7 +100,7 @@ func build_section(a: Vector3, b: Vector3, index: int):
 		for i in range(count):
 			var t = clampf((i+0.48*(row%2))/float(count-1),0,1)
 			var p = a.lerp(b,t)+outward*(ROW_DEPTHS[row]+rng.randf_range(-0.45,0.45))
-			p.y = game.town.streetscape.chapel_hill.terrain_height_at(p)+rise(ROW_DEPTHS[row],t*a.distance_to(b)+index*20)
+			p.y = bank_height(a,b,p,ROW_DEPTHS[row],t)
 			var size = rng.randf_range(0.86,1.3)
 			var basis = Basis(Vector3.UP,rng.randf_range(0,TAU)).scaled(Vector3(size,size*rng.randf_range(0.9,1.2),size))
 			transforms.append(Transform3D(basis,p))
@@ -107,7 +114,7 @@ func build_section(a: Vector3, b: Vector3, index: int):
 			var t = clampf((i+0.5*row)/float(count*2-1),0,1)
 			var depth = -0.7+row*1.5
 			var p = a.lerp(b,t)+outward*depth
-			p.y = game.town.streetscape.chapel_hill.terrain_height_at(p)+rise(depth,t*a.distance_to(b)+index*20)+0.35
+			p.y = bank_height(a,b,p,depth,t)+0.35
 			var size = rng.randf_range(0.9,1.25)
 			shrubs.append(Transform3D(Basis(Vector3.UP,rng.randf_range(0,TAU)).scaled(Vector3(size*3.0,size*1.7,size*3.0)),p))
 			shrub_colors.append(Color(1,1,1,1))
@@ -170,8 +177,8 @@ func make_crown() -> ArrayMesh:
 func build_bank(a: Vector3, b: Vector3, outward: Vector3, index: int):
 	var tool = SurfaceTool.new()
 	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var steps = int(ceil(a.distance_to(b)/2.0))
-	var depths = [-2.0,0.0,3.1,6.4,10.5,18.0]
+	var steps = int(ceil(a.distance_to(b)/1.0))
+	var depths = [-2.0,0.0,1.0,2.0,3.1,4.5,6.4,10.5,18.0]
 	for band in range(depths.size()-1):
 		for i in range(steps):
 			var points: Array[Vector3] = []
@@ -179,15 +186,15 @@ func build_bank(a: Vector3, b: Vector3, outward: Vector3, index: int):
 				var t = float(pair.x)/steps
 				var d = depths[pair.y]
 				var p = a.lerp(b,t)+outward*d
-				p.y = game.town.streetscape.chapel_hill.terrain_height_at(p)+rise(d,t*a.distance_to(b)+index*20)+ (0.75 if d>=0 else 0.01)
+				p.y = bank_height(a,b,p,d,t)+0.006
 				points.append(p)
 			for vertex in [0,2,1,1,2,3]:
 				tool.set_normal(Vector3.UP)
-				tool.set_uv(Vector2(points[vertex].x,points[vertex].z)*0.22)
+				tool.set_uv(Vector2(points[vertex].x,points[vertex].z))
 				tool.add_vertex(points[vertex])
 	var material = game.town.mats.wood.duplicate()
 	material.albedo_texture = preload("res://assets/forest/ground_ps2.png")
-	material.albedo_color = Color("586044")
+	material.albedo_color = Color("8d9a91")
 	material.cull_mode = BaseMaterial3D.CULL_DISABLED
 	var bank = MeshInstance3D.new()
 	bank.name = "RootAndBrambleBank"

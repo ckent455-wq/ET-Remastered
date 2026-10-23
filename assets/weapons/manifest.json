@@ -4,7 +4,8 @@
     "source": "suppressed_covert_pistol.glb",
     "triangles": 2200,
     "texture_limit": 256,
-    "license": "CC0 / Polyy"
+    "license": "CC0 / Polyy",
+    "modification": "Suppressor removed; exposed steel muzzle and barrel bore added."
   },
   {
     "weapon": "rifle",

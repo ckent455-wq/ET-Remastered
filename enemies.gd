@@ -4,6 +4,7 @@ var game
 var door_encounter=preload("res://monster_doors.gd").new()
 var pursuit=preload("res://monster_pursuit.gd").new()
 var creatures = []
+var corpse_search=preload("res://corpse_search.gd").new(self)
 const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2),Vector3(-16.1,-12.99,-96.3),Vector3(30,0,-28),Vector3(25.55,-23.99,-104),Vector3(26.45,-23.99,-96.5),Vector3(22.3,-23.99,-84.08)]
 const WOOD_ROUTES = [[Vector3(19.8,0,-129.7),Vector3(21.0,0,-131.5),Vector3(24.0,0,-130.2)],[Vector3(38.3,0,-134.5),Vector3(37.8,0,-130.0),Vector3(34.8,0,-127.5)],[Vector3(39.0,0,-139),Vector3(38.3,0,-134.5),Vector3(37.8,0,-130),Vector3(34.8,0,-127.5)]]
 const HEALTH = 132.0
@@ -61,7 +62,10 @@ func _ready():
 		if i==REAPER_INDEX: scene_path="res://assets/enemies/reaper/reaper.glb"
 		if i==HOLLOW_INDEX:scene_path="res://assets/enemies/hollow/hollow.glb"
 		var visual = load(scene_path).instantiate()
-		actor.add_child(visual)
+		var reaction_pivot = Node3D.new()
+		reaction_pivot.name = "ShotReaction"
+		actor.add_child(reaction_pivot)
+		reaction_pivot.add_child(visual)
 		game.town.apartment_interiors.adapt(visual)
 		if i==CELLAR_INDEX or i in TUNNEL_INDICES: game.town.streetscape.church.basement.prepare_cellar_lighting(visual)
 		var animation = visual.find_child("AnimationPlayer",true,false) as AnimationPlayer
@@ -110,10 +114,13 @@ func reset():
 	workshop_previous_x=18.0
 	workshop_spawned=false
 	workshop_defeated=false
-	for data in creatures: reset_creature(data)
+	for data in creatures:
+		for key in ["body_searched","body_ammo","body_ammo_type","body_note"]:data.erase(key)
+		reset_creature(data)
 	sense_clock = 0
 
 func reset_creature(data):
+	corpse_search.prepare(data)
 	door_encounter.clear_attempt(data)
 	data.actor.position = data.spawn
 	data.actor.rotation = Vector3(0,PI,0)
@@ -128,6 +135,13 @@ func reset_creature(data):
 	data["special_door"]=""
 	data["stair_step"]=0
 	data["stair_direction"]=""
+	data["push_lock"]=0.0
+	data["push_velocity"]=Vector3.ZERO
+	data["corpse_settled"]=false
+	data["corpse_lift"]=0.0
+	data["hit_time"]=0.0
+	var pivot=data.actor.get_node_or_null("ShotReaction")
+	if pivot:pivot.transform=Transform3D.IDENTITY
 	data["poise"]=0.0
 	data["stagger_lock"]=0.0
 	data["poise_age"]=0.0
@@ -182,14 +196,19 @@ func reset_creature(data):
 		data["path_timer"]=0.0
 		play(data,"idle1")
 	if data.index==HOLLOW_INDEX:
-		data.state="chapel_wait"
-		play(data,"idle1")
-		data.animation.advance(0)
+		remove_chapel_monster()
 	if data.index==WORKSHOP_INDEX:
 		data.state="dormant"
 		data.actor.hide()
 		data.actor.collision_layer=0
 		data.actor.collision_mask=0
+
+func remove_chapel_monster():
+	# Preserve its save slot so earlier journeys still load, but remove the encounter.
+	var data=creatures[HOLLOW_INDEX]
+	data.hp=0;data.state="removed";data.pursuing=false;data.respawn_remaining=0
+	data.actor.hide();data.actor.collision_layer=0;data.actor.collision_mask=0
+	data.actor.velocity=Vector3.ZERO;data.voice.stop();data.animation.stop()
 
 func play(data, clip: String):
 	if data.clip==clip or not data.clips.has(clip): return
@@ -271,6 +290,72 @@ func shoot(index: int, damage: float, force: float = -1.0) -> bool:
 			data.state="tunnel_chase" if index in TUNNEL_INDICES else "cellar_rush" if index==CELLAR_INDEX else "chase"
 	return true
 
+func shot_reaction(index:int, weapon:int, point:Vector3, head:bool, distance:float):
+	var data=creatures[index]
+	impact_burst(point,(data.actor.global_position-game.camera.global_position).normalized(),weapon)
+	if data.hp<=0:return
+	var strength=1.0
+	if weapon==2:strength=lerpf(1.0,0.25,clampf((distance-5.0)/10.0,0,1))
+	data["hit_duration"]=[0.24,0.38,0.58][weapon]
+	data["hit_time"]=data.hit_duration
+	data["hit_angle"]=[0.14,0.30,0.52][weapon]*strength*(1.35 if head else 1.0)
+	data["hit_shift"]=[0.025,0.06,0.10][weapon]*strength
+	var away=data.actor.global_position-game.camera.global_position
+	away.y=0
+	data["hit_direction"]=data.actor.global_basis.inverse()*away.normalized()
+	data["hit_side"]=1.0 if data.actor.to_local(point).x>=0 else -1.0
+	# Full-body displacement uses world collisions, with a resistance window.
+	if weapon>0 and data.state=="stagger" and data.get("push_lock",0.0)<=0:
+		data["push_velocity"]=away.normalized()*(1.5 if weapon==1 else 4.0*strength)
+		data["push_lock"]=0.9
+
+func tick_shot_reaction(data,delta:float):
+	var pivot=data.actor.get_node_or_null("ShotReaction")
+	if not pivot:return
+	data["push_lock"]=maxf(0,data.get("push_lock",0.0)-delta)
+	data["hit_time"]=maxf(0,data.get("hit_time",0.0)-delta)
+	if data.hit_time<=0 or data.hp<=0:
+		pivot.transform=Transform3D.IDENTITY
+		return
+	var progress=1.0-data.hit_time/data.hit_duration
+	# Reach the impact pose in 45 ms, then recover with a slower settling motion.
+	var attack=0.045/data.hit_duration
+	var envelope=progress/attack if progress<attack else pow((1.0-progress)/(1.0-attack),1.6)
+	var push:Vector3=data.get("push_velocity",Vector3.ZERO)
+	if push.length()>0.05:
+		data.actor.move_and_collide(push*delta)
+		data["push_velocity"]=push.move_toward(Vector3.ZERO,delta*12.0)
+	pivot.rotation=Vector3(data.hit_direction.z*data.hit_angle*envelope,data.hit_angle*data.hit_side*envelope*0.3,-data.hit_direction.x*data.hit_angle*envelope)
+	pivot.position=data.hit_direction*data.hit_shift*envelope
+
+func impact_burst(point:Vector3,direction:Vector3,weapon:int):
+	var burst=CPUParticles3D.new()
+	burst.amount=[5,8,14][weapon];burst.lifetime=0.28;burst.one_shot=true
+	burst.explosiveness=1.0;burst.local_coords=false
+	burst.direction=direction+Vector3.UP*0.4;burst.spread=48
+	burst.initial_velocity_min=0.6;burst.initial_velocity_max=[1.3,1.8,2.5][weapon]
+	burst.gravity=Vector3(0,-7,0)
+	var mesh=SphereMesh.new();mesh.radius=0.018;mesh.height=0.036;mesh.radial_segments=4;mesh.rings=2
+	var material=StandardMaterial3D.new();material.albedo_color=Color("713332");material.shading_mode=BaseMaterial3D.SHADING_MODE_UNSHADED
+	mesh.material=material;burst.mesh=mesh
+	game.add_child(burst);burst.global_position=point;burst.emitting=true
+	get_tree().create_timer(0.6).timeout.connect(burst.queue_free)
+
+func support_mummy_corpse(data):
+	if data.get("corpse_settled",false):return
+	# Check the actual tilted footprint against floors and stair treads.
+	var lift=0.0
+	for step in range(7):
+		for side in [-0.22,0.0,0.22]:
+			var point:Vector3=data.visual.to_global(Vector3(side,step*0.30,0))
+			point.y-=data.get("corpse_lift",0.0)+0.22*sin(data.fall_time*PI/2)
+			var ray=PhysicsRayQueryParameters3D.create(point+Vector3.UP*1.8,point-Vector3.UP*1.8,1,[data.actor.get_rid(),game.player.get_rid()])
+			var hit=game.get_world_3d().direct_space_state.intersect_ray(ray)
+			if not hit.is_empty() and hit.normal.y>0.45:lift=maxf(lift,hit.position.y+0.025-point.y)
+	data["corpse_lift"]=lift
+	data.visual.position.y=lift
+	data["corpse_settled"]=data.fall_time>=1.0
+
 func sense(data):
 	var p: Vector3 = game.player.global_position
 	var distance = data.actor.global_position.distance_to(p)
@@ -317,6 +402,8 @@ func _physics_process(delta):
 	var sensing = sense_clock<=0
 	if sensing: sense_clock = 0.18
 	for data in creatures:
+		if data.index==HOLLOW_INDEX:
+			continue
 		var animation_rate = 1.0
 		if data.state in ["attack","alert"] and data.clips.has(data.clip):
 			animation_rate = data.animation.get_animation(data.clips[data.clip]).length/(1.45 if data.state=="attack" else 1.1)
@@ -324,6 +411,7 @@ func _physics_process(delta):
 		data.animation.speed_scale = animation_rate if active else 0
 		data.voice.stream_paused = game.state not in ["play","dialogue"]
 		if not active: continue
+		tick_shot_reaction(data,delta)
 		if data.index==HOLLOW_INDEX:
 			hollow_encounter.animate(data,delta)
 			if data.state=="dead":
@@ -336,6 +424,7 @@ func _physics_process(delta):
 			data.fall_time = minf(1,data.fall_time+delta/0.7)
 			data.animation.speed_scale = 0
 			data.visual.rotation.x = -smoothstep(0,1,data.fall_time)*PI/2
+			support_mummy_corpse(data)
 			continue
 		if pursuit.update(self,data,delta):
 			if data.index==REAPER_INDEX:reaper_encounter.animate(self,data,delta)

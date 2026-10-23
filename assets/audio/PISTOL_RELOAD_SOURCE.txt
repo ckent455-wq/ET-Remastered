@@ -1,0 +1,4 @@
+Pistol reload sound: 370251__evanboyerman__full-reload-of-a-pistol-mixed.wav
+Creator indicated by supplied filename: evanboyerman.
+User-supplied download, used at user request.
+Converted to 16-bit PCM, peak set to 0.95, leading silence trimmed; full blast tail retained.

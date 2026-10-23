@@ -1,0 +1,4 @@
+Pistol firing sound: 415912__okieactor__heathers-gunshot-effect2.wav
+Creator indicated by supplied filename: okieactor.
+User-supplied download, used at the user's request.
+Converted float WAV to 16-bit PCM; leading silence trimmed for immediate firing response. Original tail retained.

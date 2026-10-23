@@ -423,8 +423,12 @@ func refresh_focus():
 		var id: String = hit.collider.get_meta("action_id")
 		if actions.has(id) and not actions[id].taken and actions[id].area.is_visible_in_tree():
 			focus_action = id
+	var limit=start.distance_to(hit.position) if not hit.is_empty() else 3.2
+	var body_focus=game.enemies.corpse_search.focus(start,finish,limit)
+	if body_focus!="":focus_action=body_focus
 
 func prompt() -> String:
+	if focus_action.begins_with("body_search_"):return "E / Search body"
 	if focus_action=="":
 		return ""
 	var data = actions[focus_action]
@@ -466,6 +470,9 @@ func interact():
 		perform(focus_action)
 
 func perform(id: String):
+	if id.begins_with("body_search_"):
+		game.enemies.corpse_search.search(id.trim_prefix("body_search_").to_int())
+		return
 	var data = actions[id]
 	if data.kind=="crash_tutorial":
 		game.crash_site.interact_tutorial(id)

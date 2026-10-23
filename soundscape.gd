@@ -31,6 +31,10 @@ var hurt_streams: Array[AudioStream] = []
 var hurt_bag: Array[int] = []
 var last_hurt = -1
 var reload_voice: AudioStreamPlayer
+var default_reload_stream: AudioStream
+var shotgun_reload_stream: AudioStream
+var pistol_reload_stream: AudioStream
+var rifle_reload_stream: AudioStream
 var next_shot = 0
 var storage_voice: AudioStreamPlayer3D
 var atmosphere: Node
@@ -90,7 +94,11 @@ func _ready():
 		weapon_streams[weapon] = stream("gun_"+weapon)
 	for i in range(3):
 		weapon_voices.append(voice(weapon_streams.pistol,-15))
-	reload_voice = voice(stream("gun_reload"),-13)
+	default_reload_stream = stream("gun_reload")
+	shotgun_reload_stream = stream("gun_shotgun_reload")
+	pistol_reload_stream = stream("gun_pistol_reload")
+	rifle_reload_stream = load("res://assets/audio/gun_rifle_reload.mp3")
+	reload_voice = voice(default_reload_stream,-13)
 	for i in range(3): hurt_streams.append(stream("player/hurt_%d" % i))
 	hurt_voice = voice(hurt_streams[0],-5)
 	wind.play()
@@ -158,11 +166,19 @@ func weapon_stop_reload():
 
 func weapon_sound(cue: String):
 	if cue=="reload":
+		var shotgun = game.weapons.selected==2
+		var pistol = game.weapons.selected==0
+		reload_voice.stream = pistol_reload_stream if pistol else (shotgun_reload_stream if shotgun else rifle_reload_stream)
+		# Play reload recordings at their natural speed.
+		reload_voice.pitch_scale = 1.0
+		reload_voice.volume_db = -7.0
 		reload_voice.play()
 		return
 	var node = weapon_voices[next_shot]
 	next_shot = (next_shot+1)%weapon_voices.size()
 	node.stream = weapon_streams[cue]
+	# Keep the pistol report prominent over the town ambience.
+	node.volume_db = -1.0 if cue in ["pistol","shotgun","rifle"] else -15.0
 	node.pitch_scale = rng.randf_range(0.96,1.04)
 	node.play()
 

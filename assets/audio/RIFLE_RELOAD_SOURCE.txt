@@ -1,0 +1,4 @@
+Rifle reload sound: 276963__gfl7__galil-reload-sound.mp3
+Creator indicated by supplied filename: gfl7.
+User-supplied download, used at user request.
+Original MP3 retained; plays once at natural speed. Reload duration follows the recording.

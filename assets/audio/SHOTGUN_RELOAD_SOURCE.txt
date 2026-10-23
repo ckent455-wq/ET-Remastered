@@ -1,0 +1,4 @@
+Shotgun reload sound: 432141__maximbomba__rifle-or-shotgun-reload.wav
+Creator indicated by supplied filename: maximbomba.
+User-supplied download, used at user request.
+Converted to 16-bit PCM, peak set to 0.95, leading silence trimmed; full blast tail retained.

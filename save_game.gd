@@ -130,6 +130,7 @@ func apply(data:Dictionary):
   if previous!=maximum:
    enemy.hp=clampf(enemy.hp/maxf(1,previous),0,1)*maximum
   enemy.max_hp=maximum
+ game.enemies.remove_chapel_monster()
  for id in data.people:
   game.town.townspeople.characters[id].merge(data.people[id],true)
   var person=game.town.townspeople.characters[id]

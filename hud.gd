@@ -438,16 +438,16 @@ func draw_dialogue():
 func draw_pat_questions(conversation):
 	draw_rect(conversation.BOX,Color(0.015,0.02,0.017,0.97))
 	draw_rect(conversation.BOX,INK,false,2)
-	text(conversation.speaker_name().to_upper()+" / ASK A QUESTION",Vector2(80,144),16,INK)
+	text(conversation.speaker_name().to_upper()+" / ASK A QUESTION",Vector2(80,265),14,INK)
 	for i in range(conversation.TOPICS.size()+1):
 		var bounds=conversation.row(i)
 		if i==conversation.selected:draw_rect(bounds,Color("354039"))
 		var label="I should get going." if i==conversation.TOPICS.size() else conversation.TOPICS[i].question
-		text(label,Vector2(94,bounds.position.y+18),14,INK)
-		if i<conversation.TOPICS.size() and conversation.asked.has(conversation.entry_id(conversation.TOPICS[i].id)):draw_circle(Vector2(84,bounds.position.y+13),2,AMBER)
+		text(label,Vector2(94,bounds.position.y+15),12,INK)
+		if i<conversation.TOPICS.size() and conversation.asked.has(conversation.entry_id(conversation.TOPICS[i].id)):draw_circle(Vector2(84,bounds.position.y+10),2,AMBER)
 	var hint="UP/DOWN  Choose   E or ENTER  Ask   ESC  Leave"
 	if game.controller.using_controller:hint="D-PAD / LS  Choose   "+game.controller.label("south")+"  Ask   "+game.controller.label("east")+"  Leave"
-	text(hint,Vector2(80,376),11,DIM)
+	text(hint,Vector2(80,389),10,DIM)
 
 func instruction_lines(value:String)->Array[String]:
 	value=value.replace("E / ","E TO ")
