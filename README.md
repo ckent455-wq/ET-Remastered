@@ -18,6 +18,10 @@ After a car accident on Old Mill Road outside Blackwood, you must reach town, se
 
 A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest-filtered ground texture, low-poly trees, blue-green distance fog, and simple moonlight and flashlight lighting.
 
+## Version 2.1.1
+
+Updates the radio desk microphone from the revised Blender model, retaining its desk placement and access to the receiver controls.
+
 ## Version 2.1.0
 
 The Hollow waits inside the chapel basement, with animated pursuit, melee attacks, headshot hit detection, death and respawn. Existing saves remain compatible. This version also adds an original desk microphone beside the emergency radio and refines John's portrait texture.
