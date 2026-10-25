@@ -510,7 +510,7 @@ func perform(id: String):
 		"radio_bypass":
 			game.story.toggle_bypass()
 		"crash":
-			game.message = "The engine is dead. You have collected the detour sheet." if game.crash_site.has_detour_sheet else "The engine is dead. Open the driver's door and collect the detour sheet from the seat."
+			game.message = "The engine is dead. Collect your backpack and flashlight from the trunk, then follow the road into town."
 		"weapon":
 			if data.weapon_index==0 and not game.weapons.police_car.can_take():
 				game.message="Open the abandoned police car's driver door to reach the pistol on the seat."
@@ -676,7 +676,7 @@ func objective() -> String:
 	if game.enemies and game.enemies.workshop_danger(): return "Kill the creature near the workshop, then recover the signal coil." if powered else "The creature is approaching. Flip the workshop switch, or fight it off."
 	if game.crash_site and not game.crash_site.tutorial_complete():
 		if game.story.clinic_rescue_done:return game.clinic_rescue.missing_gear_prompt()
-		return "Open the car door and collect your backpack, flashlight, and detour sheet."
+		return "Open the rear hatch and collect your backpack and flashlight."
 	if reached_town and game.story.needs_aubrey_introduction():return "Meet Aubrey at Blackwood Pharmacy. Ask what happened to the town."
 	if radio_ready and not game.story.repeater_is_off():return "Shut down the repeater in the chapel basement."
 	if radio_ready:

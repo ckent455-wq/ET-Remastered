@@ -74,7 +74,7 @@ func finish(restore=true):
  game.soundscape.weapon_stop_reload()
  game.health=saved.health;game.stamina=saved.stamina;game.flashlight_charge=saved.charge;game.flashlight.visible=saved.light and not game.flashlight_fault_active();game.invincible=0
  game.crash_site.has_backpack=saved.gear[0];game.crash_site.has_flashlight=saved.gear[1];game.crash_site.has_detour_sheet=saved.gear[2]
- game.crash_site.bag_visual.visible=not saved.gear[0];game.crash_site.light_visual.visible=not saved.gear[1];game.crash_site.detour_visual.visible=not saved.gear[2]
+ game.crash_site.bag_visual.visible=not saved.gear[0];game.crash_site.light_visual.visible=not saved.gear[1];game.crash_site.retire_detour_sheet()
  game.crash_site.update_door_target()
  game.crash_site.update_hatch_target()
  game.crash_site.update_item_targets()

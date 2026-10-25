@@ -48,3 +48,12 @@ The Victorian cellar foundation has been breached from outside. A short earthen 
 Radio guidance follows each survivor's perspective at every late quest stage: Pat emphasizes safe routes and verified rescue contact, Aubrey speaks in first person about her records and medical needs, and John explains power isolation and routing. They retain the same hardware requirements without sharing identical speeches.
 
 During evacuation, confused residents entered the station and removed equipment. John asked Pat to secure the spare antenna coupler. Bellamy locked the chapel cellar to keep residents away from its running rack and handed its key to Pat before boarding the bus. Pat temporarily cached both items on a shelf in the dry Whitcomb family vault, whose intact iron door and lock he controlled. He intended to retrieve them once the bus cleared the road, but noises beneath the cemetery kept him away. This predates discovery of the reanimated dead below the vault. The cache is on the shelf, not in a coffin; it was never intended as permanent emergency storage.
+
+
+## Pat / the Whitcomb vault
+
+Pat's cemetery questions develop through play rather than proximity-triggered speeches. His first answers preserve the established evacuation and memory-loss timeline, but he also admits he is waiting for someone. After he hands over the family key, he can describe his grandfather, a former mill night watchman whose three-note whistle meant it was time to come home.
+
+On returning from the vault, the player can press Pat about what he withheld. He admits visiting the morning after the evacuation, following the grandfather's imitated voice, removing the old inner passage shutter, then leaving the chapel key on the far workbench and fleeing. He locked the outer iron door behind him; the existing family-key gate remains necessary. His ordinary equipment cache was real, but not his whole reason for going back. He cannot explain who placed the cellar coffins or whether his action woke anything. Silence after the chapel shutdown resolves his waiting, rather than confirming a supernatural reunion.
+
+The optional disturbed grave remains an ammunition cache, not a second mandatory key gate. Its P.W. note is Pat's. The coffin was empty after a prior relocation of remains. Reading that note unlocks a specific question; seeing the fence apparition unlocks another. Neither is required to get the family key or finish the game. Aubrey and John's dialogue arcs remain unchanged in this pass.

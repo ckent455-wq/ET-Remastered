@@ -29,8 +29,28 @@ func run():
 				assert(not ray.is_empty() and ray.collider==d.actor,"Visible animated head has shootable volume")
 				var hp=d.hp
 				w.magazines[0]=8;w.delay=0;w.aiming=true
-				assert(w.fire() and d.hp==maxf(0,hp-36),"Actual aimed headshot damages "+str(index)+" / "+pose)
+				assert(w.fire() and d.hp==maxf(0,hp-42),"Actual aimed headshot damages "+str(index)+" / "+pose)
 			d.actor.hide();d.actor.collision_layer=0
+	# The same animated volumes identify legs and feed the disable mechanic.
+	for index in [0,e.HOUSE_INDEX,e.REAPER_INDEX]:
+		var target=e.creatures[index]
+		e.reset_creature(target);target.actor.position=Vector3(0,0.02,-57)
+		target.actor.show();target.actor.collision_layer=1;target.state="chase"
+		target.animation.play(target.clips.idle1,0);target.animation.advance(0)
+		var rig=boxes.rig(target)
+		rig.skeleton.force_update_all_bone_transforms()
+		var leg_point=Vector3.ZERO
+		for pair in rig.links:
+			if "leg" in pair[0] or "shin" in pair[0]:
+				leg_point=boxes.point(rig,pair[0]).lerp(boxes.point(rig,pair[1]),0.65)
+				break
+		var origin=leg_point+Vector3(0,0,5)
+		var hit=boxes.trace(origin,Vector3.FORWARD,8)
+		assert(not hit.is_empty() and hit.collider==target.actor and hit.zone=="leg","Animated leg volumes report a leg hit")
+		w.selected=0
+		for shot in range(2):w.impact(hit,w.shot_damage(0,"leg",5))
+		assert(target.limp_time>0,"Actual weapon impacts disable the targeted leg")
+		target.actor.hide();target.actor.collision_layer=0
 	for gun in [1,2]:
 		var target=e.creatures[e.REAPER_INDEX]
 		e.reset_creature(target);target.actor.position=Vector3(0,0.02,-57)

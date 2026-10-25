@@ -14,7 +14,7 @@ Title atmosphere: soft distant lightning appears at irregular 12â€“21 secon
 
 On Windows, this project uses the ANGLE/Direct3D11 compatibility driver and caps rendering at 60 FPS. A native stack sample of a frozen game on this computer showed the main thread spinning inside Intel's `ig11icd64.dll` OpenGL driver. ANGLE avoids that OpenGL driver path while keeping the compatibility renderer and the PS2-style visuals.
 
-After a car accident on Old Mill Road outside Blackwood, you must reach town, search for supplies and weapons, and repair the emergency radio to call for rescue. You start beside the wreck without equipment. Open the car and collect the backpack, flashlight and detour sheet before heading into town. The damaged hatchback comes from the downloaded FreeCarPack.blend.
+After a car accident on Old Mill Road outside Blackwood, you must reach town, search for supplies and weapons, and repair the emergency radio to call for rescue. You start beside the wreck without equipment. Open the car and collect the backpack and flashlight before heading into town. The damaged hatchback comes from the downloaded FreeCarPack.blend.
 
 A first-person survival horror game with a PS2-inspired 640 x 400 image, nearest-filtered ground texture, low-poly trees, blue-green distance fog, and simple moonlight and flashlight lighting.
 

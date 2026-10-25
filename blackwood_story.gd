@@ -4,6 +4,9 @@ extends Node
 var game
 const AUBREY_BRIEFING = "Four weeks ago, the walnut radio at the station began speaking by itself. Bellamy put its voices through the chapel amplifier, hoping someone would identify them. That spread the signal across Blackwood.\n\nFirst people stopped sleeping. Then they lost time, heard familiar voices and began to change. Those creatures outside the chapel were our neighbors. The wrapped bodies beneath the cemetery were already dead. The signal is waking them too.\n\nThe last families evacuated three nights ago. Pat, John and I stayed. We need a real county dispatcher. John knows the equipment; Pat has the station key in his office drawer. Read my clinic chart, the operator's station log and Bellamy's chapel book. They show what we missed.\n\nDon't follow a familiar voice into the woods. Even if it's mine..."
 var evidence = {}
+var pat_vault_seen=false
+var pat_tunnel_seen=false
+var pat_cellar_seen=false
 var crash_wound_treated=false
 var clinic_rescue_done=false
 var ada_letter_requested=false
@@ -112,6 +115,7 @@ func document(parent: Node3D, p: Vector3, id: String):
 	area.add_to_group("StoryEvidence")
 
 func reset():
+	pat_vault_seen=false;pat_tunnel_seen=false;pat_cellar_seen=false
 	crash_wound_treated=false;clinic_rescue_done=false
 	ada_letter_requested=false;ada_letter_delivered=false;ada_ammo_pending=0
 	evidence.clear()

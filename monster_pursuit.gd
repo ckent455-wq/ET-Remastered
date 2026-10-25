@@ -85,8 +85,8 @@ func special_door(e,data,goal:Vector3,delta:float)->bool:
 func walk(e,data,target:Vector3,delta:float):
  var direction:Vector3=e.path_direction(data,target,delta)
  e.play(data,"walk1")
- data.animation.speed_scale=1.3
- e.move_creature(data,direction*(1.8 if e.is_mummy(data.index) or data.index==e.REAPER_INDEX else 2.05),delta)
+ data.animation.speed_scale=1.6
+ e.move_creature(data,direction*e.combat.movement(data)*(3.3 if e.is_mummy(data.index) else 3.0 if data.index==e.REAPER_INDEX else 2.8),delta)
 
 func update(e,data,delta:float)->bool:
  var g=e.game
@@ -103,13 +103,17 @@ func update(e,data,delta:float)->bool:
   if data.timer<=0:data.state="chase"
   return true
  if data.state=="attack":
-  e.move_creature(data,Vector3.ZERO,delta)
+  var forward:Vector3=g.player.global_position-data.actor.global_position
+  forward.y=0
+  # A short physical step during windup; attacks still require range and a clear ray.
+  var step=forward.normalized()*1.8 if data.timer>0.70 and forward.length()>1.1 else Vector3.ZERO
+  e.move_creature(data,step*e.combat.movement(data),delta)
   var mummy=e.is_mummy(data.index)
   if not data.did_hit and data.timer<(0.55 if mummy or data.index==e.REAPER_INDEX else 0.65):
    data.did_hit=true
    if data.actor.global_position.distance_to(g.player.global_position)<1.9 and e.line_clear(data,g.player.global_position+Vector3.UP):
     g.take_damage(25 if mummy else 26 if data.index==e.REAPER_INDEX else 24 if data.index==e.WORKSHOP_INDEX else 28)
-  if data.timer<=0:data.state="chase";data.cooldown=1.0
+  if data.timer<=0:data.state="chase";data.cooldown=0.55
   return true
  data.state="chase"
  var here=space(g,data.actor.global_position);var there=space(g,g.player.global_position)
@@ -140,7 +144,7 @@ func update(e,data,delta:float)->bool:
     target=building.to_global(Vector3(0,a.y,door.hinge.position.z+(1.5 if inside_a else -1.5)));break
   if e.door_encounter.update(e,data,delta,target) or special_door(e,data,target,delta):return true
  if here==there and data.actor.global_position.distance_to(g.player.global_position)<1.55 and data.cooldown<=0 and e.line_clear(data,g.player.global_position+Vector3.UP):
-  data.state="attack";data.timer=1.15 if e.is_mummy(data.index) or data.index==e.REAPER_INDEX else 1.45;data.did_hit=false
+  data.state="attack";data.timer=0.9 if e.is_mummy(data.index) or data.index==e.REAPER_INDEX else 0.95;data.did_hit=false
   e.play(data,"punch");data.voice.stream=e.streams.attack;data.voice.play()
  else:walk(e,data,target,delta)
  return true

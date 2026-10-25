@@ -141,11 +141,6 @@ func _draw():
 	if game.invincible>1:
 		draw_rect(Rect2(0,0,640,400),Color(0.8,0.15,0.1,0.15))
 	if game.state=="play":
-		for target in game.enemies.health_bar_targets():
-			var p: Vector2 = target.point-Vector2(26,0)
-			draw_rect(Rect2(p-Vector2.ONE,Vector2(54,7)),Color(0.02,0.025,0.02,0.9))
-			draw_rect(Rect2(p,Vector2(52,5)),Color("40352d"))
-			draw_rect(Rect2(p,Vector2(52*target.fraction,5)),Color("a5b187") if target.fraction>0.4 else Color("b96b53"))
 		# Only immediate survival information remains in the world view.
 		status_bar("HEALTH",Vector2(20,350),game.health,Color("c97665") if game.health<=25 else Color("c5ab78") if game.health<=50 else Color("a1c8a1"))
 		if game.stamina<99:
@@ -438,8 +433,10 @@ func draw_dialogue():
 func draw_pat_questions(conversation):
 	draw_rect(conversation.BOX,Color(0.015,0.02,0.017,0.97))
 	draw_rect(conversation.BOX,INK,false,2)
-	text(conversation.speaker_name().to_upper()+" / ASK A QUESTION",Vector2(80,265),14,INK)
-	for i in range(conversation.TOPICS.size()+1):
+	var heading=conversation.speaker_name().to_upper()+" / ASK A QUESTION"
+	if conversation.TOPICS.size()+1>conversation.VISIBLE_QUESTIONS:heading+="  %d/%d" % [conversation.selected+1,conversation.TOPICS.size()+1]
+	text(heading,Vector2(80,265),14,INK)
+	for i in range(conversation.question_scroll,mini(conversation.question_scroll+conversation.VISIBLE_QUESTIONS,conversation.TOPICS.size()+1)):
 		var bounds=conversation.row(i)
 		if i==conversation.selected:draw_rect(bounds,Color("354039"))
 		var label="I should get going." if i==conversation.TOPICS.size() else conversation.TOPICS[i].question

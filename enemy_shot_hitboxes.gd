@@ -95,7 +95,8 @@ func trace(origin:Vector3,direction:Vector3,limit:float)->Dictionary:
 			if not r.bones.has(pair[0]) or not r.bones.has(pair[1]):continue
 			var body=capsule(origin,direction,point(r,pair[0]),point(r,pair[1]),pair[2])
 			if body<distance:
-				distance=body;zone="body"
+				distance=body
+				zone="leg" if ("leg" in pair[0] or "thigh" in pair[0] or "shin" in pair[0]) else "body"
 		if distance<nearest:
 			nearest=distance
 			hit={"collider":data.actor,"position":origin+direction*distance,"normal":-direction,"zone":zone}

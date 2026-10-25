@@ -2,12 +2,13 @@ extends Node3D
 ## Native animated encounters with real collision and sight rays guarding combat.
 var game
 var door_encounter=preload("res://monster_doors.gd").new()
+var combat=preload("res://creature_combat.gd").new()
 var pursuit=preload("res://monster_pursuit.gd").new()
 var creatures = []
 var corpse_search=preload("res://corpse_search.gd").new(self)
 const SPAWNS = [Vector3(19.2,0,-127),Vector3(38.7,0,-139),Vector3(39.5,0,-143.5),Vector3(1.4,0,-57.0),Vector3(-12.55,3.45,-95.2),Vector3(-16.1,-12.99,-96.3),Vector3(30,0,-28),Vector3(25.55,-23.99,-104),Vector3(26.45,-23.99,-96.5),Vector3(22.3,-23.99,-84.08)]
 const WOOD_ROUTES = [[Vector3(19.8,0,-129.7),Vector3(21.0,0,-131.5),Vector3(24.0,0,-130.2)],[Vector3(38.3,0,-134.5),Vector3(37.8,0,-130.0),Vector3(34.8,0,-127.5)],[Vector3(39.0,0,-139),Vector3(38.3,0,-134.5),Vector3(37.8,0,-130),Vector3(34.8,0,-127.5)]]
-const HEALTH = 132.0
+const HEALTH = 192.0
 const RESPAWN_SECONDS = 120.0
 var sense_clock = 0.0
 var streams = {}
@@ -29,9 +30,9 @@ var reaper_navigation
 var house_encounter=preload("res://house_monster.gd").new()
 var cellar_encounter=preload("res://house_cellar_monster.gd").new()
 const WORKSHOP_INDEX=3
-const WORKSHOP_HEALTH=132.0
-const MUMMY_HEALTH=144.0
-const REAPER_HEALTH=180.0
+const WORKSHOP_HEALTH=192.0
+const MUMMY_HEALTH=240.0
+const REAPER_HEALTH=288.0
 var navigation
 
 func _ready():
@@ -127,6 +128,7 @@ func reset_creature(data):
 	data.actor.velocity = Vector3.ZERO
 	data.actor.collision_layer = 1
 	data.actor.collision_mask = 1
+	combat.reset(data)
 	data.hp = health_for(data.index)
 	data["pursuing"]=false
 	data["portal_wait"]=0.0
@@ -248,6 +250,7 @@ func health_for(index:int)->float:
 func tick_poise(data,delta:float):
 	data["stagger_lock"]=maxf(0,data.get("stagger_lock",0.0)-delta)
 	data["poise_age"]=data.get("poise_age",0.0)+delta
+	combat.tick(data,delta)
 	if data.poise_age>2.0:data["poise"]=maxf(0,data.get("poise",0.0)-36.0*delta)
 
 func shoot(index: int, damage: float, force: float = -1.0) -> bool:
@@ -258,6 +261,7 @@ func shoot(index: int, damage: float, force: float = -1.0) -> bool:
 		workshop_spawned=true
 		workshop_armed=false
 	data.hp = maxf(0,data.hp-damage)
+	if data.hp<0.001:data.hp=0.0
 	data["pursuing"]=true
 	data.target = game.player.global_position
 	data.memory = 10.0
@@ -278,11 +282,13 @@ func shoot(index: int, damage: float, force: float = -1.0) -> bool:
 	else:
 		var mummy=is_mummy(index)
 		data["poise_age"]=0.0
-		if data.get("stagger_lock",0.0)<=0:
+		# Once the swing is committed, ordinary impacts cannot cancel it.
+		var committed=data.state=="attack" and data.timer<=0.55
+		if data.get("stagger_lock",0.0)<=0 and not committed:
 			data["poise"]=data.get("poise",0.0)+(damage if force<0 else force)
-			if data.poise>=(72.0 if mummy else 48.0):
+			if data.poise>=(90.0 if mummy else 72.0):
 				data.poise=0.0
-				data["stagger_lock"]=1.65 if mummy else 1.25
+				data["stagger_lock"]=2.2 if mummy else 1.8
 				data.state="stagger";data.timer=0.34 if mummy else 0.42
 				data.did_hit=true
 				play(data,"roar")
@@ -406,7 +412,7 @@ func _physics_process(delta):
 			continue
 		var animation_rate = 1.0
 		if data.state in ["attack","alert"] and data.clips.has(data.clip):
-			animation_rate = data.animation.get_animation(data.clips[data.clip]).length/(1.45 if data.state=="attack" else 1.1)
+			animation_rate = data.animation.get_animation(data.clips[data.clip]).length/((0.9 if is_mummy(data.index) or data.index==REAPER_INDEX else 0.95) if data.state=="attack" else 1.1)
 		elif data.state=="chase": animation_rate = 1.5
 		data.animation.speed_scale = animation_rate if active else 0
 		data.voice.stream_paused = game.state not in ["play","dialogue"]

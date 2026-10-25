@@ -1,0 +1,1 @@
+Original backpack mesh modeled in Blender for this project from the user-provided Screenshot 2026-10-24 223004.png. Teal canvas, brown base, fitted back cushion, shoulder straps and mesh side pockets. Original 256px procedural textures. Editable Blender source: outputs/models/teal-backpack/teal_backpack.blend. Game export uses reduced geometry and embedded textures.

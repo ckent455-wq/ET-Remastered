@@ -11,7 +11,7 @@ func run():
  store.directory="user://save-check-"+str(Time.get_ticks_usec())
  g.reset_game();g.crash_site.wake_phase="";g.state="play"
  assert(not store.save_slot(1) and "backpack" in store.error,"Opening cannot be saved half seated")
- g.crash_site.has_backpack=true;g.crash_site.has_flashlight=true;g.crash_site.hatch_open=true;g.crash_site.hatch.rotation.x=g.crash_site.hatch_closed.x-1.3
+ g.crash_site.has_backpack=true;g.crash_site.has_flashlight=true;g.crash_site.hatch_open=true;g.crash_site.hatch.rotation.x=g.crash_site.hatch_closed.x-g.crash_site.HATCH_OPEN_ANGLE
  g.crash_site.bag_visual.hide();g.crash_site.light_visual.hide()
  g.health=47;g.flashlight_charge=23;g.flashlight.visible=true
  g.town.inventory.ada_letter=1;g.story.ada_letter_requested=true;g.story.ada_letter_delivered=false

@@ -58,7 +58,7 @@ Road uphill and find the locked cellar door at the back right inside the church.
 Press E to unlock the door and descend. Recover the tuning unit from the cellar workbench,
 then use the stairs to return. The radio needs the tuning unit, signal coil, and antenna coupler.
 
-Inspect your wreck for the detour notice. Read documents and speak to Pat,
+Collect your backpack and flashlight from the trunk. Read documents and speak to Pat,
 Aubrey and John to investigate the evacuation. The operator's log at the radio station describes the first unexplained broadcast. Clinic observations link exposure to transformations and the dead waking. Chapel and cellar records explain how the signal spread and how to isolate it.
 Set the small BYPASS switch on the station desk to GREEN for direct county
 dispatch; AMBER still routes through the chapel repeater. Reading does not flip
@@ -99,7 +99,6 @@ WORKSHOP POWER: Find the workshop fuse in the store counter drawer (one backpack
 
 CRASH OPENING: Wake in the driver's seat at 25 health, try the ignition twice, finish the dialogue, then press E to open the door and get out. Open the rear hatch to collect your backpack (with a bandage already inside) and flashlight. I opens the backpack; F switches on the flashlight; H heals. Restart Game repeats the injury and restores the trunk supplies.
 
-DETOUR SHEET: After collecting the backpack and flashlight, pick up the printed sheet from the front seat with E. It disappears from the car and is saved in the journal. Inspecting the wreck does not collect it automatically. Restart puts it back on the seat.
 
 The hotel basement door is bolted from the other side. Reach its cellar through the hidden tunnel inside the Whitcomb mausoleum, then unbolt the hotel door from below. Normal mausoleum key requirements apply. Restoring workshop power prepares an ambush when you return through the alley to Main Street; the townspeople run indoors first.
 
@@ -160,3 +159,7 @@ Pursuing town creatures can pound on an unlocked building door for several secon
 Monsters keep pursuing once alerted and can force unlocked doors, follow stairs and use opened underground passages. Locked routes remain barriers. Standard creatures take about six pistol body hits, three rifle hits or two close shotgun blasts. Headshots do 1.5x damage. Mummies resist staggering more strongly, and shotgun damage falls off beyond five meters. Use normal mode to judge difficulty; testing mode grants unlimited health and ammunition.
 
 Doors, conversations, searchable storage and item interactions work before you retrieve your backpack. The backpack screen and flashlight require their corresponding gear; key-locked routes still require their keys.
+
+## Creature combat
+
+Aim for the head to conserve ammunition. Repeated leg hits can briefly slow a pursuer, giving you room to escape; repeated shots cannot extend that slowdown indefinitely. Wounded creatures can make short bursts toward you. Close shotgun blasts provide knockback, and monsters can step forward during an attack. Enemy health bars are hidden.

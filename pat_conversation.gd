@@ -1,6 +1,9 @@
 extends RefCounted
 ## Optional local history and advice; it never replaces the physical quest steps.
 var game
+var pat_story=preload("res://pat_cemetery_dialogue.gd").new()
+var question_scroll=0
+const VISIBLE_QUESTIONS=5
 var active=false
 var choosing=false
 var greeted=false
@@ -29,9 +32,9 @@ func begin(intro:String,force_intro=false,person="ranger"):
  # The bedside introduction also counts in journeys saved before this fix.
  if person=="nurse" and game.story.clinic_rescue_done:greetings["nurse"]=true
  speaker=person;TOPICS=[]
- for item in QUESTIONS[speaker]:TOPICS.append({"id":item[0],"question":item[1],"title":speaker_name()+" / "+item[2]})
+ for item in (pat_story.topics(self) if speaker=="ranger" else QUESTIONS[speaker]):TOPICS.append({"id":item[0],"question":item[1],"title":speaker_name()+" / "+item[2]})
  TOPICS.append({"id":"help","question":"What should I do next?","title":speaker_name()+" / Getting help"})
- active=true;selected=0;current_topic=""
+ active=true;selected=0;question_scroll=0;current_topic=""
  game.dialogue_name=game.town.townspeople.characters[speaker].name
  game.dialogue_text=intro
  game.set_state("dialogue")
@@ -41,9 +44,12 @@ func begin(intro:String,force_intro=false,person="ranger"):
 func show_topics():
  choosing=true;current_topic=""
 func row(index:int)->Rect2:
- return Rect2(76,272+index*22,488,21)
+ return Rect2(76,272+(index-question_scroll)*22,488,21)
 func move_selection(amount:int):
- if choosing:selected=wrapi(selected+amount,0,TOPICS.size()+1)
+ if choosing:
+  selected=wrapi(selected+amount,0,TOPICS.size()+1)
+  if selected<question_scroll:question_scroll=selected
+  if selected>=question_scroll+VISIBLE_QUESTIONS:question_scroll=selected-VISIBLE_QUESTIONS+1
 func choose(index:int):
  if not active or not choosing:return
  if index==TOPICS.size():game.set_state("play");return
@@ -73,18 +79,19 @@ func handle(event):
     if choosing:game.set_state("play")
     else:show_topics()
  elif event is InputEventMouseMotion and choosing:
-  for i in range(TOPICS.size()+1):
+  for i in range(question_scroll,mini(question_scroll+VISIBLE_QUESTIONS,TOPICS.size()+1)):
    if row(i).has_point(event.position):selected=i;break
  elif event is InputEventMouseButton and event.pressed:
   if choosing:
    if event.button_index==MOUSE_BUTTON_WHEEL_UP:move_selection(-1)
    elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN:move_selection(1)
    elif event.button_index==MOUSE_BUTTON_LEFT:
-    for i in range(TOPICS.size()+1):
+    for i in range(question_scroll,mini(question_scroll+VISIBLE_QUESTIONS,TOPICS.size()+1)):
      if row(i).has_point(event.position):choose(i);break
   elif event.button_index==MOUSE_BUTTON_LEFT and preload("res://dialogue_style.gd").BOX.has_point(event.position):advance()
 
 func answer(topic:String)->String:
+ if speaker=="ranger" and topic in ["waiting","cemetery","family","vault","grave","shadow"]:return pat_story.answer(self,topic)
  match topic:
   "origin":
    return "It started in that walnut radio at the station, four weeks before the evacuation. No operator. No incoming station. The switch was off. We pulled the plug and antenna, and it kept speaking. The operator wrote it all down beside the set.\n\nIt used dead people's voices. Then Ada's voice, while she was standing beside me. It wasn't just a recording. It wanted us to connect it to the chapel so everyone could hear.\n\nWe thought someone needed help. Bellamy connected the buried line and left the hill amplifier running. Then the sleeplessness began. The missing hours. Jonah changed first.\n\nI can trace the circuit. I cannot tell you what got inside that set. The voices know things they shouldn't. That doesn't make them the people they sound like."
@@ -116,6 +123,7 @@ func answer(topic:String)->String:
  return "Take care out there."
 
 func summary(topic:String)->String:
+ if speaker=="ranger" and topic in ["waiting","cemetery","family","vault","grave","shadow"]:return pat_story.summary(self,topic)
  match topic:
   "origin":return "John says the station radio began speaking while switched off and unplugged. It imitated dead relatives and Ada while she was present, asking to be broadcast. Bellamy connected it to the chapel amplifier. The original speaker remains unidentified."
   "town":return "Pat says the mill closed twelve years ago. Most of the decay predates the signal. The final families evacuated three nights ago. A recorded chapel horn fooled him into reopening Old Mill Road. Repeated exposure disrupted his memory: he kept waiting for the bus, lost hours and failed to close the barrier for three days. Aubrey confronted him with the dated log tonight."

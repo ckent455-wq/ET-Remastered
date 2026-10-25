@@ -248,7 +248,7 @@ func fire() -> bool:
 func shot_damage(weapon:int,zone:String,distance:float)->float:
 	var amount:float=LOADOUT[weapon].damage
 	if weapon==2:amount*=lerpf(1.0,0.25,clampf((distance-5.0)/10.0,0,1))
-	return amount*(1.5 if zone=="head" else 1.0)
+	return amount*(1.75 if zone=="head" else 0.65 if zone=="leg" else 0.8)
 
 func trace_shot(origin:Vector3,direction:Vector3,reach:float)->Dictionary:
 	if not enemy_hitboxes: enemy_hitboxes=preload("res://enemy_shot_hitboxes.gd").new(game.enemies)
@@ -273,6 +273,7 @@ func impact(hit: Dictionary, damage_override: float = -1.0):
 		if selected==2:force*=lerpf(1.0,0.25,clampf((distance-5.0)/10.0,0,1))
 		var index=int(body.get_meta("enemy_index"))
 		if game.enemies.shoot(index,amount,force):
+			game.enemies.combat.hit(game.enemies.creatures[index],str(hit.get("zone","body")),amount)
 			game.enemies.shot_reaction(index,selected,hit.position,head,distance)
 			hit_feedback = 0.18
 		return

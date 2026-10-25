@@ -10,6 +10,7 @@ var tail_material:StandardMaterial3D
 var tail_lens:MeshInstance3D
 var tail_glows:Array[OmniLight3D]=[]
 const HEADLIGHT_PERIOD=1.25
+const HATCH_OPEN_ANGLE=0.75
 var elapsed = 0.0
 var has_backpack = false
 var has_flashlight = false
@@ -35,8 +36,12 @@ var door_open = false
 var door: Node3D
 var door_closed = Vector3.ZERO
 var bag_visual: Node3D
+var backpack_model:Node3D
 var light_visual: Node3D
 var hatch:Node3D
+var hatch_struts:Array[MeshInstance3D]=[]
+var rear_quarter_windows:MeshInstance3D
+var rear_quarter_mount=Transform3D.IDENTITY
 var hatch_open=false
 var hatch_closed=Vector3.ZERO
 var hatch_tween:Tween
@@ -68,6 +73,7 @@ func _ready():
 	door_closed = door.rotation
 	hatch=model.find_child("RearHatch",true,false)
 	hatch_closed=hatch.rotation
+	repair_rear_quarter_windows()
 	build_car_interior()
 	build_trunk()
 	starter_voice=game.soundscape.voice(game.soundscape.stream("engine_starter"),-13)
@@ -232,6 +238,9 @@ func adapt(node: Node):
 		adapt(child)
 
 func _process(delta):
+	update_backpack_model()
+	if rear_quarter_windows:rear_quarter_windows.global_transform=wreck.global_transform*rear_quarter_mount
+	update_hatch_struts()
 	update_waking(delta)
 	if door_tween and door_tween.is_valid():
 		if game.state=="play" and not door_tween.is_running() and not is_equal_approx(door.rotation.y,door_closed.y-1.15 if door_open else door_closed.y): door_tween.play()
@@ -239,7 +248,7 @@ func _process(delta):
 	update_door_target()
 	update_hatch_target()
 	if hatch_tween and hatch_tween.is_valid():
-		if game.state=="play" and not hatch_tween.is_running() and not is_equal_approx(hatch.rotation.x,hatch_closed.x-1.3 if hatch_open else hatch_closed.x):hatch_tween.play()
+		if game.state=="play" and not hatch_tween.is_running() and not is_equal_approx(hatch.rotation.x,hatch_closed.x-HATCH_OPEN_ANGLE if hatch_open else hatch_closed.x):hatch_tween.play()
 		elif game.state!="play":hatch_tween.pause()
 	if game.state!="play":
 		return
@@ -263,6 +272,19 @@ func build_tutorial_items():
 		town.box(bag_visual,Vector3(x,0,0.19),Vector3(0.045,0.37,0.04),town.mats.dark,false)
 		town.box(bag_visual,Vector3(x,-0.1,0.215),Vector3(0.065,0.065,0.025),town.mats.metal,false)
 	town.box(bag_visual,Vector3(0,0.24,0),Vector3(0.18,0.04,0.08),town.mats.dark,false)
+	# Keep the original container's saved tree stable; the new visual follows it.
+	backpack_model=preload("res://assets/backpack_teal/backpack.glb").instantiate()
+	backpack_model.name="TealBackpackInTrunk"
+	game.add_child(backpack_model)
+	for mesh in backpack_model.find_children("*","MeshInstance3D",true,false):
+		for i in range(mesh.mesh.get_surface_count()):
+			var material=mesh.mesh.surface_get_material(i).duplicate() as StandardMaterial3D
+			if material:
+				material.texture_filter=BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+				material.shading_mode=BaseMaterial3D.SHADING_MODE_PER_VERTEX
+				material.roughness=1.0;material.metallic=0.0;material.metallic_specular=0.0
+				mesh.set_surface_override_material(i,material)
+	update_backpack_model()
 	light_visual = preload("res://assets/flashlight/flashlight.glb").instantiate()
 	wreck.add_child(light_visual)
 	game.prepare_flashlight(light_visual)
@@ -298,7 +320,7 @@ func reset():
 	has_backpack = false
 	has_flashlight = false
 	has_detour_sheet = false
-	if detour_visual: detour_visual.show()
+	retire_detour_sheet()
 	door_open = false
 	hatch_open=false
 	if hatch_tween:hatch_tween.kill()
@@ -453,7 +475,7 @@ func interact_tutorial(id: String):
 		hatch_open=not hatch_open
 		if hatch_tween:hatch_tween.kill()
 		hatch_tween=create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-		hatch_tween.tween_property(hatch,"rotation:x",hatch_closed.x-1.3 if hatch_open else hatch_closed.x,0.7)
+		hatch_tween.tween_property(hatch,"rotation:x",hatch_closed.x-HATCH_OPEN_ANGLE if hatch_open else hatch_closed.x,0.7)
 		game.town.actions.crash_rear_hatch.label="Close rear hatch" if hatch_open else "Open rear hatch"
 		game.soundscape.storage_move(wreck.global_position,false,hatch_open)
 		update_item_targets()
@@ -484,14 +506,6 @@ func interact_tutorial(id: String):
 		game.soundscape.feedback("pickup")
 		update_item_targets()
 		game.message = "Flashlight collected. F switches it on."
-	elif id=="crash_record" and hatch_open and not has_detour_sheet:
-		has_detour_sheet = true
-		detour_visual.hide()
-		tutorial_areas.crash_record.collision_layer = 0
-		game.town.actions.crash_record.taken = true
-		game.soundscape.feedback("pickup")
-		game.message = "Detour sheet collected in your journal. TAB closes it. Follow the road to find help."
-		game.story.collect_detour_sheet()
 
 func update_door_target():
 	if not tutorial_areas.has("crash_driver_door"): return
@@ -507,7 +521,7 @@ func update_door_target():
 func update_item_targets():
 	for id in ["crash_backpack","crash_flashlight","crash_record"]:
 		if not tutorial_areas.has(id): continue
-		var available=not has_backpack if id=="crash_backpack" else (not has_flashlight if id=="crash_flashlight" else not has_detour_sheet)
+		var available=not has_backpack if id=="crash_backpack" else (not has_flashlight if id=="crash_flashlight" else false)
 		tutorial_areas[id].collision_layer=2 if hatch_open and available else 0
 
 func build_car_interior():
@@ -600,6 +614,7 @@ func build_detour_sheet():
 	tutorial_areas.crash_record = game.town.action_area(wreck,Vector3(-1.04,0.95,-0.28),Vector3(0.18,0.45,0.50),"crash_record",{"kind":"crash_tutorial","label":"Pick up detour sheet"})
 	tutorial_areas.crash_record.collision_layer = 0
 	fit_pickup_targets()
+	retire_detour_sheet()
 
 func build_blinking_headlights(model:Node3D):
 	# Copy only the original front lamp faces. The body and cabin stay untouched.
@@ -690,6 +705,9 @@ func update_headlights():
 	for glow in tail_glows:glow.visible=lit
 
 func pickup_bounds(visual:Node3D)->AABB:
+	if visual==bag_visual and backpack_model:
+		update_backpack_model()
+		visual=backpack_model
 	var bounds=AABB()
 	var first=true
 	for mesh in visual.find_children("*","MeshInstance3D",true,false):
@@ -734,10 +752,111 @@ func build_trunk():
 		game.town.box(wreck,Vector3(side*0.65,0.73,1.33),Vector3(0.04,0.34,1.05),liner,false)
 	# The dark backing and inner panel prevent seeing through the body.
 	game.town.box(wreck,Vector3(0,0.76,0.83),Vector3(1.3,0.42,0.045),liner,false)
-	game.town.box(hatch,Vector3(0,-0.40,0.58),Vector3(1.22,0.035,0.62),liner,false)
+	var hatch_liner=game.town.box(hatch,Vector3(0,-0.40,0.58),Vector3(1.22,0.035,0.62),liner,false)
+	fit_hatch_liner(hatch_liner)
+	build_hatch_struts()
 	tutorial_areas.crash_rear_hatch=game.town.action_area(wreck,Vector3(0,1.03,2.02),Vector3(1.05,0.38,0.28),"crash_rear_hatch",{"kind":"crash_tutorial","label":"Open rear hatch"})
 func update_hatch_target():
 	if not tutorial_areas.has("crash_rear_hatch"):return
 	var target=tutorial_areas.crash_rear_hatch
 	target.collision_layer=2
 	target.global_position=hatch.to_global(Vector3(0,-0.32,0.65)) if hatch_open else wreck.to_global(Vector3(0,1.03,2.02))
+
+func retire_detour_sheet():
+	# Retain the old nodes only to keep saved scene trees compatible.
+	if detour_visual:detour_visual.hide()
+	if tutorial_areas.has("crash_record"):
+		var area=tutorial_areas.crash_record
+		area.hide();area.collision_layer=0
+		area.get_child(0).set_deferred("disabled",true)
+		game.town.actions.crash_record.taken=true
+
+func update_backpack_model():
+	if not backpack_model or not bag_visual:return
+	for child in bag_visual.get_children():
+		if child is Node3D:child.hide()
+	backpack_model.global_transform=bag_visual.global_transform*Transform3D(Basis.IDENTITY,Vector3(0,-0.215,-0.20))
+	backpack_model.visible=bag_visual.is_visible_in_tree() and not has_backpack
+
+func fit_hatch_liner(holder:Node3D):
+	var panel=holder.get_child(0) as MeshInstance3D
+	# Follow the actual lower hatch skin instead of a flat shelf hanging below it.
+	var tool=SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var to_panel=(holder.transform*panel.transform).affine_inverse()
+	for surface in range(hatch.mesh.get_surface_count()):
+		var material=hatch.get_active_material(surface)
+		if material is StandardMaterial3D and material.transparency!=BaseMaterial3D.TRANSPARENCY_DISABLED:continue
+		var a=hatch.mesh.surface_get_arrays(surface)
+		var vertices=a[Mesh.ARRAY_VERTEX];var indices=a[Mesh.ARRAY_INDEX]
+		for i in range(0,indices.size(),3):
+			var center=(vertices[indices[i]]+vertices[indices[i+1]]+vertices[indices[i+2]])/3.0
+			if center.y> -0.30:continue
+			for j in [2,1,0]:
+				var v:Vector3=vertices[indices[i+j]]+Vector3(0,-0.012,-0.018)
+				tool.add_vertex(to_panel*v)
+	tool.generate_normals()
+	panel.mesh=tool.commit()
+	var trim=game.mat(Color("323631"))
+	trim.cull_mode=BaseMaterial3D.CULL_DISABLED
+	trim.shading_mode=BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	panel.material_override=trim
+
+func build_hatch_struts():
+	# Visual-only gas supports; mounted outside saved scene roots for compatibility.
+	for side in [-1,1]:
+		for piece in range(2):
+			var shape=CylinderMesh.new()
+			shape.top_radius=0.011 if piece==0 else 0.006
+			shape.bottom_radius=shape.top_radius
+			shape.height=1;shape.radial_segments=6
+			var rod=game.mesh_at(game,shape,Vector3.ZERO,game.mat(Color("202724") if piece==0 else Color("777f7a")))
+			rod.name="HatchGasStrut"+str(side)+"_"+str(piece)
+			hatch_struts.append(rod)
+	update_hatch_struts()
+
+func update_hatch_struts():
+	if hatch_struts.size()!=4:return
+	for i in range(2):
+		var side=-1 if i==0 else 1
+		var fixed=wreck.to_global(Vector3(side*0.62,1.02,1.29))
+		var moving=hatch.to_global(Vector3(side*0.60,-0.32,0.82))
+		var axis=moving-fixed
+		var length=axis.length()
+		if length<0.001:continue
+		var basis=Basis(Quaternion(Vector3.UP,axis/length))
+		for piece in range(2):
+			var rod=hatch_struts[i*2+piece]
+			rod.global_transform=Transform3D(basis*Basis.from_scale(Vector3(1,length*(0.56 if piece==0 else 0.50),1)),fixed+axis*(0.28 if piece==0 else 0.75))
+
+func repair_rear_quarter_windows():
+	# The old rectangular hatch cut captured the rear tips of the side glazing.
+	# Return side-facing glass and its upper trim to the stationary body.
+	var moving=ArrayMesh.new();var fixed=ArrayMesh.new()
+	for surface in range(hatch.mesh.get_surface_count()):
+		var a=hatch.mesh.surface_get_arrays(surface)
+		var vertices=a[Mesh.ARRAY_VERTEX];var indices=a[Mesh.ARRAY_INDEX]
+		var keep=PackedInt32Array();var restore=PackedInt32Array()
+		for i in range(0,indices.size(),3):
+			var v0:Vector3=vertices[indices[i]];var v1:Vector3=vertices[indices[i+1]];var v2:Vector3=vertices[indices[i+2]]
+			var center=(v0+v1+v2)/3.0
+			var normal=(v1-v0).cross(v2-v0).normalized()
+			var side_window=absf(center.x)>0.46 and center.y> -0.30 and absf(normal.x)>0.65 and center.y<0.26-0.62*center.z-0.06
+			for j in range(3):
+				if side_window:restore.append(indices[i+j])
+				else:keep.append(indices[i+j])
+		for selection in [keep,restore]:
+			if selection.is_empty():continue
+			var arrays=a.duplicate();arrays[Mesh.ARRAY_INDEX]=selection
+			var target=fixed if selection==restore else moving
+			target.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
+			target.surface_set_material(target.get_surface_count()-1,hatch.get_active_material(surface))
+	hatch.mesh=moving
+	if fixed.get_surface_count()>0:
+		rear_quarter_windows=MeshInstance3D.new()
+		rear_quarter_windows.name="FixedRearQuarterWindows"
+		rear_quarter_windows.mesh=fixed
+		game.add_child(rear_quarter_windows)
+		rear_quarter_mount=wreck.global_transform.affine_inverse()*hatch.global_transform
+		rear_quarter_windows.global_transform=wreck.global_transform*rear_quarter_mount
+

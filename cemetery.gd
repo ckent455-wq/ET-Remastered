@@ -96,7 +96,7 @@ func _ready():
 	cellar_key.add_child(key_model)
 	key_model.rotation.x=PI/2
 	key_model.position.y=-0.04
-	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"EVACUATION / TEMPORARY EQUIPMENT CACHE\nJohn's spare antenna coupler is on the shelf inside my family's Whitcomb mausoleum. The chapel cellar key is on the workbench at the far end of the passage beneath the vault, in the old Saint George cellar. People have been taking equipment from the station. This vault is dry and its iron door still locks. Nothing has been placed inside a coffin.\n\nBellamy locked the chapel cellar to keep confused residents away from the running rack. He gave me its key before leaving.\n\nAsk me at the ranger office for the family key. These supplies must be recovered once the road is clear.\n- Pat"})
+	var note=town.action_area(self,Vector3(6.6,1.1,-14.0),Vector3(0.3,0.5,0.5),"cemetery_note",{"kind":"note","label":"Read groundskeeper's notice","title":"Groundskeeper's notice","text":"EVACUATION / TEMPORARY EQUIPMENT CACHE\nJohn's spare antenna coupler is on the shelf inside my family's Whitcomb mausoleum. The chapel cellar key is on the workbench at the far end of the passage beneath the vault, in the old Saint George cellar. People have been taking equipment from the station. This vault is dry and its iron door still locks. The radio coupling is on the shelf, not buried.\n\nBellamy locked the chapel cellar to keep confused residents away from the running rack. He gave me its key before leaving.\n\nAsk me at the ranger office for the family key. These supplies must be recovered once the road is clear.\n- Pat"})
 	town.box(note,Vector3.ZERO,Vector3(0.015,0.35,0.26),town.mats.paper,false)
 
 func fit_cellar_key_target():
@@ -270,6 +270,7 @@ func finish_slam():
 	slam_voice.volume_db=3.0
 	slam_voice.play()
 func _process(_delta):
+	if town.game.state=="play" and inside():town.game.story.pat_vault_seen=true
 	var active=town.game.state in ["play","dialogue"]
 	if slam_voice:slam_voice.stream_paused=not active
 	if slamming and door_tween and door_tween.is_valid():

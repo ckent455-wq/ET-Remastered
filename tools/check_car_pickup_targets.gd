@@ -19,13 +19,14 @@ func check():
   print("TRUNK AIM ",id," -> ",g.town.focus_action)
   assert(g.town.focus_action==id,"Crosshair selects trunk gear")
   g.town.interact();await physics_frame
- assert(car.tutorial_complete() and not car.has_detour_sheet,"Detour sheet is optional")
+ assert(car.tutorial_complete(),"Only backpack and flashlight are needed")
  var paper=car.tutorial_areas.crash_record
- assert(paper.collision_layer==2 and car.detour_visual.visible)
- g.camera.global_position=eye;g.camera.look_at(paper.global_position)
- g.town.refresh_focus();assert(g.town.focus_action=="crash_record")
- g.town.interact();await physics_frame
- assert(car.has_detour_sheet and not car.detour_visual.visible)
+ assert(paper.collision_layer==0 and not car.detour_visual.visible)
+ g.town.perform("crash_record")
+ assert(not car.has_detour_sheet and not g.story.evidence.has("crash_record"),"Removed document cannot be collected")
+ var data=g.saves.backend.capture()
+ g.saves.backend.apply(data)
+ assert(not car.detour_visual.visible and paper.collision_layer==0,"Save/load cannot restore removed document")
  car.reset();await physics_frame
  assert(not car.hatch_open and not car.tutorial_complete())
  for id in ["crash_backpack","crash_flashlight","crash_record"]:assert(car.tutorial_areas[id].collision_layer==0)

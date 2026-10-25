@@ -147,7 +147,11 @@ func apply(data:Dictionary):
   var action=game.town.actions[id];var old=data.actions[id]
   action.taken=old.taken;action.area.visible=old.visible;action.area.collision_layer=old.layer;action.area.get_child(0).set_deferred("disabled",old.disabled)
   if old.amount>=0:action.amount=old.amount
+ game.crash_site.retire_detour_sheet()
  game.hotel_basement.place_chapel_key()
+ if game.town.actions.cemetery_coupler.taken or game.town.cemetery.inside():game.story.pat_vault_seen=true
+ if game.town.actions.cemetery_cellar_key.taken or game.hotel_basement.hotel_unlocked:game.story.pat_tunnel_seen=true
+ if game.hotel_basement.hotel_unlocked:game.story.pat_cellar_seen=true
  game.town.cemetery.slam_triggered=game.town.cemetery.slam_triggered or game.town.actions.cemetery_coupler.taken
  var panel=roots().panel;panel.set_fuse_power(panel.energized);panel.refresh_prompt()
  game.town.actions.battery_panel.area.get_node("InstalledFuse").visible=panel.installed

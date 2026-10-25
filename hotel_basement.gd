@@ -125,6 +125,7 @@ func interact(kind:String):
   if not town.cemetery.unlocked or not town.cemetery.inside():
    game.message="The passage is inside the locked Whitcomb mausoleum."
    return
+  game.story.pat_vault_seen=true;game.story.pat_tunnel_seen=true
   move_player(to_global(Vector3(0,0.02,-28.5)),PI)
   start_entry_flicker()
   game.message="A tunnel beneath the mausoleum. A faded sign points toward Saint George."
@@ -173,6 +174,7 @@ func start_entry_flicker():
  game.flashlight.hide()
 
 func _process(delta:float):
+ if game.state=="play" and contains(game.player.global_position) and to_local(game.player.global_position).z> -5.0:game.story.pat_cellar_seen=true
  if entry_flicker_time<=0 or game.state not in ["play","dialogue"]:return
  if get_node("CellarCoffinStacks").blackout_active or not contains(game.player.global_position):
   entry_flicker_time=0.0

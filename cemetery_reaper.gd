@@ -104,7 +104,7 @@ func animate(_enemies,data,delta:float):
 		return
 	var speed=Vector2(data.actor.velocity.x,data.actor.velocity.z).length()
 	if data.clip=="walk1": data.animation.speed_scale=clampf(speed/1.6,0.2,1.4)
-	elif data.clip=="punch": data.animation.speed_scale=data.animation.get_animation(data.clips.punch).length/1.15
+	elif data.clip=="punch": data.animation.speed_scale=data.animation.get_animation(data.clips.punch).length/0.9
 	else: data.animation.speed_scale=1.0
 	data.animation.advance(delta)
 	# Imported clips contain their own hip travel. The CharacterBody owns world

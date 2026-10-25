@@ -9,7 +9,6 @@ var grave_key_given = false
 var grave_intro_shown = false
 var grave_approaching = false
 var conversation
-const GRAVE_KEY_LINE = "I've got the key to my grandpappy's vault. The Whitcomb mausoleum, back in the cemetery.\n\nDuring the evacuation, confused people were wandering into the station and taking equipment. John asked me to secure the spare antenna coupler. Bellamy locked the chapel cellar to keep people away from the running rack and handed me its key before boarding the bus.\n\nMy family's vault was dry, with a sound iron door and a lock I controlled. I put the coupler on its shelf. The cellar key is on the workbench at the far end of the old passage beneath the vault. A temporary lockup, not a burial. I meant to fetch them once the bus was clear.\n\nThen the noises started beneath the cemetery. I haven't been back since the evacuation.\n\nHere. Take the family key. Get the coupler and cellar key. If you hear somebody talking in there... just get them and leave."
 
 const DEATH_DURATION = 1.7
 const PEOPLE = [
@@ -341,9 +340,9 @@ func animate_death(data: Dictionary):
 func offer_grave_key():
 	grave_intro_shown=true
 	grave_approaching=false
-	var line=GRAVE_KEY_LINE
+	var line=conversation.pat_story.key_line()
 	if town.game.backpack and not town.game.backpack.room_for("mausoleum_key"):
-		line="I put the spare antenna coupler and chapel cellar key in my family's Whitcomb mausoleum during the evacuation. It was a temporary dry lockup, away from people wandering into the station. I've got the vault key here.\n\nYour bag's full. Make a little room, then come talk to me. I'll keep the key safe."
+		line="I have the key to the Whitcomb mausoleum. There's a spare antenna coupler inside, and the chapel cellar key at the far end of the passage beneath it.\n\nYour pack is full. Make one slot, then come back. I'm not sending you out there without the key."
 	else:
 		town.inventory.mausoleum_key+=1
 		grave_key_given=true
@@ -371,6 +370,14 @@ func talk(id: String):
 	if town.powered and town.inventory.coil>0 and id=="ranger" and not grave_key_given and not town.cemetery.unlocked:
 		offer_grave_key()
 		return
+	if id=="ranger":
+		if not conversation.greetings.has("ranger"):
+			conversation.begin(conversation.pat_story.greeting(conversation),false,id)
+			return
+		if conversation.pat_story.returned(conversation) and not conversation.greetings.has("pat_return"):
+			conversation.greetings["pat_return"]=true
+			conversation.begin("You went inside, didn't you?\n\nYour hands are shaking. Sit a moment. Tell me what you found.",true,id)
+			return
 	conversation.begin(words(id),false,id)
 
 func words(id: String) -> String:
@@ -382,12 +389,9 @@ func words(id: String) -> String:
 		return radio_advice(id,"repair" if town.game.story.repeater_is_off() else "shutdown")
 	match id:
 		"ranger":
-			if town.game.story.evidence.has("ranger_note"):
-				var next_step = "The station key is in my desk drawer. Take it." if town.inventory.station_key==0 else "Take the store fuse to the workshop panel. Its powered cabinet holds the coil. Then ask me about my family mausoleum."
-				return "That was three nights ago. The horn came from the chapel speaker. I knew it was a recording, then it played again and I was waiting for the bus. I kept setting out to close the barrier and losing hours. Tonight Aubrey made me compare three dates in my log. I thought it was still the same night. You should never have been on that road.\n\n"+next_step+"\n\nThe other radio part is beneath the chapel. Keep your light moving in those woods."
-			if town.inventory.station_key==0:
-				return "Most of Blackwood left after the mill closed twelve years ago. The boarded shops and wrecks have been here for years.\n\nThe last few families evacuated three nights ago. I reopened Old Mill Road when I heard the last bus coming back. It was only the chapel speaker. I tried to go back and close the barrier. Each time the horn played, I'd lose track and start waiting for the driver again. Aubrey showed me three dated entries tonight. I thought it had been one long night.\n\nI'm Pat. Only Aubrey, John and I stayed. I changed the sign so travelers would know.\n\nStation key is in my desk drawer. Pistol's in the abandoned police car on Main Street. Open the driver's door and check the seat. Read my log."
-			return "You have the station key. The store counter drawer has a workshop fuse; the workshop's rear terminal takes it. Its powered cabinet holds the coil. I can help you reach the mausoleum afterward.\n\nI wrote down what happened that night. It's on my desk. I don't want to say it out here again."
+			if town.inventory.station_key==0:return "The station key is in my office drawer. The pistol is in the abandoned police car on Main Street. Check the driver's seat.\n\nJohn can tell you what the receiver needs. Read the log on my desk if you want to know why the road was still open."
+			if not town.powered:return "The store counter drawer has a workshop fuse. Take it through the alley beside the hotel to the workshop's rear terminal.\n\nOnce the power is back, John can get you the signal coil. Come back to me before you go looking for the other parts."
+			return "Take the signal coil from John's powered workshop cabinet. Then speak to me about the Whitcomb mausoleum. I've got its family key."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
 				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a bandage first, then a medpack. Q fits a battery."
@@ -404,6 +408,12 @@ func words(id: String) -> String:
 
 
 func radio_advice(id:String,stage:String)->String:
+	if id=="ranger" and stage=="coupler":
+		var line="The antenna coupler is on the shelf inside the Whitcomb mausoleum. Old Mill Cemetery is east off the road to your wreck. The chapel cellar key is on the workbench at the far end of the passage below the vault."
+		if not grave_key_given and not town.cemetery.unlocked:line+="\n\nSpeak to me for the family key before you go."
+		elif conversation.asked.has("pat_vault"):line+="\n\nI've told you what I did. Get the equipment, then leave that place. Don't go looking for him for me."
+		else:line+="\n\nKeep your light on. If you hear a voice down there, you don't have to answer it."
+		return line
 	var lines={
 	 "coupler":{
 	  "ranger":"I used my family's Whitcomb mausoleum as a temporary lockup during the evacuation. People were wandering into the station and taking equipment, so John asked me to secure the spare antenna coupler. Bellamy gave me the chapel cellar key after locking people away from its running rack. The coupler is on the vault shelf. The cellar key is on the workbench at the far end of the tunnel beneath it. Dry stone, a sound iron door, a lock I controlled. I meant to fetch them afterward.\n\nOld Mill Cemetery is east of the road between town and your wreck. Take the cemetery footpath. You'll need the vault key from me. I haven't been back since I heard those noises below it.",
