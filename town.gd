@@ -392,6 +392,7 @@ func reset():
 			door.tween.kill()
 		door.hinge.rotation.y = 0
 		door.open = false
+		door["player_closed"]=false
 		door.unlocked = door!=doors.get("radio")
 		door.collision.set_deferred("disabled",false)
 	for light in powered_lights:
@@ -754,22 +755,22 @@ func doorway_occupied(id: String) -> bool:
 	var player_offset=game.player.global_position-doorway
 	player_offset.y=0
 	if player_offset.length()<1.55: return true
-	if townspeople:
-		for person in townspeople.characters.values():
-			if person.dead: continue
-			var offset=person.actor.global_position-doorway
-			offset.y=0
-			if offset.length()<1.55: return true
+
 	return false
 
-func set_building_door(id: String, next_open: bool, shelter_close=false, player_requested=false) -> bool:
+func set_building_door(id: String, next_open: bool, shelter_close=false, player_requested=false, monster_requested=false) -> bool:
 	if not doors.has(id): return false
 	var door=doors[id]
+	if next_open and not player_requested and not monster_requested and door.get("player_closed",false):
+		if game.player.global_position.distance_to(doorway_position(id))<4.0:return false
+		door.player_closed=false
 	if door.open==next_open: return true
 	if next_open and id=="radio" and inventory.station_key==0: return false
 	if not next_open and not player_requested and doorway_occupied(id): return false
 	if not next_open and not player_requested and game.enemies and game.enemies.door_encounter.holding_open(id,game.clock):return false
 	if door.tween!=null and door.tween.is_valid(): door.tween.kill()
+	if player_requested:door["player_closed"]=not next_open
+	elif next_open:door["player_closed"]=false
 	door.open=next_open
 	if next_open:door.unlocked=true
 	door.collision.set_deferred("disabled",next_open)

@@ -73,7 +73,7 @@ func update(enemies,data,delta:float,goal:Variant=null)->bool:
    data.door_beat=1.5 if mummy else 0.9
   var duration=5.5 if mummy else 3.8
   if data.door_effort>=duration and not protected_door(town,id):
-   if town.set_building_door(id,true):
+   if town.set_building_door(id,true,false,false,true):
     # Mummies slowly force the leaf inward. Collision stays until it is open.
     if mummy:
      door.tween.kill();door.collision.set_deferred("disabled",false)
