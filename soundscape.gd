@@ -1,6 +1,18 @@
 extends Node
 ## All game audio uses a private bus so M never changes other applications.
 var game
+const JOHN_DEATH=preload("res://assets/audio/john_death_1.wav")
+var john_death_voice:AudioStreamPlayer3D
+
+func john_death(position:Vector3):
+	if not is_instance_valid(john_death_voice):
+		john_death_voice=spatial_voice(game,JOHN_DEATH,-3.0,25.0)
+		john_death_voice.name="JohnDeathVoice"
+	john_death_voice.global_position=position+Vector3.UP*1.3
+	john_death_voice.play()
+
+func stop_john_death():
+	if is_instance_valid(john_death_voice):john_death_voice.stop()
 var muted = false
 var bus_index = -1
 var owns_bus = false
@@ -77,6 +89,8 @@ func _ready():
 		AudioServer.set_bus_name(bus_index,BUS)
 		AudioServer.set_bus_send(bus_index,"Master")
 		owns_bus = true
+	john_death_voice=spatial_voice(game,JOHN_DEATH,-3.0,25.0)
+	john_death_voice.name="JohnDeathVoice"
 	menu_music = voice(stream("horror_intro",true),-12)
 	menu_music.play()
 	wind = voice(stream("wind_soft",true),-20)

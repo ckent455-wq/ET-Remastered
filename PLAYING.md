@@ -163,3 +163,7 @@ Doors, conversations, searchable storage and item interactions work before you r
 ## Creature combat
 
 Aim for the head to conserve ammunition. Repeated leg hits can briefly slow a pursuer, giving you room to escape; repeated shots cannot extend that slowdown indefinitely. Wounded creatures can make short bursts toward you. Close shotgun blasts provide knockback, and monsters can step forward during an attack. Enemy health bars are hidden.
+
+## Hotel kitchen knife
+
+Collect the knife from the hotel kitchen with E. It occupies two backpack slots. Press 4 or use weapon cycling/backpack USE to equip it. Attack makes a quick forward stab and consumes 14 stamina. The knife is optional and is not granted by Testing Mode; collect it from the hotel.

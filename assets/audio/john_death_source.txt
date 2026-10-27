@@ -1,0 +1,4 @@
+John death recording
+Provided by the user as Downloads/Death sound 1.m4a on 2026-10-27.
+Converted to mono 44.1 kHz PCM WAV. Removed the first 0.605 seconds of quiet lead-in so the vocal starts with the lethal hit.
+Used only for John / Mechanic death events.

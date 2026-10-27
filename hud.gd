@@ -7,6 +7,7 @@ var controls_open = false
 var last_menu_state = ""
 var last_controls_open = false
 var last_message = ""
+var last_health = -1.0
 var message_seconds = 0.0
 var passage_fade = 0.0
 var dialogue_elapsed = 0.0
@@ -69,6 +70,10 @@ func begin_game():
 	game.crash_site.start_opening()
 
 func _process(_delta):
+	# Treatment and healing can happen outside player physics, including in bed.
+	if not is_equal_approx(last_health,game.health):
+		last_health=game.health
+		queue_redraw()
 	if game.state=="dialogue":
 		if dialogue_last_page!=game.dialogue_page:
 			dialogue_elapsed=0.0
@@ -138,8 +143,8 @@ func _draw():
 	for i in range(12):
 		draw_rect(Rect2(i,i,640-i*2,400-i*2),Color(0,0,0,0.025),false,1)
 	if game.state in ["play","dialogue"]:draw_injury()
-	if game.invincible>1:
-		draw_rect(Rect2(0,0,640,400),Color(0.8,0.15,0.1,0.15))
+	if game.hurt_flash>0:
+		draw_rect(Rect2(0,0,640,400),Color(0.8,0.15,0.1,0.15*clampf(game.hurt_flash/0.20,0,1)))
 	if game.state=="play":
 		# Only immediate survival information remains in the world view.
 		status_bar("HEALTH",Vector2(20,350),game.health,Color("c97665") if game.health<=25 else Color("c5ab78") if game.health<=50 else Color("a1c8a1"))
@@ -151,7 +156,7 @@ func _draw():
 		if game.flashlight_charge<=0:
 			text("EMPTY / Q BATTERY",Vector2(500,374),10,light_color)
 		if game.crash_site.has_backpack: text("I / BACKPACK",Vector2(20,24),10,DIM)
-		if game.weapons.selected>=0:
+		if game.weapons.selected!=-1:
 			text(game.weapons.status(),Vector2(20,329),11,AMBER)
 		if game.weapons.hit_feedback>0:
 			draw_line(Vector2(315,195),Vector2(325,205),AMBER,1)

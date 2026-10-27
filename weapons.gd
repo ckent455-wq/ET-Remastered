@@ -175,18 +175,21 @@ func reset():
 
 func cycle(direction = 1):
 	if game.state!="play": return
-	var start: int = selected if selected>=0 else (-1 if direction>0 else 0)
-	for step in range(1,LOADOUT.size()+1):
-		var index = wrapi(start+step*direction,0,LOADOUT.size())
-		if owned[index]:
-			equip(index)
-			return
+	var available=[]
+	for i in range(LOADOUT.size()):
+		if owned[i]:available.append(i)
+	if game.knife and game.knife.owned():available.append(-2)
+	if available.is_empty():return
+	var current=available.find(selected)
+	equip(available[wrapi(current+direction if current>=0 else 0 if direction>0 else available.size()-1,0,available.size())])
 
 func equip(index: int):
 	if game.state!="play" or index==selected:
 		return
-	if index< -1 or index>=LOADOUT.size():
+	if index< -2 or index>=LOADOUT.size():
 		return
+	if index==-2 and (not game.knife or not game.knife.owned()):
+		game.message="Find the kitchen knife in Saint George Hotel first.";return
 	if index>=0 and not owned[index]:
 		game.message = "You haven't found that weapon. Search Blackwood's buildings."
 		return
@@ -214,6 +217,7 @@ func reload():
 
 func fire() -> bool:
 	if game.grave_dig and game.grave_dig.digging:return false
+	if selected==-2:return game.knife.attack()
 	if selected<0: return melee.attack()
 	if game.state!="play" or selected<0 or delay>0 or reload_remaining>0:
 		return false
@@ -250,7 +254,7 @@ func shot_damage(weapon:int,zone:String,distance:float)->float:
 	if weapon==2:amount*=lerpf(1.0,0.25,clampf((distance-5.0)/10.0,0,1))
 	return amount*(1.75 if zone=="head" else 0.65 if zone=="leg" else 0.8)
 
-func trace_shot(origin:Vector3,direction:Vector3,reach:float)->Dictionary:
+func trace_shot(origin:Vector3,direction:Vector3,reach:float,padding:float=0.0)->Dictionary:
 	if not enemy_hitboxes: enemy_hitboxes=preload("res://enemy_shot_hitboxes.gd").new(game.enemies)
 	var excludes:Array[RID]=[game.player.get_rid()]
 	var road_limit=game.forest_boundary.get_node_or_null("InvisibleSouthRoadLimit")
@@ -259,7 +263,7 @@ func trace_shot(origin:Vector3,direction:Vector3,reach:float)->Dictionary:
 	var ray=PhysicsRayQueryParameters3D.create(origin,origin+direction*reach,1,excludes)
 	var wall=game.get_world_3d().direct_space_state.intersect_ray(ray)
 	var distance=origin.distance_to(wall.position) if not wall.is_empty() else reach
-	var enemy=enemy_hitboxes.trace(origin,direction,distance)
+	var enemy=enemy_hitboxes.trace(origin,direction,distance,padding)
 	return enemy if not enemy.is_empty() else wall
 
 func impact(hit: Dictionary, damage_override: float = -1.0):
@@ -299,6 +303,7 @@ func impact(hit: Dictionary, damage_override: float = -1.0):
 	marks.append(chip)
 
 func status() -> String:
+	if selected==-2:return "KITCHEN KNIFE / ATTACK USES STAMINA"
 	if selected<0:
 		return "FISTS / FIRE TO PUNCH / 0 LOWER" if melee.raised else "UNARMED / 0 RAISE FISTS"
 	if reload_remaining>0:
@@ -306,7 +311,7 @@ func status() -> String:
 	return "%s  %02d / %02d" % [LOADOUT[selected].label,magazines[selected],reserves[selected]]
 
 func update_model(delta: float):
-	game.arm_visual.visible = selected<0 and (not melee or not melee.raised)
+	game.arm_visual.visible = selected==-1 and (not melee or not melee.raised)
 	for i in range(models.size()):
 		models[i].visible = i==selected and game.state in ["play","paused"]
 	var aim_position = Vector3(0,-0.10,-0.58) if aiming else Vector3(0.25,-0.27,-0.58)

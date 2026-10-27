@@ -26,6 +26,12 @@ const CRASH_HEALTH = 25.0
 var health = CRASH_HEALTH
 var stamina = 100.0
 var invincible = 0.0
+var hurt_flash = 0.0
+var town_changes:Node3D
+var workshop_layout:Node
+var hotel_layout:Node
+var clinic_layout:Node
+var knife:Node3D
 var contact_progress = 0.0
 var clock = 0.0
 var state = "intro"
@@ -257,9 +263,50 @@ func _ready():
 	updater.game = self
 	add_child(updater)
 	update_camera()
+	town_changes=preload("res://town_progression.gd").new();town_changes.game=self;add_child(town_changes)
+	workshop_layout=preload("res://workshop_layout.gd").new();workshop_layout.game=self;add_child(workshop_layout)
+	hotel_layout=preload("res://hotel_layout.gd").new();hotel_layout.game=self;add_child(hotel_layout)
+	clinic_layout=preload("res://clinic_layout.gd").new();clinic_layout.game=self;add_child(clinic_layout)
+	knife=preload("res://hotel_knife.gd").new();knife.game=self;add_child(knife)
 	call_deferred("load_requested_slot")
 
 func load_requested_slot():
+	if "--preview-hotel-knife" in OS.get_cmdline_user_args():
+		while not surface_details.completed:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true
+		story.clinic_rescue_done=true;story.crash_wound_treated=true;health=100;hurt_flash=0
+		player.global_position=knife.source.global_position+Vector3(-0.25,-1.0,1.0)
+		camera.look_at(knife.source.global_position)
+		pitch=camera.rotation.x
+		set_state("play");flashlight.show()
+		return
+	if "--preview-town" in OS.get_cmdline_user_args():
+		while not surface_details.completed:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true
+		story.clinic_rescue_done=true;story.crash_wound_treated=true;health=65
+		var terminal=town.actions.battery_panel.area.get_node("HighVoltageTerminal")
+		terminal.installed=true;terminal.opened=true;terminal.activate_power()
+		for id in ["ranger","nurse","mechanic"]:town.townspeople.conversation.greetings[id]=true
+		player.global_position=town.buildings.workshop.to_global(Vector3(0,0.02,3.8))
+		set_state("play");town.townspeople.talk("mechanic")
+		return
+	# Explicit local playtest shortcut. Normal launches and saved journeys are untouched.
+	if "--preview-collapse" in OS.get_cmdline_user_args() or "--preview-clinic" in OS.get_cmdline_user_args():
+		while not surface_details.completed:await get_tree().process_frame
+		reset_game()
+		crash_site.wake_phase=""
+		crash_site.release_seated_camera()
+		player.global_position=Vector3(0,0.02,-14.8)
+		player.rotation=Vector3.ZERO
+		if "--preview-clinic" in OS.get_cmdline_user_args():
+			clinic_rescue.place_in_bed()
+			clinic_rescue.begin_explanation()
+		else:
+			set_state("paused")
+			message="Resume and run toward town to test the collapse."
+		return
 	# Optional launcher shortcut; uses the same validated load as the menu.
 	var slot=0
 	for argument in OS.get_cmdline_user_args():
@@ -311,6 +358,7 @@ func reset_game():
 	stamina = 100
 	contact_progress = 0
 	invincible = 0
+	hurt_flash = 0.0
 	flashlight_charge = START_FLASHLIGHT_CHARGE
 	flashlight.visible = false
 	flashlight_raise = 0.0
@@ -336,7 +384,9 @@ func reset_game():
 	if hotel_basement: hotel_basement.reset()
 	if cemetery_shadow: cemetery_shadow.reset()
 	if hotel_window_figure: hotel_window_figure.reset()
+	if knife:knife.reset()
 	if grave_dig: grave_dig.reset()
+	if town_changes:town_changes.reset()
 
 func set_state(next: String):
 	if next!="dialogue" and town and town.townspeople and town.townspeople.conversation:
@@ -364,6 +414,7 @@ func set_state(next: String):
 		camera.fov=dialogue_view.fov
 		dialogue_view.clear()
 	state = next
+	if hud:hud.queue_redraw()
 	if clinic_rescue and clinic_rescue.phase=="bed" and next=="play":clinic_rescue.leave_bed()
 	if state!="play": jump_queued = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if state in ["play","waking"] else Input.MOUSE_MODE_VISIBLE
@@ -460,11 +511,11 @@ func _unhandled_input(event):
 			town.use_healing()
 		if state=="play" and event.keycode==KEY_Q:
 			town.use_battery()
-		if state=="play" and event.keycode in [KEY_0,KEY_1,KEY_2,KEY_3]:
-			if event.keycode==KEY_0 and weapons.selected<0:
+		if state=="play" and event.keycode in [KEY_0,KEY_1,KEY_2,KEY_3,KEY_4]:
+			if event.keycode==KEY_0 and weapons.selected==-1:
 				weapons.melee.toggle()
 			else:
-				weapons.equip({KEY_0:-1,KEY_1:0,KEY_2:1,KEY_3:2}[event.keycode])
+				weapons.equip({KEY_0:-1,KEY_1:0,KEY_2:1,KEY_3:2,KEY_4:-2}[event.keycode])
 		if state=="play" and event.keycode==KEY_R:
 			weapons.reload()
 		if state=="play" and event.keycode==KEY_V:
@@ -542,6 +593,7 @@ func take_damage(amount: float, hurt_clip = -1) -> bool:
 	if state!="play" or health<=0 or amount<=0 or invincible>0 or (testing_mode and testing_mode.enabled): return false
 	health = maxf(0,health-amount)
 	invincible = 0.9
+	hurt_flash = 0.20
 	soundscape.player_hurt(hurt_clip)
 	if health<=0: set_state("lost")
 	return true
@@ -563,6 +615,9 @@ func rescue_available() -> bool:
 	return town.radio_ready and story.repeater_is_off() and story.direct_channel_selected() and town.focus_action!="radio_bypass" and town.player_inside_building("radio") and camera.global_position.distance_to(town.actions.receiver.area.global_position)<3.2
 
 func _process(delta):
+	if hurt_flash>0 and state in ["play","dialogue","lost"]:
+		hurt_flash=maxf(0,hurt_flash-delta)
+		hud.queue_redraw()
 	update_camera()
 	update_flashlight_visual(delta)
 	if state=="intro":
@@ -577,7 +632,7 @@ func update_flashlight_visual(delta: float):
 		return
 	if state!="play":
 		return
-	var wanted = 1.0 if flashlight.visible and weapons.selected<0 and not weapons.melee.raised else 0.0
+	var wanted = 1.0 if flashlight.visible and weapons.selected==-1 and not weapons.melee.raised else 0.0
 	flashlight_raise = move_toward(flashlight_raise,wanted,delta/FLASHLIGHT_ANIMATION_SECONDS)
 	var eased = smoothstep(0.0,1.0,flashlight_raise)
 	flashlight_model.position = FLASHLIGHT_DOWN.lerp(FLASHLIGHT_UP,eased)

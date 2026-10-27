@@ -24,10 +24,10 @@ func answer(c,topic:String)->String:
   "waiting":
    if c.asked.has("pat_vault"):
     if g.story.repeater_is_off():return "It stopped. I keep waiting for the three notes, but they're gone.\n\nI don't feel better yet. I thought there'd be some great relief. Mostly I feel tired.\n\nWhen the county comes, I'm getting on whatever they send. You can hold me to that."
-    return "I told myself I was staying to close the road and fetch the equipment. Both needed doing. But I could've left with the others.\n\nI wanted to hear him once more. Even after I knew it wasn't him.\n\nDon't leave that speaker running for my sake. If I ask you to, remind me I said this."
+    return "I kept saying I'd close the road, collect the equipment, then leave. Every task gave me another reason to stay until morning.\n\nI wanted to hear him once more. I know how long he's been dead. Knowing didn't seem to help.\n\nDon't leave that speaker running for my sake. If I ask, remind me I said this."
    return "Waiting on someone.\n\nNot the bus. That came.\n\nI know how that sounds. Aubrey keeps asking the same question. I tell her I'm watching the road. She looks at the empty chair in my office.\n\nLet's get you out of here first."
   "cemetery":
-   var line="Old Mill Cemetery. East off the road you came down. My family kept the lower gate after the mill stopped paying for it. In daylight it's just weeds and old names."
+   var line="Old Mill Cemetery. East off the road you came down. My family kept the lower gate after the mill stopped paying for it.\n\nThe yews used to leave sap on my sleeves. Last time I brushed past them, it came off like ash. Still green on the branch. I've never seen that before."
    if not knows_vault(c):return line+"\n\nThe Whitcomb mausoleum is ours. Keep out of it until you've spoken to me. The ground behind it has been settling.\n\nIf you're only looking for supplies, there's a shovel in the old Victorian house's basement. One grave near the cemetery path has fresh earth. I left an emergency cache there before the bus. Leave the other graves alone."
    return line+"\n\nThe family key opens the Whitcomb mausoleum. The coupler is on the shelf inside. The chapel cellar key is farther in, on a workbench at the tunnel's far end.\n\nIf the entrance closes behind you, it isn't locked again. You can reopen it. Keep your flashlight and a way back."
   "family":
@@ -43,7 +43,7 @@ func answer(c,topic:String)->String:
   "grave":
    return "P.W. Patrick Whitcomb. Yes, that's mine.\n\nJohn brought the rounds before the evacuation. The coffin in that grave had been empty for years; the family moved the remains after a flood. I put the packet under the loose lid in case the road got cut off.\n\nI felt the soil moving while I covered it. Heard that scraping. Told myself it was a branch against the wood.\n\nTake the ammunition. You don't owe me an apology for digging where I told you to. Just don't open the other graves."
   "shadow":
-   return "By the fence?\n\nI saw a man there the night before the bus. Thought it was someone from the mill, checking a family plot. He went behind the Whitcomb vault. Never came out the other side.\n\nI don't know what you saw. If it kept its distance, let it. You don't have to follow everything that moves."
+   return "By the fence?\n\nI saw someone there before the bus left. I called out. They went behind the mausoleum. I waited to see which way they'd come out.\n\nAubrey found me at the gate after dark. I hadn't noticed the light go.\n\nI can't tell you who it was. I won't ask you to follow it."
  return ""
 func summary(c,topic:String)->String:
  match topic:

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://btq22b8u263un"
-path="res://.godot/imported/cutting_board_CuttingBoard.png-7a276aaa8adeefbadd5737a53e089fdc.ctex"
+path.s3tc="res://.godot/imported/cutting_board_CuttingBoard.png-7a276aaa8adeefbadd5737a53e089fdc.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "5c37020557ceb5bf441c3d5d11b3ce27"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/retro_props/cutting_board_CuttingBoard.png"
-dest_files=["res://.godot/imported/cutting_board_CuttingBoard.png-7a276aaa8adeefbadd5737a53e089fdc.ctex"]
+dest_files=["res://.godot/imported/cutting_board_CuttingBoard.png-7a276aaa8adeefbadd5737a53e089fdc.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

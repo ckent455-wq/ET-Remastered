@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cykcnkmkgqts"
-path="res://.godot/imported/counter_8bda7c52bef951a48a04b29d6d730922.png-ba4f860d7b962c3ec5f02e445cc2517b.ctex"
+path.s3tc="res://.godot/imported/counter_8bda7c52bef951a48a04b29d6d730922.png-ba4f860d7b962c3ec5f02e445cc2517b.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "1c525995f31cb6bd66944110c00edcfd"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/apartment/counter_8bda7c52bef951a48a04b29d6d730922.png"
-dest_files=["res://.godot/imported/counter_8bda7c52bef951a48a04b29d6d730922.png-ba4f860d7b962c3ec5f02e445cc2517b.ctex"]
+dest_files=["res://.godot/imported/counter_8bda7c52bef951a48a04b29d6d730922.png-ba4f860d7b962c3ec5f02e445cc2517b.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

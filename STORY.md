@@ -57,3 +57,15 @@ Pat's cemetery questions develop through play rather than proximity-triggered sp
 On returning from the vault, the player can press Pat about what he withheld. He admits visiting the morning after the evacuation, following the grandfather's imitated voice, removing the old inner passage shutter, then leaving the chapel key on the far workbench and fleeing. He locked the outer iron door behind him; the existing family-key gate remains necessary. His ordinary equipment cache was real, but not his whole reason for going back. He cannot explain who placed the cellar coffins or whether his action woke anything. Silence after the chapel shutdown resolves his waiting, rather than confirming a supernatural reunion.
 
 The optional disturbed grave remains an ammunition cache, not a second mandatory key gate. Its P.W. note is Pat's. The coffin was empty after a prior relocation of remains. Reading that note unlocks a specific question; seeing the fence apparition unlocks another. Neither is required to get the family key or finish the game. Aubrey and John's dialogue arcs remain unchanged in this pass.
+
+## Survivor reactions and workshop consequences
+
+Pat, Aubrey and John react during manual interactions to restored workshop power, the workshop attack, the player's hotel-cellar discovery, and the chapel shutdown. Their follow-up questions preserve practical quest directions while emphasizing uncertain observations, disrupted memory and familiar patterns in the wrong places. They do not identify the entity or explain its ultimate nature. Each stage has a separate journal entry; one-time introductions persist in existing conversation memory.
+
+The workshop branch now powers two dim interior fixtures and a low motor hum. Three brief interruptions precede stable light. A very quiet interference layer remains while the independent chapel repeater is active, then stops after its isolator is cut; workshop machinery continues. These are derived effects, not new quest requirements. No dialogue starts merely by approaching an NPC or restoring power.
+
+## Tone reference: The Colour Out of Space
+
+Reference read in full: H. P. Lovecraft, The Colour Out of Space (1927), https://www.gutenberg.org/files/68236/68236-h/68236-h.htm.
+
+Dialogue now treats Blackwood as a place undergoing an incompletely understood sickness. Pat reports wet ground, unexplained dust and brittle green vegetation; Aubrey describes inconsistent clinical findings and habits of rationalizing them; John distinguishes reproducible circuit tests from the impossible behavior they do not explain. The survivors retain familiar work routines even as those routines fail them. Their observations are partial testimony, not a complete biological or supernatural diagnosis. The existing twelve-year decline, recent evacuation, radio repair steps and evidence gates remain intact. These dialogue observations do not imply a new environmental simulation or water mechanic.

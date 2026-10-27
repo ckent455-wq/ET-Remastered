@@ -105,8 +105,10 @@ func valid(data)->bool:
   for key in data.rotations:
    if not key is String or not data.rotations[key] is bool:return false
  for key in game.town.inventory:
+  if key=="knife" and not data.town.inventory.has(key):continue
   if not data.town.inventory.get(key) is int or data.town.inventory[key]<0:return false
  for id in game.town.actions:
+  if id=="hotel_knife" and not data.actions.has(id):continue
   if not data.actions.get(id) is Dictionary:return false
  for key in roots():
   if key=="hollow" and legacy_hollow:continue
@@ -117,6 +119,7 @@ func apply(data:Dictionary):
  for key in data.town:
   if game.town.get(key) is Array:game.town.get(key).assign(data.town[key])
   else:game.town.set(key,data.town[key])
+ if not game.town.inventory.has("knife"):game.town.inventory["knife"]=0
  set_variables(game.story,data.story)
  # Saves made before the injury event keep their existing journey unchanged.
  if not data.story.has("crash_wound_treated"):game.story.crash_wound_treated=true;game.story.clinic_rescue_done=true
@@ -155,6 +158,7 @@ func apply(data:Dictionary):
  game.town.cemetery.slam_triggered=game.town.cemetery.slam_triggered or game.town.actions.cemetery_coupler.taken
  var panel=roots().panel;panel.set_fuse_power(panel.energized);panel.refresh_prompt()
  game.town.actions.battery_panel.area.get_node("InstalledFuse").visible=panel.installed
+ if game.town_changes:game.town_changes.startup=-1.0;game.town_changes.sync()
  for light in game.town.powered_lights:light.visible=game.town.powered
  game.town.receiver_light.light_energy=1.0 if game.town.radio_ready else 0.4
  game.story.bypass_lamp.material_override=game.town.mats.green if game.story.county_bypass else game.town.mats.amber
@@ -173,9 +177,14 @@ func apply(data:Dictionary):
  game.player_collider.shape.height=game.CROUCH_HEIGHT if game.crouching else game.STANDING_HEIGHT;game.player_collider.position.y=game.player_collider.shape.height/2
  game.camera.position=Vector3(0,game.CROUCH_EYE if game.crouching else game.STANDING_EYE,0);game.camera.rotation=Vector3(data.pitch,0,0)
  game.health=data.health;game.stamina=data.stamina;game.flashlight_charge=data.charge;game.flashlight.visible=data.light;game.clock=data.clock
- game.contact_progress=0;game.invincible=0;game.jump_queued=false;game.town.focus_action=""
+ game.contact_progress=0;game.invincible=0;game.hurt_flash=0;game.jump_queued=false;game.town.focus_action=""
+ if game.workshop_layout:game.workshop_layout.apply_layout()
+ if game.hotel_layout:game.hotel_layout.apply_layout()
+ if game.clinic_layout:game.clinic_layout.apply_layout()
  game.story.refresh_collected_notes()
  game.message="Journey loaded. "+game.town.objective()
+ if game.weapons.selected==-2 and not game.knife.owned():game.weapons.selected=-1
+ game.knife.reset()
  game.set_state("play")
 func path(slot:int)->String:return directory+"/slot_%d.sav" % slot
 func read_file(file_path:String)->Dictionary:

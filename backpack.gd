@@ -33,6 +33,7 @@ func _process(_delta):
 
 func counts() -> Dictionary:
 	var result = {"flashlight":int(game.crash_site.has_flashlight),"medkit":game.town.inventory.medkit,"bandage":game.town.inventory.bandage,"battery":game.town.inventory.battery}
+	result["knife"]=game.town.inventory.get("knife",0)
 	for id in OBJECTIVES: result[id]=game.town.inventory[id]
 	for i in range(3):
 		result["gun%d" % i] = int(game.weapons.owned[i])
@@ -48,10 +49,11 @@ func fits(cell: Vector2i, dimensions: Vector2i, entries: Array, except_key = "")
 
 func pack(values: Dictionary) -> Array:
 	var requested: Array = []
-	for id in ["gun1","gun2","coil","tuner","gun0","medkit","bandage","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","workshop_fuse","chapel_key","shotgun_key","mausoleum_key","shovel","ada_letter"]:
+	for id in ["gun1","gun2","coil","tuner","gun0","medkit","bandage","antenna","flashlight","battery","ammo0","ammo1","ammo2","station_key","workshop_fuse","chapel_key","shotgun_key","mausoleum_key","shovel","ada_letter","knife"]:
 		var amount: int = values.get(id,0)
 		var dims = Vector2i(1,1)
 		var limit = 1
+		if id=="knife":dims=Vector2i(1,2)
 		if id=="shovel": dims=Vector2i(1,3)
 		if id in ["gun1","gun2"]: dims = Vector2i(4,1)
 		if id in ["coil","tuner"]: dims = Vector2i(2,2)
@@ -100,6 +102,7 @@ func room_for(id: String, amount: int = 1) -> bool:
 	return not pack(values).is_empty()
 
 func label(id: String) -> String:
+	if id=="knife":return "KITCHEN KNIFE"
 	if OBJECTIVE_LABELS.has(id): return OBJECTIVE_LABELS[id]
 	if id.begins_with("gun"): return ["PISTOL","SERVICE RIFLE","SHOTGUN"][int(id.right(1))]
 	if id.begins_with("ammo"): return ["PISTOL ROUNDS","RIFLE ROUNDS","SHOTGUN SHELLS"][int(id.right(1))]
@@ -151,6 +154,7 @@ func _draw():
 			detail = "Loaded %d / %d. Reserve %d." % [game.weapons.magazines[index],game.weapons.LOADOUT[index].clip,game.weapons.reserves[index]]
 		else: detail = {"flashlight":"Your light. Equipped on your shoulder strap.","medkit":"Restores 50 health. One kit per space.","bandage":"Restores 10 health. Two rolls per space. H uses bandages first.","battery":"Refills flashlight charge. Stacks of two."}.get(item.id,"Combine with its weapon to reload.")
 		if OBJECTIVE_DETAILS.has(item.id): detail=OBJECTIVE_DETAILS[item.id]
+		if item.id=="knife":detail="Hotel kitchen knife. Short reach. Each stab costs 14 stamina. 4 equips it."
 		paragraph(detail,Vector2(330,163),270)
 		for i in range(4):
 			var box = Rect2(330+(i%2)*139,207+(i/2)*31,130,25)
@@ -201,7 +205,7 @@ func copy_meshes(source: Node, parent: Node3D, accumulated = Transform3D.IDENTIT
 	for child in source.get_children(): copy_meshes(child,parent,current)
 
 func build_icons():
-	for id in ["gun0","gun1","gun2","ammo0","ammo1","ammo2","flashlight","medkit","bandage","battery"]+OBJECTIVES:
+	for id in ["gun0","gun1","gun2","ammo0","ammo1","ammo2","flashlight","medkit","bandage","battery","knife"]+OBJECTIVES:
 		var viewport = SubViewport.new()
 		viewport.size=Vector2i(768,192) if id in ["gun1","gun2"] else Vector2i(256,128) if id.begins_with("gun") or id=="medkit" else Vector2i(128,384) if id=="shovel" else Vector2i(128,192) if id=="flashlight" else Vector2i(128,128)
 		viewport.transparent_bg=true
@@ -229,6 +233,7 @@ func build_icons():
 			for child in source.get_children(): copy_meshes(child,model)
 		else:
 			var path = "res://assets/flashlight/flashlight.glb"
+			if id=="knife":path="res://assets/retro_props/knife.glb"
 			if id.begins_with("gun"): path="res://assets/weapons/"+["pistol","rifle","shotgun"][int(id.right(1))]+".glb"
 			if id.begins_with("ammo"): path="res://assets/ammo/"+["pistol","rifle","shotgun"][int(id.right(1))]+".glb"
 			var source = load(path).instantiate()
@@ -250,6 +255,7 @@ func build_icons():
 		if id.ends_with("_key"):
 			if bounds.size.y<=bounds.size.x and bounds.size.y<=bounds.size.z: model.rotation.x=PI/2
 			elif bounds.size.x<=bounds.size.z: model.rotation.y=PI/2
+		if id=="knife":model.basis=Basis(Vector3.BACK,Vector3.RIGHT,Vector3.UP)
 		if id.begins_with("gun") and bounds.size.z>bounds.size.x: model.rotation.y=PI/2
 		if id=="flashlight" and bounds.size.z>bounds.size.y: model.rotation.x=PI/2
 		var world = WorldEnvironment.new()
@@ -273,7 +279,7 @@ func build_icons():
 		icons[id]=viewport.get_texture()
 	# Crop transparent camera margins so long guns fill their four-slot footprint.
 	await RenderingServer.frame_post_draw
-	for id in ["gun1","gun2"]:
+	for id in ["gun1","gun2","knife"]:
 		var image:Image=icons[id].get_image()
 		var used=image.get_used_rect()
 		if used.has_area():
@@ -362,6 +368,9 @@ func act(action: String):
 	selected = clampi(selected,0,entries.size()-1)
 	var item: Dictionary = entries[selected]
 	var id: String = item.id
+	if id=="knife" and action!="use":notice="Hotel kitchen knife. Short reach, 14 stamina per stab. Keep it as a backup weapon.";return
+	if id=="knife":
+		game.state="play";game.weapons.equip(-2);game.set_state("backpack");notice="Kitchen knife equipped.";return
 	if action=="discard":
 		if id=="ada_letter": notice="Keep this for John. Give it to him at the workshop.";return
 		if id in OBJECTIVES: notice="Required objective item. Use it at its matching door, panel or receiver."; return
@@ -488,3 +497,6 @@ func rotate_item():
 			saved_rotations[item.key]=not item.rotated
 			notice="Item rotated."
 		else:notice="Not enough room to rotate here. Pick it up and rotate over a free space."
+
+
+

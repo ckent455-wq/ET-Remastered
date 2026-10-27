@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bt6kt4xvlbt56"
-path="res://.godot/imported/sink_sink_diffuse.png-47f5216a1e8ea609d23ff2443251b038.ctex"
+path.s3tc="res://.godot/imported/sink_sink_diffuse.png-47f5216a1e8ea609d23ff2443251b038.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "06aaa412a90704284267f2f992f7d3c9"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/interiors/sink_sink_diffuse.png"
-dest_files=["res://.godot/imported/sink_sink_diffuse.png-47f5216a1e8ea609d23ff2443251b038.ctex"]
+dest_files=["res://.godot/imported/sink_sink_diffuse.png-47f5216a1e8ea609d23ff2443251b038.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

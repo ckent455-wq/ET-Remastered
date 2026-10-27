@@ -11,7 +11,7 @@ var game
 var buildings = {}
 var doors = {}
 var actions = {}
-var inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0}
+var inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0,"knife":0}
 var journal_entries: Array[Dictionary] = []
 var powered = false
 var radio_ready = false
@@ -371,7 +371,7 @@ func furnish():
 	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the last families have gone. Most buildings have stood empty since the mill closed twelve years ago.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
-	inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0}
+	inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0,"knife":0}
 	journal_entries.clear()
 	discovered.clear()
 	powered = false
@@ -409,6 +409,9 @@ func refresh_focus():
 	focus_action = ""
 	var start = game.camera.global_position
 	var finish = start-game.camera.global_basis.z*3.2
+	if game.knife and game.knife.pickup_focus(start,finish):
+		focus_action="hotel_knife"
+		return
 	if game.crash_site:
 		var pickup=game.crash_site.pickup_focus(start,finish)
 		if pickup!="":
@@ -471,6 +474,7 @@ func interact():
 		perform(focus_action)
 
 func perform(id: String):
+	if id=="hotel_knife":game.knife.collect();return
 	if id.begins_with("body_search_"):
 		game.enemies.corpse_search.search(id.trim_prefix("body_search_").to_int())
 		return

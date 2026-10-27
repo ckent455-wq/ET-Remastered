@@ -44,7 +44,7 @@ func reset():
 
 func attack() -> bool:
 	if not raised: return false
-	if game.state!="play" or weapons.selected>=0 or weapons.delay>0 or elapsed>=0: return false
+	if game.state!="play" or weapons.selected!=-1 or weapons.delay>0 or elapsed>=0: return false
 	if game.crash_site.wake_phase!="": return false
 	if game.grave_dig and game.grave_dig.digging: return false
 	elapsed = 0
@@ -71,7 +71,7 @@ func toggle():
 	update_visual(0)
 
 func update(delta: float):
-	if weapons.selected>=0:
+	if weapons.selected!=-1:
 		raised = false
 		cancel()
 	if game.state=="play":
@@ -86,9 +86,9 @@ func update(delta: float):
 	update_visual(delta)
 
 func update_visual(_delta: float):
-	model.visible = raised and weapons.selected<0 and game.state in ["play","paused"] and game.crash_site.wake_phase==""
+	model.visible = raised and weapons.selected==-1 and game.state in ["play","paused"] and game.crash_site.wake_phase==""
 	# Fists occupy both hands; retain the beam without a floating held model.
-	game.arm_visual.visible = weapons.selected<0 and not raised
+	game.arm_visual.visible = weapons.selected==-1 and not raised
 	model.position.y = -1.74
 
 func strike():

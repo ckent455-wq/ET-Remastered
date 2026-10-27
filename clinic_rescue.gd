@@ -46,6 +46,7 @@ func road_collapse_pending()->bool:
  return game.crash_site.wake_phase=="" and not game.town.townspeople.characters.nurse.dead
 
 func begin_collapse():
+ if phase in ["faint","blackout","wake","bed"]:return
  phase="faint";elapsed=0;start_roll=game.camera.rotation.z
  start_eye_height=game.camera.position.y;start_pitch=game.pitch
  game.player.velocity=Vector3.ZERO;game.jump_queued=false;game.contact_progress=0
@@ -62,7 +63,7 @@ func _process(delta):
  if phase=="dimming":
   if game.state!="play":return
   elapsed+=minf(delta,0.1)
-  veil.color.a=lerpf(0.0,0.72,smoothstep(0,5.0,elapsed))
+  veil.color.a=lerpf(0.0,0.30,smoothstep(0,5.0,elapsed))
   var weakness=smoothstep(0,5.0,elapsed)
   game.camera.rotation.z=sin(elapsed*3.7)*lerpf(0.015,0.11,weakness)
   game.camera.h_offset=sin(elapsed*2.8)*0.035*weakness
@@ -77,7 +78,8 @@ func _process(delta):
   game.camera.position.y=lerpf(start_eye_height,0.58,amount)
   game.camera.rotation.x=lerpf(start_pitch,0.58,amount)
   game.camera.rotation.z=lerpf(start_roll,-0.18,amount)
-  veil.color.a=lerpf(0.72,1.0,amount)
+  # Keep the world visible while the camera drops; close the eyes near the end.
+  veil.color.a=lerpf(0.30,1.0,smoothstep(0.55,1.0,amount))
   if elapsed>=1.8:phase="blackout";elapsed=0
  elif phase=="blackout":
   if elapsed>=BLACKOUT_SECONDS:place_in_bed();phase="wake";elapsed=0;veil.color.a=0
@@ -96,11 +98,11 @@ func eye_opening()->float:
 
 func place_in_bed():
  var clinic=game.town.buildings.clinic
- game.player.global_position=clinic.to_global(Vector3(-3.3,0.02,-0.65))
+ game.player.global_position=game.clinic_layout.point("Wake",clinic.to_global(Vector3(-3.3,0.02,-0.65)))
  game.player.velocity=Vector3.ZERO
  game.camera.position=Vector3(0,1.0,0);game.camera.rotation.z=0
  var nurse=game.town.townspeople.characters.nurse
- nurse.actor.global_position=clinic.to_global(Vector3(-1.9,0.02,-0.35));nurse.actor.velocity=Vector3.ZERO
+ nurse.actor.global_position=game.clinic_layout.point("NurseStand",clinic.to_global(Vector3(-1.9,0.02,-0.35)));nurse.actor.velocity=Vector3.ZERO
  var toward=nurse.actor.global_position+Vector3(0,1.45,0)-game.camera.global_position
  game.player.rotation.y=atan2(-toward.x,-toward.z)
  game.pitch=atan2(toward.y,Vector2(toward.x,toward.z).length())
@@ -109,9 +111,10 @@ func place_in_bed():
  nurse.actor.rotation.y=atan2(facing.x,facing.z)
  game.camera.fov=66
  game.health=maxf(game.health,65.0);game.stamina=100
+ game.hud.queue_redraw()
  if game.crash_site.has_backpack and not game.story.clinic_rescue_done:game.town.inventory.bandage+=1
  game.story.crash_wound_treated=true;game.story.clinic_rescue_done=true
- game.invincible=0
+ game.invincible=0;game.hurt_flash=0
  game.camera.make_current()
 
 func begin_explanation():
@@ -135,12 +138,13 @@ func begin_explanation():
 func leave_bed():
  if phase!="bed":return
  phase="";elapsed=0;caption_elapsed=0;veil.color.a=0
- game.player.global_position=game.town.buildings.clinic.to_global(Vector3(-2.0,0.02,0.65))
+ game.player.global_position=game.clinic_layout.point("BedExit",game.town.buildings.clinic.to_global(Vector3(-2.0,0.02,0.65)))
  game.player.velocity=Vector3.ZERO;game.crouching=false
  game.player_collider.shape.height=game.STANDING_HEIGHT;game.player_collider.position.y=game.STANDING_HEIGHT/2
  game.camera.position=Vector3(0,game.STANDING_EYE,0);game.camera.rotation=Vector3.ZERO;game.pitch=0
  game.message=missing_gear_prompt() if missing_gear_prompt()!="" else "Aubrey treated your wound. Search the clinic and talk to her about Blackwood."
- game.invincible=3
+ game.invincible=3;game.hurt_flash=0
+ game.hud.queue_redraw()
 
 func missing_gear_names()->String:
  if not game.crash_site.has_backpack and not game.crash_site.has_flashlight:return "your backpack and flashlight"
@@ -154,7 +158,7 @@ func movement_scale()->float:
  if phase!="dimming":return 1.0
  var weakness=smoothstep(0,5.0,elapsed)
  var uneven=lerpf(1.0,0.65+0.35*absf(sin(elapsed*3.7)),weakness)
- return lerpf(1.0,0.18,weakness)*uneven
+ return lerpf(0.55,0.15,weakness)*uneven
 
 func caption_visible()->bool:
  return caption_elapsed<2.0 and phase in ["dimming","faint","blackout","wake"] and game.state in ["play","clinic_faint"]

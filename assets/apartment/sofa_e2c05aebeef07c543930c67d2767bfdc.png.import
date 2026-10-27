@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0j2dmepf7ndg"
-path="res://.godot/imported/sofa_e2c05aebeef07c543930c67d2767bfdc.png-1e84f1afd564c626e56461fe5630a5ce.ctex"
+path.s3tc="res://.godot/imported/sofa_e2c05aebeef07c543930c67d2767bfdc.png-1e84f1afd564c626e56461fe5630a5ce.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "0b1f40df98c6caab026e736ee8531d33"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/apartment/sofa_e2c05aebeef07c543930c67d2767bfdc.png"
-dest_files=["res://.godot/imported/sofa_e2c05aebeef07c543930c67d2767bfdc.png-1e84f1afd564c626e56461fe5630a5ce.ctex"]
+dest_files=["res://.godot/imported/sofa_e2c05aebeef07c543930c67d2767bfdc.png-1e84f1afd564c626e56461fe5630a5ce.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

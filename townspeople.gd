@@ -88,6 +88,7 @@ func retro_materials(node: Node):
 		retro_materials(child)
 
 func reset():
+	if town.game.soundscape:town.game.soundscape.stop_john_death()
 	if conversation:conversation.reset()
 	sheltering=false
 	grave_key_given=false
@@ -290,6 +291,7 @@ func shoot(id: String) -> bool:
 		storage.pending_loot=true
 		grave_approaching=false
 	data.dead = true
+	if id=="mechanic":town.game.soundscape.john_death(data.actor.global_position)
 	if id=="mechanic" and town.game.story.ada_letter_requested:town.game.story.update_ada_quest()
 	data.death_time = 0.0
 	data.actor.velocity = Vector3.ZERO
@@ -376,8 +378,13 @@ func talk(id: String):
 			return
 		if conversation.pat_story.returned(conversation) and not conversation.greetings.has("pat_return"):
 			conversation.greetings["pat_return"]=true
-			conversation.begin("You went inside, didn't you?\n\nYour hands are shaking. Sit a moment. Tell me what you found.",true,id)
+			conversation.begin("You went inside, didn't you?\n\nThere's dust on your collar. The same stuff that was on the vault steps. Sit a moment. Tell me what you found.",true,id)
 			return
+	var reaction=conversation.progress.intro(conversation,id)
+	if not reaction.is_empty() and reaction.line!="":
+		conversation.greetings[reaction.key]=true
+		conversation.begin(reaction.line,true,id)
+		return
 	conversation.begin(words(id),false,id)
 
 func words(id: String) -> String:
@@ -394,7 +401,7 @@ func words(id: String) -> String:
 			return "Take the signal coil from John's powered workshop cabinet. Then speak to me about the Whitcomb mausoleum. I've got its family key."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
-				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The signal did this over weeks.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a bandage first, then a medpack. Q fits a battery."
+				return "Edith and Silas were my patients. I recognized her bracelet and his splinted hand on those things. Jonah, the chapel caretaker, changed first. The changes took weeks. I still cannot tell you what caused them.\n\nIf the county answers, ask them to come without sirens. The things around the chapel follow sound.\n\nH uses a bandage first, then a medpack. Q fits a battery."
 			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The station voices spread through the chapel speaker. One used my dead mother's name. Read the station operator's log to learn how it began.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a bandage first, then a medpack; Q fits a battery."
 		"mechanic":
 			if not town.powered:

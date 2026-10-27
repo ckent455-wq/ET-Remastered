@@ -114,6 +114,7 @@ func activate_power():
 	energized=true
 	set_fuse_power(true)
 	town.powered=true
+	if town.game.town_changes:town.game.town_changes.power_restored()
 	for light in town.powered_lights:light.show()
 	town.game.soundscape.feedback("power")
 	town.game.message="Workshop power restored. The signal-coil cabinet is released."

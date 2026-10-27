@@ -102,7 +102,7 @@ func _physics_process(delta):
 	if not triggered and previous_z> -21 and p.z<= -21 and p.z> -26 and absf(p.x)<3.8:
 		# An untreated crash wound takes priority over the road scare.
 		if game.clinic_rescue and game.clinic_rescue.road_collapse_pending():
-			game.clinic_rescue.begin_collapse()
+			game.clinic_rescue.update_approach(delta)
 			previous_z = p.z
 			return
 		begin_fall()

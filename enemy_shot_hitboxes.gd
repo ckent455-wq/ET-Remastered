@@ -79,21 +79,21 @@ func capsule(origin:Vector3,direction:Vector3,start:Vector3,end:Vector3,radius:f
 		if t>=0 and y>0 and y<length:nearest=minf(nearest,t)
 	return nearest
 
-func trace(origin:Vector3,direction:Vector3,limit:float)->Dictionary:
+func trace(origin:Vector3,direction:Vector3,limit:float,padding:float=0.0)->Dictionary:
 	var nearest=limit
 	var hit={}
 	for data in enemies.creatures:
 		if data.hp<=0 or not data.actor.is_visible_in_tree() or data.actor.collision_layer==0:continue
 		var r=rig(data)
 		r.skeleton.force_update_all_bone_transforms()
-		var distance=sphere(origin,direction,head_center(data),0.25)
+		var distance=sphere(origin,direction,head_center(data),0.25+padding)
 		if data.index==enemies.HOLLOW_INDEX:
 			var transform=r.skeleton.global_transform*r.skeleton.get_bone_global_pose(r.bones.head)
-			distance=capsule(origin,direction,transform*Vector3(0,0.04,0),transform*Vector3(0,0.69,0),0.24)
+			distance=capsule(origin,direction,transform*Vector3(0,0.04,0),transform*Vector3(0,0.69,0),0.24+padding)
 		var zone="head"
 		for pair in r.links:
 			if not r.bones.has(pair[0]) or not r.bones.has(pair[1]):continue
-			var body=capsule(origin,direction,point(r,pair[0]),point(r,pair[1]),pair[2])
+			var body=capsule(origin,direction,point(r,pair[0]),point(r,pair[1]),pair[2]+padding)
 			if body<distance:
 				distance=body
 				zone="leg" if ("leg" in pair[0] or "thigh" in pair[0] or "shin" in pair[0]) else "body"
