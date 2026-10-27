@@ -9,6 +9,7 @@ Windows x64 release build exported with the Godot 4.7.2 release template.
 - NPC dialogue emphasizes Blackwood's failing environment and uncertain symptoms. Conversations respond to workshop power, encounters, tunnel discoveries and the chapel signal.
 - Workshop power brings local machinery and interference ambience, with changes after the chapel signal is silenced.
 - Improved collapse warning at running speed and corrected the red damage flash after leaving Aubrey's bed.
+- Flashlight stays hidden during the car opening and until collected from the trunk.
 - Earlier saves without the optional knife remain supported. No hand or sleeve is attached to the knife.
 
 ## Play

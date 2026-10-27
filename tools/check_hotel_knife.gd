@@ -7,6 +7,7 @@ func run():
  await process_frame
  g.reset_game();g.crash_site.wake_phase="";g.crash_site.has_backpack=true;g.story.clinic_rescue_done=true;g.state="play"
  var k=g.knife;var w=g.weapons;k.set_process(false);k.sync()
+ assert(not g.flashlight_model.visible,"Uncollected flashlight stays hidden after knife sync")
  w.equip(-2);assert(w.selected==-1 and not k.owned() and not k.held.visible,"Knife cannot be equipped before the physical pickup")
  g.town.inventory.medkit=24;assert(not k.collect() and not k.owned() and k.source.visible,"Full pack leaves the knife on the board")
  g.town.inventory.medkit=0
@@ -63,6 +64,7 @@ func run():
  g.reset_game();assert(not k.owned() and w.selected==-1)
  print("PASS: physical hotel pickup, capacity, inventory, stamina/recovery, range, cover, controller cycling, saves and reset")
  g.queue_free();await process_frame;quit()
+
 
 
 

@@ -58,7 +58,6 @@ func sync():
  if game.weapons.selected==SLOT:
   game.arm_visual.hide()
   game.flashlight_model.hide()
- else:game.flashlight_model.show()
 func collect()->bool:
  if game.state!="play" or owned():return false
  if not game.crash_site.has_backpack:game.message="Collect your backpack before taking the knife.";return false
