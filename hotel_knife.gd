@@ -1,5 +1,5 @@
 extends Node3D
-## Optional physical pickup, backed by the hotel's existing editable knife prop.
+## Shared knife weapon with independent physical pickups in the hotel and workshop.
 const SLOT=-2
 const COST=14.0
 const REACH=1.8
@@ -11,17 +11,22 @@ var game
 var source:Node3D
 var area:Area3D
 var collision:CollisionShape3D
+var pickups={}
 var held:Node3D
 var elapsed=-1.0
 var struck=false
 func _ready():
  name="HotelKnifeWeapon"
- for node in game.town.buildings.house.get_children():
-  if node.get_meta("retro_asset","")=="knife":source=node;break
- assert(source!=null)
- area=Area3D.new();area.name="HotelKnifePickup";area.collision_layer=2;area.collision_mask=0;area.monitoring=false;area.monitorable=false;area.set_meta("action_id","hotel_knife");add_child(area)
- collision=CollisionShape3D.new();collision.shape=BoxShape3D.new();area.add_child(collision)
- game.town.actions.hotel_knife={"kind":"hotel_knife","label":"Take kitchen knife","area":area,"taken":false}
+ for location in [["hotel_knife","house"],["workshop_knife","workshop"]]:
+  var prop:Node3D
+  for node in game.town.buildings[location[1]].get_children():
+   if node.get_meta("retro_asset","")=="knife":prop=node;break
+  assert(prop!=null)
+  var target=Area3D.new();target.name=location[0];target.collision_layer=2;target.collision_mask=0;target.monitoring=false;target.monitorable=false;target.set_meta("action_id",location[0]);add_child(target)
+  var shape=CollisionShape3D.new();shape.shape=BoxShape3D.new();target.add_child(shape)
+  pickups[location[0]]={"source":prop,"area":target,"collision":shape}
+  game.town.actions[location[0]]={"kind":"hotel_knife","label":"Take kitchen knife","area":target,"taken":false}
+ source=pickups.hotel_knife.source;area=pickups.hotel_knife.area;collision=pickups.hotel_knife.collision
  held=Node3D.new();held.name="HeldHotelKnife";game.camera.add_child(held)
  var model=preload("res://assets/retro_props/knife.glb").instantiate();held.add_child(model);game.weapons.adapt(model)
  # Native model is 28cm long. Center it and present the broad blade toward the camera.
@@ -31,38 +36,46 @@ func _ready():
  model.scale=Vector3.ONE*1.12
  sync()
 func owned()->bool:return game.town.inventory.get("knife",0)>0
-func pickup_focus(start:Vector3,finish:Vector3)->bool:
- if owned() or not source:return false
- var bounds=game.surface_details.bounds_of(source).grow(0.035)
- if bounds.intersects_segment(start,finish)==null:return false
- var query=PhysicsRayQueryParameters3D.create(start,finish,1,[game.player.get_rid()])
- var hit=get_world_3d().direct_space_state.intersect_ray(query)
- return hit.is_empty() or bounds.intersects_segment(start,hit.position)!=null
+func pickup_focus(start:Vector3,finish:Vector3)->String:
+ var result=""
+ var nearest=INF
+ for id in pickups:
+  if game.town.actions[id].taken:continue
+  var bounds=game.surface_details.bounds_of(pickups[id].source).grow(0.035)
+  var point=bounds.intersects_segment(start,finish)
+  if point==null:continue
+  var query=PhysicsRayQueryParameters3D.create(start,finish,1,[game.player.get_rid()])
+  var hit=get_world_3d().direct_space_state.intersect_ray(query)
+  if not hit.is_empty() and bounds.intersects_segment(start,hit.position)==null:continue
+  var distance=start.distance_to(point)
+  if distance<nearest:nearest=distance;result=id
+ return result
 func reset():
  elapsed=-1;struck=false
  if area:sync()
 func sync():
- if not source:return
  var have=owned()
- if not have:
-  source.show()
-  var box=game.surface_details.bounds_of(source)
-  if box.size.length()>0:
-   area.global_transform=Transform3D(Basis.IDENTITY,box.get_center())
-   collision.shape.size=box.size+Vector3(0.12,0.12,0.12)
- else:source.hide()
- area.visible=not have
- area.collision_layer=0 if have else 2
- game.town.actions.hotel_knife.taken=have
+ for id in pickups:
+  var data=pickups[id]
+  var taken=game.town.actions[id].taken
+  data.source.visible=not taken
+  if not taken:
+   var box=game.surface_details.bounds_of(data.source)
+   if box.size.length()>0:
+    data.area.global_transform=Transform3D(Basis.IDENTITY,box.get_center())
+    data.collision.shape.size=box.size+Vector3(0.12,0.12,0.12)
+  data.area.visible=not taken
+  data.area.collision_layer=0 if taken else 2
  held.visible=have and game.weapons.selected==SLOT and game.state in ["play","paused","backpack"]
  if game.weapons.selected==SLOT:
   game.arm_visual.hide()
   game.flashlight_model.hide()
-func collect()->bool:
- if game.state!="play" or owned():return false
+func collect(id:String="hotel_knife")->bool:
+ if game.state!="play" or not pickups.has(id) or game.town.actions[id].taken:return false
  if not game.crash_site.has_backpack:game.message="Collect your backpack before taking the knife.";return false
  if not game.backpack.room_for("knife"):game.message="Your backpack is full. The knife needs two slots.";return false
- game.town.inventory["knife"]=1
+ game.town.inventory["knife"]+=1
+ game.town.actions[id].taken=true
  game.soundscape.feedback("pickup")
  game.message="Kitchen knife collected. 4 equips it; attack uses stamina."
  game.weapons.equip(SLOT);sync();game.hud.queue_redraw()

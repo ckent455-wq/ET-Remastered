@@ -18,7 +18,7 @@ func intro(c,id:String)->Dictionary:
    "mechanic":"The sound stopped in the wall before the meter moved.\n\nI don't have a test for that. I'm done pretending I do. We use the county line now. Nothing through the chapel."
   },
   "coffins":{"nurse":"Wait. You've got that black grit on your cuffs.\n\nI washed the same stuff out of Silas's dressings. It kept settling at the bottom of the basin. Tell me where you've been."},
-  "attack":{"mechanic":"I heard it hit the door. Then the shots.\n\nI was standing here with my hand on the latch. Kept thinking you were about to knock. I'm sorry."},
+  "attack":{"mechanic":"I heard it out there. Then everything went quiet.\n\nI was standing here with my hand on the latch. Kept thinking you were about to knock. I'm sorry."},
   "power":{
    "ranger":"John's windows came on. For a second I thought the street was opening up for the morning.\n\nThen I looked at my watch. I've been doing that a lot.",
    "nurse":"The workshop's running again. I heard the motor through the floor.\n\nI'd just washed the basin. There was grey grit in it again when I turned around. I hadn't used it.\n\nYou're still steady? Good. Tell me if that changes.",
@@ -52,4 +52,4 @@ func answer(c,id:String,event:String="")->String:
  return "Tell me what you found."
 func summary(c,id:String,event:String="")->String:
  if event=="":event=stage(c,id)
- return {"silence":"The chapel signal is quiet, but nobody can promise its effects are reversed. Use the isolated GREEN county route and request no sirens.","coffins":"You told Aubrey about the coffins under Saint George. She remembers patients holding their breath to listen and warns that stillness does not prove a creature harmless.","attack":"John heard the workshop attack and admits he stayed behind the door. He recognized a rhythm from his old speaker tests. The coil remains in the powered cabinet.","power":"The workshop lights and electrical hum returned. The survivors noticed an unsettling three-part interruption, although the chapel uses a separate supply."}.get(event,"The survivors are comparing what they witnessed.")
+ return {"silence":"The chapel signal is quiet, but nobody can promise its effects are reversed. Use the isolated GREEN county route and request no sirens.","coffins":"You told Aubrey about the coffins under Saint George. She remembers patients holding their breath to listen and warns that stillness does not prove a creature harmless.","attack":"John heard the workshop attack and admits he stayed behind the door. He saw the creature listening against the brickwork. The coil remains in the powered cabinet.","power":"The workshop lights and electrical hum returned. The survivors noticed an unsettling three-part interruption, although the chapel uses a separate supply."}.get(event,"The survivors are comparing what they witnessed.")

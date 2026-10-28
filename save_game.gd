@@ -30,6 +30,8 @@ func set_variables(node:Object,data:Dictionary):
  for key in data:
   if node.get(key) is Array and data[key] is Array:node.get(key).assign(data[key])
   else:node.set(key,data[key])
+func saved_children(node:Node)->Array:
+ return node.get_children().filter(func(child):return not child.get_meta("runtime_visual_only",false))
 func tree(node:Node)->Dictionary:
  var result={"vars":variables(node),"children":[],"kind":node.get_class(),"script":node.get_script().resource_path if node.get_script()!=null else ""}
  if node is Node3D:result.merge({"transform":node.transform,"visible":node.visible})
@@ -39,29 +41,31 @@ func tree(node:Node)->Dictionary:
   result.animation=node.current_animation
   result.time=node.current_animation_position if node.current_animation!="" else 0.0
   result.speed=node.speed_scale
- for child in node.get_children():result.children.append(tree(child))
+ for child in saved_children(node):result.children.append(tree(child))
  return result
 func valid_tree(node:Node,data)->bool:
  if not data is Dictionary or data.get("kind","")!=node.get_class() or not data.get("vars") is Dictionary or not data.get("children") is Array:
   return false
  if data.get("script","")!=(node.get_script().resource_path if node.get_script()!=null else ""):
   return false
- if data.children.size()!=node.get_child_count():
+ var children=saved_children(node)
+ if data.children.size()!=children.size():
   return false
  if node is Node3D and (not data.get("transform") is Transform3D or not data.get("visible") is bool):return false
- for i in range(node.get_child_count()):
-  if not valid_tree(node.get_child(i),data.children[i]):return false
+ for i in range(children.size()):
+  if not valid_tree(children[i],data.children[i]):return false
  return true
 func restore_tree(node:Node,data:Dictionary):
  set_variables(node,data.vars)
  if node is Node3D:node.transform=data.transform;node.visible=data.visible
  if node is CollisionObject3D:node.collision_layer=data.layer;node.collision_mask=data.mask
  if node is CollisionShape3D:node.set_deferred("disabled",data.disabled)
- for i in range(mini(node.get_child_count(),data.children.size())):restore_tree(node.get_child(i),data.children[i])
+ var children=saved_children(node)
+ for i in range(mini(children.size(),data.children.size())):restore_tree(children[i],data.children[i])
  if node is AnimationPlayer and data.animation!="" and node.has_animation(data.animation):
   node.play(data.animation);node.seek(data.time,true);node.advance(0);node.speed_scale=data.speed
 func roots()->Dictionary:
- return {"crash":game.crash_site,"tree":game.falling_tree,"crow":game.town.sign_crow,"church":game.town.streetscape.church,"cemetery":game.town.cemetery,"hotel":game.hotel_basement,"window":game.hotel_window_figure,"shadow":game.cemetery_shadow,"grave":game.grave_dig,"police":game.weapons.police_car,"lockbox":game.weapons.lockbox,"panel":game.town.actions.battery_panel.area.get_node("HighVoltageTerminal"),"enemies":game.enemies,"people":game.town.townspeople,"hollow":game.enemies.creatures[game.enemies.HOLLOW_INDEX].actor}
+ return {"sebus":game.town.streetscape.sebus,"crash":game.crash_site,"tree":game.falling_tree,"crow":game.town.sign_crow,"church":game.town.streetscape.church,"cemetery":game.town.cemetery,"hotel":game.hotel_basement,"window":game.hotel_window_figure,"shadow":game.cemetery_shadow,"grave":game.grave_dig,"police":game.weapons.police_car,"lockbox":game.weapons.lockbox,"panel":game.town.actions.battery_panel.area.get_node("HighVoltageTerminal"),"enemies":game.enemies,"people":game.town.townspeople,"hollow":game.enemies.creatures[game.enemies.HOLLOW_INDEX].actor}
 func blocked_reason()->String:
  if not game.surface_details.completed:return "The world is still preparing. Wait a moment before saving."
  if game.testing_mode.enabled:return "Turn testing mode off before saving a normal journey."
@@ -82,7 +86,10 @@ func capture()->Dictionary:
  for id in town.interiors.containers:data.storage[id]=plain(town.interiors.containers[id])
  for id in town.doors:data.doors[id]={"open":town.doors[id].open,"rotation":town.doors[id].hinge.rotation,"disabled":town.doors[id].collision.disabled,"unlocked":town.doors[id].unlocked}
  for key in roots():data.roots[key]=tree(roots()[key])
- for enemy in game.enemies.creatures:data.enemies.append(plain(enemy))
+ for enemy in game.enemies.creatures:
+  var state=plain(enemy)
+  if enemy.visual.has_node("ZombieReplacement"):state.zombie_animation_time=enemy.animation.current_animation_position if enemy.animation.is_playing() else 0.0
+  data.enemies.append(state)
  for id in town.townspeople.characters:data.people[id]=plain(town.townspeople.characters[id])
  return data
 func valid(data)->bool:
@@ -108,10 +115,11 @@ func valid(data)->bool:
   if key=="knife" and not data.town.inventory.has(key):continue
   if not data.town.inventory.get(key) is int or data.town.inventory[key]<0:return false
  for id in game.town.actions:
-  if id=="hotel_knife" and not data.actions.has(id):continue
+  if id in ["hotel_knife","workshop_knife","sebus_door"] and not data.actions.has(id):continue
   if not data.actions.get(id) is Dictionary:return false
  for key in roots():
   if key=="hollow" and legacy_hollow:continue
+  if key=="sebus" and not data.roots.has(key):continue
   if not valid_tree(roots()[key],data.roots.get(key)):return false
  return true
 func apply(data:Dictionary):
@@ -181,7 +189,11 @@ func apply(data:Dictionary):
  if game.workshop_layout:game.workshop_layout.apply_layout()
  if game.hotel_layout:game.hotel_layout.apply_layout()
  if game.clinic_layout:game.clinic_layout.apply_layout()
+ if game.ranger_layout:game.ranger_layout.apply_layout()
+ game.town.streetscape.sebus.ensure_blocked()
  game.story.refresh_collected_notes()
+ game.enemies.restore_zombie_models()
+ game.cemetery_shadow.restore_zombie_model()
  game.message="Journey loaded. "+game.town.objective()
  if game.weapons.selected==-2 and not game.knife.owned():game.weapons.selected=-1
  game.knife.reset()

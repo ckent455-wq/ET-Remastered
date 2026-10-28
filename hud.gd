@@ -1,5 +1,6 @@
 extends Control
 var game
+var objectives:Control
 var font = preload("res://assets/font.ttf")
 var menu_buttons: Array[Button] = []
 var pause_buttons: Array[Button] = []
@@ -21,6 +22,7 @@ const INK = Color("d2dfd0")
 const DIM = Color("87a39f")
 const AMBER = Color("efc58c")
 func _ready():
+	objectives=preload("res://objective_reminder.gd").new();objectives.game=game;add_child(objectives)
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	menu_button("ENTER BLACKWOOD",Vector2(42,253),Vector2(244,30),begin_game)
@@ -111,7 +113,8 @@ func _unhandled_key_input(event):
 		get_viewport().set_input_as_handled()
 
 func text(s: String, p: Vector2, size = 14, color = INK):
-	s=s.replace("E / ","E TO ")
+	s=s.replace("Hold E / ","Hold E TO ")
+	if s.begins_with("E / "):s="E TO "+s.substr(4)
 	if game.controller: s=game.controller.hint(s)
 	draw_string(font,p,s,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
 func centered(s: String, y: float, size: int, color = INK):
@@ -157,16 +160,14 @@ func _draw():
 			text("EMPTY / Q BATTERY",Vector2(500,374),10,light_color)
 		if game.crash_site.has_backpack: text("I / BACKPACK",Vector2(20,24),10,DIM)
 		if game.weapons.selected!=-1:
-			text(game.weapons.status(),Vector2(20,329),11,AMBER)
+			text(game.weapons.status(),Vector2(170,351),11,AMBER)
 		if game.weapons.hit_feedback>0:
 			draw_line(Vector2(315,195),Vector2(325,205),AMBER,1)
 			draw_line(Vector2(325,195),Vector2(315,205),AMBER,1)
 		draw_circle(Vector2(320,200),1.2,Color(0.8,0.9,0.8,0.8))
-		var instruction=game.crash_site.tutorial_prompt() if not game.crash_site.tutorial_complete() else (game.message if message_seconds>0 else "")
+		var instruction=instruction_text()
 		draw_instruction(instruction)
-		var tutorial_target="crash_rear_hatch" if not game.crash_site.hatch_open else ("crash_backpack" if not game.crash_site.has_backpack else "crash_flashlight")
-		var duplicate_prompt=not game.crash_site.tutorial_complete() and not instruction.is_empty() and game.town.focus_action==tutorial_target
-		if game.town.prompt()!="" and not duplicate_prompt:
+		if game.town.prompt()!="":
 			centered(game.town.prompt(),285,18,AMBER)
 		if game.rescue_available() and game.town.focus_action!="radio_bypass":
 			centered("HOLD E / CALL FOR RESCUE",284,19)
@@ -480,6 +481,13 @@ func draw_instruction(value:String,top_override:float=-1.0)->float:
 
 func journal_map_point(p: Vector3) -> Vector2:
 	return Vector2(300+p.x*4,133+(p.z+155)*1.08)
+
+func instruction_text()->String:
+	if message_seconds<=0:return ""
+	var value=game.message
+	# Persistent directions now belong to the objective reminder.
+	if value==game.clinic_rescue.missing_gear_prompt() or value==game.crash_site.tutorial_prompt():return ""
+	return value
 
 func status_bar(label: String, p: Vector2, amount: float, color: Color):
 	text(label,p,10,DIM)

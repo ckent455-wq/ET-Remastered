@@ -31,6 +31,7 @@ func search(index:int):
  if g.state!="play" or index<0 or index>=enemies.creatures.size():return
  var data=enemies.creatures[index]
  if data.hp>0 or data.get("body_searched",false):return
+ if not g.backpack.can_collect():return
  var center=data.visual.to_global(Vector3(0,0.8,0))
  if g.camera.global_position.distance_to(center)>3.4:return
  prepare(data)

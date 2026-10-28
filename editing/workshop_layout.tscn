@@ -5373,6 +5373,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.029, 0)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_4620" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_4619" unique_id=1959621146]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0070376396, -0.006146908, -0.0005540848)
 material_override = SubResource("StandardMaterial3D_486ej")
 mesh = SubResource("BoxMesh_4ntiv")
 
@@ -5435,6 +5436,7 @@ material_override = SubResource("StandardMaterial3D_to042")
 mesh = SubResource("BoxMesh_l1sbe")
 
 [node name="_CollisionShape3D_4743" type="CollisionShape3D" parent="RoomShell_REFERENCE/_StaticBody3D_4741" unique_id=1435668255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5715127, 0, -1.1666293)
 shape = SubResource("BoxShape3D_veeyb")
 
 [node name="_StaticBody3D_4744" type="StaticBody3D" parent="RoomShell_REFERENCE" unique_id=858255960]
@@ -5448,6 +5450,7 @@ material_override = SubResource("StandardMaterial3D_to042")
 mesh = SubResource("BoxMesh_rtaxx")
 
 [node name="_CollisionShape3D_4746" type="CollisionShape3D" parent="RoomShell_REFERENCE/_StaticBody3D_4744" unique_id=342227124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2709093, 0, -0.9047284)
 shape = SubResource("BoxShape3D_lr0u5")
 
 [node name="_StaticBody3D_4747" type="StaticBody3D" parent="RoomShell_REFERENCE" unique_id=1368315187]
@@ -5461,6 +5464,7 @@ material_override = SubResource("StandardMaterial3D_to042")
 mesh = SubResource("BoxMesh_4nm5d")
 
 [node name="_CollisionShape3D_4749" type="CollisionShape3D" parent="RoomShell_REFERENCE/_StaticBody3D_4747" unique_id=648273456]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9616357, 0, -0.933053)
 shape = SubResource("BoxShape3D_munq2")
 
 [node name="_Node3D_4750" type="Node3D" parent="RoomShell_REFERENCE" unique_id=1264234336]
@@ -6182,16 +6186,18 @@ metadata/action_id = "workshop_record"
 metadata/_edit_lock_ = true
 
 [node name="_CollisionShape3D_7616" type="CollisionShape3D" parent="RoomShell_REFERENCE/workshop_record" unique_id=130659808]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.540854)
 shape = SubResource("BoxShape3D_5hsci")
 
 [node name="RealisticPaperNote" type="Node3D" parent="RoomShell_REFERENCE/workshop_record" unique_id=1302884344]
 
 [node name="_MeshInstance3D_10054" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=1904572581]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.029968023, -1.5659611)
 material_override = SubResource("ShaderMaterial_clag7")
 mesh = SubResource("ArrayMesh_3u0op")
 
 [node name="_Label3D_10055" type="Label3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=1251129484]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.017, -0.145)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01700002, -1.7309813)
 pixel_size = 0.001
 shaded = true
 modulate = Color(0.20784314, 0.23137255, 0.20784314, 1)
@@ -6201,42 +6207,42 @@ font_size = 14
 outline_size = 0
 
 [node name="_MeshInstance3D_10056" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=287788407]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, -0.09)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.675981)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_06yat")
 
 [node name="_MeshInstance3D_10057" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=396278585]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, -0.059)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.6449809)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_mvaum")
 
 [node name="_MeshInstance3D_10058" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=710231077]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, -0.028)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.6139808)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_en3gi")
 
 [node name="_MeshInstance3D_10059" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=1424316051]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, 0.003)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.5829804)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_mf758")
 
 [node name="_MeshInstance3D_10060" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=891505723]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, 0.034)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.551981)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_fji5g")
 
 [node name="_MeshInstance3D_10061" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=1432365882]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, 0.065)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.5209808)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_ftts7")
 
 [node name="_MeshInstance3D_10062" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=834859531]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, 0.096)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.4899807)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_6dfk1")
 
 [node name="_MeshInstance3D_10063" type="MeshInstance3D" parent="RoomShell_REFERENCE/workshop_record/RealisticPaperNote" unique_id=1969877235]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012, 0.017, 0.127)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.012000084, 0.01700002, -1.4589806)
 material_override = SubResource("StandardMaterial3D_nq175")
 mesh = SubResource("BoxMesh_vocpj")
 
@@ -7140,7 +7146,7 @@ skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_168qu")
 
 [node name="Knife_16" type="Node3D" parent="Furniture" unique_id=468055778]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -3.35, 0.89, -3.15)
+transform = Transform3D(0.63375545, 0, 0.7735334, 0, 1, 0, -0.7735334, 0, 0.63375545, -3.858969, 0.89, -3.8059978)
 metadata/retro_asset = "knife"
 metadata/support_height = 0.89
 metadata/_edit_group_ = true

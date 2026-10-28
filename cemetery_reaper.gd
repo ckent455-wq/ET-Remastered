@@ -108,6 +108,7 @@ func animate(_enemies,data,delta:float):
 	else: data.animation.speed_scale=1.0
 	data.animation.advance(delta)
 	# Imported clips contain their own hip travel. The CharacterBody owns world
+	if data.visual.has_node("ZombieReplacement"):return
 	# movement, so remove that drift and place the supporting toe at ground level.
 	var skeleton=data.visual.find_child("Skeleton3D",true,false) as Skeleton3D
 	skeleton.force_update_all_bone_transforms()

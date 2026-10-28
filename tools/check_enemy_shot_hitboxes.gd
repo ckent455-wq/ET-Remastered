@@ -41,7 +41,7 @@ func run():
 		rig.skeleton.force_update_all_bone_transforms()
 		var leg_point=Vector3.ZERO
 		for pair in rig.links:
-			if "leg" in pair[0] or "shin" in pair[0]:
+			if "leg" in pair[0] or "shin" in pair[0] or "thigh" in pair[0] or "calf" in pair[0]:
 				leg_point=boxes.point(rig,pair[0]).lerp(boxes.point(rig,pair[1]),0.65)
 				break
 		var origin=leg_point+Vector3(0,0,5)

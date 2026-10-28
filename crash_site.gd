@@ -500,6 +500,7 @@ func interact_tutorial(id: String):
 		game.soundscape.feedback("pickup")
 		game.message = "Backpack collected. H uses the spare bandage, or I opens your backpack." if game.story.clinic_rescue_done else "Backpack collected."
 	elif id=="crash_flashlight" and hatch_open and not has_flashlight:
+		if not game.backpack.can_collect():return
 		has_flashlight = true
 		light_visual.hide()
 		tutorial_areas.crash_flashlight.collision_layer = 0

@@ -32,7 +32,7 @@ func run():
  assert(g.town.journal_entries.any(func(e):return e.id=="aubrey_consequence_coffins"))
  assert(g.town.journal_entries.any(func(e):return e.id=="aubrey_consequence_power"),"New reports preserve previous journal entries")
  g.set_state("play");c.greetings.mechanic=true;g.enemies.workshop_defeated=true;people.talk("mechanic")
- assert("shots" in g.dialogue_text and c.greetings.has("reaction_mechanic_attack"))
+ assert("quiet" in g.dialogue_text and not "shots" in g.dialogue_text and c.greetings.has("reaction_mechanic_attack"))
  g.set_state("play");g.story.repeater.shutdown_done=true;world.sync()
  assert(not world.interference.playing and world.motor.playing,"Shutdown removes interference but leaves workshop machinery running")
  for id in ["ranger","nurse","mechanic"]:

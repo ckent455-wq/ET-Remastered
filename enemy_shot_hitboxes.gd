@@ -7,10 +7,11 @@ func _init(owner): enemies=owner
 
 func rig(data)->Dictionary:
 	if rigs.has(data.index): return rigs[data.index]
-	var skeleton=data.visual.find_child("Skeleton3D",true,false) as Skeleton3D
+	var rendered=preload("res://zombie_enemy_models.gd").combat_model(data.visual)
+	var skeleton=rendered.find_child("Skeleton3D",true,false) as Skeleton3D
 	var bones={}
 	for i in range(skeleton.get_bone_count()):
-		bones[skeleton.get_bone_name(i).to_lower().replace(":","_").replace(".","_")]=i
+		bones[skeleton.get_bone_name(i).to_lower().replace(":","_").replace(".","_").replace(" ","_")]=i
 	var head="head"
 	var neck="neck"
 	var links=[]
@@ -20,6 +21,14 @@ func rig(data)->Dictionary:
 		for side in ["l","r"]:
 			for pair in [["upper_arm_","forearm_",0.16],["forearm_","hand_",0.15],["thigh_","shin_",0.15],["shin_","foot_",0.12]]:
 				links.append([pair[0]+side,pair[1]+side,pair[2]])
+	elif bones.has("base_humanhead"):
+		head="base_humanhead";neck="base_humanneck"
+		links=[["base_humanpelvis","base_humanribcage",0.24],["base_humanribcage",neck,0.20]]
+		for side in ["l","r"]:
+			for pair in [["armupperarm","armforearm",0.13],["armforearm","armpalm",0.12]]:
+				links.append(["base_human"+side+pair[0],"base_human"+side+pair[1],pair[2]])
+			var leg="base_humanlleg" if side=="l" else "base_humanr"
+			links.append([leg+"thigh",leg+"calf",0.16]);links.append([leg+"calf",leg+"foot",0.13])
 	elif bones.has("mixamorig_head"):
 		head="mixamorig_head";neck="mixamorig_neck"
 		links=[["mixamorig_hips","mixamorig_spine2",0.26],["mixamorig_spine2",neck,0.20]]
@@ -96,7 +105,7 @@ func trace(origin:Vector3,direction:Vector3,limit:float,padding:float=0.0)->Dict
 			var body=capsule(origin,direction,point(r,pair[0]),point(r,pair[1]),pair[2]+padding)
 			if body<distance:
 				distance=body
-				zone="leg" if ("leg" in pair[0] or "thigh" in pair[0] or "shin" in pair[0]) else "body"
+				zone="leg" if ("leg" in pair[0] or "thigh" in pair[0] or "shin" in pair[0] or "calf" in pair[0]) else "body"
 		if distance<nearest:
 			nearest=distance
 			hit={"collider":data.actor,"position":origin+direction*distance,"normal":-direction,"zone":zone}

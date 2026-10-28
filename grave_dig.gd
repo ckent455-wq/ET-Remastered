@@ -83,6 +83,7 @@ func prompt()->String:
  if game.town.inventory.shovel<=0:return "E / Inspect disturbed soil"
  return "Hold E / Dig disturbed grave"+("  %d%%" % int(elapsed/DURATION*100) if digging else "")
 func interact_shovel():
+ if not game.backpack.can_collect():return
  if not game.backpack.room_for("shovel"):
   game.message="Make a 1 x 3 space in your backpack for the shovel."
   return

@@ -102,6 +102,7 @@ func make_pickups():
 func collect(index: int) -> bool:
 	if game.state!="play" or index<0 or index>=LOADOUT.size() or owned[index]:
 		return false
+	if not game.backpack.can_collect():return false
 	if game.backpack and not game.backpack.room_for("gun%d" % index):
 		game.message = "Backpack full. Free space before taking this weapon."
 		return false
@@ -114,6 +115,7 @@ func collect(index: int) -> bool:
 
 func add_ammo(index: int, amount: int) -> int:
 	if game.state!="play" or index<0 or index>=LOADOUT.size() or amount<=0: return 0
+	if not game.backpack.can_collect():return 0
 	var added = mini(amount,LOADOUT[index].max_reserve-reserves[index])
 	if game.backpack:
 		while added>0 and not game.backpack.room_for("ammo%d" % index,added): added-=1
@@ -189,7 +191,7 @@ func equip(index: int):
 	if index< -2 or index>=LOADOUT.size():
 		return
 	if index==-2 and (not game.knife or not game.knife.owned()):
-		game.message="Find the kitchen knife in Saint George Hotel first.";return
+		game.message="Find a knife in Saint George Hotel or the workshop first.";return
 	if index>=0 and not owned[index]:
 		game.message = "You haven't found that weapon. Search Blackwood's buildings."
 		return

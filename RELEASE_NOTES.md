@@ -1,3 +1,26 @@
+# Far From Home v2.5.0 - Blackwood Progression and Sebus Hardware
+
+Windows x64 release build exported with the Godot 4.7.2 release template.
+
+- Sebus Hardware now has an inward-opening door and a packed interior of boxes, furniture and scrap. Entry is blocked across the doorway and building footprint. After opening, the player remarks: "I can't get in, it's too cluttered."
+- Animated zombie models replace the chapel patrols, workshop creature, cemetery creature and cemetery shadow. Other monster encounters retain their existing models.
+- A bottom-left objective reminder checks off completed tasks before showing the next step. Removed the redundant return-to-car instruction box.
+- Refined the opening-to-workshop route and John/Aubrey conversations. Workshop fuse directions consistently point to the general store.
+- The workshop creature approaches immediately when power is switched on, without an objective announcing the attack.
+- Items require the backpack, including after waking in the clinic. Rejected pickups remain available to collect later.
+- Added a collectible workshop-table knife using the same quick stabbing attack as the hotel knife. Updated workshop and ranger-station layouts, including the shotgun case and pickup positions.
+- Preserved earlier save support, including saves made before the new enemy models and Sebus doorway.
+
+## Play
+
+Download **FarFromHome-v2.5.0-Windows-x64.zip**, extract all files, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
+
+## Validation
+
+Door swing clearance, actual player movement against the shop entrance (walking, strafing, crouching and jumping), dialogue timing, save compatibility, objective progression, animated enemy hitboxes and knife pickups. Source commit and SHA-256 checksums accompany the release.
+
+---
+
 # Far From Home v2.4.0 - Hotel Knife and Blackwood Update
 
 Windows x64 release build exported with the Godot 4.7.2 release template.

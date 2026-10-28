@@ -343,7 +343,9 @@ func offer_grave_key():
 	grave_intro_shown=true
 	grave_approaching=false
 	var line=conversation.pat_story.key_line()
-	if town.game.backpack and not town.game.backpack.room_for("mausoleum_key"):
+	if not town.game.crash_site.has_backpack:
+		line="Get your backpack from the car first. I'll keep the mausoleum key here until you're ready."
+	elif town.game.backpack and not town.game.backpack.room_for("mausoleum_key"):
 		line="I have the key to the Whitcomb mausoleum. There's a spare antenna coupler inside, and the chapel cellar key at the far end of the passage beneath it.\n\nYour pack is full. Make one slot, then come back. I'm not sending you out there without the key."
 	else:
 		town.inventory.mausoleum_key+=1
@@ -380,6 +382,8 @@ func talk(id: String):
 			conversation.greetings["pat_return"]=true
 			conversation.begin("You went inside, didn't you?\n\nThere's dust on your collar. The same stuff that was on the vault steps. Sit a moment. Tell me what you found.",true,id)
 			return
+	if id=="mechanic" and not town.powered and not town.journal_entries.any(func(e):return e.id=="workshop_plan"):
+		town.journal_entries.append({"id":"workshop_plan","title":"John / A way to call for help","text":"The county radio needs the signal coil John removed and locked in his workshop cabinet. Its electric latch has no power. Pat's office desk drawer holds the station key. A replacement workshop fuse is in the counter drawer inside the general store. Carry it through the alley between the workshop and Saint George Hotel, open the rear cabinet, install the fuse and flip the switch. Return through the alley to the front entrance to recover the coil. John keeps losing time and no longer trusts himself around live equipment."})
 	var reaction=conversation.progress.intro(conversation,id)
 	if not reaction.is_empty() and reaction.line!="":
 		conversation.greetings[reaction.key]=true
@@ -388,6 +392,10 @@ func talk(id: String):
 	conversation.begin(words(id),false,id)
 
 func words(id: String) -> String:
+	if id=="nurse" and town.game.story.clinic_rescue_done and not town.powered and town.inventory.coil==0:
+		if not town.game.crash_site.tutorial_complete():return "Your wound is dressed. Go back along Old Mill Road to your car and open the rear hatch. Collect your backpack first, then your flashlight. The supplies here will still be waiting when you return.\n\nAfter that, speak to John in the workshop across the street. He knows the county radio."
+		if town.needs_workshop_introduction():return "You're steady, and you've got your things. John is in the workshop across the street. Ask him about the county emergency radio.\n\nIf you need a bandage before you go, check the bedside drawer. The medicine cabinet is at the back."
+		return "Stay with John's plan. Pat's office desk drawer has the station key. The replacement workshop fuse is in the counter drawer inside the general store. Once you've restored the workshop power, get the coil from John's cabinet."
 	if town.radio_ready and not town.game.story.repeater_is_off():return radio_advice(id,"shutdown")
 	if town.powered and town.inventory.coil>0 and not town.radio_ready and town.inventory.antenna==0:return radio_advice(id,"coupler")
 	if town.radio_ready:return radio_advice(id,"call" if town.game.story.direct_channel_selected() else "route")
@@ -397,7 +405,7 @@ func words(id: String) -> String:
 	match id:
 		"ranger":
 			if town.inventory.station_key==0:return "The station key is in my office drawer. The pistol is in the abandoned police car on Main Street. Check the driver's seat.\n\nJohn can tell you what the receiver needs. Read the log on my desk if you want to know why the road was still open."
-			if not town.powered:return "The store counter drawer has a workshop fuse. Take it through the alley beside the hotel to the workshop's rear terminal.\n\nOnce the power is back, John can get you the signal coil. Come back to me before you go looking for the other parts."
+			if not town.powered:return "The counter drawer inside the general store has a workshop fuse. Take it through the alley beside the hotel to the workshop's rear terminal.\n\nOnce the power is back, John can get you the signal coil. Come back to me before you go looking for the other parts."
 			return "Take the signal coil from John's powered workshop cabinet. Then speak to me about the Whitcomb mausoleum. I've got its family key."
 		"nurse":
 			if town.game.story.evidence.has("clinic_note"):
@@ -405,7 +413,14 @@ func words(id: String) -> String:
 			return "I'm Aubrey. Most houses were empty long before this. The final bus took the remaining families three nights ago. Two patients refused to go; by dawn they had disappeared toward the chapel.\n\nFirst they stopped sleeping. Then came missing hours, strange voices and changes in their hands. The station voices spread through the chapel speaker. One used my dead mother's name. Read the station operator's log to learn how it began.\n\nRead the sheet on the back shelf. Medicine is in the rear cabinet. H uses a bandage first, then a medpack; Q fits a battery."
 		"mechanic":
 			if not town.powered:
-				return "John. This place was falling apart years before the signal started. Twelve years without the mill, then last month's storm finished off the bad roofs.\n\nThe radio needs a coil from my powered cabinet. Workshop fuse is in the store counter drawer; the panel is behind this workshop, through the alley.\n\nI also left a log on the bench. Read it. If I tell you the radio just broke, I'll be lying again."
+				var plan="John. Aubrey sent you? The county radio is our best chance of getting help. I pulled its signal coil when the voices started. It's locked in my cabinet now. The electric latch won't release while the workshop's dead.\n\nI don't trust myself around live gear anymore. I keep finding work finished that I don't remember doing."
+				if town.inventory.station_key==0:plan+="\n\nGet the station key from Pat's office desk drawer. We'll need it to reach the receiver."
+				var terminal=town.actions.battery_panel.area.get_node("HighVoltageTerminal")
+				if terminal.installed:plan+="\n\nYou've fitted the fuse. Flip the switch in the rear cabinet, then come back through the front entrance for the coil."
+				elif town.inventory.workshop_fuse>0:plan+="\n\nYou've got the fuse. Take the alley between this workshop and Saint George Hotel. Follow it around to the rear cabinet. Open it, fit the fuse, then flip the switch. Come back through the front entrance for the coil."
+				else:plan+="\n\nThere's a spare workshop fuse in the counter drawer inside the general store. Take it through the alley between this workshop and Saint George Hotel to the rear cabinet. Open it, fit the fuse, then flip the switch. Come back through the front entrance for the coil."
+				if not town.game.knife.owned():plan+="\n\nTake the knife from the worktable if you need it. Pat said there's a pistol on the abandoned police car's driver's seat. Keep something with you out there."
+				return plan
 			if town.inventory.coil==0:
 				return "The station radio started speaking by itself. Bellamy amplified it through the chapel. I pulled the transmitter coil, but the powered chapel return line kept the voices alive. Ask me where the broadcast began; read the operator's station log and my workshop notes.\n\nTake the coil from this cabinet. Ask Pat about the mausoleum; the cellar key is stored there. The spare county tuning unit and service rifle are locked beneath the chapel. I inspected them three weeks before the evacuation, before the creatures reached the chapel grounds. The station still worked then, so I left the spare tuner disconnected and the rifle with the emergency supplies. When I tried to go back after Ada left, the creatures drove me down the hill. I can't reach that equipment now."
 			if town.inventory.tuner==0:

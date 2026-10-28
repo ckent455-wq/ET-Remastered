@@ -210,7 +210,7 @@ func prompt(id: String) -> String:
 func toggle(id: String):
 	var data = containers[id]
 	if data.needs_power and town.game.enemies and town.game.enemies.workshop_danger():
-		town.game.message="The creature is too close. Kill it before searching the cabinet."
+		town.game.message="I can't stop to search the cabinet right now."
 		return
 	if data.needs_power and not town.powered:
 		town.game.message = "The coil cabinet is locked. Restore power at the rear terminal."
@@ -233,6 +233,7 @@ func toggle(id: String):
 	town.game.soundscape.storage_move(data.root.global_position,data.mode=="drawer",data.open)
 	if not data.open:
 		return
+	if not town.game.backpack.can_collect():return
 	if data.searched and not data.get("pending_loot",false):
 		town.game.message = "Already searched. Nothing else in the "+data.label+"."
 		return

@@ -31,6 +31,7 @@ var town_changes:Node3D
 var workshop_layout:Node
 var hotel_layout:Node
 var clinic_layout:Node
+var ranger_layout:Node
 var knife:Node3D
 var contact_progress = 0.0
 var clock = 0.0
@@ -267,10 +268,33 @@ func _ready():
 	workshop_layout=preload("res://workshop_layout.gd").new();workshop_layout.game=self;add_child(workshop_layout)
 	hotel_layout=preload("res://hotel_layout.gd").new();hotel_layout.game=self;add_child(hotel_layout)
 	clinic_layout=preload("res://clinic_layout.gd").new();clinic_layout.game=self;add_child(clinic_layout)
+	ranger_layout=preload("res://ranger_layout.gd").new();ranger_layout.game=self;add_child(ranger_layout)
 	knife=preload("res://hotel_knife.gd").new();knife.game=self;add_child(knife)
 	call_deferred("load_requested_slot")
 
 func load_requested_slot():
+	if "--preview-zombie" in OS.get_cmdline_user_args():
+		while not surface_details.completed:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true
+		story.clinic_rescue_done=true;story.crash_wound_treated=true;town.reached_town=true;health=100;hurt_flash=0
+		player.global_position=Vector3(0,0.02,-51);player.rotation=Vector3.ZERO
+		camera.look_at(Vector3(0,1.1,-54));pitch=camera.rotation.x
+		set_state("play");flashlight.show();camera.make_current()
+		var preview=preload("res://local_zombie_preview.gd").new();preview.game=self;add_child(preview)
+		return
+	if "--preview-ranger-layout" in OS.get_cmdline_user_args() or "--preview-workshop-layout" in OS.get_cmdline_user_args():
+		while not surface_details.completed:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true
+		story.clinic_rescue_done=true;story.crash_wound_treated=true;health=100;hurt_flash=0
+		player.rotation=Vector3.ZERO
+		var room=town.buildings.workshop if "--preview-workshop-layout" in OS.get_cmdline_user_args() else town.buildings.ranger
+		player.global_position=room.to_global(Vector3(0,0.02,3.3))
+		camera.look_at(room.to_global(Vector3(-1.0,1.2,-1.0)))
+		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
+		set_state("play");flashlight.show()
+		return
 	if "--preview-hotel-knife" in OS.get_cmdline_user_args():
 		while not surface_details.completed:await get_tree().process_frame
 		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
@@ -293,16 +317,17 @@ func load_requested_slot():
 		set_state("play");town.townspeople.talk("mechanic")
 		return
 	# Explicit local playtest shortcut. Normal launches and saved journeys are untouched.
-	if "--preview-collapse" in OS.get_cmdline_user_args() or "--preview-clinic" in OS.get_cmdline_user_args():
+	if "--preview-collapse" in OS.get_cmdline_user_args() or "--preview-clinic" in OS.get_cmdline_user_args() or "--preview-missing-gear" in OS.get_cmdline_user_args():
 		while not surface_details.completed:await get_tree().process_frame
 		reset_game()
 		crash_site.wake_phase=""
 		crash_site.release_seated_camera()
 		player.global_position=Vector3(0,0.02,-14.8)
 		player.rotation=Vector3.ZERO
-		if "--preview-clinic" in OS.get_cmdline_user_args():
+		if "--preview-clinic" in OS.get_cmdline_user_args() or "--preview-missing-gear" in OS.get_cmdline_user_args():
 			clinic_rescue.place_in_bed()
 			clinic_rescue.begin_explanation()
+			if "--preview-missing-gear" in OS.get_cmdline_user_args():set_state("play")
 		else:
 			set_state("paused")
 			message="Resume and run toward town to test the collapse."
@@ -341,6 +366,8 @@ func make_audio():
 	add_child(soundscape)
 
 func reset_game():
+	if has_node("LocalZombiePreview"):get_node("LocalZombiePreview").queue_free()
+	if hud and hud.objectives:hud.objectives.reset()
 	if clinic_rescue: clinic_rescue.reset()
 	if testing_mode: testing_mode.finish(false)
 	achievements.clear_toast()

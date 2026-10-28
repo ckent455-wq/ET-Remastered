@@ -400,6 +400,7 @@ func reset():
 	receiver_light.light_energy = 0.4
 	sign_crow.reset()
 	streetscape.church.reset_doors()
+	if streetscape.sebus:streetscape.sebus.reset()
 	streetscape.church.basement.reset()
 	interiors.reset()
 	townspeople.reset()
@@ -409,9 +410,11 @@ func refresh_focus():
 	focus_action = ""
 	var start = game.camera.global_position
 	var finish = start-game.camera.global_basis.z*3.2
-	if game.knife and game.knife.pickup_focus(start,finish):
-		focus_action="hotel_knife"
-		return
+	if game.knife:
+		var knife_focus=game.knife.pickup_focus(start,finish)
+		if knife_focus!="":
+			focus_action=knife_focus
+			return
 	if game.crash_site:
 		var pickup=game.crash_site.pickup_focus(start,finish)
 		if pickup!="":
@@ -436,6 +439,7 @@ func prompt() -> String:
 	if focus_action=="":
 		return ""
 	var data = actions[focus_action]
+	if data.kind=="sebus_door":return "E / "+("Close" if data.door.opened else "Open")+" Sebus Hardware door"
 	if data.kind in ["hotel_basement_door","hotel_basement_exit","mausoleum_tunnel","hotel_tunnel_return"]: return game.hotel_basement.prompt(data.kind)
 	if data.kind=="dig_grave": return game.grave_dig.prompt()
 	if data.kind=="mausoleum_door": return cemetery.door_prompt()
@@ -474,7 +478,7 @@ func interact():
 		perform(focus_action)
 
 func perform(id: String):
-	if id=="hotel_knife":game.knife.collect();return
+	if id in ["hotel_knife","workshop_knife"]:game.knife.collect(id);return
 	if id.begins_with("body_search_"):
 		game.enemies.corpse_search.search(id.trim_prefix("body_search_").to_int())
 		return
@@ -484,9 +488,12 @@ func perform(id: String):
 		return
 	if data.taken:
 		return
+	if data.kind in ["item","ammo","weapon","cellar_part","grave_shovel"] or id=="house_note":
+		if not game.backpack.can_collect():return
 	if data.kind!="crash" and not id.begins_with("crash_") and not id.begins_with("cemetery_"):
 		reached_town = true
 	match data.kind:
+		"sebus_door":data.door.interact()
 		"grave_shovel":
 			game.grave_dig.interact_shovel()
 		"dig_grave":
@@ -579,7 +586,7 @@ func perform(id: String):
 				game.message = "Search the "+interiors.containers[data.container_id].label+" first."
 				return
 			if id=="coil" and game.enemies.workshop_danger():
-				game.message="Kill the creature near the workshop before recovering the coil."
+				game.message="I can't stop to search the cabinet right now."
 				return
 			if id=="coil" and not powered:
 				game.message = "The coil cabinet needs power. Find and install the workshop fuse."
@@ -677,7 +684,8 @@ func use_battery():
 		game.soundscape.feedback("pickup")
 
 func objective() -> String:
-	if game.enemies and game.enemies.workshop_danger(): return "Kill the creature near the workshop, then recover the signal coil." if powered else "The creature is approaching. Flip the workshop switch, or fight it off."
+	if not game.story.clinic_rescue_done and not (game.testing_mode and game.testing_mode.enabled):
+		return "Try the ignition, then get out of the car." if game.crash_site.wake_phase!="" else "Reach the lights down Old Mill Road. Find help for your injury."
 	if game.crash_site and not game.crash_site.tutorial_complete():
 		if game.story.clinic_rescue_done:return game.clinic_rescue.missing_gear_prompt()
 		return "Open the rear hatch and collect your backpack and flashlight."
@@ -686,11 +694,14 @@ func objective() -> String:
 	if radio_ready:
 		return "Warn county at radio. Hold E; no sirens." if game.story.direct_channel_selected() else "Set the desk bypass to GREEN / direct county."
 	if not reached_town: return "Reach Blackwood. Find a way to call for help."
-	if inventory.station_key==0: return "Search the ranger office for the radio-station key."
+	if needs_workshop_introduction():return "Speak to John at the workshop across from Blackwood Pharmacy about calling for help."
 	if not powered:
 		if actions.battery_panel.area.get_node("HighVoltageTerminal").installed: return "Flip the switch in the rear workshop cabinet to restore power."
-		return "Open the rear workshop cabinet, install the fuse, then flip its switch." if inventory.workshop_fuse>0 else "Search the general store for a workshop fuse."
-	if inventory.coil==0: return "Recover the signal coil from the powered workshop."
+		if inventory.workshop_fuse>0:return "Open the rear workshop cabinet, install the fuse, then flip its switch."
+		return "Search Pat's office desk drawer for the radio-station key." if inventory.station_key==0 else "Search the counter drawer inside the general store for a workshop fuse."
+	if game.enemies.workshop_danger() and game.enemies.creatures[game.enemies.WORKSHOP_INDEX].state=="ambush_wait":return "Return through the alley to the workshop's front entrance for the signal coil."
+	if inventory.coil==0: return "Recover the signal coil from the powered workshop cabinet."
+	if inventory.station_key==0:return "Search Pat's office desk drawer for the radio-station key."
 	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):
 		if not cemetery.unlocked and inventory.mausoleum_key==0:
 			return "Speak to Pat about his family's mausoleum key." if not townspeople.characters.ranger.dead else "Search the ranger's desk for the spare mausoleum key."
@@ -699,19 +710,25 @@ func objective() -> String:
 	if not game.story.repeater_is_off():return "Cut the chapel basement repeater at MAIN ISOLATOR."
 	return "Bring all three radio parts to the station receiver."
 
+func needs_workshop_introduction()->bool:
+	return game.story.clinic_rescue_done and not powered and not actions.battery_panel.area.get_node("HighVoltageTerminal").installed and inventory.workshop_fuse==0 and inventory.coil==0 and not townspeople.characters.mechanic.dead and not townspeople.conversation.greetings.has("mechanic")
+
 func navigation_target() -> Vector3:
-	if game.crash_site and not game.crash_site.tutorial_complete(): return game.crash_site.wreck.to_global(Vector3(-1.5,0,0.1))
+	if not game.story.clinic_rescue_done and not (game.testing_mode and game.testing_mode.enabled):return Vector3(0,0,-16)
+	if game.crash_site and not game.crash_site.tutorial_complete(): return game.crash_site.wreck.to_global(Vector3(0,0,3))
 	if reached_town and game.story.needs_aubrey_introduction():return buildings.clinic.to_global(Vector3(0,0,6.5))
 	if (radio_ready or inventory.tuner>0) and not game.story.repeater_is_off():
 		return actions.chapel_repeater.area.global_position if streetscape.church.basement.contains(game.player.global_position) else actions.cellar_door.area.global_position
 	if radio_ready: return actions.receiver.area.global_position
 	if not reached_town: return Vector3(0,0,-42)
-	if inventory.station_key==0: return buildings.ranger.to_global(Vector3(0,0,7))
+	if needs_workshop_introduction():return buildings.workshop.to_global(Vector3(0,0,6.5))
 	if not powered:
 		if actions.battery_panel.area.get_node("HighVoltageTerminal").installed: return actions.battery_panel.area.global_position
-		if inventory.workshop_fuse==0: return buildings.store.to_global(Vector3(0,0,7))
+		if inventory.workshop_fuse==0:return buildings.ranger.to_global(Vector3(0,0,7)) if inventory.station_key==0 else buildings.store.to_global(Vector3(0,0,7))
 		return actions.battery_panel.area.global_position if game.player.position.x>8 else Vector3(7,0,-51.5)
-	if inventory.coil==0: return buildings.workshop.to_global(Vector3(0,0,7))
+	if inventory.coil==0:
+		return Vector3(6.8,0,-51.5) if game.player.global_position.x>8 else buildings.workshop.to_global(Vector3(0,0,6.5))
+	if inventory.station_key==0:return buildings.ranger.to_global(Vector3(0,0,7))
 	if inventory.antenna==0 or (inventory.chapel_key==0 and not streetscape.church.basement.unlocked):
 		if not cemetery.unlocked and inventory.mausoleum_key==0:
 			return townspeople.characters.ranger.actor.global_position if not townspeople.characters.ranger.dead else actions.ranger_drawer.area.global_position

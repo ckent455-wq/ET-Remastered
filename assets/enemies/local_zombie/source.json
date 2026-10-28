@@ -1,0 +1,42 @@
+{
+  "source": "C:\\Users\\jkern\\HorrorP\\Assets\\Zombie",
+  "provided_by": "user",
+  "purpose": "Animated chapel, workshop and cemetery enemies, plus cemetery shadow encounter",
+  "texture_size": 512,
+  "unit_scale": 0.01,
+  "variants": [
+    {
+      "variant": 1,
+      "vertices": 2741,
+      "animations": [
+        "idle",
+        "walk",
+        "run",
+        "attack",
+        "death"
+      ]
+    },
+    {
+      "variant": 2,
+      "vertices": 2250,
+      "animations": [
+        "idle",
+        "walk",
+        "run",
+        "attack",
+        "death"
+      ]
+    },
+    {
+      "variant": 3,
+      "vertices": 2192,
+      "animations": [
+        "idle",
+        "walk",
+        "run",
+        "attack",
+        "death"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@ extends Node
 ## An original, optional evidence trail around the existing survival quest.
 ## Reading never blocks rescue or requires keeping a particular NPC alive.
 var game
+const AUBREY_OPENING = "The phones are dead. John, in the repair workshop across the street, knows the county emergency radio. Speak to him once you've collected your things. Pat keeps the station key in his office drawer.\n\nMost of these buildings were empty for years. The last families left three nights ago. The rest of us keep losing hours. There's grey grit in water that ran clear yesterday. I can't explain it.\n\nIf you hear me calling from outside, check this room first."
 const AUBREY_BRIEFING = "Four weeks ago, the station radio started speaking with the switch off. Bellamy put it through the chapel speaker. Since then I've seen people stop sleeping, lose hours, and change in ways I can't account for. The worst cases lived nearest the speaker. I don't know what that means yet.\n\nIt isn't only people. Pat brings in dust from ground he says was wet. The trees along the road have gone brittle. I keep finding grit in dressings I've just opened. We looked for an ordinary cause. We haven't found one.\n\nThe last families left three nights ago. Pat, John and I are still here. John knows the radio equipment; Pat's station key is in his office drawer. My observations are on the shelf if you want to read them.\n\nIf you hear me calling from outside, come and check this room first."
 var evidence = {}
 var pat_vault_seen=false
@@ -209,6 +210,7 @@ func refresh_collected_notes():
 	var conversation = game.town.townspeople.conversation
 	var previous_speaker = conversation.speaker
 	for entry in game.town.journal_entries:
+		entry.text=entry.get("text","").replace("inside Sebus Hardware","inside the general store").replace("Sebus Hardware has a workshop fuse","the general store has a workshop fuse")
 		var id = entry.get("id","")
 		if RECORDS.has(id):
 			entry.title = RECORDS[id][0]
@@ -228,4 +230,4 @@ func needs_aubrey_introduction()->bool:
 
 func record_aubrey_briefing():
 	if not game.town.journal_entries.any(func(e):return e.id=="aubrey_briefing"):
-		game.town.journal_entries.append({"id":"aubrey_briefing","title":"Aubrey / What happened to Blackwood","text":"Aubrey says the station radio began speaking on its own. Bellamy amplified it through the chapel, spreading a signal that caused sleeplessness, missing time and transformation. The chapel creatures were townspeople; the wrapped cemetery bodies were already dead. The last families evacuated three nights ago. Read the clinic chart, station operator's log and chapel book. Speak to John at the workshop about the equipment. Pat's office drawer holds the station key. Familiar voices may be imitations, even Aubrey's."})
+		game.town.journal_entries.append({"id":"aubrey_briefing","title":"Aubrey / What happened to Blackwood","text":"Aubrey treated your crash wound. Retrieve any missing backpack and flashlight from your car trunk before collecting supplies. John at the workshop across the street knows the county emergency radio; Pat keeps the station key in his office drawer. Most buildings were abandoned years ago, but the last families left three nights ago. Aubrey reports missing time and grey grit without knowing the cause. Her clinic observations have more detail. Familiar voices may be imitations, even hers."})

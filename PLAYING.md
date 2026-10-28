@@ -46,7 +46,7 @@ searchable interiors, weapon pickups, NPC patrols and death animations, and the
 radio-rescue quest. There are currently no drones. Use Save / Load from the pause menu to keep progress; Restart Game begins a new journey.
 
 The image intentionally uses PS2-style low-poly assets, low-resolution textures,
-fog, and a 640 Ã— 400 viewport. The Windows build uses ANGLE/Direct3D11 and a 60 FPS cap.
+fog, and a 640 Ãƒâ€” 400 viewport. The Windows build uses ANGLE/Direct3D11 and a 60 FPS cap.
 
 The flashlight bar shows remaining charge. Switch it off with F to conserve power.
 Find batteries in town storage and press Q to fit one; an empty flashlight stays
@@ -158,7 +158,7 @@ Pursuing town creatures can pound on an unlocked building door for several secon
 
 Monsters keep pursuing once alerted and can force unlocked doors, follow stairs and use opened underground passages. Locked routes remain barriers. Standard creatures take about six pistol body hits, three rifle hits or two close shotgun blasts. Headshots do 1.5x damage. Mummies resist staggering more strongly, and shotgun damage falls off beyond five meters. Use normal mode to judge difficulty; testing mode grants unlimited health and ammunition.
 
-Doors, conversations, searchable storage and item interactions work before you retrieve your backpack. The backpack screen and flashlight require their corresponding gear; key-locked routes still require their keys.
+Doors, conversations and opening storage remain available before you retrieve your backpack. Collect the backpack from the car trunk before taking supplies, keys, weapons, ammunition or the flashlight. Items remain in place until then; locked routes still require their keys.
 
 ## Creature combat
 
@@ -166,4 +166,8 @@ Aim for the head to conserve ammunition. Repeated leg hits can briefly slow a pu
 
 ## Hotel kitchen knife
 
-Collect the knife from the hotel kitchen with E. It occupies two backpack slots. Press 4 or use weapon cycling/backpack USE to equip it. Attack makes a quick forward stab and consumes 14 stamina. The knife is optional and is not granted by Testing Mode; collect it from the hotel.
+Collect a knife from the hotel kitchen or workshop table with E. It occupies two backpack slots. Press 4 or use weapon cycling/backpack USE to equip it. Attack makes a quick forward stab and consumes 14 stamina. The knife is optional and is not granted by Testing Mode; collect it from either location.
+
+## Opening route through the workshop
+
+After the car fails to start, follow the lights down Old Mill Road to seek medical help. You may retrieve your gear first, but collecting it does not skip the pharmacy rescue. After treatment, retrieve any missing gear from the trunk and speak to John in the workshop across from the pharmacy. He records his plan in your journal. Take the station key from Pat's office desk drawer and the replacement fuse from the counter drawer inside the general store. Use the enclosed alley between Saint George Hotel and the workshop to reach the rear cabinet. Open it, install the fuse, flip the switch, and return through the alley to the workshop's front entrance. The creature starts walking toward you as soon as the workshop power comes on. Be prepared to defend yourself before recovering the signal coil. Finding the fuse early does not force you to repeat a conversation.

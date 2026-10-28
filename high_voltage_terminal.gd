@@ -95,14 +95,14 @@ func interact():
 		town.game.soundscape.storage_move(global_position,false,true)
 	elif not installed:
 		if town.inventory.workshop_fuse<=0:
-			town.game.message="The cabinet needs the workshop fuse from the general store counter drawer."
+			town.game.message="The cabinet needs the workshop fuse from the counter drawer inside the general store."
 			return
 		town.inventory.workshop_fuse-=1
 		installed=true
 		get_parent().get_node("InstalledFuse").show()
 		town.game.soundscape.feedback("pickup")
 		town.game.enemies.arm_workshop_encounter()
-		town.game.message="Fuse installed. Something is coming from Main Street. Flip the power switch."
+		town.game.message="Fuse installed. Flip the power switch."
 	else:
 		phase="switching"
 		phase_time=0
@@ -114,6 +114,7 @@ func activate_power():
 	energized=true
 	set_fuse_power(true)
 	town.powered=true
+	town.game.enemies.begin_workshop_pursuit()
 	if town.game.town_changes:town.game.town_changes.power_restored()
 	for light in town.powered_lights:light.show()
 	town.game.soundscape.feedback("power")

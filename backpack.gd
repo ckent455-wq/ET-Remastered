@@ -96,10 +96,16 @@ func drop_cell() -> Vector2i:
 	return Vector2i(((drag_mouse-drag_offset-ORIGIN)/CELL).round())
 
 func room_for(id: String, amount: int = 1) -> bool:
+	if not game.crash_site.has_backpack:return false
 	if game.testing_mode and game.testing_mode.enabled: return true
 	var values = counts()
 	values[id] = values.get(id,0)+amount
 	return not pack(values).is_empty()
+
+func can_collect()->bool:
+	if game.crash_site.has_backpack:return true
+	game.message="Collect your backpack from the car trunk before taking items."
+	return false
 
 func label(id: String) -> String:
 	if id=="knife":return "KITCHEN KNIFE"
@@ -154,7 +160,7 @@ func _draw():
 			detail = "Loaded %d / %d. Reserve %d." % [game.weapons.magazines[index],game.weapons.LOADOUT[index].clip,game.weapons.reserves[index]]
 		else: detail = {"flashlight":"Your light. Equipped on your shoulder strap.","medkit":"Restores 50 health. One kit per space.","bandage":"Restores 10 health. Two rolls per space. H uses bandages first.","battery":"Refills flashlight charge. Stacks of two."}.get(item.id,"Combine with its weapon to reload.")
 		if OBJECTIVE_DETAILS.has(item.id): detail=OBJECTIVE_DETAILS[item.id]
-		if item.id=="knife":detail="Hotel kitchen knife. Short reach. Each stab costs 14 stamina. 4 equips it."
+		if item.id=="knife":detail="Kitchen knife. Short reach. Each stab costs 14 stamina. 4 equips it."
 		paragraph(detail,Vector2(330,163),270)
 		for i in range(4):
 			var box = Rect2(330+(i%2)*139,207+(i/2)*31,130,25)
@@ -368,7 +374,7 @@ func act(action: String):
 	selected = clampi(selected,0,entries.size()-1)
 	var item: Dictionary = entries[selected]
 	var id: String = item.id
-	if id=="knife" and action!="use":notice="Hotel kitchen knife. Short reach, 14 stamina per stab. Keep it as a backup weapon.";return
+	if id=="knife" and action!="use":notice="Kitchen knife. Short reach, 14 stamina per stab. Keep it as a backup weapon.";return
 	if id=="knife":
 		game.state="play";game.weapons.equip(-2);game.set_state("backpack");notice="Kitchen knife equipped.";return
 	if action=="discard":

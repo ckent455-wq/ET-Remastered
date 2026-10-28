@@ -12,7 +12,7 @@ const BLACKOUT_SECONDS = 5.5
 var start_eye_height = 1.65
 var start_pitch = 0.0
 const TOWN_APPROACH_Z = -15.0
-const AUBREY_LINE = "Easy. Stay with me. You're in the medical bed at Blackwood's pharmacy clinic. I'm Aubrey. I was checking the road when I saw you go down.\n\nYou were bleeding from the head wound you sustained from the crash. You lost too much blood trying to reach town. I brought you inside and stopped the bleeding. Your backpack and everything in it are still with you.\n\nThe voices are another danger. People here stopped sleeping, lost time, then began to change. Don't follow a familiar voice into the woods. Even if it's mine...\n\nRest a moment, then get up slowly. There's a chart on the back shelf and supplies in the rear cabinet. I put a clean spare bandage in your backpack. Use it from the backpack, or press H, if you need it later. If you need help finding a way out of town, come talk to me."
+const AUBREY_LINE = "Easy. Stay with me. You're in the medical bed at Blackwood's pharmacy clinic. I'm Aubrey. I was checking the road when I saw you go down.\n\nYou were bleeding from the head wound you sustained from the crash. You lost too much blood trying to reach town. I brought you inside and stopped the bleeding. Your backpack and everything in it are still with you.\n\nThe voices are another danger. People here stopped sleeping, lost time, then began to change. Don't follow a familiar voice into the woods. Even if it's mine...\n\nRest a moment, then get up slowly. There's a chart on the back shelf and supplies in the rear cabinet. I put a clean spare bandage in your backpack. Use it from the backpack, or press H, if you need it later. After you collect your things, speak to John in the workshop across the street about calling for help."
 
 func _ready():
  name="ClinicRescue"
@@ -124,10 +124,10 @@ func begin_explanation():
  game.story.record_aubrey_briefing()
  game.dialogue_name="Aubrey / Nurse";game.dialogue_text=AUBREY_LINE
  var warning="The voices are another danger. People here stopped sleeping, lost time, then began to change. Don't follow a familiar voice into the woods. Even if it's mine..."
- game.dialogue_text=game.dialogue_text.replace(warning,game.story.AUBREY_BRIEFING)
+ game.dialogue_text=game.dialogue_text.replace(warning,game.story.AUBREY_OPENING)
  if missing_gear_prompt()!="":
   game.dialogue_text=game.dialogue_text.replace("Your backpack and everything in it are still with you.","You arrived without "+missing_gear_names()+". You said your supplies were in the trunk of your car. I left them there; you'll need to go back for them when you're steady.")
-  game.dialogue_text=game.dialogue_text.replace("I put a clean spare bandage in your backpack. Use it from the backpack, or press H, if you need it later.","I've dressed this wound, but collect your gear before you go exploring.")
+  game.dialogue_text=game.dialogue_text.replace("I put a clean spare bandage in your backpack. Use it from the backpack, or press H, if you need it later.","I've dressed this wound. Collect your backpack from the car trunk before taking any supplies, then retrieve your flashlight.")
  game.set_state("dialogue")
  game.message="Aubrey dressed your crash wound. Finish speaking with her, then get up from the bed."
  if not game.town.journal_entries.any(func(e):return e.id=="clinic_rescue"):

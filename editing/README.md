@@ -14,3 +14,7 @@ Hotel: open hotel_layout.tscn. Its Furniture group has the hotel's movable furni
 
 
 Clinic: open clinic_layout.tscn. Move roots under Furniture. Patient_Bed contains Wake, NurseStand and BedExit markers which follow it automatically. Keep those markers clear of walls and furniture. Cabinet interactions and collision move with their roots. Save and restart with F5.
+
+## Ranger station
+
+Open `ranger_layout.tscn`. Move or rotate the roots under Furniture so their collisions and storage areas travel with them. Pickups are under RoomShell_REFERENCE. Save with Ctrl+S; restart the game to apply saved changes. Keep the scene root, metadata and reference structure intact.

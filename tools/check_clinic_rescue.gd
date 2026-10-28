@@ -33,7 +33,7 @@ func run():
  g.hud._process(0)
  assert(g.health>=65 and g.hud.last_health==g.health and g.hud.blood_opacities().x<0.24,"Treatment refreshes injury state without player movement")
  r.elapsed=0;assert(r.eye_opening()==0 and not r.caption_visible());step(r,0.7);var opening=r.eye_opening();step(r,0.3);assert(r.eye_opening()<opening)
- step(r,2.2);assert(not r.caption_visible() and g.state=="dialogue" and r.phase=="bed" and g.story.AUBREY_BRIEFING in g.dialogue_text)
+ step(r,2.2);assert(not r.caption_visible() and g.state=="dialogue" and r.phase=="bed" and g.story.AUBREY_OPENING in g.dialogue_text)
  assert("head wound you sustained" in g.dialogue_text)
  g.set_state("play");assert(r.phase=="" and r.movement_scale()==1)
  assert(g.hud.last_health==g.health and g.hud.blood_opacities().y==0 and g.hurt_flash==0 and g.invincible==3,"Bed exit gives protection without a red damage flash")

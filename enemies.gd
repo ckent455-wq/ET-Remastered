@@ -68,8 +68,10 @@ func _ready():
 		actor.add_child(reaction_pivot)
 		reaction_pivot.add_child(visual)
 		game.town.apartment_interiors.adapt(visual)
+		var zombie=i in [0,1,2,WORKSHOP_INDEX,REAPER_INDEX]
+		var rendered=preload("res://zombie_enemy_models.gd").install(visual,1+i%3,game) if zombie else visual
 		if i==CELLAR_INDEX or i in TUNNEL_INDICES: game.town.streetscape.church.basement.prepare_cellar_lighting(visual)
-		var animation = visual.find_child("AnimationPlayer",true,false) as AnimationPlayer
+		var animation = rendered.find_child("AnimationPlayer",true,false) as AnimationPlayer
 		if i==HOLLOW_INDEX:
 			animation=hollow_encounter.configure(visual)
 			game.town.streetscape.church.basement.prepare_cellar_lighting(visual)
@@ -83,11 +85,14 @@ func _ready():
 			for alias in aliases: clips[alias] = clips[aliases[alias]]
 			for key in ["idle_watchful","walk_nervous","run_frantic"]:
 				animation.get_animation(clips[key]).loop_mode = Animation.LOOP_LINEAR
-		if i==REAPER_INDEX:
+		if i==REAPER_INDEX and not zombie:
 			var aliases={"idle1":"motion_3","walk1":"motion_5","punch":"motion_6","roar":"motion_2","crouch_pose":"motion_3","death":"motion_0"}
 			for alias in aliases: clips[alias]=clips[aliases[alias]]
 			for key in ["motion_3","motion_5"]: animation.get_animation(clips[key]).loop_mode=Animation.LOOP_LINEAR
 			animation.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+		if zombie:
+			clips=preload("res://zombie_enemy_models.gd").clips(animation)
+			if i==REAPER_INDEX:animation.callback_mode_process=AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 		var voice = game.soundscape.spatial_voice(actor,streams.breath,-10,20)
 		voice.pitch_scale = 0.92+i*0.06
 		voice.unit_size = 5
@@ -108,6 +113,16 @@ func build_navigation():
 	reaper_navigation=preload("res://chapel_enemy_paths.gd").new(self)
 	reaper_navigation.build(Rect2i(24,-35,19,34))
 
+func restore_zombie_models():
+	for data in creatures:
+		if not data.visual.has_node("ZombieReplacement"):continue
+		preload("res://zombie_enemy_models.gd").conceal_original(data.visual)
+		data.clips=preload("res://zombie_enemy_models.gd").clips(data.animation)
+		var clip=data.clip if data.clips.has(data.clip) else "idle1"
+		data.clip="";play(data,clip)
+		var time=float(data.get("zombie_animation_time",data.animation.current_animation_length if data.state=="dead" else 0.0))
+		data.animation.seek(minf(time,data.animation.current_animation_length),true);data.animation.advance(0)
+
 func reset():
 	door_encounter.reset()
 	workshop_attack_pending=false
@@ -121,6 +136,7 @@ func reset():
 	sense_clock = 0
 
 func reset_creature(data):
+	data.erase("zombie_animation_time")
 	corpse_search.prepare(data)
 	door_encounter.clear_attempt(data)
 	data.actor.position = data.spawn
@@ -260,6 +276,7 @@ func shoot(index: int, damage: float, force: float = -1.0) -> bool:
 	if data.index==WORKSHOP_INDEX and not workshop_spawned:
 		workshop_spawned=true
 		workshop_armed=false
+	if index==WORKSHOP_INDEX:workshop_armed=false;workshop_attack_pending=false
 	data.hp = maxf(0,data.hp-damage)
 	if data.hp<0.001:data.hp=0.0
 	data["pursuing"]=true
@@ -645,28 +662,36 @@ func arm_workshop_encounter():
 func start_workshop_encounter():
 	if workshop_spawned or workshop_defeated:return
 	workshop_spawned=true
-	workshop_armed=false
-	game.message="The fuse clicks into place. Something on Main Street starts walking toward you. Flip the power switch."
+	workshop_armed=true
+	workshop_attack_pending=true
 	var data=creatures[WORKSHOP_INDEX]
 	data.actor.show()
 	data.actor.collision_layer=1
 	data.actor.collision_mask=1
-	data.state="chase"
+	data.state="ambush_wait"
 	data.timer=0.0
 	data.path_timer=0.0
-	data.voice.stream=streams.growl
-	data.voice.play()
-	play(data,"walk1")
+	play(data,"idle1")
 
 func workshop_danger() -> bool:
 	return workshop_spawned and not workshop_defeated
+
+func begin_workshop_pursuit():
+	if not workshop_spawned or workshop_defeated:return
+	var data=creatures[WORKSHOP_INDEX]
+	if data.hp<=0 or data.state!="ambush_wait":return
+	data.state="chase";workshop_armed=false;workshop_attack_pending=false
+	data.target=game.player.global_position;data.memory=10.0
+	data.voice.stream=streams.growl;data.voice.play()
+	play(data,"walk1")
 
 func update_workshop_creature(data,delta:float):
 	var p:Vector3=game.player.global_position
 	if data.state in ["dormant","dead"]:return
 	if data.state=="ambush_wait":
 		move_creature(data,Vector3.ZERO,delta)
-		return
+		if not game.town.powered:return
+		begin_workshop_pursuit()
 	data.timer=maxf(0,data.timer-delta)
 	data.cooldown=maxf(0,data.cooldown-delta)
 	if data.state in ["alert","stagger"]:

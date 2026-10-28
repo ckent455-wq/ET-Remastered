@@ -2,6 +2,7 @@ extends Node3D
 ## Original geometry informed by Weston Main Street's street walls and shop proportions.
 ## Google imagery is reference only; all textures remain the project's local assets.
 var town
+var sebus:Node3D
 var stone: StandardMaterial3D
 var asphalt: StandardMaterial3D
 var pavement: StandardMaterial3D
@@ -453,9 +454,12 @@ func sealed_shop(side: int, z: float):
 	add_child(root)
 	root.position = Vector3(side*10.5,0,z)
 	root.rotation.y = PI/2 if side<0 else -PI/2
-	town.box(root,Vector3(0,3.1,0),Vector3(10,6.2,8),brick("ranger"))
+	if side>0:
+		sebus=preload("res://sebus_hardware.gd").new();sebus.town=town;root.add_child(sebus)
+	else:town.box(root,Vector3(0,3.1,0),Vector3(10,6.2,8),brick("ranger"))
 	for x in [-3,0,3]:
 		upper_window(root,x,3.8,4,false,true)
+		if side>0 and x==0:continue
 		for i in range(5):
 			town.box(root,Vector3(x,0.35+i*0.45,4.12),Vector3(2.7,0.38,0.12),town.mats.wood,false)
 	town.box(root,Vector3(0,6.2,4.1),Vector3(10.3,0.22,0.3),stone,false)
