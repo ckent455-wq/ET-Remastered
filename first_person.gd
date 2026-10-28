@@ -29,6 +29,8 @@ var invincible = 0.0
 var hurt_flash = 0.0
 var town_changes:Node3D
 var workshop_layout:Node
+var hotel_upper_layout:Node
+var hotel_upper:Node3D
 var hotel_layout:Node
 var clinic_layout:Node
 var ranger_layout:Node
@@ -270,6 +272,8 @@ func _ready():
 	clinic_layout=preload("res://clinic_layout.gd").new();clinic_layout.game=self;add_child(clinic_layout)
 	ranger_layout=preload("res://ranger_layout.gd").new();ranger_layout.game=self;add_child(ranger_layout)
 	knife=preload("res://hotel_knife.gd").new();knife.game=self;add_child(knife)
+	hotel_upper=preload("res://hotel_upper_floor.gd").new();hotel_upper.game=self;add_child(hotel_upper)
+	hotel_upper_layout=preload("res://hotel_upper_layout.gd").new();hotel_upper_layout.game=self;add_child(hotel_upper_layout)
 	call_deferred("load_requested_slot")
 
 func load_requested_slot():
@@ -295,6 +299,18 @@ func load_requested_slot():
 		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
 		set_state("play");flashlight.show()
 		return
+	if "--preview-hotel-elevator" in OS.get_cmdline_user_args() or "--preview-hotel-second-floor" in OS.get_cmdline_user_args():
+		while not surface_details.completed or not hotel_upper.ready_layout:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true;story.clinic_rescue_done=true;story.crash_wound_treated=true;town.reached_town=true
+		health=100;hurt_flash=0;player.global_position=town.buildings.house.to_global(Vector3(-2.2,.04,-.9))
+		camera.look_at(hotel_upper.to_global(hotel_upper.LIFT_ORIGIN+Vector3(0,1.45,1.3)))
+		if "--preview-hotel-second-floor" in OS.get_cmdline_user_args():
+			hotel_upper.floor_index=1;hotel_upper.target_floor=1;hotel_upper.cab.position.y=hotel_upper.UPPER;hotel_upper.sync_doors()
+			player.global_position=hotel_upper.to_global(Vector3(0,hotel_upper.UPPER+.02,-1.15))
+			camera.look_at(hotel_upper.to_global(Vector3(-3.35,hotel_upper.UPPER+1.25,-.55)))
+		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
+		set_state("play");flashlight.show();return
 	if "--preview-hotel-knife" in OS.get_cmdline_user_args():
 		while not surface_details.completed:await get_tree().process_frame
 		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
@@ -409,6 +425,7 @@ func reset_game():
 	if falling_tree: falling_tree.reset()
 	if crash_site: crash_site.reset()
 	if hotel_basement: hotel_basement.reset()
+	if hotel_upper:hotel_upper.reset()
 	if cemetery_shadow: cemetery_shadow.reset()
 	if hotel_window_figure: hotel_window_figure.reset()
 	if knife:knife.reset()
@@ -556,6 +573,9 @@ func _physics_process(delta):
 		jump_queued = false
 		hud.queue_redraw()
 		return
+	if hotel_upper and hotel_upper.rider and hotel_upper.busy():
+		jump_queued=false;player.velocity=Vector3.ZERO;town.focus_action=""
+		update_flashlight_battery(delta);hud.queue_redraw();return
 	if clinic_rescue:
 		clinic_rescue.update_approach(delta)
 		if state!="play":return

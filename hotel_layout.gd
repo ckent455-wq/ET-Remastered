@@ -44,6 +44,7 @@ func apply_layout(scene:Node=null):
    target.transform=furniture.transform*entry.transform
    applied_count+=1
  apply_pickups(scene)
+ if game.hotel_upper:game.hotel_upper.apply_layout()
  if own:scene.free()
 func disable_removed(node:Node):
  if node is CollisionObject3D:node.collision_layer=0

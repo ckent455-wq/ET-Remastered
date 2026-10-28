@@ -18,7 +18,8 @@ func run():
  var shop_table=g.workshop_layout.added_furniture.extra_table_01.global_transform
  cabinet.position.x+=0.4;cabinet.rotation.y+=0.2
  g.hotel_layout.apply_layout(layout)
- assert(actual.transform.is_equal_approx(cabinet.transform))
+ var expected=cabinet.transform;expected.origin+=Vector3(0,g.hotel_upper.UPPER,5.3)
+ assert(actual.transform.is_equal_approx(expected))
  assert((actual.global_transform.affine_inverse()*area.global_transform).is_equal_approx(local_area),"Hotel storage interaction follows the cabinet")
  assert(g.workshop_layout.added_furniture.extra_table_01.global_transform==shop_table,"Hotel editing does not move workshop furniture")
  cabinet.transform=before;g.hotel_layout.apply_layout(layout)

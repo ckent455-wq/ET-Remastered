@@ -29,5 +29,3 @@ func run():
   d.actor.hide();d.actor.collision_layer=0
  print("PASS: actual chapel, workshop, cemetery and death-pose renders saved")
  quit()
-
-

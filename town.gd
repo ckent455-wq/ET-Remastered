@@ -439,6 +439,7 @@ func prompt() -> String:
 	if focus_action=="":
 		return ""
 	var data = actions[focus_action]
+	if data.kind in ["hotel_lift_call","hotel_lift_controls","hotel_room_door"]:return game.hotel_upper.prompt(data.kind,data)
 	if data.kind=="sebus_door":return "E / "+("Close" if data.door.opened else "Open")+" Sebus Hardware door"
 	if data.kind in ["hotel_basement_door","hotel_basement_exit","mausoleum_tunnel","hotel_tunnel_return"]: return game.hotel_basement.prompt(data.kind)
 	if data.kind=="dig_grave": return game.grave_dig.prompt()
@@ -493,6 +494,7 @@ func perform(id: String):
 	if data.kind!="crash" and not id.begins_with("crash_") and not id.begins_with("cemetery_"):
 		reached_town = true
 	match data.kind:
+		"hotel_lift_call","hotel_lift_controls","hotel_room_door":game.hotel_upper.interact(data.kind,data)
 		"sebus_door":data.door.interact()
 		"grave_shovel":
 			game.grave_dig.interact_shovel()
@@ -739,6 +741,7 @@ func navigation_target() -> Vector3:
 
 func location_name() -> String:
 	if game.victorian_house and game.victorian_house.contains(game.player.global_position): return "OLD VICTORIAN HOUSE"
+	if game.hotel_upper and game.hotel_upper.contains(game.player.global_position):return "SAINT GEORGE / SECOND FLOOR"
 	if game.hotel_basement and game.hotel_basement.contains(game.player.global_position): return "SAINT GEORGE / CELLAR & OLD PASSAGE"
 	if game.victorian_house and game.victorian_house.cellar_contains(game.player.global_position): return "OLD HOUSE / BASEMENT"
 	if cemetery and cemetery.contains(game.player.global_position): return "OLD MILL CEMETERY"
@@ -764,7 +767,7 @@ func player_inside_building(id: String) -> bool:
 	for data in BUILDINGS:
 		if data.id==id:
 			var p = buildings[id].to_local(game.player.global_position)
-			return absf(p.x)<data.w/2+0.3 and absf(p.z)<data.d/2+0.3 and p.y> -0.3 and p.y<4
+			return absf(p.x)<data.w/2+0.3 and absf(p.z)<data.d/2+0.3 and p.y> -0.3 and p.y<(7.2 if id=="house" else 4.0)
 	return false
 
 # Shared by player interaction and NPC routines so both obey the same safety checks.

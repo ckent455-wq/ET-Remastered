@@ -1,3 +1,24 @@
+# Far From Home v2.6.0 - Saint George Hotel Upstairs
+
+Windows x64 release build exported with the Godot 4.7.2 release template.
+
+- Added a physical second floor to Saint George Hotel, with three furnished guest rooms, a corridor and an elevator landing.
+- Added a vintage-style two-stop elevator with wood panels, aged bronze trim, sliding pocket doors, call buttons, motor audio and an arrival chime. Press the landing button to open the initially closed doors, then use the cab controls to travel. Doors close after the player steps clear and open automatically on arrival.
+- Moved the former downstairs bedroom furniture, searchable drawer, supplies and dresser key into room 201. The kitchen and basement route remain accessible downstairs.
+- Added an editable upstairs Godot scene. Saved furniture, pickup, light, window and trim edits apply to the game, including edits made to child meshes.
+- Included the latest approved hotel layout, joined landing baseboards and vertical corner trim. Corrected overlapping doorframe geometry and removed outdoor tree foliage clipping into hotel rooms.
+- Elevator travel pauses with the game. Saving is available after the ride and door movement finish. Earlier saves remain supported.
+
+## Play
+
+Download **FarFromHome-v2.6.0-Windows-x64.zip**, extract all files, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
+
+## Validation
+
+Elevator travel in both directions, call buttons, closed landing doors, player transport, pause/resume, room access, basement access, hotel pickups, editable layout mapping and save compatibility were checked. The latest saved light and window-trim transforms were compared with the running project. Source commit and SHA-256 checksums accompany the release.
+
+---
+
 # Far From Home v2.5.0 - Blackwood Progression and Sebus Hardware
 
 Windows x64 release build exported with the Godot 4.7.2 release template.

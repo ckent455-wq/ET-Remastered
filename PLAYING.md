@@ -171,3 +171,8 @@ Collect a knife from the hotel kitchen or workshop table with E. It occupies two
 ## Opening route through the workshop
 
 After the car fails to start, follow the lights down Old Mill Road to seek medical help. You may retrieve your gear first, but collecting it does not skip the pharmacy rescue. After treatment, retrieve any missing gear from the trunk and speak to John in the workshop across from the pharmacy. He records his plan in your journal. Take the station key from Pat's office desk drawer and the replacement fuse from the counter drawer inside the general store. Use the enclosed alley between Saint George Hotel and the workshop to reach the rear cabinet. Open it, install the fuse, flip the switch, and return through the alley to the workshop's front entrance. The creature starts walking toward you as soon as the workshop power comes on. Be prepared to defend yourself before recovering the signal coil. Finding the fuse early does not force you to repeat a conversation.
+
+
+## Saint George Hotel upstairs
+
+Use E (or the controller interact button) on the elevator landing button to open the doors. Step fully inside and use the cab panel to travel between the lobby and floor 2. Guest rooms 201-203 can be explored upstairs. Save after the elevator and its doors finish moving. The editable upstairs layout is editing/hotel_second_floor_layout.tscn; see HOTEL_ELEVATOR.md.

@@ -96,7 +96,7 @@ uv1_triplanar = true
 texture_filter = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_wb8tt"]
-size = Vector3(1.9, 0.16, 0.07)
+size = Vector3(2.8354125, 0.16, 0.07)
 
 [sub_resource type="BoxMesh" id="BoxMesh_2uj3d"]
 size = Vector3(0.22, 3.6, 10)
@@ -123,7 +123,7 @@ size = Vector3(2.5, 0.6, 0.22)
 size = Vector3(2.5, 0.6, 0.22)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kebyy"]
-size = Vector3(1.9, 0.16, 0.07)
+size = Vector3(2.6769042, 0.16, 0.07)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6wqq8"]
 transparency = 1
@@ -1163,16 +1163,16 @@ size = Vector3(0.07, 0.09, 9.75)
 size = Vector3(0.13, 2.8, 0.13)
 
 [sub_resource type="BoxMesh" id="BoxMesh_2he0b"]
-size = Vector3(1.95, 0.1, 0.4)
+size = Vector3(2.5807617, 0.1, 0.4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_i446v"]
-size = Vector3(1.9, 0.1, 0.1)
+size = Vector3(2.470117, 0.1, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_musim"]
-size = Vector3(0.09, 1.4, 0.1)
+size = Vector3(0.09, 1.9310547, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_jujt1"]
-size = Vector3(0.09, 1.4, 0.1)
+size = Vector3(0.09, 1.893335, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_x53en"]
 size = Vector3(0.13, 3.1, 0.13)
@@ -1193,16 +1193,16 @@ size = Vector3(0.07, 0.09, 9.75)
 size = Vector3(0.13, 2.8, 0.13)
 
 [sub_resource type="BoxMesh" id="BoxMesh_f6wgk"]
-size = Vector3(1.95, 0.1, 0.4)
+size = Vector3(2.4869506, 0.1, 0.4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_a7l13"]
-size = Vector3(1.9, 0.1, 0.1)
+size = Vector3(2.5261445, 0.1, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_gt4lv"]
-size = Vector3(0.09, 1.4, 0.1)
+size = Vector3(0.09, 1.8801514, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_8sps2"]
-size = Vector3(0.09, 1.4, 0.1)
+size = Vector3(0.09, 1.8850342, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_lvxpb"]
 size = Vector3(0.13, 3.1, 0.13)
@@ -4035,6 +4035,7 @@ transform = Transform3D(0.98722726, 0.15931821, 0, -0.15931821, 0.98722726, 0, 0
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_2571" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_2570" unique_id=889512190]
+transform = Transform3D(1.0000027, -2.9802322e-08, 0, 2.9802322e-08, 1.0000027, 0, 0, 0, 1, 0.06385946, 2.3841858e-07, 0.07544041)
 material_override = SubResource("StandardMaterial3D_cn1l0")
 mesh = SubResource("BoxMesh_wb8tt")
 
@@ -4091,6 +4092,7 @@ transform = Transform3D(0.98722726, -0.15931821, 0, 0.15931821, 0.98722726, 0, 0
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_2588" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_2587" unique_id=749675122]
+transform = Transform3D(1.0000027, 2.9802322e-08, 0, -2.9802322e-08, 1.0000027, 0, 0, 0, 1, 0.021558523, 5.9604645e-08, 0.03459263)
 material_override = SubResource("StandardMaterial3D_cn1l0")
 mesh = SubResource("BoxMesh_kebyy")
 
@@ -4885,6 +4887,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.72, 0.98, 5.16)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3743" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3742" unique_id=282588026]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.009423971, -0.27574039, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_2he0b")
 
@@ -4893,6 +4896,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.72, 2.42, 5.12)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3745" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3744" unique_id=147975148]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0012695789, 0.28014374, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_i446v")
 
@@ -4901,6 +4905,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6, 1.7, 5.12)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3747" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3746" unique_id=494140504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.296587, -0.013964891, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_musim")
 
@@ -4909,6 +4914,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.84, 1.7, 5.12)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3749" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3748" unique_id=1842270690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.30051613, 0.00037837029, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_jujt1")
 
@@ -4961,6 +4967,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.72, 0.98, 5.16)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3762" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3761" unique_id=1347389047]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0014097691, -0.28146863, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_f6wgk")
 
@@ -4969,6 +4976,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.72, 2.42, 5.12)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3764" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3763" unique_id=505713800]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03235364, 0.2689581, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_a7l13")
 
@@ -4977,6 +4985,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.84, 1.7, 5.12)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3766" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3765" unique_id=963452810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29934883, -0.003283739, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_gt4lv")
 
@@ -4985,6 +4994,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 1.7, 5.12)
 metadata/_edit_lock_ = true
 
 [node name="_MeshInstance3D_3768" type="MeshInstance3D" parent="RoomShell_REFERENCE/_Node3D_3767" unique_id=1323147382]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32482624, -0.019885302, 0)
 material_override = SubResource("StandardMaterial3D_8uhi8")
 mesh = SubResource("BoxMesh_8sps2")
 

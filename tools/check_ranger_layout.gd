@@ -27,4 +27,3 @@ func run():
  assert(actual.transform.is_equal_approx(before))
  print("PASS: ",items.get_child_count()," ranger furniture roots, collision/interaction hierarchy, workshop independence and save/load")
  layout.free();g.queue_free();await process_frame;quit()
-
