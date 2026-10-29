@@ -467,6 +467,11 @@ func sealed_shop(side: int, z: float):
 	label.pixel_size = 0.012 if side<0 else 0.009
 	label.shaded = true
 	label.outline_size = 0
+	if side>0:
+		label.hide()
+		var neon = preload("res://sebus_neon_sign.gd").new()
+		neon.town = town
+		root.add_child(neon)
 
 func weeds():
 	var tool = SurfaceTool.new()

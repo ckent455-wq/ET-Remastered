@@ -20,7 +20,7 @@ func _ready():
 	grass.uv1_scale = Vector3(4,1,2)
 	# The terrain is the walking surface. A second raised collision slab made
 	# an invisible step around the court, especially for approaching creatures.
-	town.box(self,Vector3(29,9.012,-130),Vector3(16,0.016,8.0),grass,false)
+	town.box(self,Vector3(29,9.012,-130),Vector3(16,0.016,8.0),grass,false).hide()
 	# Asphalt stops at a small arrival court; only a narrow footpath reaches the door.
 	build_footpath()
 	# A low foundation is buried in the sculpted hill beneath the chapel.
@@ -63,7 +63,7 @@ func make_surface(label: String, tool: SurfaceTool, material: Material, solid: b
 	visual.name = label
 	var foot_kind="grass"
 	if label in ["CurvedChapelFootpath","UphillWalkingSurface","UphillAsphalt","ContinuousRouteAsphalt"]:foot_kind="concrete"
-	elif label=="SoftGravelShoulders":foot_kind="gravel"
+	elif label in ["SoftGravelShoulders","ChapelGravelWalk"]:foot_kind="gravel"
 	if label not in ["FadedRoadEdges","WoodedChapelHill"]:preload("res://footstep_surfaces.gd").visual(visual,foot_kind)
 	visual.mesh = mesh
 	visual.material_override = material
@@ -187,22 +187,88 @@ func build_road():
 	make_surface("UphillWalkingSurface",walking,town.mats.dark,true).visible = false
 
 func build_footpath():
-	var path: Array[Vector3] = []
-	var a = Vector3(29,9.025,-126)
-	var bend = Vector3(32,9.025,-130)
-	var b = Vector3(29,9.025,-134)
-	for i in range(25):
-		var t = float(i)/24
-		path.append(a.lerp(bend,t).lerp(bend.lerp(b,t),t))
-	var tool = SurfaceTool.new()
-	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for i in range(path.size()-1):
-		var before = (path[mini(i+1,path.size()-1)]-path[maxi(0,i-1)]).normalized()
-		var after = (path[mini(i+2,path.size()-1)]-path[i]).normalized()
-		var side_a = Vector3(-before.z,0,before.x)*0.75
-		var side_b = Vector3(-after.z,0,after.x)*0.75
-		strip_quad(tool,[path[i]-side_a,path[i+1]-side_b,path[i]+side_a,path[i+1]+side_b],0,1,float(i)/8,float(i+1)/8)
-	make_surface("CurvedChapelFootpath",tool,town.streetscape.pavement,false)
+	# Reference: worn churchyard flags, laid by hand rather than a modern grid.
+	var rng = RandomNumberGenerator.new()
+	rng.seed = 281047
+	var gravel = town.streetscape.pavement.duplicate()
+	gravel.albedo_texture = preload("res://assets/forest/rock_surface.png")
+	gravel.albedo_color = Color("746e5b")
+	gravel.uv1_triplanar = false
+	gravel.vertex_color_use_as_albedo = true
+	gravel.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	var bed = SurfaceTool.new()
+	bed.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i in range(22):
+		var z = -125.8-float(i)*0.375
+		var next_z = z-0.375
+		var width_a = lerpf(1.85,1.46,minf(float(i)/5.0,1.0))+sin(float(i)*2.7)*0.07
+		var width_b = lerpf(1.85,1.46,minf(float(i+1)/5.0,1.0))+sin(float(i+1)*2.7)*0.07
+		var widen_a = smoothstep(16.0,20.0,float(i))
+		var widen_b = smoothstep(16.0,20.0,float(i+1))
+		width_a = lerpf(width_a,2.25,widen_a)
+		width_b = lerpf(width_b,2.25,widen_b)
+		for side in [-1,1]:
+			for triangle in [[Vector3(29,9.025,z),Vector3(29,9.025,next_z),Vector3(29+side*(width_a-0.24),9.025,z)],[Vector3(29+side*(width_a-0.24),9.025,z),Vector3(29,9.025,next_z),Vector3(29+side*(width_b-0.24),9.025,next_z)]]:
+				for p in triangle:
+					bed.set_color(Color.WHITE);bed.set_normal(Vector3.UP);bed.set_uv(Vector2(p.x,p.z));bed.add_vertex(p)
+			var inside_a = Vector3(29+side*(width_a-0.24),9.025,z)
+			var inside_b = Vector3(29+side*(width_b-0.24),9.025,next_z)
+			var outside_a = Vector3(29+side*width_a,9.025,z)
+			var outside_b = Vector3(29+side*width_b,9.025,next_z)
+			for triangle in [[inside_a,inside_b,outside_a],[outside_a,inside_b,outside_b]]:
+				for p in triangle:
+					bed.set_color(Color(1,1,1,0.0 if p==outside_a or p==outside_b else 1.0));bed.set_normal(Vector3.UP);bed.set_uv(Vector2(p.x,p.z));bed.add_vertex(p)
+	make_surface("ChapelGravelWalk",bed,gravel,false)
+	# Shared low-resolution stone grain; each flag has its own clipped silhouette.
+	var stone = StandardMaterial3D.new()
+	stone.albedo_texture = preload("res://assets/forest/rock_surface.png")
+	stone.albedo_color = Color("cbd0cd")
+	stone.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	stone.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	stone.cull_mode = BaseMaterial3D.CULL_DISABLED
+	stone.roughness = 1.0
+	stone.metallic_specular = 0.0
+	for col in range(3):
+		var z = -126.0
+		var index = 0
+		while z > -132.7:
+			var length = minf(rng.randf_range(0.62,1.15),z+132.75)
+			if length<0.12:break
+			flagstone(Vector3(28.14+col*0.86,9.04,z-length*0.5),Vector2(0.82,length-0.035),stone,rng,"ChapelWalkSlab_%d_%02d"%[col,index])
+			z -= length
+			index += 1
+	for row in range(2):
+		for col in range(4):
+			flagstone(Vector3(27.43+col*1.045,9.043,-133.05-row*0.63),Vector2(1.005,0.59),stone,rng,"ChapelLanding_%d_%d"%[row,col])
+	# Ground-level tufts interrupt the outer edge without obstructing passage.
+	var forest = town.game.get_node("DetailedForest")
+	for side in [-1,1]:
+		for i in range(6):
+			var p = Vector3(29+side*(1.5+rng.randf_range(0.03,0.3)),8.99,-126.8-i*0.93)
+			var tuft = forest.place(forest.bush_scenes[(i+1)%3],p,Vector3(0.24,0.20,0.29),"ChapelPathWeeds")
+			tuft.rotation.y = rng.randf_range(0,TAU)
+
+func flagstone(center: Vector3, size: Vector2, material: StandardMaterial3D, rng: RandomNumberGenerator, label: String):
+	var x = size.x*0.5
+	var z = size.y*0.5
+	var clip = rng.randf_range(0.04,0.105)
+	var corners = [Vector3(-x+clip,0,z),Vector3(x-clip,0,z),Vector3(x,0,z-clip),Vector3(x,0,-z+clip),Vector3(x-clip,0,-z),Vector3(-x+clip,0,-z),Vector3(-x,0,-z+clip),Vector3(-x,0,z-clip)]
+	var mesh = SurfaceTool.new()
+	mesh.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var shade = rng.randf_range(0.9,1.12)
+	var tint = Color(shade,shade,shade)
+	for i in range(corners.size()):
+		var a:Vector3 = corners[i]
+		var b:Vector3 = corners[(i+1)%corners.size()]
+		for point in [Vector3.ZERO,a,b]:
+			mesh.set_normal(Vector3.UP)
+			mesh.set_color(tint)
+			mesh.set_uv(Vector2(point.x+center.x,point.z+center.z)*0.68)
+			mesh.add_vertex(point+center)
+	var mat = material.duplicate()
+	mat.vertex_color_use_as_albedo = true
+	var slab = make_surface(label,mesh,mat,false)
+	preload("res://footstep_surfaces.gd").visual(slab,"stone")
 
 func roadside_detail():
 	var sign = Node3D.new()

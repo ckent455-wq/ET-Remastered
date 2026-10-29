@@ -1,0 +1,8 @@
+Bench by Quaternius
+Source: https://poly.pizza/m/jLxjFxFRpw
+Download: https://static.poly.pizza/1361c268-20f7-4e73-a931-ce434c6b503e.glb
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+Downloaded 2026-10-28.
+Game adaptation: fitted to adult bench dimensions, reoriented toward approach road, weathered wood material and PS2-style nearest texture filtering.
+SHA256 (original GLB): 9e923fef29388cca35f8eb473e95bc5ef32fea733682e9e54b6b944e3c055204

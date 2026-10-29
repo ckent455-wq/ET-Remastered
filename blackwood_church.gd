@@ -88,11 +88,7 @@ func native_prop(asset: String, parent: Node3D, p: Vector3) -> Node3D:
 
 func build_asset_shell():
 	# A single coherent shell: no complete prefab end sections overlap inside it.
-	var siding = town.mats.wood.duplicate()
-	siding.albedo_texture = preload("res://assets/church/siding.png")
-	siding.albedo_color = Color("b5b8a9")
-	siding.uv1_scale = Vector3(0.32,0.32,0.32)
-	siding.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	var siding = entrance_painted_wood(true)
 	var plaster = town.mats.plaster.duplicate()
 	plaster.albedo_color = Color("aaa99a")
 	plaster.uv1_scale = Vector3(0.26,0.26,0.26)
@@ -128,8 +124,8 @@ func build_asset_shell():
 		gable_face(side*6.74,4.75,5.8,8.32,plaster)
 	continuous_roof(5.4,5.8,8.6,7.4,town.mats.roof,"ContinuousExteriorRoof")
 	continuous_roof(4.75,5.60,8.32,6.74,plaster,"ContinuousInteriorCeiling")
-	rose_panel(Vector3(0,4.15,7.25),0,trim)
-	rose_panel(Vector3(0,4.15,6.73),PI,trim)
+	rose_panel(Vector3(0,4.8,7.25),0,trim)
+	rose_panel(Vector3(0,4.8,6.73),PI,trim)
 	# Only the isolated bell tower is retained from the native facade.
 	# Its cut base is embedded in the roof, never suspended inside the nave.
 	native_prop("bell_tower",self,Vector3(0,0,5.3))
@@ -241,22 +237,199 @@ func toggle_doors():
 
 func decorate_entrance():
 	var forest = town.game.get_node("DetailedForest")
+	# Low, overlapping shrubs grow from broad soil pockets against the facade.
+	var soil = town.mats.floor.duplicate()
+	soil.albedo_texture = preload("res://assets/forest/ground_ps2.png")
+	soil.albedo_color = Color("65634e")
+	soil.vertex_color_use_as_albedo = true
+	soil.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	soil.cull_mode = BaseMaterial3D.CULL_DISABLED
 	for side in [-1,1]:
-		# Small paired stone beds frame the porch without crossing the footpath.
-		var p = Vector3(side*4.15,0,8.8)
-		town.box(self,p+Vector3(0,0.18,0),Vector3(1.4,0.36,2.0),masonry)
-		for i in range(2):
-			forest.place(forest.bush_scenes[(i+1)%3],to_global(p+Vector3(0,0.35,-0.48+i*0.95)),Vector3(1.0,0.9,1.0),"ChapelEntranceShrubs")
+		var tool = SurfaceTool.new()
+		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var center = Vector3(side*3.6,0.026,8.35)
+		for i in range(14):
+			var a = float(i)*TAU/14
+			var b = float(i+1)*TAU/14
+			var edge_a = Vector3(cos(a)*1.45,0,sin(a)*(1.05+0.1*sin(a*3)))
+			var edge_b = Vector3(cos(b)*1.45,0,sin(b)*(1.05+0.1*sin(b*3)))
+			for p in [center,center+edge_a*0.72,center+edge_b*0.72]:
+				tool.set_color(Color.WHITE);tool.set_normal(Vector3.UP);tool.set_uv(Vector2(p.x,p.z));tool.add_vertex(p)
+			for tri in [[edge_a*0.72,edge_a,edge_b*0.72],[edge_b*0.72,edge_a,edge_b]]:
+				for edge in tri:
+					var p = center+edge
+					tool.set_color(Color(1,1,1,0.0 if edge==edge_a or edge==edge_b else 1.0))
+					tool.set_normal(Vector3.UP);tool.set_uv(Vector2(p.x,p.z));tool.add_vertex(p)
+		var patch = MeshInstance3D.new()
+		patch.name = "ChapelFoundationSoil"
+		patch.mesh = tool.commit();patch.material_override = soil;add_child(patch)
+	var planting = [Vector3(-2.9,0,7.95),Vector3(-4.25,0,7.7),Vector3(-3.6,0,8.75),Vector3(2.95,0,7.85),Vector3(4.3,0,7.8),Vector3(4.0,0,8.9)]
+	for i in range(planting.size()):
+		var size = 1.05+float((i*3)%5)*0.07
+		for layer in range(2):
+			var offset = Vector3(0.28*layer,-0.06,-0.27*layer)
+			var shrub = forest.place(forest.bush_scenes[(i+layer)%3],to_global(planting[i]+offset),Vector3(size,size*0.69,size*0.9),"ChapelEntranceShrubs")
+			shrub.rotation.y = float(i)*1.73+layer*1.1
+	garden_rock_borders(forest)
+	entrance_porch()
+	for side in [-1,1]:
 		town.box(self,Vector3(side*1.95,2.05,7.29),Vector3(0.09,0.12,0.20),town.mats.metal,false)
 		var lantern = Vector3(side*1.95,2.05,7.45)
 		town.box(self,lantern,Vector3(0.24,0.4,0.22),town.mats.dark,false)
 		town.box(self,lantern+Vector3(0,0,0.12),Vector3(0.15,0.27,0.025),town.color_material(Color("bf9f68"),0.65),false)
 		town.lamp(self,lantern+Vector3(0,0,0.2),Color("c5ab78"),0.38,4.2)
-	# One weathered seat beside the left bed adds a quiet, welcoming detail.
-	town.box(self,Vector3(-5.7,0.48,9.6),Vector3(1.8,0.13,0.6),town.mats.wood)
-	town.box(self,Vector3(-5.7,0.91,9.85),Vector3(1.8,0.7,0.1),town.mats.wood)
-	for x in [-6.35,-5.05]:
-		town.box(self,Vector3(x,0.23,9.6),Vector3(0.13,0.46,0.5),masonry)
+	# Retain the legacy node slots for saved scene compatibility; the imported
+	# bench owns the visible geometry and collision now.
+	var old_bench = []
+	old_bench.append(town.box(self,Vector3(-5.7,0.48,9.6),Vector3(1.8,0.13,0.6),town.mats.wood))
+	old_bench.append(town.box(self,Vector3(-5.7,0.91,9.85),Vector3(1.8,0.7,0.1),town.mats.wood))
+	for x in [-6.35,-5.05]:old_bench.append(town.box(self,Vector3(x,0.23,9.6),Vector3(0.13,0.46,0.5),masonry))
+	for old in old_bench:
+		old.hide();old.collision_layer=0;old.collision_mask=0
+	imported_garden_bench()
+
+func imported_garden_bench():
+	var bench = StaticBody3D.new()
+	bench.name = "ChapelGardenBench"
+	add_child(bench)
+	bench.position = Vector3(-5.9,0,10.45)
+	# The original model faces -Z. Turn it outward toward the arrival road.
+	bench.rotation.y = PI
+	var visual = preload("res://assets/chapel_bench/park_bench.glb").instantiate()
+	bench.add_child(visual)
+	var bounds = AABB()
+	var has_bounds = false
+	var wood = StandardMaterial3D.new()
+	wood.resource_name = "ChapelBenchWeatheredWood"
+	wood.albedo_texture = preload("res://assets/lockbox/lid_T_WoodRough_basecolor.png")
+	wood.albedo_color = Color("afa18b")
+	wood.uv1_triplanar = true
+	wood.uv1_scale = Vector3(1.0,1.0,1.0)
+	wood.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	wood.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	wood.roughness = 1.0
+	wood.metallic_specular = 0.0
+	for mesh in visual.find_children("*","MeshInstance3D",true,false):
+		var relative:Transform3D = bench.global_transform.affine_inverse()*mesh.global_transform
+		var part:AABB = relative*mesh.get_aabb()
+		bounds = bounds.merge(part) if has_bounds else part
+		has_bounds = true
+		mesh.material_override = wood
+	if has_bounds:
+		var fit = 1.95/bounds.size.x
+		visual.scale *= fit
+		visual.position -= Vector3(bounds.get_center().x,bounds.position.y,bounds.get_center().z)*fit
+	for spec in [[Vector3(0,0.265,0),Vector3(1.95,0.53,0.66)],[Vector3(0,0.73,0.28),Vector3(1.95,0.40,0.10)]]:
+		var shape = CollisionShape3D.new()
+		var box = BoxShape3D.new()
+		box.size = spec[1];shape.shape = box;shape.position = spec[0];bench.add_child(shape)
+
+func garden_rock_borders(forest):
+	# Reuse the project's three local forest rock models as low fieldstone edging.
+	var rng = RandomNumberGenerator.new()
+	rng.seed = 281028
+	var border = Node3D.new()
+	border.name = "ChapelGardenRockBorders"
+	add_child(border)
+	for side in [-1,1]:
+		for i in range(28):
+			var angle = float(i)*TAU/28.0
+			var stone = Node3D.new()
+			stone.name = "GardenStone_%d_%02d"%[side,i]
+			border.add_child(stone)
+			stone.position = Vector3(side*3.65+cos(angle)*1.4,0.0,8.35+sin(angle)*1.05)
+			stone.position.x += rng.randf_range(-0.025,0.025)
+			stone.position.z += rng.randf_range(-0.025,0.025)
+			stone.rotation.y = rng.randf_range(0,TAU)
+			var visual = forest.rock_scenes[(i+(1 if side>0 else 0))%3].instantiate()
+			stone.add_child(visual)
+			forest.prepare_meshes(visual)
+			var bounds = AABB()
+			var has_bounds = false
+			for mesh in visual.find_children("*","MeshInstance3D",true,false):
+				var relative:Transform3D = stone.global_transform.affine_inverse()*mesh.global_transform
+				var part:AABB = relative*mesh.get_aabb()
+				bounds = bounds.merge(part) if has_bounds else part
+				has_bounds = true
+			if not has_bounds:continue
+			var target = Vector3(rng.randf_range(0.27,0.36),rng.randf_range(0.16,0.23),rng.randf_range(0.24,0.31))
+			var fitted = target/bounds.size
+			visual.scale *= fitted
+			visual.position -= Vector3(bounds.get_center().x,bounds.position.y,bounds.get_center().z)*fitted
+			visual.position.y -= 0.045
+
+func entrance_painted_wood(clapboard: bool) -> StandardMaterial3D:
+	# Quiet paint wear and fine grain, instead of reusing the striped siding atlas.
+	var image = Image.create(128,128,false,Image.FORMAT_RGB8)
+	var rng = RandomNumberGenerator.new()
+	rng.seed = 281020 if clapboard else 281021
+	for y in range(128):
+		for x in range(128):
+			var grain = sin(float(x)*1.9+sin(float(y)*0.07))*0.009+rng.randf_range(-0.012,0.012)
+			var wear = sin(float(x)*0.067+sin(float(y)*0.11))*sin(float(y)*0.039)*0.014
+			grain += wear
+			var shade = 0.0
+			if clapboard:
+				shade = -0.12 if y%16==0 else (-0.035 if y%16==1 else 0.0)
+			else:
+				shade = -0.035 if x%43==0 else 0.0
+			image.set_pixel(x,y,Color(0.64+grain+shade,0.65+grain+shade,0.59+grain+shade))
+	image.generate_mipmaps()
+	var mat = StandardMaterial3D.new()
+	mat.resource_name = "ChapelWeatheredClapboard" if clapboard else "ChapelPaintedTimber"
+	mat.albedo_texture = ImageTexture.create_from_image(image)
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	mat.uv1_triplanar = true
+	mat.uv1_scale = Vector3(0.5,0.5,0.5)
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	mat.roughness = 1.0
+	mat.metallic_specular = 0.0
+	return mat
+
+func entrance_porch():
+	# A shallow timber portico, inspired by rural Missouri chapel entrances.
+	var trim = entrance_painted_wood(false)
+	var timber = StandardMaterial3D.new()
+	timber.resource_name = "ChapelExposedWeatheredTimber"
+	timber.albedo_texture = preload("res://assets/lockbox/lid_T_WoodRough_basecolor.png")
+	timber.albedo_color = Color("9b9283")
+	timber.uv1_triplanar = true
+	timber.uv1_scale = Vector3(0.7,0.7,0.7)
+	timber.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	timber.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+	timber.roughness = 1.0
+	timber.metallic_specular = 0.0
+	var post_wood = timber.duplicate()
+	post_wood.resource_name = "ChapelVerticalGrainPosts"
+	var source = timber.albedo_texture.get_image()
+	if source.is_compressed():source.decompress()
+	source.resize(128,128,Image.INTERPOLATE_LANCZOS)
+	var vertical = Image.create(128,128,false,Image.FORMAT_RGB8)
+	for y in range(128):
+		for x in range(128):vertical.set_pixel(x,y,source.get_pixel(y,127-x))
+	vertical.generate_mipmaps()
+	post_wood.albedo_texture = ImageTexture.create_from_image(vertical)
+	post_wood.uv1_scale = Vector3(2.0,0.45,2.0)
+	var roof = town.mats.roof.duplicate()
+	roof.albedo_color = Color("73776c")
+	var canopy = Node3D.new()
+	canopy.name = "ChapelEntrancePorch"
+	add_child(canopy)
+	for side in [-1,1]:
+		var post = town.box(canopy,Vector3(side*2.04,1.47,8.72),Vector3(0.17,2.86,0.17),post_wood)
+		post.name = "PorchPost%d"%side
+		town.box(canopy,Vector3(side*2.04,0.14,8.72),Vector3(0.26,0.2,0.26),masonry,false)
+		town.box(canopy,Vector3(side*2.04,2.81,8.72),Vector3(0.27,0.15,0.27),timber,false)
+		town.box(canopy,Vector3(side*2.04,2.92,8.0),Vector3(0.16,0.18,1.9),timber,false)
+		var brace = town.box(canopy,Vector3(side*1.82,2.68,8.72),Vector3(0.1,0.62,0.12),timber,false)
+		brace.rotation.z = -side*0.65
+		var pitch = atan2(0.62,2.28)
+		var panel = town.box(canopy,Vector3(side*1.14,3.26,8.05),Vector3(sqrt(2.28*2.28+0.62*0.62),0.10,2.3),roof,false)
+		panel.rotation.z = -side*pitch
+		var fascia = town.box(canopy,Vector3(side*1.14,3.22,9.255),Vector3(sqrt(2.28*2.28+0.62*0.62),0.13,0.1),trim,false)
+		fascia.rotation.z = -side*pitch
+	town.box(canopy,Vector3(0,2.9,8.72),Vector3(4.25,0.16,0.16),timber,false)
+	town.box(canopy,Vector3(0,3.59,8.05),Vector3(0.11,0.10,2.34),trim,false)
 
 func adapt_native(node: Node):
 	if node is MeshInstance3D:

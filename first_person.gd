@@ -315,6 +315,22 @@ func load_requested_slot():
 			camera.look_at(hotel_upper.to_global(Vector3(-3.35,hotel_upper.UPPER+1.25,-.55)))
 		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
 		set_state("play");flashlight.show();return
+	if "--preview-sebus-sign" in OS.get_cmdline_user_args():
+		while not surface_details.completed:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true;story.clinic_rescue_done=true;story.crash_wound_treated=true;town.reached_town=true;health=100;hurt_flash=0
+		player.global_position=Vector3(1.5,.04,-79.5)
+		camera.look_at(Vector3(4.95,4.6,-86.5))
+		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
+		set_state("play");flashlight.show();return
+	if "--preview-chapel-entry" in OS.get_cmdline_user_args():
+		while not surface_details.completed:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true;story.clinic_rescue_done=true;story.crash_wound_treated=true;town.reached_town=true;health=100;hurt_flash=0
+		player.global_position=Vector3(29,9.06,-125)
+		camera.look_at(Vector3(29,10.6,-134))
+		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
+		set_state("play");flashlight.show();return
 	if "--preview-hotel-reception" in OS.get_cmdline_user_args() or "--preview-hotel-staff" in OS.get_cmdline_user_args():
 		while not surface_details.completed or not hotel_upper.ready_layout:await get_tree().process_frame
 		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()

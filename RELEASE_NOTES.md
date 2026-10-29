@@ -1,3 +1,24 @@
+# Far From Home v2.8.0 - Chapel Entrance and Sebus Neon
+
+Windows x64 release build exported with the Godot 4.7.2 release template.
+
+- Rebuilt the chapel approach with staggered, weathered flagstones, gravel edges and a wider landing. The route stays flush and clear from the road through the doorway.
+- Added a modest timber entrance porch, distinct weathered wood posts, quieter painted clapboard walls and a raised circular window that clears the porch roof.
+- Reworked foundation shrubs into natural planting beds, edged with varied, partly buried rocks using the existing local rock models.
+- Replaced the block bench with Quaternius' downloaded CC0 rustic bench, fitted to adult scale and turned toward the road.
+- Replaced the Sebus Hardware lettering with a two-sided projecting blue Hotpoint/APPLIANCES sign and weathered SEBUS BROTHERS panel, referenced from the Weston original.
+- Added visible neon tubing, warm glow and random brief flicker bursts. The wall mount sits between the approved upstairs windows.
+
+## Play
+
+Download **FarFromHome-v2.8.0-Windows-x64.zip**, extract all files and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required. This is a release export, not a debug build.
+
+## Validation
+
+Checked chapel entrance and bench renders from multiple angles, three physical walking routes through the chapel entrance, and both faces of the neon sign. Release engine template, archive integrity and uploaded asset hashes were verified during packaging.
+
+---
+
 # Far From Home v2.7.0 - Saint George Reception and Staff Entrance
 
 Windows x64 release build exported with the Godot 4.7.2 release template.
