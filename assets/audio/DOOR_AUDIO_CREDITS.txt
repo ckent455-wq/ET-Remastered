@@ -1,0 +1,14 @@
+Door creak: user-supplied 266820__ms107__door-creaks-open-at-the-end.wav
+Creator: ms107. Freesound sound ID: 266820.
+Source: https://freesound.org/people/ms107/sounds/266820/
+License: Creative Commons Zero (CC0), verified on the source page.
+Game asset: door_creak_open.wav. Full recording retained, peak normalized with short edge fades.
+
+Deadbolt: user-supplied 629507__abir19__deadboltlock.wav
+Creator indicated by source filename: abir19. Freesound sound ID: 629507.
+Source: https://freesound.org/people/abir19/sounds/629507/
+Game assets: deadbolt_lock.wav (0.18-0.90 s), deadbolt_unlock.wav (1.92-2.75 s).
+Converted to mono, peak normalized and given short edge fades.
+
+Original downloads remain in the user's Downloads folder.
+Deadbolt license terms were not provided with the local file and have not been verified.

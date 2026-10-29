@@ -12,7 +12,7 @@ func update_audio(game):
 func clear_attempt(data):
  data["forcing_door"]="";data["door_effort"]=0.0;data["door_beat"]=0.0
 func protected_door(town,id:String)->bool:
- return not town.doors[id].get("unlocked",id!="radio")
+ return town.shelter_locks.get(id,false) or not town.doors[id].get("unlocked",id!="radio")
 func holding_open(id:String,clock:float)->bool:
  return held_open.get(id,0.0)>clock
 func pound(enemies,data,point:Vector3,mummy:bool):
@@ -30,7 +30,7 @@ func pound(enemies,data,point:Vector3,mummy:bool):
  data.animation.speed_scale=1.0
 func update(enemies,data,delta:float,goal:Variant=null)->bool:
  var game=enemies.game
- if data.hp<=0 or data.state not in ["chase","investigate","tunnel_chase","house_rush","cellar_rush","reaper_chase"]:
+ if data.hp<=0 or data.state not in ["chase","investigate","tunnel_chase","house_rush","cellar_rush","reaper_chase","returning_home"]:
   clear_attempt(data);return false
  var town=game.town
  for id in town.doors:

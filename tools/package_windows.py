@@ -25,6 +25,7 @@ shutil.copy2(ROOT/'assets'/'high_voltage'/'LICENSE.txt', licenses/'PSX-Horror-Pr
 shutil.copy2(ROOT/'assets'/'weapons'/'LICENSE.txt', licenses/'Guns-CC0.txt')
 for folder in ['healing', 'ui/blood', 'audio/footsteps', 'psx_house']:
     shutil.copy2(ROOT/'assets'/folder/'CREDITS.txt', licenses/(folder.replace('/', '-')+'-CREDITS.txt'))
+shutil.copy2(ROOT/'assets/audio/DOOR_AUDIO_CREDITS.txt', licenses/'Door-Audio-Credits.txt')
 for name in ['LICENSE.txt', 'COPYRIGHT.txt']:
     request = urllib.request.Request('https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/'+name, headers={'User-Agent':'FarFromHome-Release'})
     with urllib.request.urlopen(request, timeout=45) as response:

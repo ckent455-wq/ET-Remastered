@@ -28,6 +28,9 @@ Turning testing off restores the equipment, supplies, health and lock access you
 
 ## Controls
 
+- **L / controller L3:** lock or unlock the door you are facing from inside. An open door closes when you lock it. Available at town entrances, chapel doors and hotel guest rooms. Quest keys are still required where applicable.
+- A locked door blocks pursuing monsters; unlocked doors can be forced open. Stay out of sight for **20 seconds** to make a monster abandon pursuit and walk back to its spawn. Being seen again restarts the chase. Door bolts visibly slide, and walls muffle monster sounds; listen for footsteps fading as it retreats.
+
 - Mouse: look; WASD / arrows: move; Shift: sprint.
 - Space: jump. Hold Ctrl: crouch; release to stand when there is room.
 - E: inspect, search, collect, open/close doors from either side, and talk. Building doors swing inward.

@@ -280,7 +280,7 @@ func draw_title_controls():
 	var c = game.controller
 	var movement = [["Move","Left stick"],["Look","Right stick"],["Sprint","L3"],["Jump",c.label("south")],["Crouch (hold)",c.label("east")]] if pad else [["Move","WASD / Arrows"],["Look","Mouse"],["Sprint (hold)","Shift"],["Jump","Space"],["Crouch (hold)","Ctrl"]]
 	var combat = [["Fire / punch",c.label("rt")],["Aim (hold)",c.label("lt")],["Reload",c.label("north")],["Cycle weapons",c.label("lb")+" / "+c.label("rb")],["Holster / fists","R3"]] if pad else [["Fire / punch","Left mouse"],["Aim (hold)","Right mouse"],["Reload","R"],["Cycle weapons","Wheel / V"],["Select weapon","1 / 2 / 3"],["Holster / fists","0"]]
-	var survival = [["Interact / search",c.label("west")],["Flashlight","D-pad down"],["First aid","D-pad left"],["Replace battery","D-pad right"]] if pad else [["Interact / search","E"],["Flashlight","F"],["First aid","H"],["Replace battery","Q"]]
+	var survival = [["Interact / search",c.label("west")],["Inside door lock","L3"],["Flashlight","D-pad down"],["First aid","D-pad left"],["Replace battery","D-pad right"]] if pad else [["Interact / search","E"],["Inside door lock","L"],["Flashlight","F"],["First aid","H"],["Replace battery","Q"]]
 	var menus = [["Backpack",c.label("view")],["Journal / map","D-pad up"],["Pause / save",c.label("start")],["Rotate item",c.label("north")]] if pad else [["Backpack","I"],["Journal / map","Tab"],["Pause / save","Esc"],["Rotate backpack item","R"],["Window / fullscreen","F11"]]
 	controls_group("MOVEMENT",Vector2(44,76),movement)
 	controls_group("COMBAT",Vector2(334,76),combat)

@@ -136,8 +136,10 @@ func interact(kind:String):
   move_player(to_global(Vector3(0,0.02,3.5)),0)
   game.message="Saint George Hotel basement. The old tunnel leads back to the mausoleum."
  elif kind=="hotel_basement_exit":
+  var unbolting=not hotel_unlocked
   hotel_unlocked=true
   move_player(town.buildings.house.to_global(Vector3(-0.4,0.05,-3.5)),town.buildings.house.global_rotation.y+PI)
+  if unbolting:game.soundscape.deadbolt(game.player.global_position,false)
   game.message="The bolt slides free. You can now use the hotel basement door from either side."
  elif kind=="hotel_tunnel_return":
   move_player(town.cemetery.crypt.to_global(Vector3(-0.65,0.05,-0.75)),town.cemetery.crypt.global_rotation.y+PI)

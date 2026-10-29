@@ -113,6 +113,7 @@ func button(id:int):
  if state!="play":return
  var mapping={JOY_BUTTON_A:KEY_SPACE,JOY_BUTTON_X:KEY_E,JOY_BUTTON_Y:KEY_R,JOY_BUTTON_DPAD_DOWN:KEY_F,JOY_BUTTON_DPAD_UP:KEY_TAB,JOY_BUTTON_DPAD_LEFT:KEY_H,JOY_BUTTON_DPAD_RIGHT:KEY_Q,JOY_BUTTON_BACK:KEY_I,JOY_BUTTON_START:KEY_ESCAPE,JOY_BUTTON_RIGHT_STICK:KEY_0}
  if mapping.has(id):send_key(mapping[id])
+ elif id==JOY_BUTTON_LEFT_STICK:send_key(KEY_L)
  elif id==JOY_BUTTON_LEFT_SHOULDER:game.weapons.cycle(-1)
  elif id==JOY_BUTTON_RIGHT_SHOULDER:game.weapons.cycle(1)
 func menu_move(step:int):
@@ -162,6 +163,7 @@ func label(token:String)->String:
 func hint(value:String)->String:
  if not using_controller:return value
  value=value.replace("E TO ",label("west")+" TO ")
+ value=value.replace("L / ","L3 / ")
  if game.state=="journal" and "case notes" in value:
   return label("view")+"  Backpack   "+label("north")+"  Case notes   "+label("lb")+" / "+label("rb")+"  Pages   "+label("east")+"  Close"
  var map={"WASD":"LS","ARROWS":"D-PAD","MOUSE":"RS","SPACE":label("south"),"CTRL":label("east"),"SHIFT":"L3","LMB":label("rt"),"RMB":label("lt"),"ENTER":label("south"),"ESC":label("east"),"TAB":"D-PAD UP","E":label("west"),"F":"D-PAD DOWN","I":label("view"),"H":"D-PAD LEFT","Q":"D-PAD RIGHT","R":label("north"),"V":label("rb"),"0":"R3"}

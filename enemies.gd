@@ -147,6 +147,7 @@ func reset_creature(data):
 	combat.reset(data)
 	data.hp = health_for(data.index)
 	data["pursuing"]=false
+	data["hidden_time"]=0.0
 	data["portal_wait"]=0.0
 	data["special_effort"]=0.0
 	data["special_beat"]=0.0

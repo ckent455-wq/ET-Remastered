@@ -80,7 +80,7 @@ func blocked_reason()->String:
 func capture()->Dictionary:
  var town=game.town
  var data={"schema":SCHEMA,"version":str(ProjectSettings.get_setting("application/config/version")),"date":Time.get_datetime_string_from_system(false,true),"location":town.location_name(),"health":game.health,"position":game.player.global_transform,"pitch":game.pitch,"crouching":game.crouching,"stamina":game.stamina,"charge":game.flashlight_charge,"light":game.flashlight.visible,"clock":game.clock,"town":{},"story":variables(game.story),"owned":game.weapons.owned.duplicate(),"magazines":game.weapons.magazines.duplicate(),"reserves":game.weapons.reserves.duplicate(),"selected":game.weapons.selected,"cells":game.backpack.saved_cells.duplicate(true),"rotations":game.backpack.saved_rotations.duplicate(true),"actions":{},"storage":{},"doors":{},"roots":{},"enemies":[],"people":{},"conversation":variables(town.townspeople.conversation)}
- for key in ["inventory","journal_entries","discovered","powered","radio_ready","reached_town"]:data.town[key]=town.get(key).duplicate(true) if town.get(key) is Dictionary or town.get(key) is Array else town.get(key)
+ for key in ["inventory","journal_entries","discovered","powered","radio_ready","reached_town","shelter_locks"]:data.town[key]=town.get(key).duplicate(true) if town.get(key) is Dictionary or town.get(key) is Array else town.get(key)
  for id in town.actions:
   var action=town.actions[id]
   data.actions[id]={"taken":action.taken,"visible":action.area.visible,"layer":action.area.collision_layer,"disabled":action.area.get_child(0).disabled,"amount":action.get("amount",-1)}
@@ -107,6 +107,10 @@ func valid(data)->bool:
  if data.health<=0 or data.health>100:return false
  for key in ["inventory","journal_entries","discovered","powered","radio_ready","reached_town"]:
   if not data.town.has(key):return false
+ if data.town.has("shelter_locks"):
+  if not data.town.shelter_locks is Dictionary:return false
+  for locked in data.town.shelter_locks.values():
+   if not locked is bool:return false
  if not data.town.inventory is Dictionary or not data.town.journal_entries is Array:return false
  if data.has("rotations"):
   if not data.rotations is Dictionary:return false

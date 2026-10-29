@@ -10,6 +10,8 @@ const BUILDINGS = [
 var game
 var buildings = {}
 var doors = {}
+var shelter_locks = {}
+var door_locks=preload("res://door_locks.gd").new()
 var actions = {}
 var inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0,"knife":0}
 var journal_entries: Array[Dictionary] = []
@@ -371,6 +373,7 @@ func furnish():
 	note("house",Vector3(2,0.91,0),"house_note","Last letter","If you are reading this, the last families have gone. Most buildings have stood empty since the mill closed twelve years ago.\nI left what I could in the clinic and the general store.\nThe lights in the workshop haven't worked for weeks.\nI used to hear traffic beyond the trees. Now the road\nis silent. If you need help, try the radio station.")
 
 func reset():
+	shelter_locks.clear()
 	inventory = {"medkit":0,"bandage":0,"battery":0,"station_key":0,"workshop_fuse":0,"coil":0,"chapel_key":0,"tuner":0,"shotgun_key":0,"antenna":0,"mausoleum_key":0,"shovel":0,"ada_letter":0,"knife":0}
 	journal_entries.clear()
 	discovered.clear()
@@ -439,7 +442,7 @@ func prompt() -> String:
 	if focus_action=="":
 		return ""
 	var data = actions[focus_action]
-	if data.kind in ["hotel_lift_call","hotel_lift_controls","hotel_room_door"]:return game.hotel_upper.prompt(data.kind,data)
+	if data.kind in ["hotel_lift_call","hotel_lift_controls","hotel_room_door"]:return game.hotel_upper.prompt(data.kind,data)+door_locks.suffix(self,data)
 	if data.kind=="hotel_staff_door":return game.hotel_staff.prompt()
 	if data.kind=="hotel_reception_bell":return "E / Ring desk bell"
 	if data.kind=="sebus_door":return "E / "+("Close" if data.door.opened else "Open")+" Sebus Hardware door"
@@ -454,7 +457,7 @@ func prompt() -> String:
 	if data.kind=="cellar_door":
 		return "E / Open cellar door" if streetscape.church.basement.unlocked else ("E / Unlock and open cellar door" if inventory.chapel_key>0 else "E / Locked cellar - inspect")
 	if data.kind=="chapel_door":
-		return "E / "+("Close chapel doors" if streetscape.church.doors_open else "Open chapel doors")
+		return "E / "+("Locked chapel doors" if door_locks.locked(self,data) else "Close chapel doors" if streetscape.church.doors_open else "Open chapel doors")+door_locks.suffix(self,data)
 	if data.kind=="shotgun_lockbox":
 		return game.weapons.lockbox.prompt()
 	if data.kind=="container":
@@ -466,7 +469,7 @@ func prompt() -> String:
 	if data.kind=="door":
 		if data.building=="radio" and inventory.station_key==0:
 			return "E / Locked - ranger's key needed"
-		return "E / "+("Close door" if doors[data.building].open else "Open door")
+		return "E / "+("Locked door" if door_locks.locked(self,data) else "Close door" if doors[data.building].open else "Open door")+door_locks.suffix(self,data)
 	if focus_action=="coil" and not powered:
 		return "E / Coil cabinet - restore workshop power"
 	if data.kind=="panel" and powered:
@@ -486,6 +489,7 @@ func perform(id: String):
 		game.enemies.corpse_search.search(id.trim_prefix("body_search_").to_int())
 		return
 	var data = actions[id]
+	if door_locks.supported(data) and not door_locks.opening_allowed(self,data):return
 	if data.kind=="crash_tutorial":
 		game.crash_site.interact_tutorial(id)
 		return
@@ -789,6 +793,7 @@ func doorway_occupied(id: String) -> bool:
 func set_building_door(id: String, next_open: bool, shelter_close=false, player_requested=false, monster_requested=false) -> bool:
 	if not doors.has(id): return false
 	var door=doors[id]
+	if next_open and shelter_locks.get(id,false):return false
 	if next_open and not player_requested and not monster_requested and door.get("player_closed",false):
 		if game.player.global_position.distance_to(doorway_position(id))<4.0:return false
 		door.player_closed=false

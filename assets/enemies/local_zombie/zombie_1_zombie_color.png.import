@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bbok1biihamte"
-path="res://.godot/imported/zombie_1_zombie_color.png-5fa2f533e6a5746c4e10585bbb41fc3f.ctex"
+path.s3tc="res://.godot/imported/zombie_1_zombie_color.png-5fa2f533e6a5746c4e10585bbb41fc3f.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "42d23feebd56912caa172dd26417744e"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/enemies/local_zombie/zombie_1_zombie_color.png"
-dest_files=["res://.godot/imported/zombie_1_zombie_color.png-5fa2f533e6a5746c4e10585bbb41fc3f.ctex"]
+dest_files=["res://.godot/imported/zombie_1_zombie_color.png-5fa2f533e6a5746c4e10585bbb41fc3f.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

@@ -36,6 +36,8 @@ var animal_timer = 8.0
 var previous_state = ""
 var interaction_voices = {}
 var door_voice: AudioStreamPlayer3D
+var deadbolt_voice: AudioStreamPlayer3D
+var deadbolt_streams={}
 var weapon_voices: Array[AudioStreamPlayer] = []
 var weapon_streams = {}
 var hurt_voice: AudioStreamPlayer
@@ -100,7 +102,9 @@ func _ready():
 	thunder = voice(stream("thunder"),-23)
 	for cue in ["pickup","power","radio"]:
 		interaction_voices[cue] = voice(stream(cue),-12)
-	door_voice = spatial_voice(game,stream("horror/door_creak"),-20,20)
+	door_voice = spatial_voice(game,stream("door_creak_open"),-10,20)
+	deadbolt_streams={true:stream("deadbolt_lock"),false:stream("deadbolt_unlock")}
+	deadbolt_voice=spatial_voice(game,deadbolt_streams[true],-10,14)
 	storage_voice = spatial_voice(game,stream("horror/drawer_open"),-17,10)
 	for cue in ["drawer_open","drawer_close","cabinet_open","cabinet_close"]:
 		storage_streams[cue] = stream("horror/"+cue)
@@ -154,6 +158,7 @@ func reset():
 	for node in interaction_voices.values():
 		node.stop()
 	door_voice.stop()
+	deadbolt_voice.stop()
 	storage_voice.stop()
 	weapon_stop_reload()
 	for node in weapon_voices:
@@ -207,8 +212,14 @@ func feedback(cue: String):
 
 func door_move(p: Vector3, opening: bool):
 	door_voice.global_position = p+Vector3.UP
-	door_voice.pitch_scale = 1.05 if opening else 0.88
+	door_voice.pitch_scale = 1.0 if opening else 0.88
 	door_voice.play()
+
+func deadbolt(p:Vector3,locked:bool):
+	deadbolt_voice.global_position=p+Vector3.UP
+	deadbolt_voice.stream=deadbolt_streams[locked]
+	deadbolt_voice.pitch_scale=1.0
+	deadbolt_voice.play()
 
 func toggle_mute():
 	muted = not muted
@@ -285,6 +296,7 @@ func update_sound(delta: float):
 		if not active:
 			click.stop()
 			door_voice.stop()
+			deadbolt_voice.stop()
 			storage_voice.stop()
 			weapon_stop_reload()
 			for node in weapon_voices:

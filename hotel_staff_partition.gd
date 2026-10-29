@@ -52,6 +52,7 @@ func interact():
  if not unlocked:
   if not staff_side():game.message="Locked. Employees only.";return
   unlocked=true
+  game.soundscape.deadbolt(to_global(Vector3(CENTER,0,FRONT)),false)
  opened=not opened;collision.set_deferred("disabled",opened)
  game.soundscape.door_move(to_global(Vector3(CENTER,0,FRONT)),opened)
 func reset():

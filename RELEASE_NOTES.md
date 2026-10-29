@@ -1,3 +1,18 @@
+# Far From Home v2.9.0 - Locks, Hiding and Door Detail
+
+Windows x64 release exported with Godot 4.7.2. Download **FarFromHome-v2.9.0-Windows-x64.zip**, extract it, and run **FarFromHome.exe**. Keep the EXE and PCK together; Godot is not required.
+
+- Added inside door locks to town entrances, chapel doors and hotel guest rooms. Face a door from inside and press **L** (**L3** on controller) to lock or unlock it; locking an open door closes it first.
+- Locked doors resist pursuing monsters. Unlocked doors can still be forced open. After **20 seconds without seeing the player**, monsters abandon the chase and walk back to spawn; spotting the player restarts pursuit.
+- Added visible sliding bolt hardware, spatial monster footsteps, and muffled voices, pounding and footsteps through closed doors and walls.
+- Added the supplied door-creak and separate deadbolt lock/unlock recordings. Car-door sounds are unchanged.
+- Included the latest saved hotel first-floor arrangement and a black-and-white checkerboard elevator floor.
+- Preserved lock state in saves while keeping older saves compatible. Cosmetic bolt and footstep nodes are excluded from saved scene hierarchies.
+
+**Validation:** inside/outside locking, forced entry, hiding timeout, physical retreat, reacquisition, save/load compatibility, door audio routing, bolt animation, wall occlusion, footsteps and pause behavior. Windows and source archives include SHA-256 checksums; the Windows package includes source-commit information.
+
+---
+
 # Far From Home v2.8.0 - Chapel Entrance and Sebus Neon
 
 Windows x64 release build exported with the Godot 4.7.2 release template.

@@ -16,5 +16,6 @@
 # Exported builds and local packaging output
 /builds/
 /dist/
+/tmp/
 __pycache__/
 *.pyc

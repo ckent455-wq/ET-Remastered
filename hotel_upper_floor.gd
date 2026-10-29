@@ -164,8 +164,10 @@ func door_leaf(parent:Node3D,p:Vector3):
 func build_cab():
  cab=AnimatableBody3D.new();cab.name="PassengerCab";cab.sync_to_physics=false;add_child(cab);cab.position=LIFT_ORIGIN+Vector3(0,.02,0)
  # Shared cab collision follows the actual car throughout the ride.
- cab.set_meta("footstep_surface","wood")
- cab_box(Vector3(0,-.10,0),Vector3(2.75,.20,2.65),floor_mat)
+ cab.set_meta("footstep_surface","stone")
+ cab_box(Vector3(0,-.10,0),Vector3(2.75,.20,2.65),preload("res://elevator_tiles.tres"))
+ # Raise the finish above the lobby slab where it overlaps the parked car.
+ box(Vector3(0,.06,0),Vector3(2.60,.015,2.50),preload("res://elevator_tiles.tres"),false,cab).set_meta("runtime_visual_only",true)
  cab_box(Vector3(0,2.72,0),Vector3(2.75,.18,2.65),wood)
  cab_box(Vector3(0,1.35,-1.28),Vector3(2.75,2.7,.12),wood)
  for side in [-1,1]:cab_box(Vector3(side*1.34,1.35,0),Vector3(.12,2.7,2.65),wood)
@@ -256,7 +258,7 @@ func contains(p:Vector3)->bool:
  var local=to_local(p);return absf(local.x)<6 and absf(local.z)<5 and local.y>=UPPER-.15 and local.y<7.2
 func busy()->bool:return phase!="idle"
 func prompt(kind:String,data:Dictionary)->String:
- if kind=="hotel_room_door":return "E / "+("Close" if room_open[data.room_index] else "Open")+" room "+str(201+data.room_index)
+ if kind=="hotel_room_door":return "E / "+("Locked" if town.door_locks.locked(town,data) else "Close" if room_open[data.room_index] else "Open")+" room "+str(201+data.room_index)
  if phase=="parking":return "E / Open elevator"
  if busy():return "Elevator moving"
  if kind=="hotel_lift_controls":return "E / Ride to second floor" if floor_index==0 else "E / Ride to lobby"
@@ -264,6 +266,7 @@ func prompt(kind:String,data:Dictionary)->String:
 func interact(kind:String,data:Dictionary):
  if game.state!="play":return
  if kind=="hotel_room_door":
+  if not town.door_locks.opening_allowed(town,data):return
   var index=data.room_index;room_open[index]=not room_open[index]
   room_colliders[index].set_deferred("disabled",room_open[index]);game.soundscape.door_move(room_hinges[index].global_position,room_open[index]);return
  if phase=="parking" and kind=="hotel_lift_call":phase="opening";game.soundscape.door_move(cab.global_position,true);return

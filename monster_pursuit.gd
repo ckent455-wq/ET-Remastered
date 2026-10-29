@@ -1,5 +1,16 @@
 extends RefCounted
-## A spotted player remains the target. Room portals use the same unlocked routes as the player.
+## Pursuit memory expires out of sight; retreat uses the same physical routes.
+const HIDE_SECONDS=20.0
+func visible(e,data)->bool:
+ var player:Vector3=e.game.player.global_position
+ return data.actor.global_position.distance_to(player)<24.0 and space(e.game,data.actor.global_position)==space(e.game,player) and e.line_clear(data,player+Vector3.UP)
+func forget(e,data):
+ data.pursuing=false;data.state="returning_home";data.seen=false;data.memory=0.0
+ data["hidden_time"]=0.0;data["portal_wait"]=0.0;data["stair_direction"]=""
+ data["path"]=PackedVector3Array();data["path_timer"]=0.0
+ data["special_effort"]=0.0;data["special_door"]=""
+ data.target=e.to_global(data.spawn)
+ data.voice.stop();e.door_encounter.clear_attempt(data)
 func space(g,p:Vector3)->String:
  if g.victorian_house.cellar_contains(p):return "victorian"
  if g.hotel_basement.contains(p):return "hotel"
@@ -50,7 +61,12 @@ func stair_goal(g,data,target:Vector3)->Vector3:
 
 func special_door(e,data,goal:Vector3,delta:float)->bool:
  var g=e.game;var church=g.town.streetscape.church;var crypt=g.town.cemetery
- for entry in [{"root":church,"z":6.95,"width":4.9,"open":church.doors_open,"allowed":true,"kind":"chapel"},{"root":crypt.crypt,"z":1.88,"width":1.5,"open":crypt.opened,"allowed":crypt.unlocked,"kind":"crypt"}]:
+ var entries=[{"root":church,"z":6.95,"width":4.9,"open":church.doors_open,"allowed":not g.town.shelter_locks.get("chapel",false),"kind":"chapel"},{"root":crypt.crypt,"z":1.88,"width":1.5,"open":crypt.opened,"allowed":crypt.unlocked,"kind":"crypt"}]
+ for i in g.hotel_upper.room_hinges.size():
+  var frame:Node3D=g.hotel_upper.room_hinges[i].get_parent()
+  if absf(frame.to_local(data.actor.global_position).y)>1.3:continue
+  entries.append({"root":frame,"z":0.0,"width":1.5,"open":g.hotel_upper.room_open[i],"allowed":not g.town.shelter_locks.get("room_"+str(i),false),"kind":"room_"+str(i),"room_index":i})
+ for entry in entries:
   var here:Vector3=entry.root.to_local(data.actor.global_position)
   var there:Vector3=entry.root.to_local(goal)
   if absf(here.y-there.y)>1.6:continue
@@ -75,6 +91,7 @@ func special_door(e,data,goal:Vector3,delta:float)->bool:
     e.door_encounter.pound(e,data,approach,e.is_mummy(data.index));data.special_beat=1.2
    if data.special_effort>=4 and entry.allowed:
     if entry.kind=="chapel":church.toggle_doors()
+    elif entry.has("room_index"):g.hotel_upper.interact("hotel_room_door",g.town.actions["hotel_room_"+str(entry.room_index)])
     else:
      crypt.interact_door()
      if crypt.opened:g.message="Something forces the mausoleum door open."
@@ -86,17 +103,35 @@ func walk(e,data,target:Vector3,delta:float):
  var direction:Vector3=e.path_direction(data,target,delta)
  e.play(data,"walk1")
  data.animation.speed_scale=1.6
- e.move_creature(data,direction*e.combat.movement(data)*(3.3 if e.is_mummy(data.index) else 3.0 if data.index==e.REAPER_INDEX else 2.8),delta)
+ var speed=1.25 if data.state=="returning_home" else 3.3 if e.is_mummy(data.index) else 3.0 if data.index==e.REAPER_INDEX else 2.8
+ e.move_creature(data,direction*e.combat.movement(data)*speed,delta)
 
 func update(e,data,delta:float)->bool:
  var g=e.game
  if data.hp<=0 or data.state in ["dormant","reaper_wait","reaper_warning","coffin_breakout"]:return false
+ var retreating=data.state in ["returning_home","guarding_spawn"]
+ if retreating:
+  if visible(e,data):
+   data.state="chase";data.pursuing=true;data["hidden_time"]=0.0;retreating=false
+  elif data.state=="guarding_spawn":
+   e.play(data,"idle1");e.move_creature(data,Vector3.ZERO,delta);return true
  if data.state in ["chase","house_rush","cellar_rush","tunnel_chase","reaper_chase","attack"]:data["pursuing"]=true
- if not data.get("pursuing",false):return false
+ if not data.get("pursuing",false) and not retreating:return false
  # Finish the authored reveal routes before taking over ordinary pursuit.
  if data.index==e.HOUSE_INDEX and data.get("house_waypoint",0)<2:return false
  if data.index==e.TUNNEL_INDICES[2] and data.get("tunnel_waypoint",0)<3 and space(g,g.player.global_position)=="hotel":return false
- data.target=g.player.global_position;data.memory=10.0
+ if not retreating:
+  if visible(e,data):
+   data["hidden_time"]=0.0;data.target=g.player.global_position;data.seen=true
+  else:
+   data["hidden_time"]=data.get("hidden_time",0.0)+delta;data.seen=false
+   if data.hidden_time>=HIDE_SECONDS:
+    forget(e,data);retreating=true
+  data.memory=maxf(0.0,HIDE_SECONDS-data.get("hidden_time",0.0))
+ var destination:Vector3=e.to_global(data.spawn) if retreating else data.target
+ if retreating and data.actor.global_position.distance_to(destination)<.65:
+  data.state="guarding_spawn";e.door_encounter.clear_attempt(data)
+  e.move_creature(data,Vector3.ZERO,delta);e.play(data,"idle1");return true
  data.timer=maxf(0,data.timer-delta);data.cooldown=maxf(0,data.cooldown-delta)
  if data.state=="stagger":
   e.move_creature(data,Vector3.ZERO,delta)
@@ -115,9 +150,9 @@ func update(e,data,delta:float)->bool:
     g.take_damage(25 if mummy else 26 if data.index==e.REAPER_INDEX else 24 if data.index==e.WORKSHOP_INDEX else 28)
   if data.timer<=0:data.state="chase";data.cooldown=0.55
   return true
- data.state="chase"
- var here=space(g,data.actor.global_position);var there=space(g,g.player.global_position)
- var target:Vector3=g.player.global_position
+ data.state="returning_home" if retreating else "chase"
+ var here=space(g,data.actor.global_position);var there=space(g,destination)
+ var target:Vector3=destination
  if here!=there:
   var edge=portal(g,here if here!="surface" else there,here!="surface")
   if not edge.allowed:e.move_creature(data,Vector3.ZERO,delta);return true
@@ -143,7 +178,7 @@ func update(e,data,delta:float)->bool:
    if inside_a!=inside_b:
     target=building.to_global(Vector3(0,a.y,door.hinge.position.z+(1.5 if inside_a else -1.5)));break
   if e.door_encounter.update(e,data,delta,target) or special_door(e,data,target,delta):return true
- if here==there and data.actor.global_position.distance_to(g.player.global_position)<1.55 and data.cooldown<=0 and e.line_clear(data,g.player.global_position+Vector3.UP):
+ if not retreating and here==there and data.actor.global_position.distance_to(g.player.global_position)<1.55 and data.cooldown<=0 and e.line_clear(data,g.player.global_position+Vector3.UP):
   data.state="attack";data.timer=0.9 if e.is_mummy(data.index) or data.index==e.REAPER_INDEX else 0.95;data.did_hit=false
   e.play(data,"punch");data.voice.stream=e.streams.attack;data.voice.play()
  else:walk(e,data,target,delta)

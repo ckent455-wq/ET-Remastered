@@ -51,6 +51,8 @@ var dialogue_view = {}
 var pitch = 0.0
 var crash_site: Node3D
 var soundscape: Node
+var door_bolts:Node
+var monster_audio:Node
 var arm_visual: Node3D
 var weapons: Node3D
 var enemies: Node3D
@@ -278,6 +280,8 @@ func _ready():
 	hotel_upper_layout=preload("res://hotel_upper_layout.gd").new();hotel_upper_layout.game=self;add_child(hotel_upper_layout)
 	hotel_reception=preload("res://hotel_reception_bell.gd").new();hotel_reception.game=self;add_child(hotel_reception)
 	hotel_staff=preload("res://hotel_staff_partition.gd").new();hotel_staff.game=self;add_child(hotel_staff)
+	door_bolts=preload("res://door_bolt_visuals.gd").new();door_bolts.game=self;add_child(door_bolts)
+	monster_audio=preload("res://monster_spatial_audio.gd").new();monster_audio.game=self;add_child(monster_audio)
 	call_deferred("load_requested_slot")
 
 func load_requested_slot():
@@ -583,6 +587,8 @@ func _unhandled_input(event):
 			if crash_site.has_flashlight: soundscape.flashlight_click(flashlight.visible)
 		if state=="play" and event.keycode==KEY_E:
 			town.interact()
+		if state=="play" and event.keycode==KEY_L:
+			town.door_locks.toggle(town)
 		if state=="play" and event.keycode==KEY_H:
 			town.use_healing()
 		if state=="play" and event.keycode==KEY_Q:

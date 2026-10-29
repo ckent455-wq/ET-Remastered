@@ -31,6 +31,7 @@ Updates the radio desk microphone from the revised Blender model, retaining its 
 The Hollow waits inside the chapel basement, with animated pursuit, melee attacks, headshot hit detection, death and respawn. Existing saves remain compatible. This version also adds an original desk microphone beside the emergency radio and refines John's portrait texture.
 
 ## Controls
+- L: lock/unlock the door under the crosshair from inside (L3 on controller).
 - Enter: begin / resume / restart
 - Mouse: look
 - WASD or arrow keys: move

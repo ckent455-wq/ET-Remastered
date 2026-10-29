@@ -1,0 +1,28 @@
+extends SceneTree
+func _initialize():call_deferred("run")
+func run():
+ var world=Node3D.new();root.add_child(world)
+ var sound=load("res://soundscape.gd").new()
+ sound.game=world
+ sound.door_voice=sound.spatial_voice(world,sound.stream("door_creak_open"),-10,20)
+ sound.deadbolt_streams={true:sound.stream("deadbolt_lock"),false:sound.stream("deadbolt_unlock")}
+ sound.deadbolt_voice=sound.spatial_voice(world,sound.deadbolt_streams[true],-10,14)
+ sound.storage_voice=sound.spatial_voice(world,sound.stream("horror/cabinet_open"),-17,10)
+ for cue in ["drawer_open","drawer_close","cabinet_open","cabinet_close"]:sound.storage_streams[cue]=sound.stream("horror/"+cue)
+ sound.door_move(Vector3(2,0,1),true)
+ assert(sound.door_voice.pitch_scale==1.0)
+ assert(sound.door_voice.global_position==Vector3(2,1,1))
+ assert(sound.door_voice.stream.get_length()>13.0)
+ sound.deadbolt(Vector3.ZERO,true)
+ assert(sound.deadbolt_voice.stream==sound.deadbolt_streams[true])
+ assert(sound.deadbolt_voice.stream.get_length()<1.0)
+ sound.deadbolt(Vector3.ZERO,false)
+ assert(sound.deadbolt_voice.stream==sound.deadbolt_streams[false])
+ sound.storage_move(Vector3.ZERO,false,true)
+ assert(sound.storage_voice.stream==sound.storage_streams.cabinet_open,"Car opening retains its existing cabinet sound")
+ sound.storage_move(Vector3.ZERO,false,false)
+ assert(sound.storage_voice.stream==sound.storage_streams.cabinet_close,"Car closing retains its existing cabinet sound")
+ assert(sound.deadbolt_voice!=sound.door_voice,"Lock cues do not interrupt door creaks")
+ sound.free()
+ print("PASS: new door creak, separate lock/unlock clips, spatial playback and unchanged car-door audio")
+ quit()
