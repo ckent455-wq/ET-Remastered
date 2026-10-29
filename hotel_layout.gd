@@ -3,8 +3,11 @@ extends Node
 var game
 var applied_count=0
 var added_furniture={}
+var reference=preload("res://hotel_reference_layout.gd").new()
 const PATH="res://editing/hotel_layout.tscn"
-func _ready():call_deferred("apply_when_ready")
+func _ready():
+ reference.bind(game)
+ call_deferred("apply_when_ready")
 func apply_when_ready():
  while not game.surface_details.completed:await get_tree().process_frame
  apply_layout()
@@ -31,6 +34,7 @@ func apply_layout(scene:Node=null):
     var id=str(entry.get_meta("runtime_spawn_id"))
     if not added_furniture.has(id) or not is_instance_valid(added_furniture[id]):
      var added=entry.duplicate(0);added.name="HotelExtra_"+id;game.add_child(added);added_furniture[id]=added
+    reference.static_details(entry,added_furniture[id])
     added_furniture[id].global_transform=hotel.global_transform*furniture.transform*entry.transform
     applied_count+=1
     continue
@@ -41,10 +45,15 @@ func apply_layout(scene:Node=null):
    if not target is Node3D:continue
    var asset=str(target.get_meta("apartment_asset",target.get_meta("retro_asset",target.name)))
    if asset!=str(entry.get_meta("runtime_asset")):push_warning("Hotel layout no longer matches "+entry.name);continue
+   if target.find_children("*","Area3D",true,false).is_empty():reference.static_details(entry,target)
    target.transform=furniture.transform*entry.transform
    applied_count+=1
+ var obsolete_chair=game.town.buildings.house.get_node_or_null("Abandoned_broken_chair")
+ if obsolete_chair:obsolete_chair.hide();disable_removed(obsolete_chair)
  apply_pickups(scene)
  if game.hotel_upper:game.hotel_upper.apply_layout()
+ reference.apply(game,scene)
+ if game.hotel_staff:game.hotel_staff.restore_joinery()
  if own:scene.free()
 func disable_removed(node:Node):
  if node is CollisionObject3D:node.collision_layer=0

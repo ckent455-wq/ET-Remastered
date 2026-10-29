@@ -65,7 +65,7 @@ func restore_tree(node:Node,data:Dictionary):
  if node is AnimationPlayer and data.animation!="" and node.has_animation(data.animation):
   node.play(data.animation);node.seek(data.time,true);node.advance(0);node.speed_scale=data.speed
 func roots()->Dictionary:
- return {"hotel_upper":game.hotel_upper,"sebus":game.town.streetscape.sebus,"crash":game.crash_site,"tree":game.falling_tree,"crow":game.town.sign_crow,"church":game.town.streetscape.church,"cemetery":game.town.cemetery,"hotel":game.hotel_basement,"window":game.hotel_window_figure,"shadow":game.cemetery_shadow,"grave":game.grave_dig,"police":game.weapons.police_car,"lockbox":game.weapons.lockbox,"panel":game.town.actions.battery_panel.area.get_node("HighVoltageTerminal"),"enemies":game.enemies,"people":game.town.townspeople,"hollow":game.enemies.creatures[game.enemies.HOLLOW_INDEX].actor}
+ return {"hotel_staff":game.hotel_staff,"hotel_upper":game.hotel_upper,"sebus":game.town.streetscape.sebus,"crash":game.crash_site,"tree":game.falling_tree,"crow":game.town.sign_crow,"church":game.town.streetscape.church,"cemetery":game.town.cemetery,"hotel":game.hotel_basement,"window":game.hotel_window_figure,"shadow":game.cemetery_shadow,"grave":game.grave_dig,"police":game.weapons.police_car,"lockbox":game.weapons.lockbox,"panel":game.town.actions.battery_panel.area.get_node("HighVoltageTerminal"),"enemies":game.enemies,"people":game.town.townspeople,"hollow":game.enemies.creatures[game.enemies.HOLLOW_INDEX].actor}
 func blocked_reason()->String:
  if not game.surface_details.completed:return "The world is still preparing. Wait a moment before saving."
  if game.testing_mode.enabled:return "Turn testing mode off before saving a normal journey."
@@ -116,11 +116,11 @@ func valid(data)->bool:
   if key=="knife" and not data.town.inventory.has(key):continue
   if not data.town.inventory.get(key) is int or data.town.inventory[key]<0:return false
  for id in game.town.actions:
-  if (id in ["hotel_knife","workshop_knife","sebus_door"] or id.begins_with("hotel_lift_") or id.begins_with("hotel_room_")) and not data.actions.has(id):continue
+  if (id in ["hotel_knife","workshop_knife","sebus_door","hotel_reception_bell","hotel_staff_door"] or id.begins_with("hotel_lift_") or id.begins_with("hotel_room_")) and not data.actions.has(id):continue
   if not data.actions.get(id) is Dictionary:return false
  for key in roots():
   if key=="hollow" and legacy_hollow:continue
-  if key in ["sebus","hotel_upper"] and not data.roots.has(key):continue
+  if key in ["sebus","hotel_upper","hotel_staff"] and not data.roots.has(key):continue
   if not valid_tree(roots()[key],data.roots.get(key)):return false
  return true
 func apply(data:Dictionary):

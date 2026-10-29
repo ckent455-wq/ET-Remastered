@@ -1,0 +1,2 @@
+User-provided download: 609722__theplax__desk-bell.wav
+Source recording supplied from Downloads. Converted stereo PCM to mono PCM for positional in-game playback; timing and natural decay preserved.

@@ -47,11 +47,11 @@ func run():
  await walk(Vector3(0,lift.UPPER,-1.15));await walk(Vector3(-4.3,lift.UPPER,-1.15));lift.interact("hotel_lift_call",{"floor":1});await step_lift(1.2);await walk(lift.LIFT_ORIGIN+Vector3(0,lift.UPPER,0))
  lift.interact("hotel_lift_controls",{});await step_lift(7)
  assert(lift.floor_index==0 and absf(g.player.global_position.y-.02)<.08)
- await walk(Vector3(-4.3,.02,-1.15));await walk(Vector3(-1.1,.02,-1.15));await walk(Vector3(-.4,.02,-3.5))
+ await walk(Vector3(-4.3,.02,-1.15));await walk(Vector3(-1.1,.02,-1.15));assert(not g.hotel_staff.unlocked)
  # Empty-car calls close the unserved landing; no exposed shaft.
  lift.begin_trip(1,false);await step_lift(7);assert(lift.floor_index==1 and not lift.landing_doors[0][0].get_child(1).disabled)
  lift.interact("hotel_lift_call",{"floor":0});await step_lift(7);assert(lift.floor_index==0)
  var file=FileAccess.open("C:/Users/jkern/Documents/Codex/2026-10-16/go-x20/work/pre-zombie-save.bin",FileAccess.READ);var old=file.get_var();file.close()
  assert(g.saves.backend.valid(old));g.saves.backend.apply(old);assert(lift.floor_index==0)
- print("PASS: hotel elevator both directions, continuous player ride, pause, call buttons, shaft doors, all guest rooms on foot, basement route, bedroom relocation and new/old save compatibility")
+ print("PASS: hotel elevator both directions, continuous player ride, pause, call buttons, shaft doors, all guest rooms on foot, locked staff route, bedroom relocation and new/old save compatibility")
  quit()

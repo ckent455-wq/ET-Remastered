@@ -29,6 +29,8 @@ var invincible = 0.0
 var hurt_flash = 0.0
 var town_changes:Node3D
 var workshop_layout:Node
+var hotel_staff:Node3D
+var hotel_reception:Node3D
 var hotel_upper_layout:Node
 var hotel_upper:Node3D
 var hotel_layout:Node
@@ -274,6 +276,8 @@ func _ready():
 	knife=preload("res://hotel_knife.gd").new();knife.game=self;add_child(knife)
 	hotel_upper=preload("res://hotel_upper_floor.gd").new();hotel_upper.game=self;add_child(hotel_upper)
 	hotel_upper_layout=preload("res://hotel_upper_layout.gd").new();hotel_upper_layout.game=self;add_child(hotel_upper_layout)
+	hotel_reception=preload("res://hotel_reception_bell.gd").new();hotel_reception.game=self;add_child(hotel_reception)
+	hotel_staff=preload("res://hotel_staff_partition.gd").new();hotel_staff.game=self;add_child(hotel_staff)
 	call_deferred("load_requested_slot")
 
 func load_requested_slot():
@@ -309,6 +313,16 @@ func load_requested_slot():
 			hotel_upper.floor_index=1;hotel_upper.target_floor=1;hotel_upper.cab.position.y=hotel_upper.UPPER;hotel_upper.sync_doors()
 			player.global_position=hotel_upper.to_global(Vector3(0,hotel_upper.UPPER+.02,-1.15))
 			camera.look_at(hotel_upper.to_global(Vector3(-3.35,hotel_upper.UPPER+1.25,-.55)))
+		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
+		set_state("play");flashlight.show();return
+	if "--preview-hotel-reception" in OS.get_cmdline_user_args() or "--preview-hotel-staff" in OS.get_cmdline_user_args():
+		while not surface_details.completed or not hotel_upper.ready_layout:await get_tree().process_frame
+		reset_game();crash_site.wake_phase="";crash_site.release_seated_camera()
+		crash_site.has_backpack=true;crash_site.has_flashlight=true;story.clinic_rescue_done=true;story.crash_wound_treated=true;town.reached_town=true;health=100;hurt_flash=0
+		player.global_position=town.buildings.house.to_global(Vector3(.25,.04,3.6))
+		camera.look_at(town.buildings.house.to_global(Vector3(3.7,1.35,.1)))
+		if "--preview-hotel-staff" in OS.get_cmdline_user_args():
+			player.global_position=town.buildings.house.to_global(Vector3(0,.04,1.2));camera.look_at(town.buildings.house.to_global(Vector3(-1.1625,1.4,-1.6)))
 		player.rotation.y=camera.rotation.y;camera.rotation.y=0;pitch=camera.rotation.x
 		set_state("play");flashlight.show();return
 	if "--preview-hotel-knife" in OS.get_cmdline_user_args():
@@ -426,6 +440,8 @@ func reset_game():
 	if crash_site: crash_site.reset()
 	if hotel_basement: hotel_basement.reset()
 	if hotel_upper:hotel_upper.reset()
+	if hotel_reception:hotel_reception.reset()
+	if hotel_staff:hotel_staff.reset()
 	if cemetery_shadow: cemetery_shadow.reset()
 	if hotel_window_figure: hotel_window_figure.reset()
 	if knife:knife.reset()

@@ -1,3 +1,26 @@
+# Far From Home v2.7.0 - Saint George Reception and Staff Entrance
+
+Windows x64 release build exported with the Godot 4.7.2 release template.
+
+- Added a 1920s-inspired hotel reception counter with paneled wood, brass details, a key/mail rack, guest register, banker lamp, candlestick telephone and clerk chair. The pieces remain editable in the downstairs Godot layout.
+- Added an interactive service bell using the supplied desk-bell recording. Keyboard and controller interaction ring the bell, with a short button press animation and positional audio.
+- Added a solid wall between the elevator and reception area, with a centered EMPLOYEES ONLY door. It is locked from the lobby; players returning through the basement can unbolt it from the staff side.
+- Matched the new door and wall trim to the existing lobby finish. Completed the corner and wall runs, and lowered the baseboards to meet the floor.
+- Included the latest approved downstairs furniture, pickup and lighting edits. Static child-mesh edits and deleted decorations now apply to the game while keeping saved node hierarchies intact.
+- Refreshed the downstairs editor reference to show the elevator, staff wall and reception desk, with the relocated bedroom hidden from the downstairs view.
+- Removed the broken chair that clipped through the front desk. Ada's letter rests on the reception counter and remains accessible.
+- Preserved earlier save compatibility, including journeys made before the bell and staff entrance.
+
+## Play
+
+Download **FarFromHome-v2.7.0-Windows-x64.zip**, extract all files, and run **FarFromHome.exe**. Keep the EXE and PCK together. Godot is not required.
+
+## Validation
+
+Saved lobby transforms, child meshes, collision sizes, lighting and deleted decorations were compared with the live game. Bell interaction/audio, the locked staff entrance, return access from the basement, elevator travel and save compatibility were checked. Source commit and SHA-256 checksums accompany the release.
+
+---
+
 # Far From Home v2.6.0 - Saint George Hotel Upstairs
 
 Windows x64 release build exported with the Godot 4.7.2 release template.

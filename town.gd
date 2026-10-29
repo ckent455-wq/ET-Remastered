@@ -440,6 +440,8 @@ func prompt() -> String:
 		return ""
 	var data = actions[focus_action]
 	if data.kind in ["hotel_lift_call","hotel_lift_controls","hotel_room_door"]:return game.hotel_upper.prompt(data.kind,data)
+	if data.kind=="hotel_staff_door":return game.hotel_staff.prompt()
+	if data.kind=="hotel_reception_bell":return "E / Ring desk bell"
 	if data.kind=="sebus_door":return "E / "+("Close" if data.door.opened else "Open")+" Sebus Hardware door"
 	if data.kind in ["hotel_basement_door","hotel_basement_exit","mausoleum_tunnel","hotel_tunnel_return"]: return game.hotel_basement.prompt(data.kind)
 	if data.kind=="dig_grave": return game.grave_dig.prompt()
@@ -495,6 +497,8 @@ func perform(id: String):
 		reached_town = true
 	match data.kind:
 		"hotel_lift_call","hotel_lift_controls","hotel_room_door":game.hotel_upper.interact(data.kind,data)
+		"hotel_staff_door":game.hotel_staff.interact()
+		"hotel_reception_bell":game.hotel_reception.ring()
 		"sebus_door":data.door.interact()
 		"grave_shovel":
 			game.grave_dig.interact_shovel()

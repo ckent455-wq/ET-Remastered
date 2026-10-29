@@ -176,3 +176,8 @@ After the car fails to start, follow the lights down Old Mill Road to seek medic
 ## Saint George Hotel upstairs
 
 Use E (or the controller interact button) on the elevator landing button to open the doors. Step fully inside and use the cab panel to travel between the lobby and floor 2. Guest rooms 201-203 can be explored upstairs. Save after the elevator and its doors finish moving. The editable upstairs layout is editing/hotel_second_floor_layout.tscn; see HOTEL_ELEVATOR.md.
+
+
+## Reception and staff access
+
+Aim at the front-desk bell and press E (or the controller interact button) to ring it. The employees-only door is locked from the lobby; returning through the mausoleum/basement route lets you unbolt it from the staff side. See HOTEL_RECEPTION.md for the editable reception pieces and visual references.
